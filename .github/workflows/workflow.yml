@@ -1,5 +1,8 @@
 name: modules-listing
-on: [ push ]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   pages-directory-listing:
