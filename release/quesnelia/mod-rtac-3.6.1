@@ -1,0 +1,65 @@
+{
+  "id" : "mod-rtac-3.6.1",
+  "name" : "Real Time Availability Check Module",
+  "requires" : [ {
+    "id" : "inventory-hierarchy",
+    "version" : "0.5"
+  }, {
+    "id" : "loan-storage",
+    "version" : "6.0 7.0 7.1"
+  }, {
+    "id" : "circulation",
+    "version" : "13.1 14.2"
+  } ],
+  "provides" : [ {
+    "id" : "rtac",
+    "version" : "1.5",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/rtac/{id}",
+      "permissionsRequired" : [ "rtac.holdings.item.get" ],
+      "modulePermissions" : [ "circulation-storage.loans.collection.get", "inventory-storage.inventory-hierarchy.items-and-holdings.collection.post", "circulation.requests.collection.get" ]
+    } ]
+  }, {
+    "id" : "rtac-batch",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/rtac-batch",
+      "permissionsRequired" : [ "rtac.batch.post" ],
+      "modulePermissions" : [ "circulation-storage.loans.collection.get", "inventory-storage.inventory-hierarchy.items-and-holdings.collection.post", "circulation.requests.collection.get" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "rtac.holdings.item.get",
+    "displayName" : "Legacy RTAC - Get individual holding",
+    "description" : "Legacy RTAC - Get individual holding"
+  }, {
+    "permissionName" : "rtac.batch.post",
+    "displayName" : "RTAC - get batch holding collection",
+    "description" : "Get batch holding collection"
+  }, {
+    "permissionName" : "rtac.all",
+    "displayName" : "RTAC - all permissions",
+    "description" : "Entire set of permissions needed to use RTAC",
+    "subPermissions" : [ "rtac.batch.post", "rtac.holdings.item.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-rtac:3.6.1",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

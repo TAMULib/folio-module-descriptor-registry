@@ -1,0 +1,47 @@
+{
+  "id" : "mod-sender-1.12.0",
+  "name" : "Mod sender",
+  "requires" : [ {
+    "id" : "users",
+    "version" : "16.1"
+  }, {
+    "id" : "email",
+    "version" : "1.1"
+  }, {
+    "id" : "batch-print",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "message-delivery",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/message-delivery",
+      "permissionsRequired" : [ "sender.message-delivery" ],
+      "modulePermissions" : [ "email.message.post", "batch-print.entries.mail.post", "users.item.get" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "sender.message-delivery",
+    "displayName" : "Message delivery",
+    "description" : "Send message"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-sender:1.12.0",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 536870912,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
