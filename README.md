@@ -26,3 +26,8 @@ Direct command line use is also supported to allow for individuals to manually e
 Most settings, however, are either done via environment variables or by manually toggling the variables within the script.
 
 View the documentation within the `populate_release.sh` script for further details.
+
+Example usage:
+```sh
+bash scripts/populate_release.sh R1-2024-csp-9 quesnelia
+```
