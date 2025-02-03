@@ -133,6 +133,8 @@ main() {
       if [[ ${debug} != "" ]] ; then
         echo "DEBUG: Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
         echo
+      else
+        echo "Curl requesting Module Descriptor: ${i}."
       fi
 
       curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${release_flower}/${i}
