@@ -25,7 +25,7 @@ This script is designed to accept environment variables, thereby allowing for ea
 Direct command line use is also supported to allow for individuals to manually execute.
 Most settings, however, are either done via environment variables or by manually toggling the variables within the script.
 
-The flower release name in relation to its release date designation (which maps to the tag name) can be found on the **FOLIO Project** wiki in the [Flower Rlease Names](https://folio-org.atlassian.net/wiki/spaces/REL/pages/5210505/Flower+Release+Names) page.
+The flower release name in relation to its release date designation (which maps to the tag name) can be found on the **FOLIO Project** wiki in the [Flower Release Names](https://folio-org.atlassian.net/wiki/spaces/REL/pages/5210505/Flower+Release+Names) page.
 
 View the documentation within the `populate_release.sh` script for further details.
 
