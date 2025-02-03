@@ -1,0 +1,110 @@
+{
+  "id" : "mod-codex-mux-2.12.0",
+  "name" : "Codex Multiplexer",
+  "requires" : [ ],
+  "provides" : [ {
+    "id" : "codex",
+    "version" : "3.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances",
+      "permissionsRequired" : [ "codex-mux.instances.collection.get" ],
+      "modulePermissions" : [ "codex-ekb.instances.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances/{id}",
+      "permissionsRequired" : [ "codex-mux.instances.item.get" ],
+      "modulePermissions" : [ "codex-ekb.instances.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances-sources",
+      "permissionsRequired" : [ "codex-mux.instances-sources.collection.get" ],
+      "modulePermissions" : [ "codex-ekb.instances-sources.collection.get" ]
+    } ]
+  }, {
+    "id" : "codex-packages",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages",
+      "permissionsRequired" : [ "codex-mux.packages.collection.get" ],
+      "modulePermissions" : [ "codex-ekb.packages.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages/{id}",
+      "permissionsRequired" : [ "codex-mux.packages.item.get" ],
+      "modulePermissions" : [ "codex-ekb.packages.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages-sources",
+      "permissionsRequired" : [ "codex-mux.packages-sources.collection.get" ],
+      "modulePermissions" : [ "codex-ekb.packages-sources.collection.get" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_ramls",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/ramls",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "codex-mux.instances.collection.get",
+    "displayName" : "get codex instances",
+    "description" : "Get codex instances"
+  }, {
+    "permissionName" : "codex-mux.instances.item.get",
+    "displayName" : "get codex instance",
+    "description" : "Get codex instance"
+  }, {
+    "permissionName" : "codex-mux.instances-sources.collection.get",
+    "displayName" : "get codex instances sources",
+    "description" : "Get codex instances sources"
+  }, {
+    "permissionName" : "codex-mux.packages.collection.get",
+    "displayName" : "get codex packages",
+    "description" : "Get codex packages"
+  }, {
+    "permissionName" : "codex-mux.packages.item.get",
+    "displayName" : "get codex package",
+    "description" : "Get codex package"
+  }, {
+    "permissionName" : "codex-mux.packages-sources.collection.get",
+    "displayName" : "get codex package sources",
+    "description" : "Get codex package sources"
+  }, {
+    "permissionName" : "codex-mux.all",
+    "displayName" : "Codex Multiplexer - all permissions",
+    "description" : "All permissions for Codex Multiplexer",
+    "subPermissions" : [ "codex-mux.instances.collection.get", "codex-mux.instances.item.get", "codex-mux.instances-sources.collection.get", "codex-mux.packages.collection.get", "codex-mux.packages.item.get", "codex-mux.packages-sources.collection.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-codex-mux:2.12.0",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

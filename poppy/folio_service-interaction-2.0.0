@@ -1,0 +1,19 @@
+{
+  "id" : "folio_service-interaction-2.0.0",
+  "name" : "FOLIO app for service-interaction",
+  "requires" : [ {
+    "id" : "servint",
+    "version" : "2.0 3.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.service-interaction.enabled",
+    "displayName" : "UI: ui-service-interaction module is enabled",
+    "visible" : true
+  }, {
+    "permissionName" : "settings.service-interaction.enabled",
+    "displayName" : "Settings (service-interaction): display list of settings pages",
+    "subPermissions" : [ "settings.enabled" ],
+    "visible" : true
+  } ]
+}

@@ -1,0 +1,117 @@
+{
+  "id" : "folio_receiving-4.0.0",
+  "name" : "Description for receiving",
+  "requires" : [ {
+    "id" : "acquisitions-units",
+    "version" : "1.1"
+  }, {
+    "id" : "circulation",
+    "version" : "9.5 10.0 11.0 12.0 13.0 14.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "contributor-types",
+    "version" : "2.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "4.2 5.0 6.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "instance-formats",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "inventory",
+    "version" : "10.0 11.0 12.0 13.0"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "modes-of-issuance",
+    "version" : "1.0"
+  }, {
+    "id" : "nature-of-content-terms",
+    "version" : "1.0"
+  }, {
+    "id" : "order-lines",
+    "version" : "2.0 3.0"
+  }, {
+    "id" : "orders",
+    "version" : "11.0 12.0"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.0"
+  }, {
+    "id" : "pieces",
+    "version" : "2.0"
+  }, {
+    "id" : "receiving",
+    "version" : "1.0"
+  }, {
+    "id" : "search",
+    "version" : "0.5 0.6 1.0"
+  }, {
+    "id" : "tags",
+    "version" : "1.0"
+  }, {
+    "id" : "titles",
+    "version" : "1.2"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.receiving.enabled",
+    "displayName" : "UI: Receiving module is enabled"
+  }, {
+    "permissionName" : "settings.receiving.enabled",
+    "displayName" : "Settings (Receiving): Display list of settings for Receiving",
+    "subPermissions" : [ "settings.enabled" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-receiving.third-party-services",
+    "displayName" : "Receiving: Permissions required to call services",
+    "subPermissions" : [ "acquisitions-units.memberships.collection.get", "acquisitions-units.units.collection.get", "circulation.requests.collection.get", "configuration.entries.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.post", "inventory-storage.identifier-types.collection.get", "inventory-storage.location-units.campuses.collection.get", "inventory-storage.location-units.institutions.collection.get", "inventory-storage.location-units.libraries.collection.get", "inventory-storage.locations.collection.get", "inventory-storage.locations.item.get", "inventory-storage.material-types.collection.get", "inventory.items.collection.get", "orders.pieces.collection.get", "orders.po-lines.item.get", "organizations.organizations.collection.get", "tags.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-receiving.basic.view",
+    "displayName" : "Receiving: Basic view",
+    "subPermissions" : [ "module.receiving.enabled", "orders.collection.get", "orders.item.get", "orders.pieces.item.get", "orders.pieces.item.delete", "orders.pieces.item.post", "orders.pieces.item.put", "orders.po-lines.collection.get", "orders.titles.collection.get", "orders.titles.item.get", "ui-receiving.third-party-services" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-receiving.view",
+    "displayName" : "Receiving: View",
+    "subPermissions" : [ "orders.check-in.collection.post", "orders.receiving.collection.post", "settings.receiving.enabled", "ui-receiving.basic.view" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-receiving.edit",
+    "displayName" : "Receiving: View, edit",
+    "subPermissions" : [ "ui-receiving.view", "inventory-storage.contributor-types.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.material-types.collection.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "orders.titles.item.put", "search.instances.collection.get", "search.facets.collection.get" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-receiving.create",
+    "displayName" : "Receiving: View, edit, create",
+    "subPermissions" : [ "orders.titles.item.post", "ui-receiving.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-receiving.delete",
+    "displayName" : "Receiving: View, edit, delete",
+    "subPermissions" : [ "orders.titles.item.delete", "ui-receiving.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-receiving.exportCSV",
+    "displayName" : "Receiving: Export search results",
+    "description" : "",
+    "subPermissions" : [ ],
+    "visible" : true
+  } ]
+}

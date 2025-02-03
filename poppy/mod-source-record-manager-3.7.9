@@ -1,0 +1,377 @@
+{
+  "id" : "mod-source-record-manager-3.7.9",
+  "name" : "Source Record Manager Module",
+  "requires" : [ {
+    "id" : "source-storage-snapshots",
+    "version" : "2.0"
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.0"
+  }, {
+    "id" : "source-storage-source-records",
+    "version" : "3.0"
+  }, {
+    "id" : "users",
+    "version" : "15.0 16.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "electronic-access-relationships",
+    "version" : "1.0"
+  }, {
+    "id" : "classification-types",
+    "version" : "1.2"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-formats",
+    "version" : "2.0"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.2"
+  }, {
+    "id" : "contributor-types",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-preceding-succeeding-titles",
+    "version" : "0.2"
+  }, {
+    "id" : "alternative-title-types",
+    "version" : "1.0"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.4"
+  }, {
+    "id" : "modes-of-issuance",
+    "version" : "1.1"
+  }, {
+    "id" : "source-storage-batch",
+    "version" : "1.1"
+  }, {
+    "id" : "call-number-types",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-types",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-relationship-types",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "item-damaged-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "item-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "ill-policies",
+    "version" : "1.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.2"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "nature-of-content-terms",
+    "version" : "1.0"
+  }, {
+    "id" : "statistical-codes",
+    "version" : "1.0"
+  }, {
+    "id" : "statistical-code-types",
+    "version" : "1.0"
+  }, {
+    "id" : "field-protection-settings",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "source-manager-job-executions",
+    "version" : "3.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobExecutions",
+      "permissionsRequired" : [ "metadata-provider.jobexecutions.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/journalRecords/{jobExecutionId}",
+      "permissionsRequired" : [ "metadata-provider.logs.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobExecutions/jobProfiles",
+      "permissionsRequired" : [ "metadata-provider.jobexecutions.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/change-manager/jobExecutions",
+      "permissionsRequired" : [ "change-manager.jobexecutions.post" ],
+      "modulePermissions" : [ "source-storage.snapshots.post", "users.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/change-manager/jobExecutions",
+      "permissionsRequired" : [ "change-manager.jobexecutions.delete" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}",
+      "permissionsRequired" : [ "change-manager.jobexecutions.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}",
+      "permissionsRequired" : [ "change-manager.jobexecutions.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}/children",
+      "permissionsRequired" : [ "change-manager.jobexecutions.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}/status",
+      "permissionsRequired" : [ "change-manager.jobexecutions.put" ],
+      "modulePermissions" : [ "source-storage.snapshots.put" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}/jobProfile",
+      "permissionsRequired" : [ "change-manager.jobexecutions.put" ],
+      "modulePermissions" : [ "converter-storage.jobprofilesnapshots.post", "converter-storage.jobprofile.get" ]
+    } ]
+  }, {
+    "id" : "source-manager-records",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}/records",
+      "permissionsRequired" : [ "change-manager.records.post" ],
+      "permissionsDesired" : [ "invoices.acquisitions-units-assignments.assign", "orders.acquisitions-units-assignments.assign", "orders.acquisitions-units-assignments.manage", "orders.item.approve", "orders.item.reopen", "orders.item.unopen" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "converter-storage.field-protection-settings.get", "converter-storage.jobprofilesnapshots.get", "inventory-storage.alternative-title-types.collection.get", "inventory-storage.authorities.collection.get", "inventory-storage.authorities.item.delete", "inventory-storage.authorities.item.get", "inventory-storage.authorities.item.post", "inventory-storage.authorities.item.put", "inventory-storage.authority-note-types.collection.get", "inventory-storage.authority-source-files.collection.get", "inventory-storage.call-number-types.collection.get", "inventory-storage.classification-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.contributor-types.collection.get", "inventory-storage.electronic-access-relationships.collection.get", "inventory-storage.holdings-note-types.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings-types.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.put", "inventory-storage.identifier-types.collection.get", "inventory-storage.ill-policies.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.instance-note-types.collection.get", "inventory-storage.instance-relationship-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.item.post", "inventory-storage.instances.item.put", "inventory-storage.item-damaged-statuses.collection.get", "inventory-storage.item-note-types.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "inventory-storage.items.item.put", "inventory-storage.loan-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.locations.collection.get", "inventory-storage.locations.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.preceding-succeeding-titles.item.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.statistical-code-types.collection.get", "inventory-storage.statistical-codes.collection.get", "mapping-metadata.get", "orders.po-lines.collection.get", "source-storage.records.get", "source-storage.snapshots.get", "source-storage.snapshots.put", "source-storage.verified.records", "users.collection.get", "orders-storage.order-invoice-relationships.item.post", "finance.exchange-rate.item.get", "finance.expense-classes.collection.get", "finance.funds.budget.item.get", "finance.fiscal-years.item.get", "finance.ledgers.collection.get", "finance.transactions.collection.get", "finance-storage.budgets.collection.get", "finance-storage.budget-expense-classes.collection.get", "finance-storage.fiscal-years.item.get", "modperms.orders.item.post", "modperms.orders.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.po-line-number.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines.item.post", "orders-storage.alerts.item.post", "orders-storage.reporting-codes.item.post", "orders-storage.configuration.prefixes.collection.get", "orders-storage.configuration.suffixes.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "isbn-utils.convert-to-13.get", "instance-authority-links.instances.collection.get", "instance-authority-links.instances.collection.put", "instance-authority.linking-rules.collection.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/change-manager/jobExecutions/{id}/records",
+      "permissionsRequired" : [ "change-manager.records.delete" ],
+      "modulePermissions" : [ "source-storage.snapshots.put", "source-storage.snapshots.delete" ]
+    } ]
+  }, {
+    "id" : "source-manager-parsed-records",
+    "version" : "3.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/change-manager/parsedRecords",
+      "permissionsRequired" : [ "change-manager.parsedrecords.get" ],
+      "modulePermissions" : [ "source-storage.sourceRecords.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/change-manager/parsedRecords/{id}",
+      "permissionsRequired" : [ "change-manager.parsedrecords.put" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "converter-storage.field-protection-settings.get", "converter-storage.jobprofilesnapshots.get", "inventory-storage.alternative-title-types.collection.get", "inventory-storage.authorities.collection.get", "inventory-storage.authorities.item.get", "inventory-storage.authorities.item.post", "inventory-storage.authorities.item.put", "inventory-storage.authorities.item.delete", "inventory-storage.authority-note-types.collection.get", "inventory-storage.authority-source-files.collection.get", "inventory-storage.call-number-types.collection.get", "inventory-storage.classification-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.contributor-types.collection.get", "inventory-storage.electronic-access-relationships.collection.get", "inventory-storage.holdings-note-types.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings-types.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.put", "inventory-storage.identifier-types.collection.get", "inventory-storage.ill-policies.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.instance-note-types.collection.get", "inventory-storage.instance-relationship-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.item.post", "inventory-storage.instances.item.put", "inventory-storage.instances.preceding-succeeding-titles.collection.put", "inventory-storage.item-damaged-statuses.collection.get", "inventory-storage.item-note-types.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "inventory-storage.items.item.put", "inventory-storage.loan-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.locations.collection.get", "inventory-storage.locations.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.preceding-succeeding-titles.item.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.statistical-code-types.collection.get", "inventory-storage.statistical-codes.collection.get", "mapping-metadata.get", "source-storage.snapshots.get", "source-storage.snapshots.put", "source-storage.verified.records", "users.collection.get", "orders.po-lines.collection.get", "instance-authority-links.instances.collection.get", "instance-authority-links.instances.collection.put", "instance-authority.linking-rules.collection.get" ]
+    } ]
+  }, {
+    "id" : "metadata-provider-job-execution-logs",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobLogEntries/{jobExecutionId}",
+      "permissionsRequired" : [ "metadata-provider.logs.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobLogEntries/{jobExecutionId}/records/{recordId}",
+      "permissionsRequired" : [ "metadata-provider.logs.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobSummary/{jobExecutionId}",
+      "permissionsRequired" : [ "metadata-provider.logs.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/metadata-provider/jobExecutions/users",
+      "permissionsRequired" : [ "metadata-provider.jobexecutions.get" ]
+    } ]
+  }, {
+    "id" : "mapping-rules-provider",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/mapping-rules/{recordType}",
+      "permissionsRequired" : [ "mapping-rules.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/mapping-rules/{recordType}",
+      "permissionsRequired" : [ "mapping-rules.update" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/mapping-rules/{recordType}/restore",
+      "permissionsRequired" : [ "mapping-rules.restore" ]
+    } ]
+  }, {
+    "id" : "mapping-metadata-provider",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/mapping-metadata/{jobExecutionId}",
+      "permissionsRequired" : [ "mapping-metadata.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/mapping-metadata/type/{recordType}",
+      "permissionsRequired" : [ "mapping-metadata.get" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "converter-storage.field-protection-settings.get", "instance-authority.linking-rules.collection.get", "inventory-storage.alternative-title-types.collection.get", "inventory-storage.authority-note-types.collection.get", "inventory-storage.authority-source-files.collection.get", "inventory-storage.call-number-types.collection.get", "inventory-storage.classification-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.contributor-types.collection.get", "inventory-storage.electronic-access-relationships.collection.get", "inventory-storage.holdings-note-types.collection.get", "inventory-storage.holdings-types.collection.get", "inventory-storage.identifier-types.collection.get", "inventory-storage.ill-policies.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.instance-note-types.collection.get", "inventory-storage.instance-relationship-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.item-damaged-statuses.collection.get", "inventory-storage.item-note-types.collection.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.collection.get", "inventory-storage.material-types.collection.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "inventory-storage.statistical-code-types.collection.get", "inventory-storage.statistical-codes.collection.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "instance-authority-linking-rules",
+    "version" : "1.0"
+  }, {
+    "id" : "authority-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "authority-source-files",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "metadata-provider.jobexecutions.get",
+    "displayName" : "Metadata Provider - get jobExecutions",
+    "description" : "Get JobExecutions"
+  }, {
+    "permissionName" : "metadata-provider.logs.get",
+    "displayName" : "Metadata Provider - get jobExecution logs",
+    "description" : "Get JobExecutionLogDto"
+  }, {
+    "permissionName" : "change-manager.jobexecutions.post",
+    "displayName" : "Change Manager - create jobExecutions",
+    "description" : "Post JobExecution"
+  }, {
+    "permissionName" : "change-manager.jobexecutions.delete",
+    "displayName" : "Change Manager - delete jobExecutions",
+    "description" : "Batch Delete JobExecutions"
+  }, {
+    "permissionName" : "change-manager.jobexecutions.put",
+    "displayName" : "Change Manager - update jobExecutions",
+    "description" : "Put JobExecution"
+  }, {
+    "permissionName" : "change-manager.jobexecutions.get",
+    "displayName" : "Change Manager - get jobExecutions by id",
+    "description" : "Get JobExecution by id"
+  }, {
+    "permissionName" : "change-manager.records.post",
+    "displayName" : "Change Manager - post chunk of raw records",
+    "description" : "Post chunk of raw records"
+  }, {
+    "permissionName" : "change-manager.records.delete",
+    "displayName" : "Change Manager - delete jobExecution and all associated records from SRS",
+    "description" : "Delete JobExecution and all associated records from SRS"
+  }, {
+    "permissionName" : "change-manager.parsedrecords.get",
+    "displayName" : "Change Manager - get parsed records by externalId",
+    "description" : "Get parsed record"
+  }, {
+    "permissionName" : "change-manager.parsedrecords.put",
+    "displayName" : "Change Manager - update parsed record by id",
+    "description" : "Update parsed record"
+  }, {
+    "permissionName" : "mapping-rules.get",
+    "displayName" : "Mapping Rules provider - get default rules by tenant id",
+    "description" : "Get mapping rules for tenant"
+  }, {
+    "permissionName" : "mapping-rules.update",
+    "displayName" : "Mapping Rules provider - update default rules by tenant id",
+    "description" : "Update mapping rules for tenant"
+  }, {
+    "permissionName" : "mapping-rules.restore",
+    "displayName" : "Mapping Rules provider - restore default rules by tenant id",
+    "description" : "Restore existing mapping rules to default for tenant"
+  }, {
+    "permissionName" : "mapping-metadata.get",
+    "displayName" : "Mapping metadata provider - get mapping metadata",
+    "description" : "Get mapping metadata"
+  }, {
+    "permissionName" : "source-records-manager.all",
+    "displayName" : "Source Record Manager - all permissions",
+    "description" : "Entire set of permissions needed to manage jobExecutions",
+    "subPermissions" : [ "metadata-provider.jobexecutions.get", "metadata-provider.logs.get", "change-manager.jobexecutions.post", "change-manager.jobexecutions.put", "change-manager.jobexecutions.get", "change-manager.records.post", "change-manager.records.delete", "change-manager.parsedrecords.get", "change-manager.parsedrecords.put", "mapping-rules.get", "mapping-rules.update", "mapping-rules.restore", "mapping-metadata.get" ],
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-source-record-manager:3.7.9",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0  -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "15"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "DB_RECONNECTATTEMPTS",
+      "value" : "3"
+    }, {
+      "name" : "DB_RECONNECTINTERVAL",
+      "value" : "1000"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
