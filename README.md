@@ -1,0 +1,1 @@
+# folio-module-descriptor-registry
