@@ -29,5 +29,5 @@ View the documentation within the `populate_release.sh` script for further detai
 
 Example usage:
 ```sh
-bash scripts/populate_release.sh R1-2024-csp-9 quesnelia
+bash script/populate_release.sh R1-2024-csp-9 quesnelia
 ```
