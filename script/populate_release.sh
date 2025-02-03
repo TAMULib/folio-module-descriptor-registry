@@ -38,6 +38,10 @@ main() {
   local source=
   local version=
 
+  # Custom prefixes for debug and error.
+  local p_d="DEBUG: "
+  local p_e="ERROR: "
+
   local -i result=0
 
   if [[ ${POPULATE_RELEASE_RELEASE_DEBUG} != "" ]] ; then
@@ -72,13 +76,13 @@ main() {
 
   if [[ ${POPULATE_RELEASE_FILE_REUSE} == "" ]] ; then
     if [[ ! -f ${file} ]] ; then
-      echo "ERROR: The install JSON file is either missing or is not a regular file: ${file} ."
+      echo "${p_e}The install JSON file is either missing or is not a regular file: ${file} ."
 
       return 1
     fi
   else
     if [[ ${debug} != "" ]] ; then
-      echo "DEBUG: Curl requesting Install JSON from: ${source} ."
+      echo "${p_d}Curl requesting Install JSON from: ${source} ."
       echo
     fi
 
@@ -87,7 +91,7 @@ main() {
 
       let result=$?
       if [[ ${result} -ne 0 ]] ; then
-        echo "ERROR: Create file failed (with system code ${result}) for install file: ${file} ."
+        echo "${p_e}Create file failed (with system code ${result}) for install file: ${file} ."
 
         return ${result}
       fi
@@ -97,7 +101,7 @@ main() {
 
     let result=$?
     if [[ ${result} -ne 0 ]] ; then
-      echo "ERROR: Curl request failed (with system code ${result}) for: ${source} ."
+      echo "${p_e}Curl request failed (with system code ${result}) for: ${source} ."
 
       return ${result}
     fi
@@ -112,7 +116,7 @@ main() {
 
     let result=$?
     if [[ ${result} -ne 0 ]] ; then
-      echo "ERROR: Create directory failed (with system code ${result}) for destination: ${destination}${release_flower}/ ."
+      echo "${p_e}Create directory failed (with system code ${result}) for destination: ${destination}${release_flower}/ ."
 
       return ${result}
     fi
@@ -123,7 +127,7 @@ main() {
 
       if [[ -f ${destination}${release_flower}/${i} ]] ; then
         if [[ ${debug} != "" ]] ; then
-          echo "DEBUG: Skipping existing Module Descriptor: ${destination}${release_flower}/${i} ."
+          echo "${p_d}Skipping existing Module Descriptor: ${destination}${release_flower}/${i} ."
           echo
         fi
 
@@ -131,7 +135,7 @@ main() {
       fi
 
       if [[ ${debug} != "" ]] ; then
-        echo "DEBUG: Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
+        echo "${p_d}Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
         echo
       else
         echo "Curl requesting Module Descriptor: ${i}."
@@ -141,7 +145,7 @@ main() {
 
       let result=$?
       if [[ ${result} -ne 0 ]] ; then
-        echo "ERROR: Curl request failed (with system code ${result}) for: ${registry}${i} to ${destination}${release_flower}/${i}."
+        echo "${p_e}Curl request failed (with system code ${result}) for: ${registry}${i} to ${destination}${release_flower}/${i}."
 
         return ${result}
       fi
