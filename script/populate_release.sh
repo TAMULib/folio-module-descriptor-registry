@@ -36,7 +36,6 @@ main() {
   local repository="https://raw.githubusercontent.com/folio-org/platform-complete/refs/tags/"
   local releases=
   local source=
-  local version=
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -74,7 +73,7 @@ main() {
 
   source="$(echo ${repository} | sed -e 's|/*$|/|')${release}/install.json"
 
-  if [[ ${POPULATE_RELEASE_FILE_REUSE} == "" ]] ; then
+  if [[ ${POPULATE_RELEASE_FILE_REUSE} != "" ]] ; then
     if [[ ! -f ${file} ]] ; then
       echo "${p_e}The install JSON file is either missing or is not a regular file: ${file} ."
 
