@@ -1,0 +1,35 @@
+{
+  "id" : "folio_search-5.1.0",
+  "name" : "Search across the Codex",
+  "requires" : [ {
+    "id" : "codex",
+    "version" : "3.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.search.enabled",
+    "displayName" : "UI: Codex Search module is enabled",
+    "visible" : false
+  }, {
+    "permissionName" : "ui-search.codex-mux.instances",
+    "subPermissions" : [ "codex-mux.instances.collection.get", "codex-mux.instances.item.get", "codex-mux.instances-sources.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-search.codex-mux.packages",
+    "subPermissions" : [ "codex-mux.packages.collection.get", "codex-mux.packages.item.get", "codex-mux.packages-sources.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-search.codex-ekb.instances",
+    "subPermissions" : [ "codex-ekb.instances.collection.get", "codex-ekb.instances.item.get", "codex-ekb.instances-sources.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-search.codex-ekb.packages",
+    "subPermissions" : [ "codex-ekb.packages.collection.get", "codex-ekb.packages.item.get", "codex-ekb.packages-sources.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-search.codexsearch",
+    "displayName" : "Codex: Search with all back-ends",
+    "subPermissions" : [ "ui-search.codex-mux.instances", "ui-search.codex-mux.packages", "ui-search.codex-ekb.instances", "ui-search.codex-ekb.packages", "module.search.enabled", "users.item.get" ],
+    "visible" : true
+  } ]
+}

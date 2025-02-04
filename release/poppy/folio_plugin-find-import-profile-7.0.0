@@ -1,0 +1,16 @@
+{
+  "id" : "folio_plugin-find-import-profile-7.0.0",
+  "name" : "Find and select Data Import Profiles plugin for Stripes",
+  "requires" : [ {
+    "id" : "data-import",
+    "version" : "3.0"
+  }, {
+    "id" : "source-manager-job-executions",
+    "version" : "3.0"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.2"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

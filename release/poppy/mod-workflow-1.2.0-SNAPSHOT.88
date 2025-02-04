@@ -1,0 +1,458 @@
+{
+  "id" : "mod-workflow-1.2.0-SNAPSHOT.88",
+  "name" : "Workflow Module",
+  "requires" : [ ],
+  "provides" : [ {
+    "id" : "workflow-actions",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/actions",
+      "permissionsRequired" : [ "workflow.actions.collection.get" ]
+    } ]
+  }, {
+    "id" : "workflow-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/events/*",
+      "permissionsRequired" : [ "workflow.events.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/events/*",
+      "permissionsRequired" : [ "workflow.events.collection.post" ]
+    } ]
+  }, {
+    "id" : "workflow-nodes",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/nodes",
+      "permissionsRequired" : [ "workflow.nodes.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/nodes",
+      "permissionsRequired" : [ "workflow.nodes.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/nodes/{id}",
+      "permissionsRequired" : [ "workflow.nodes.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/nodes/{id}",
+      "permissionsRequired" : [ "workflow.nodes.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/nodes/{id}",
+      "permissionsRequired" : [ "workflow.nodes.item.put" ]
+    } ]
+  }, {
+    "id" : "workflow-triggers",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/triggers",
+      "permissionsRequired" : [ "workflow.triggers.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/triggers",
+      "permissionsRequired" : [ "workflow.triggers.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/triggers/{id}",
+      "permissionsRequired" : [ "workflow.triggers.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/triggers/{id}",
+      "permissionsRequired" : [ "workflow.triggers.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/triggers/{id}",
+      "permissionsRequired" : [ "workflow.triggers.item.put" ]
+    } ]
+  }, {
+    "id" : "workflow-tasks",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tasks",
+      "permissionsRequired" : [ "workflow.tasks.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/tasks",
+      "permissionsRequired" : [ "workflow.tasks.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/tasks/{id}",
+      "permissionsRequired" : [ "workflow.tasks.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tasks/{id}",
+      "permissionsRequired" : [ "workflow.tasks.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/tasks/{id}",
+      "permissionsRequired" : [ "workflow.tasks.item.put" ]
+    } ]
+  }, {
+    "id" : "workflow-workflows",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows",
+      "permissionsRequired" : [ "workflow.workflows.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/workflows",
+      "permissionsRequired" : [ "workflow.workflows.item.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/workflows/import",
+      "permissionsRequired" : [ "workflow.workflows.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows/search",
+      "permissionsRequired" : [ "workflow.workflows.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/workflows/{id}",
+      "permissionsRequired" : [ "workflow.workflows.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows/{id}",
+      "permissionsRequired" : [ "workflow.workflows.item.get" ]
+    }, {
+      "methods" : [ "PATCH" ],
+      "pathPattern" : "/workflows/{id}",
+      "permissionsRequired" : [ "workflow.workflows.item.patch" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/workflows/{id}",
+      "permissionsRequired" : [ "workflow.workflows.item.put" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/workflows/{id}/activate",
+      "permissionsRequired" : [ "workflow.workflows.item.activate" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/workflows/{id}/deactivate",
+      "permissionsRequired" : [ "workflow.workflows.item.deactivate" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/workflows/{id}/delete",
+      "permissionsRequired" : [ "workflow.workflows.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows/{id}/history",
+      "permissionsRequired" : [ "workflow.workflows.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/workflows/{id}/start",
+      "permissionsRequired" : [ "workflow.workflows.item.startTrigger" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/workflows/{id}/startTrigger",
+      "permissionsRequired" : [ "workflow.workflows.item.startTrigger" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows/{id}/startTrigger",
+      "permissionsRequired" : [ "workflow.workflows.item.startTrigger" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/workflows/{id}/startTrigger",
+      "permissionsRequired" : [ "workflow.workflows.item.startTrigger" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/workflows/{id}/tasks",
+      "permissionsRequired" : [ "workflow.workflows.item.tasks" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas"
+    } ]
+  }, {
+    "id" : "_ramls",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/ramls"
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST", "DELETE" ],
+      "pathPattern" : "/_/tenant"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "workflow.actions.collection.get",
+    "displayName" : "Workflow - action - get collection",
+    "description" : "Get action collection"
+  }, {
+    "permissionName" : "workflow.actions.all",
+    "displayName" : "Workflow - action - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow actions",
+    "subPermissions" : [ "workflow.actions.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "workflow.events.collection.get",
+    "displayName" : "Workflow - event - get event",
+    "description" : "Get event"
+  }, {
+    "permissionName" : "workflow.events.collection.post",
+    "displayName" : "Workflow - event - emit event",
+    "description" : "Emit event"
+  }, {
+    "permissionName" : "workflow.events.all",
+    "displayName" : "Workflow - event - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow events",
+    "subPermissions" : [ "workflow.events.collection.get", "workflow.events.collection.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "workflow.nodes.collection.get",
+    "displayName" : "Workflow - node - get node collection",
+    "description" : "Get node collection"
+  }, {
+    "permissionName" : "workflow.nodes.item.delete",
+    "displayName" : "Workflow - node - delete node item",
+    "description" : "Delete node item"
+  }, {
+    "permissionName" : "workflow.nodes.item.get",
+    "displayName" : "Workflow - node - get node item",
+    "description" : "Get node item"
+  }, {
+    "permissionName" : "workflow.nodes.item.post",
+    "displayName" : "Workflow - node - post node item",
+    "description" : "Create node item"
+  }, {
+    "permissionName" : "workflow.nodes.item.put",
+    "displayName" : "Workflow - node - put node item",
+    "description" : "Update node item"
+  }, {
+    "permissionName" : "workflow.nodes.all",
+    "displayName" : "Workflow - node - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow triggers",
+    "subPermissions" : [ "workflow.nodes.collection.get", "workflow.nodes.item.delete", "workflow.nodes.item.get", "workflow.nodes.item.post", "workflow.nodes.item.put" ],
+    "visible" : false
+  }, {
+    "permissionName" : "workflow.triggers.collection.get",
+    "displayName" : "Workflow - trigger - get trigger collection",
+    "description" : "Get trigger collection"
+  }, {
+    "permissionName" : "workflow.triggers.item.delete",
+    "displayName" : "Workflow - trigger - delete trigger item",
+    "description" : "Delete trigger item"
+  }, {
+    "permissionName" : "workflow.triggers.item.get",
+    "displayName" : "Workflow - trigger - get trigger item",
+    "description" : "Get trigger item"
+  }, {
+    "permissionName" : "workflow.triggers.item.post",
+    "displayName" : "Workflow - trigger - post trigger item",
+    "description" : "Create trigger item"
+  }, {
+    "permissionName" : "workflow.triggers.item.put",
+    "displayName" : "Workflow - trigger - put trigger item",
+    "description" : "Update trigger item"
+  }, {
+    "permissionName" : "workflow.triggers.all",
+    "displayName" : "Workflow - trigger - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow triggers",
+    "subPermissions" : [ "workflow.triggers.collection.get", "workflow.triggers.item.delete", "workflow.triggers.item.get", "workflow.triggers.item.post", "workflow.triggers.item.put" ],
+    "visible" : false
+  }, {
+    "permissionName" : "workflow.tasks.collection.get",
+    "displayName" : "Workflow - task - get task collection",
+    "description" : "Get task collection"
+  }, {
+    "permissionName" : "workflow.tasks.item.delete",
+    "displayName" : "Workflow - task - delete task item",
+    "description" : "Delete task item"
+  }, {
+    "permissionName" : "workflow.tasks.item.get",
+    "displayName" : "Workflow - task - get task item",
+    "description" : "Get task item"
+  }, {
+    "permissionName" : "workflow.tasks.item.post",
+    "displayName" : "Workflow - task - post task item",
+    "description" : "Create task item"
+  }, {
+    "permissionName" : "workflow.tasks.item.put",
+    "displayName" : "Workflow - task - put task item",
+    "description" : "Update task item"
+  }, {
+    "permissionName" : "workflow.tasks.all",
+    "displayName" : "Workflow - task - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow tasks",
+    "subPermissions" : [ "workflow.tasks.collection.get", "workflow.tasks.item.delete", "workflow.tasks.item.get", "workflow.tasks.item.post", "workflow.tasks.item.put" ],
+    "visible" : false
+  }, {
+    "permissionName" : "workflow.workflows.collection.get",
+    "displayName" : "Workflow - item - get workflow item collection",
+    "description" : "Get workflow collection"
+  }, {
+    "permissionName" : "workflow.workflows.item.activate",
+    "displayName" : "Workflow - item - activate workflow item",
+    "description" : "Activate workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.deactivate",
+    "displayName" : "Workflow - item - deactivate workflow item",
+    "description" : "Deactivate workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.delete",
+    "displayName" : "Workflow - item - delete workflow item",
+    "description" : "Delete workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.get",
+    "displayName" : "Workflow - item - get workflow item",
+    "description" : "Get workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.patch",
+    "displayName" : "Workflow - item - patch workflow item",
+    "description" : "Patch workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.post",
+    "displayName" : "Workflow - item - post workflow item",
+    "description" : "Create workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.put",
+    "displayName" : "Workflow - item - put workflow item",
+    "description" : "Update workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.startTrigger",
+    "displayName" : "Workflow - item - start trigger",
+    "description" : "Add, remove, or initiate start trigger on workflow item"
+  }, {
+    "permissionName" : "workflow.workflows.item.tasks",
+    "displayName" : "Workflow - item - workflow item tasks",
+    "description" : "Get workflow item tasks"
+  }, {
+    "permissionName" : "workflow.workflows.all",
+    "displayName" : "Workflow - item - all permissions",
+    "description" : "Entire set of permissions needed to use the workflow items",
+    "subPermissions" : [ "workflow.workflows.collection.get", "workflow.workflows.item.activate", "workflow.workflows.item.deactivate", "workflow.workflows.item.delete", "workflow.workflows.item.get", "workflow.workflows.item.patch", "workflow.workflows.item.post", "workflow.workflows.item.put", "workflow.workflows.item.startTrigger", "workflow.workflows.item.tasks" ],
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-workflow:1.2.0-SNAPSHOT.88",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0",
+      "description" : "Java options"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres",
+      "description" : "Postgres hostname"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432",
+      "description" : "Postgres port"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin",
+      "description" : "Postgres username"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin",
+      "description" : "Postgres username password"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules",
+      "description" : "Postgres database name"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000",
+      "description" : "Database query timeout."
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8",
+      "description" : "Database charset."
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "16",
+      "description" : "Database max pool size."
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "kafka",
+      "description" : "Kafka broker hostname"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092",
+      "description" : "Kafka broker port"
+    }, {
+      "name" : "KAFKA_SECURITY_PROTOCOL",
+      "value" : "PLAINTEXT",
+      "description" : "Kafka security protocol used to communicate with brokers (SSL or PLAINTEXT)"
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value" : "",
+      "description" : "The location of the Kafka key store file. This is optional for client and can be used for two-way authentication for client."
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value" : "",
+      "description" : "The store password for the Kafka key store file. This is optional for client and only needed if 'ssl.keystore.location' is configured."
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value" : "",
+      "description" : "The location of the Kafka trust store file."
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value" : "",
+      "description" : "The password for the Kafka trust store file. If a password is not set, trust store file configured will still be used, but integrity checking is disabled."
+    }, {
+      "name" : "OKAPI_URL",
+      "value" : "http://10.0.2.15:9130",
+      "description" : "The URL to the OKAPI service."
+    }, {
+      "name" : "SERVER_PORT",
+      "value" : "8081",
+      "description" : "The port to listen on that must match the PortBindings."
+    }, {
+      "name" : "SERVER_SERVLET_CONTEXTPATH",
+      "value" : "/",
+      "description" : "The context path, or base path, to host at."
+    }, {
+      "name" : "SPRING_FLYWAY_ENABLED",
+      "value" : "false",
+      "description" : "Database migration support via Spring Flyway."
+    }, {
+      "name" : "SPRING_JPA_HIBERNATE_DDLAUTO",
+      "value" : "update",
+      "description" : "Auto-configure database on startup."
+    }, {
+      "name" : "TENANT_DEFAULTTENANT",
+      "value" : "diku",
+      "description" : "The name of the default tenant to use."
+    }, {
+      "name" : "TENANT_FORCETENANT",
+      "value" : "false",
+      "description" : "Forcibly add or overwrite the tenant name using the default tenant."
+    }, {
+      "name" : "TENANT_INITIALIZEDEFAULTTENANT",
+      "value" : "true",
+      "description" : "Perform initial auto-creation of tenant in the DB (schema, tables, etc..)."
+    }, {
+      "name" : "TENANT_RECREATEDEFAULTTENANT",
+      "value" : "false",
+      "description" : "When TENANT_INITIALIZEDEFAULTTENANT is true and the DB already exists, then drop and re-create."
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 402653184,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

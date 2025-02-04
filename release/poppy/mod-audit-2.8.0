@@ -1,0 +1,182 @@
+{
+  "id" : "mod-audit-2.8.0",
+  "name" : "Audit Module",
+  "requires" : [ {
+    "id" : "pubsub-event-types",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-publishers",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-subscribers",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-publish",
+    "version" : "0.1"
+  }, {
+    "id" : "users",
+    "version" : "16.0"
+  }, {
+    "id" : "template-engine",
+    "version" : "2.2"
+  }, {
+    "id" : "inventory",
+    "version" : "13.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "6.0"
+  }, {
+    "id" : "cancellation-reason-storage",
+    "version" : "1.2"
+  } ],
+  "provides" : [ {
+    "id" : "audit",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data",
+      "permissionsRequired" : [ "audit.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/audit-data",
+      "permissionsRequired" : [ "audit.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.delete" ]
+    } ]
+  }, {
+    "id" : "acquisition-order-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/order/{id}",
+      "permissionsRequired" : [ "acquisition.order.events.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-order-line-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/order-line/{id}",
+      "permissionsRequired" : [ "acquisition.order-line.events.get" ]
+    } ]
+  }, {
+    "id" : "circulation-logs",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/circulation/logs",
+      "permissionsRequired" : [ "circulation-logs.collection.get" ]
+    } ]
+  }, {
+    "id" : "audit-data-event-handlers",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/audit/handlers/log-record",
+      "permissionsRequired" : [ "pubsub.events.post" ],
+      "modulePermissions" : [ "users.item.get", "users.collection.get", "templates.item.get", "inventory.items.item.get", "inventory-storage.holdings.item.get", "circulation-storage.cancellation-reasons.collection.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "pubsub.event-types.post", "pubsub.publishers.post", "pubsub.subscribers.post" ]
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "audit.collection.get",
+    "displayName" : "Audit - get audit records",
+    "description" : "Get audit records"
+  }, {
+    "permissionName" : "audit.item.get",
+    "displayName" : "Audit - get specific audit record",
+    "description" : "Get specific audit record"
+  }, {
+    "permissionName" : "audit.item.post",
+    "displayName" : "Audit - create a new audit record",
+    "description" : "Create a new audit record"
+  }, {
+    "permissionName" : "audit.item.put",
+    "displayName" : "Audit - update specific audit record",
+    "description" : "Update specific audit record"
+  }, {
+    "permissionName" : "audit.item.delete",
+    "displayName" : "Audit - delete specific audit record",
+    "description" : "Delete specific audit record"
+  }, {
+    "permissionName" : "circulation-logs.collection.get",
+    "displayName" : "Circulation audit logs - get circulation log records",
+    "description" : "Get circulation audit logs records"
+  }, {
+    "permissionName" : "acquisition.order.events.get",
+    "displayName" : "Acquisition order events - get order change events",
+    "description" : "Get order change events"
+  }, {
+    "permissionName" : "acquisition.order-line.events.get",
+    "displayName" : "Acquisition order-line events - get order-line change events",
+    "description" : "Get order-line change events"
+  }, {
+    "permissionName" : "audit.all",
+    "displayName" : "Audit - all permissions",
+    "description" : "Audit - all permissions",
+    "subPermissions" : [ "audit.collection.get", "audit.item.get", "audit.item.post", "audit.item.put", "audit.item.delete", "circulation-logs.collection.get", "acquisition.order.events.get", "acquisition.order-line.events.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-audit:2.8.0",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 715827883,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
