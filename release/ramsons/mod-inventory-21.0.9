@@ -1,0 +1,496 @@
+{
+  "id" : "mod-inventory-21.0.9",
+  "name" : "Inventory Module",
+  "requires" : [ {
+    "id" : "holdings-sources",
+    "version" : "1.0"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  }, {
+    "id" : "item-storage",
+    "version" : "10.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "11.0"
+  }, {
+    "id" : "instance-storage-batch",
+    "version" : "3.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "2.0 3.0 4.0 5.0 6.0 7.0 8.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "2.0 3.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "1.0 2.0"
+  }, {
+    "id" : "instance-authority-links",
+    "version" : "2.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.0"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.0"
+  }, {
+    "id" : "users",
+    "version" : "15.0 16.0"
+  }, {
+    "id" : "instance-preceding-succeeding-titles",
+    "version" : "0.1"
+  }, {
+    "id" : "request-storage",
+    "version" : "6.0"
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.3"
+  }, {
+    "id" : "bound-with-parts-storage",
+    "version" : "2.0"
+  }, {
+    "id" : "authority-storage",
+    "version" : "2.0"
+  } ],
+  "provides" : [ {
+    "id" : "inventory",
+    "version" : "14.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/items",
+      "permissionsRequired" : [ "inventory.items.collection.get" ],
+      "modulePermissions" : [ "inventory-storage.items.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "inventory-storage.holdings.retrieve.collection.post", "inventory-storage.instances.retrieve.collection.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/items/{id}",
+      "permissionsRequired" : [ "inventory.items.item.get" ],
+      "modulePermissions" : [ "inventory-storage.items.item.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-withdrawn",
+      "permissionsRequired" : [ "inventory.items.item.mark-withdrawn.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-in-process",
+      "permissionsRequired" : [ "inventory.items.item.mark-in-process.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-in-process-non-requestable",
+      "permissionsRequired" : [ "inventory.items.item.mark-in-process-non-requestable.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-intellectual-item",
+      "permissionsRequired" : [ "inventory.items.item.mark-intellectual-item.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-long-missing",
+      "permissionsRequired" : [ "inventory.items.item.mark-long-missing.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-missing",
+      "permissionsRequired" : [ "inventory.items.item.mark-missing.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-restricted",
+      "permissionsRequired" : [ "inventory.items.item.mark-restricted.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-unavailable",
+      "permissionsRequired" : [ "inventory.items.item.mark-unavailable.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/{id}/mark-unknown",
+      "permissionsRequired" : [ "inventory.items.item.mark-unknown.post" ],
+      "modulePermissions" : [ "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "inventory-storage.items.item.put", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items",
+      "permissionsRequired" : [ "inventory.items.item.post" ],
+      "modulePermissions" : [ "inventory-storage.items.item.post", "inventory-storage.items.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "users.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/inventory/items/{id}",
+      "permissionsRequired" : [ "inventory.items.item.put" ],
+      "modulePermissions" : [ "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.put", "users.item.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/inventory/items/{id}",
+      "permissionsRequired" : [ "inventory.items.item.delete" ],
+      "modulePermissions" : [ "inventory-storage.items.item.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/inventory/items",
+      "permissionsRequired" : [ "inventory.items.collection.delete" ],
+      "modulePermissions" : [ "inventory-storage.items.collection.delete" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/inventory/holdings/{id}",
+      "permissionsRequired" : [ "inventory.holdings.item.put" ],
+      "modulePermissions" : [ "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/instances",
+      "permissionsRequired" : [ "inventory.instances.collection.get" ],
+      "modulePermissions" : [ "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.instance-relationships.collection.get", "inventory-storage.bound-with-parts.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/items-by-holdings-id",
+      "permissionsRequired" : [ "inventory.items-by-holdings-id.collection.get" ],
+      "modulePermissions" : [ "inventory-storage.bound-with-parts.collection.get", "inventory-storage.bound-with-parts.item.get", "inventory-storage.items.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.holdings.retrieve.collection.post", "inventory-storage.instances.retrieve.collection.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/tenant-items",
+      "permissionsRequired" : [ "inventory.tenant-items.collection.get" ],
+      "modulePermissions" : [ "inventory-storage.items.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/instances/{id}",
+      "permissionsRequired" : [ "inventory.instances.item.get" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.get", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.instance-relationships.collection.get", "inventory-storage.bound-with-parts.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/instances",
+      "permissionsRequired" : [ "inventory.instances.item.post" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.post", "inventory-storage.instances.item.get", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.instance-relationships.collection.get", "inventory-storage.instance-relationships.item.post", "inventory-storage.instance-relationships.item.put", "inventory-storage.instance-relationships.item.delete", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/inventory/instances/{id}",
+      "permissionsRequired" : [ "inventory.instances.item.put" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.put", "inventory-storage.instances.item.get", "inventory-storage.instances.item.post", "inventory-storage.instances.item.delete", "source-storage.records.update", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.instance-relationships.collection.get", "inventory-storage.instance-relationships.item.post", "inventory-storage.instance-relationships.item.put", "inventory-storage.instance-relationships.item.delete", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/inventory/instances/{id}",
+      "permissionsRequired" : [ "inventory.instances.item.delete" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/inventory/instances",
+      "permissionsRequired" : [ "inventory.instances.collection.delete" ],
+      "modulePermissions" : [ "inventory-storage.instances.collection.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/inventory/instances/{id}/mark-deleted",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "inventory-storage.instances.item.get", "inventory-storage.instances.item.put", "source-storage.records.delete" ]
+    } ]
+  }, {
+    "id" : "inventory-batch",
+    "version" : "3.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/instances/batch",
+      "permissionsRequired" : [ "inventory.instances.batch.post" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.post", "inventory-storage.instances.item.get", "inventory-storage.instances.item.put", "inventory-storage.instances.item.delete", "inventory-storage.instances.batch.post", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.instance-relationships.collection.get", "inventory-storage.instance-relationships.item.post", "inventory-storage.instance-relationships.item.put", "inventory-storage.instance-relationships.item.delete", "user-tenants.collection.get" ]
+    } ]
+  }, {
+    "id" : "inventory-config",
+    "version" : "0.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/config/instances/blocked-fields",
+      "permissionsRequired" : [ "inventory.config.instances.blocked-fields.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/inventory/config/holdings/blocked-fields",
+      "permissionsRequired" : [ "inventory.config.holdings.blocked-fields.get" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "isbn-utils",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/isbn/convertTo13",
+      "permissionsRequired" : [ "isbn-utils.convert-to-13.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/isbn/convertTo10",
+      "permissionsRequired" : [ "isbn-utils.convert-to-10.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/isbn/validator",
+      "permissionsRequired" : [ "isbn-utils.validator.get" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "inventory-move",
+    "version" : "0.2",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/move",
+      "permissionsRequired" : [ "inventory.items.move.item.post" ],
+      "modulePermissions" : [ "inventory-storage.items.item.put", "inventory-storage.items.collection.get", "inventory-storage.holdings.item.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/holdings/move",
+      "permissionsRequired" : [ "inventory.holdings.move.item.post" ],
+      "modulePermissions" : [ "inventory-storage.holdings.item.put", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.batch.post", "inventory-storage.instances.item.get", "user-tenants.collection.get" ]
+    } ]
+  }, {
+    "id" : "inventory-update-ownership",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/items/update-ownership",
+      "permissionsRequired" : [ "inventory.items.update-ownership.item.post" ],
+      "modulePermissions" : [ "inventory-storage.items.item.post", "inventory-storage.items.item.delete", "inventory-storage.items.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/inventory/holdings/update-ownership",
+      "permissionsRequired" : [ "inventory.holdings.update-ownership.item.post" ],
+      "modulePermissions" : [ "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.delete", "inventory-storage.holdings.collection.get", "inventory-storage.items.item.post", "inventory-storage.items.item.delete", "inventory-storage.items.collection.get", "inventory-storage.instances.item.get", "inventory-storage.bound-with-parts.collection.get", "user-tenants.collection.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "1.2",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "mapping-metadata-provider",
+    "version" : "1.1"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.2"
+  }, {
+    "id" : "order-lines",
+    "version" : "3.0"
+  }, {
+    "id" : "consortia",
+    "version" : "1.0"
+  }, {
+    "id" : "circulation-bff-ecs-request-external",
+    "version" : "1.1"
+  }, {
+    "id" : "circulation-bff-requests",
+    "version" : "1.1"
+  }, {
+    "id" : "staging-users",
+    "version" : "1.1"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "inventory.items.collection.get",
+    "displayName" : "Inventory - get item collection",
+    "description" : "Get item collection"
+  }, {
+    "permissionName" : "inventory.tenant-items.collection.get",
+    "displayName" : "Inventory - get item collection from multiple tenants",
+    "description" : "Get item collection from multiple tenants"
+  }, {
+    "permissionName" : "inventory.items.collection.delete",
+    "displayName" : "Inventory - delete entire item collection",
+    "description" : "Delete entire item collection"
+  }, {
+    "permissionName" : "inventory.items.item.get",
+    "displayName" : "Inventory - get individual item",
+    "description" : "Get individual item"
+  }, {
+    "permissionName" : "inventory.items.item.mark-withdrawn.post",
+    "displayName" : "Inventory - mark an item as withdrawn",
+    "description" : "Mark an item as withdrawn"
+  }, {
+    "permissionName" : "inventory.items.move.item.post",
+    "displayName" : "Inventory - move items to another holdings record",
+    "description" : "Move items to another holdings record"
+  }, {
+    "permissionName" : "inventory.items.item.mark-in-process.post",
+    "displayName" : "Inventory - mark an item as in process",
+    "description" : "Mark an item as in process"
+  }, {
+    "permissionName" : "inventory.items.item.mark-in-process-non-requestable.post",
+    "displayName" : "Inventory - mark an item as in process (non-requestable)",
+    "description" : "Mark an item as in process (non-requestable)"
+  }, {
+    "permissionName" : "inventory.items.item.mark-intellectual-item.post",
+    "displayName" : "Inventory - mark an item as intellectual item",
+    "description" : "Mark an item as intellectual item"
+  }, {
+    "permissionName" : "inventory.items.item.mark-long-missing.post",
+    "displayName" : "Inventory - mark an item as long missing",
+    "description" : "Mark an item as long missing"
+  }, {
+    "permissionName" : "inventory.items.item.mark-missing.post",
+    "displayName" : "Inventory - mark an item as missing",
+    "description" : "Mark an item as missing"
+  }, {
+    "permissionName" : "inventory.items.item.mark-restricted.post",
+    "displayName" : "Inventory - mark an item as restricted",
+    "description" : "Mark an item as restricted"
+  }, {
+    "permissionName" : "inventory.items.item.mark-unavailable.post",
+    "displayName" : "Inventory - mark an item as unavailable",
+    "description" : "Mark an item as unavailable"
+  }, {
+    "permissionName" : "inventory.items.item.mark-unknown.post",
+    "displayName" : "Inventory - mark an item as unknown",
+    "description" : "Mark an item as unknown"
+  }, {
+    "permissionName" : "inventory.items.update-ownership.item.post",
+    "displayName" : "Inventory - update an item ownership",
+    "description" : "Update an item ownership"
+  }, {
+    "permissionName" : "inventory.items-by-holdings-id.collection.get",
+    "displayName" : "Inventory - get item collection by holdings id",
+    "description" : "Get item collection by holdings id"
+  }, {
+    "permissionName" : "inventory.holdings.move.item.post",
+    "displayName" : "Inventory - move holdings record to another instance",
+    "description" : "Move holdings record to another holdings record"
+  }, {
+    "permissionName" : "inventory.items.item.post",
+    "displayName" : "Inventory - create individual item",
+    "description" : "Create individual item"
+  }, {
+    "permissionName" : "inventory.items.item.put",
+    "displayName" : "Inventory - modify item",
+    "description" : "Modify item"
+  }, {
+    "permissionName" : "inventory.items.item.delete",
+    "displayName" : "Inventory - delete individual item",
+    "description" : "Delete individual item"
+  }, {
+    "permissionName" : "inventory.instances.collection.get",
+    "displayName" : "Inventory - get instance collection",
+    "description" : "Get instance collection"
+  }, {
+    "permissionName" : "inventory.instances.collection.delete",
+    "displayName" : "Inventory - delete entire instance collection",
+    "description" : "Delete entire instance collection"
+  }, {
+    "permissionName" : "inventory.holdings.item.put",
+    "displayName" : "Inventory - modify holdings",
+    "description" : "Modify individual instance"
+  }, {
+    "permissionName" : "inventory.holdings.update-ownership.item.post",
+    "displayName" : "Inventory - update holdings ownership",
+    "description" : "Update holdings record ownership"
+  }, {
+    "permissionName" : "inventory.instances.item.get",
+    "displayName" : "Inventory - get individual instance",
+    "description" : "Get individual instance"
+  }, {
+    "permissionName" : "inventory.instances.item.post",
+    "displayName" : "Inventory - create individual instance",
+    "description" : "Create individual instance"
+  }, {
+    "permissionName" : "inventory.instances.batch.post",
+    "displayName" : "Inventory - create batch of individual instance",
+    "description" : "Create batch of individual instance"
+  }, {
+    "permissionName" : "inventory.instances.item.put",
+    "displayName" : "Inventory - modify instance",
+    "description" : "Modify instance"
+  }, {
+    "permissionName" : "inventory.instances.item.delete",
+    "displayName" : "Inventory - delete individual instance",
+    "description" : "Delete individual instance"
+  }, {
+    "permissionName" : "inventory.config.instances.blocked-fields.get",
+    "displayName" : "Inventory - get configuration for blocked fields of instances",
+    "description" : "Get configuration for blocked fields of instances"
+  }, {
+    "permissionName" : "inventory.config.holdings.blocked-fields.get",
+    "displayName" : "Inventory - get configuration for blocked fields of holdings",
+    "description" : "Get configuration for blocked fields of holdings"
+  }, {
+    "permissionName" : "inventory.all",
+    "displayName" : "Inventory - all permissions",
+    "description" : "Entire set of permissions needed to use the inventory",
+    "subPermissions" : [ "inventory.items.collection.get", "inventory.tenant-items.collection.get", "inventory.items.item.get", "inventory.items.item.post", "inventory.items.item.put", "inventory.items.item.delete", "inventory.items.collection.delete", "inventory.instances.collection.get", "inventory.holdings.item.put", "inventory.instances.item.get", "inventory.instances.item.post", "inventory.instances.batch.post", "inventory.instances.item.put", "inventory.instances.item.delete", "inventory.instances.collection.delete", "inventory.config.instances.blocked-fields.get", "inventory.config.holdings.blocked-fields.get", "inventory.items.item.mark-withdrawn.post", "inventory.items.item.mark-in-process.post", "inventory.items.item.mark-in-process-non-requestable.post", "inventory.items.item.mark-missing.post", "inventory.items.move.item.post", "inventory.holdings.move.item.post", "inventory.items.update-ownership.item.post", "inventory.holdings.update-ownership.item.post", "inventory.items-by-holdings-id.collection.get" ]
+  }, {
+    "permissionName" : "isbn-utils.convert-to-13.get",
+    "displayName" : "ISBN utils - convert to ISBN-13 format",
+    "description" : "Convert isbn code to ISBN-13 format"
+  }, {
+    "permissionName" : "isbn-utils.convert-to-10.get",
+    "displayName" : "ISBN utils - convert to ISBN-10 format",
+    "description" : "Convert isbn code to ISBN-10 format"
+  }, {
+    "permissionName" : "isbn-utils.validator.get",
+    "displayName" : "ISBN utils - validate ISBN code",
+    "description" : "Check that isbn code is valid"
+  }, {
+    "permissionName" : "isbn-utils.all",
+    "displayName" : "Isbn-utils - all permissions",
+    "description" : "Entire set of permissions needed to use the isbn-utils",
+    "subPermissions" : [ "isbn-utils.convert-to-13.get", "isbn-utils.convert-to-10.get", "isbn-utils.validator.get" ]
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "user-tenants.collection.get", "mapping-metadata.item.get", "mapping-metadata.type.item.get", "converter-storage.jobprofilesnapshots.get", "source-storage.records.put", "source-storage.records.post", "source-storage.records.item.get", "source-storage.records.formatted.item.get", "source-storage.records.generation.item.put", "source-storage.records.matching.collection.post", "inventory-storage.items.item.post", "inventory-storage.items.item.put", "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.put", "inventory-storage.holdings.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.item.put", "inventory-storage.instances.item.post", "inventory-storage.instances.collection.get", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.preceding-succeeding-titles.item.delete" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-inventory:21.0.9",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Dorg.folio.metadata.inventory.storage.type=okapi"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_IDLETIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 715827883,
+        "PortBindings" : {
+          "9403/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
