@@ -54,5 +54,5 @@ POPULATE_RELEASE_REPOSITORY_PART="heads" bash script/populate_release.sh snapsho
 
 Example commit hash usage:
 ```shell
-POPULATE_RELEASE_REPOSITORY_PART="heads" bash script/populate_release.sh fe7223e040d5d024f3f4961a3bc324d99a6fe7f5 aggies
+POPULATE_RELEASE_REPOSITORY_PART="" bash script/populate_release.sh fe7223e040d5d024f3f4961a3bc324d99a6fe7f5 aggies
 ```
