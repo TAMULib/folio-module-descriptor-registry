@@ -1,0 +1,113 @@
+{
+  "id" : "mod-codex-ekb-1.10.0",
+  "name" : "EBSCO Knowledge Base Codex",
+  "requires" : [ {
+    "id" : "configuration",
+    "version" : "2.0"
+  } ],
+  "provides" : [ {
+    "id" : "codex",
+    "version" : "3.1",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances",
+      "permissionsRequired" : [ "codex-ekb.instances.collection.get" ],
+      "modulePermissions" : [ "kb-ebsco.user-kb-credential.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances/{id}",
+      "permissionsRequired" : [ "codex-ekb.instances.item.get" ],
+      "modulePermissions" : [ "kb-ebsco.user-kb-credential.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-instances-sources",
+      "permissionsRequired" : [ "codex-ekb.instances-sources.collection.get" ]
+    } ]
+  }, {
+    "id" : "codex-packages",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages",
+      "permissionsRequired" : [ "codex-ekb.packages.collection.get" ],
+      "modulePermissions" : [ "kb-ebsco.user-kb-credential.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages/{id}",
+      "permissionsRequired" : [ "codex-ekb.packages.item.get" ],
+      "modulePermissions" : [ "kb-ebsco.user-kb-credential.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/codex-packages-sources",
+      "permissionsRequired" : [ "codex-ekb.packages-sources.collection.get" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_ramls",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/ramls",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "codex-ekb.instances.collection.get",
+    "displayName" : "Codex - get instances",
+    "description" : "Get instance collection"
+  }, {
+    "permissionName" : "codex-ekb.instances.item.get",
+    "displayName" : "Codex - get individual instance",
+    "description" : "Get individual instance"
+  }, {
+    "permissionName" : "codex-ekb.instances-sources.collection.get",
+    "displayName" : "get codex instances sources",
+    "description" : "Get codex instances sources"
+  }, {
+    "permissionName" : "codex-ekb.packages.collection.get",
+    "displayName" : "Codex - get packages",
+    "description" : "Get package collection"
+  }, {
+    "permissionName" : "codex-ekb.packages.item.get",
+    "displayName" : "Codex - get individual package",
+    "description" : "Get individual package"
+  }, {
+    "permissionName" : "codex-ekb.packages-sources.collection.get",
+    "displayName" : "get codex package sources",
+    "description" : "Get codex package sources"
+  }, {
+    "permissionName" : "codex-ekb.all",
+    "displayName" : "Codex - all permissions",
+    "description" : "Entire set of permissions needed to use the codex module",
+    "subPermissions" : [ "codex-ekb.instances.collection.get", "codex-ekb.instances.item.get", "codex-ekb.instances-sources.collection.get", "codex-ekb.packages.collection.get", "codex-ekb.packages.item.get", "codex-ekb.packages-sources.collection.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-codex-ekb:1.10.0",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

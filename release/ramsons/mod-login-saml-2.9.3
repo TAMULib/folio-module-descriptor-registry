@@ -1,0 +1,139 @@
+{
+  "id" : "mod-login-saml-2.9.3",
+  "name" : "SAML login",
+  "requires" : [ {
+    "id" : "authtoken",
+    "version" : "2.1"
+  }, {
+    "id" : "authtoken2",
+    "version" : "1.1"
+  }, {
+    "id" : "users",
+    "version" : "14.0 15.0 16.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  } ],
+  "provides" : [ {
+    "id" : "login-saml",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/saml/login",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "configuration.entries.collection.get" ],
+      "delegateCORS" : true
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/saml/callback",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "auth.signtoken.all", "configuration.entries.collection.get", "users.collection.get", "user-tenants.collection.get" ],
+      "delegateCORS" : true
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/saml/callback-with-expiry",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "auth.signtoken.all", "configuration.entries.collection.get", "users.collection.get", "user-tenants.collection.get" ],
+      "delegateCORS" : true
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/saml/regenerate",
+      "permissionsRequired" : [ "login-saml.regenerate" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.post", "configuration.entries.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/saml/check",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/saml/configuration",
+      "permissionsRequired" : [ "login-saml.configuration.get" ],
+      "modulePermissions" : [ "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/saml/configuration",
+      "permissionsRequired" : [ "login-saml.configuration.put" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.post", "configuration.entries.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/saml/validate",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.post", "configuration.entries.item.put", "configuration.entries.item.delete" ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "login-saml.regenerate",
+    "displayName" : "SAML sp-metadata regeneration",
+    "description" : ""
+  }, {
+    "permissionName" : "login-saml.configuration.get",
+    "displayName" : "SAML configuration: view",
+    "description" : "Grants the ability to view SAML configuration",
+    "visible" : true
+  }, {
+    "permissionName" : "login-saml.configuration.put",
+    "displayName" : "SAML configuration: modify",
+    "description" : "Grants the ability to modify SAML configuration",
+    "visible" : true
+  }, {
+    "permissionName" : "login-saml.all",
+    "displayName" : "Login-SAML: administration",
+    "description" : "",
+    "subPermissions" : [ "login-saml.regenerate", "login-saml.configuration.get", "login-saml.configuration.put" ],
+    "visible" : true
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-login-saml:2.9.3",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,421 @@
+{
+  "id" : "mod-camunda-1.2.0-SNAPSHOT.36",
+  "name" : "Camnuda BPM Module",
+  "requires" : [ {
+    "id" : "workflow-actions",
+    "version" : "1.0"
+  }, {
+    "id" : "workflow-events",
+    "version" : "1.0"
+  }, {
+    "id" : "workflow-triggers",
+    "version" : "1.0"
+  }, {
+    "id" : "workflow-tasks",
+    "version" : "1.0"
+  }, {
+    "id" : "workflow-workflows",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "camunda-history",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/history/process-instance",
+      "permissionsRequired" : [ "camunda.history.process-instance.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/history/incident",
+      "permissionsRequired" : [ "camunda.history.incident.collection.get" ]
+    } ]
+  }, {
+    "id" : "camunda-process",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/deployment",
+      "permissionsRequired" : [ "camunda.process.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/deployment/{id}",
+      "permissionsRequired" : [ "camunda.process.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/deployment/create",
+      "permissionsRequired" : [ "camunda.process.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/camunda/deployment/{id}",
+      "permissionsRequired" : [ "camunda.process.item.delete" ]
+    } ]
+  }, {
+    "id" : "camunda-process-definition",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/process-definition",
+      "permissionsRequired" : [ "camunda.process-definition.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/process-definition/{id}",
+      "permissionsRequired" : [ "camunda.process-definition.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/process-definition/{id}/start",
+      "permissionsRequired" : [ "camunda.process-definition.start.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/process-definition/key/{key}/tenant-id/{tenant-id}/start",
+      "permissionsRequired" : [ "camunda.process-definition.start.post" ]
+    } ]
+  }, {
+    "id" : "camunda-decision-definition",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/decision-definition",
+      "permissionsRequired" : [ "camunda.decision-definition.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/decision-definition/{id}",
+      "permissionsRequired" : [ "camunda.decision-definition.item.get" ]
+    } ]
+  }, {
+    "id" : "camunda-task",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/task",
+      "permissionsRequired" : [ "camunda.task.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/camunda/task/{id}",
+      "permissionsRequired" : [ "camunda.task.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/task/{id}/claim",
+      "permissionsRequired" : [ "camunda.task.claim.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/task/{id}/unclaim",
+      "permissionsRequired" : [ "camunda.task.unclaim.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/task/{id}/complete",
+      "permissionsRequired" : [ "camunda.task.complete.post" ]
+    } ]
+  }, {
+    "id" : "camunda-message",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/camunda/message",
+      "permissionsRequired" : [ "camunda.message.item.post" ]
+    } ]
+  }, {
+    "id" : "camunda-workflow-engine",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/workflow-engine/workflows/activate",
+      "permissionsRequired" : [ "camunda.workflow-engine.workflows.activate" ],
+      "permissionsDesired" : [ "camunda.workflow-engine.workflows.*" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/workflow-engine/workflows/deactivate",
+      "permissionsRequired" : [ "camunda.workflow-engine.workflows.deactivate" ],
+      "permissionsDesired" : [ "camunda.workflow-engine.workflows.*" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas"
+    } ]
+  }, {
+    "id" : "_ramls",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/ramls"
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST", "DELETE" ],
+      "pathPattern" : "/_/tenant"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "camunda.history.process-instance.collection.get",
+    "displayName" : "Camunda - history - get history process instance collection",
+    "description" : "Get history process instance collection"
+  }, {
+    "permissionName" : "camunda.history.incident.collection.get",
+    "displayName" : "Camunda - history - get history incident collection",
+    "description" : "Get history incident collection"
+  }, {
+    "permissionName" : "camunda.history.all",
+    "displayName" : "Camunda - history - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda history",
+    "subPermissions" : [ "camunda.history.process-instance.collection.get", "camunda.history.incident.collection.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.process.collection.get",
+    "displayName" : "Camunda - process - get process collection",
+    "description" : "Get process collection"
+  }, {
+    "permissionName" : "camunda.process.item.delete",
+    "displayName" : "Camunda - process - delete process",
+    "description" : "Delete process"
+  }, {
+    "permissionName" : "camunda.process.item.get",
+    "displayName" : "Camunda - process - get individual process from storage",
+    "description" : "Get individual process"
+  }, {
+    "permissionName" : "camunda.process.item.post",
+    "displayName" : "Camunda - process - create process",
+    "description" : "Create process"
+  }, {
+    "permissionName" : "camunda.process.all",
+    "displayName" : "Camunda - process - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda processes",
+    "subPermissions" : [ "camunda.process.collection.get", "camunda.process.item.delete", "camunda.process.item.get", "camunda.process.item.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.process-definition.collection.get",
+    "displayName" : "Process definition - get process definition collection",
+    "description" : "Get process definition collection"
+  }, {
+    "permissionName" : "camunda.process-definition.item.get",
+    "displayName" : "Process definition - get individual process definition from storage",
+    "description" : "Get individual process definition"
+  }, {
+    "permissionName" : "camunda.process-definition.start.post",
+    "displayName" : "Process definition - start process definition by id or key and tenant-id",
+    "description" : "Start process definition"
+  }, {
+    "permissionName" : "camunda.process-definition.all",
+    "displayName" : "Camunda - process definition - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda process definitions",
+    "subPermissions" : [ "camunda.process-definition.collection.get", "camunda.process-definition.item.get", "camunda.process-definition.start.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.decision-definition.collection.get",
+    "displayName" : "Camunda - decision definition - get decision definition collection",
+    "description" : "Get decision definition collection"
+  }, {
+    "permissionName" : "camunda.decision-definition.item.get",
+    "displayName" : "Camunda - decision definition - get individual decision definition from storage",
+    "description" : "Get individual decision definition"
+  }, {
+    "permissionName" : "camunda.decision-definition.all",
+    "displayName" : "Camunda - decision definition - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda decision definitions",
+    "subPermissions" : [ "camunda.decision-definition.collection.get", "camunda.decision-definition.item.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.task.claim.post",
+    "displayName" : "Camunda - task - claim task",
+    "description" : "Claim task"
+  }, {
+    "permissionName" : "camunda.task.collection.get",
+    "displayName" : "Camunda - task - get task collection",
+    "description" : "Get task collection"
+  }, {
+    "permissionName" : "camunda.task.complete.post",
+    "displayName" : "Camunda - task - complete task",
+    "description" : "Complete task"
+  }, {
+    "permissionName" : "camunda.task.item.get",
+    "displayName" : "Camunda - task - get individual task from storage",
+    "description" : "Get individual task"
+  }, {
+    "permissionName" : "camunda.task.unclaim.post",
+    "displayName" : "Camunda - task - unclaim task",
+    "description" : "Unclaim task"
+  }, {
+    "permissionName" : "camunda.task.all",
+    "displayName" : "Camunda - task - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda tasks",
+    "subPermissions" : [ "camunda.task.claim.post", "camunda.task.collection.get", "camunda.task.complete.post", "camunda.task.item.get", "camunda.task.unclaim.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.message.item.post",
+    "displayName" : "Camunda - message - create message",
+    "description" : "Create message"
+  }, {
+    "permissionName" : "camunda.message.all",
+    "displayName" : "Camunda - message - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda messages",
+    "subPermissions" : [ "camunda.message.item.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "camunda.workflow-engine.workflows.activate",
+    "displayName" : "Camunda - workflow engine - activate workflow",
+    "description" : "Activate workflow"
+  }, {
+    "permissionName" : "camunda.workflow-engine.workflows.deactivate",
+    "displayName" : "Camunda - workflow engine - deactivate workflow",
+    "description" : "Deactivate workflow"
+  }, {
+    "permissionName" : "camunda.workflow-engine.workflows.all",
+    "displayName" : "Camunda - workflow engine - all permissions",
+    "description" : "Entire set of permissions needed to use the camunda workflow engines",
+    "subPermissions" : [ "camunda.workflow-engine.workflows.activate", "camunda.workflow-engine.workflows.deactivate" ],
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-camunda:1.2.0-SNAPSHOT.36",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0",
+      "description" : "Java options."
+    }, {
+      "name" : "CAMUNDA_BPM_ADMINUSER_EMAIL",
+      "value" : "admin@localhost",
+      "description" : "The e-mail address of the Camunda administration user."
+    }, {
+      "name" : "CAMUNDA_BPM_ADMINUSER_ID",
+      "value" : "admin",
+      "description" : "The account name of the Camunda administration user."
+    }, {
+      "name" : "CAMUNDA_BPM_ADMINUSER_PASSWORD",
+      "value" : "admin",
+      "description" : "The password of the Camunda administration user."
+    }, {
+      "name" : "CAMUNDA_BPM_DATABASE_SCHEMAUPDATE",
+      "value" : "true",
+      "description" : "If Camunda should auto-update the BPM database schema."
+    }, {
+      "name" : "CAMUNDA_BPM_METRICS",
+      "value" : "false",
+      "description" : "Enable or disable Camunda metrics by default."
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres",
+      "description" : "Postgres host name."
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432",
+      "description" : "Postgres port."
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin",
+      "description" : "Postgres user name."
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin",
+      "description" : "Postgres user name password."
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules",
+      "description" : "Postgres database name."
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000",
+      "description" : "Database query timeout."
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8",
+      "description" : "Database charset."
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "16",
+      "description" : "Database max pool size."
+    }, {
+      "name" : "ENV",
+      "value" : "folio",
+      "description" : "The environment name."
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "http://kafka",
+      "description" : "Kafka broker URL."
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092",
+      "description" : "Kafka broker port."
+    }, {
+      "name" : "KAFKA_SECURITY_PROTOCOL",
+      "value" : "PLAINTEXT",
+      "description" : "Kafka security protocol used to communicate with brokers (SSL or PLAINTEXT)."
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value" : "",
+      "description" : "The location of the Kafka key store file. This is optional for client and can be used for two-way authentication for client."
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value" : "",
+      "description" : "The store password for the Kafka key store file. This is optional for client and only needed if 'ssl.keystore.location' is configured."
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value" : "",
+      "description" : "The location of the Kafka trust store file."
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value" : "",
+      "description" : "The password for the Kafka trust store file. If a password is not set, trust store file configured will still be used, but integrity checking is disabled."
+    }, {
+      "name" : "OKAPI_URL",
+      "value" : "http://10.0.2.15:9130",
+      "description" : "The URL to the OKAPI service."
+    }, {
+      "name" : "SERVER_PORT",
+      "value" : "8081",
+      "description" : "The port to listen on that must match the PortBindings."
+    }, {
+      "name" : "SERVER_SERVLET_CONTEXTPATH",
+      "value" : "/",
+      "description" : "The context path, or base path, to host at."
+    }, {
+      "name" : "CAMUNDA_BPM_WEBAPP_APPLICATIONPATH",
+      "value" : "camunda",
+      "description" : "The path (without the leading forward slash) that the camunda UI listens on (must not be the same as the SPRING_JERSEY_APPLICATIONPATH)."
+    }, {
+      "name" : "SPRING_FLYWAY_ENABLED",
+      "value" : "false",
+      "description" : "Database migration support via Spring Flyway."
+    }, {
+      "name" : "SPRING_JERSEY_APPLICATIONPATH",
+      "value" : "camunda",
+      "description" : "The path (without the leading forward slash) that the workflow-engine listens on (the module descriptor pathPattern paths must match this)."
+    }, {
+      "name" : "SPRING_JPA_HIBERNATE_DDLAUTO",
+      "value" : "update",
+      "description" : "Auto-configure database on startup."
+    }, {
+      "name" : "TENANT_DEFAULTTENANT",
+      "value" : "diku",
+      "description" : "The name of the default tenant to use."
+    }, {
+      "name" : "TENANT_FORCETENANT",
+      "value" : "false",
+      "description" : "Forcibly add or overwrite the tenant name using the default tenant."
+    }, {
+      "name" : "TENANT_INITIALIZEDEFAULTTENANT",
+      "value" : "true",
+      "description" : "Perform initial auto-creation of tenant in the DB (schema, tables, etc..)."
+    }, {
+      "name" : "TENANT_RECREATEDEFAULTTENANT",
+      "value" : "false",
+      "description" : "When TENANT_INITIALIZEDEFAULTTENANT is true and the DB already exists, then drop and re-create."
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 402653184,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

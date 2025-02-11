@@ -1,0 +1,106 @@
+{
+  "id" : "mod-authtoken-2.15.2",
+  "name" : "authtoken",
+  "requires" : [ {
+    "id" : "permissions",
+    "version" : "5.3"
+  }, {
+    "id" : "users",
+    "version" : "15.0 16.0"
+  } ],
+  "provides" : [ {
+    "id" : "authtoken",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/token",
+      "permissionsRequired" : [ "auth.signtoken" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/refreshtoken",
+      "permissionsRequired" : [ "auth.signrefreshtoken" ]
+    } ]
+  }, {
+    "id" : "authtoken2",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/token/sign",
+      "permissionsRequired" : [ "auth.signtoken" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/token/refresh",
+      "permissionsRequired" : [ "auth.signrefreshtoken" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/token/invalidate",
+      "permissionsRequired" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/token/invalidate-all",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "filters" : [ {
+    "methods" : [ "*" ],
+    "pathPattern" : "/*",
+    "phase" : "auth",
+    "type" : "headers"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "auth.signtoken",
+    "displayName" : "auth-token - sign token",
+    "description" : "sign token"
+  }, {
+    "permissionName" : "auth.signrefreshtoken",
+    "displayName" : "auth-token - sign refresh token",
+    "description" : "sign refresh token"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-authtoken:2.15.2",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Dcache.permissions=true"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

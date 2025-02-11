@@ -1,0 +1,103 @@
+{
+  "id" : "mod-organizations-1.8.0",
+  "name" : "Organizations business logic module",
+  "requires" : [ {
+    "id" : "organizations-storage.organizations",
+    "version" : "3.3"
+  }, {
+    "id" : "acquisitions-units-storage.units",
+    "version" : "1.1"
+  }, {
+    "id" : "acquisitions-units-storage.memberships",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "organizations.organizations",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/organizations/organizations",
+      "permissionsRequired" : [ "organizations.organizations.collection.get" ],
+      "modulePermissions" : [ "organizations-storage.organizations.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/organizations/organizations",
+      "permissionsRequired" : [ "organizations.organizations.item.post" ],
+      "modulePermissions" : [ "organizations-storage.organizations.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/organizations/organizations/{id}",
+      "permissionsRequired" : [ "organizations.organizations.item.get" ],
+      "modulePermissions" : [ "organizations-storage.organizations.item.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/organizations/organizations/{id}",
+      "permissionsRequired" : [ "organizations.organizations.item.put" ],
+      "permissionsDesired" : [ "organizations.acquisitions-units-assignments.manage" ],
+      "modulePermissions" : [ "organizations-storage.organizations.item.get", "organizations-storage.organizations.item.put", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/organizations/organizations/{id}",
+      "permissionsRequired" : [ "organizations.organizations.item.delete" ],
+      "modulePermissions" : [ "organizations-storage.organizations.item.delete" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "organizations.organizations.collection.get",
+    "displayName" : "Organizations collection get",
+    "description" : "Get a collection of organizations"
+  }, {
+    "permissionName" : "organizations.organizations.item.post",
+    "displayName" : "Organizations post",
+    "description" : "Create a new organization"
+  }, {
+    "permissionName" : "organizations.organizations.item.get",
+    "displayName" : "Organizations get",
+    "description" : "Fetch an organization"
+  }, {
+    "permissionName" : "organizations.organizations.item.put",
+    "displayName" : "Organizations put",
+    "description" : "Update an organization"
+  }, {
+    "permissionName" : "organizations.organizations.item.delete",
+    "displayName" : "Organizations delete",
+    "description" : "Delete an organizations"
+  }, {
+    "permissionName" : "organizations.organizations.all",
+    "displayName" : "Organizations all",
+    "description" : "All permissions for organizations",
+    "subPermissions" : [ "organizations.organizations.collection.get", "organizations.organizations.item.post", "organizations.organizations.item.get", "organizations.organizations.item.put", "organizations.organizations.item.delete" ]
+  }, {
+    "permissionName" : "organizations.module.all",
+    "displayName" : "Organizations-module all",
+    "description" : "All permissions for the organizations module",
+    "subPermissions" : [ "organizations.organizations.all" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-organizations:1.8.0",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

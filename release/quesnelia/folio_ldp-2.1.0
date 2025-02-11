@@ -1,0 +1,64 @@
+{
+  "id" : "folio_ldp-2.1.0",
+  "name" : "Dashboard for the Library Data Platform",
+  "requires" : [ {
+    "id" : "ldp-query",
+    "version" : "1.2"
+  }, {
+    "id" : "settings",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.ldp.enabled",
+    "displayName" : "UI: Reporting module is enabled",
+    "subPermissions" : [ "ldp.read", "ldp.config.read", "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin", "mod-settings.global.read.ui-ldp.queries" ],
+    "visible" : false
+  }, {
+    "permissionName" : "settings.ldp.enabled",
+    "displayName" : "Settings (Reporting): Can view settings",
+    "subPermissions" : [ "settings.enabled" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-ldp.settings.record-limits",
+    "displayName" : "Settings (Reporting): Can modify default record limits",
+    "subPermissions" : [ "settings.ldp.enabled", "mod-settings.entries.item.post", "mod-settings.entries.item.put", "mod-settings.global.read.ui-ldp.admin", "mod-settings.global.write.ui-ldp.admin" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-ldp.settings.table-availability",
+    "displayName" : "Settings (Reporting): Can select which tables are available to search",
+    "subPermissions" : [ "settings.ldp.enabled", "mod-settings.entries.item.post", "mod-settings.entries.item.put", "mod-settings.global.read.ui-ldp.admin", "mod-settings.global.write.ui-ldp.admin" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-ldp.settings.dbinfo",
+    "displayName" : "Settings (Reporting): Can modify Reporting database connection details",
+    "subPermissions" : [ "settings.ldp.enabled", "ldp.config.read", "ldp.config.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-ldp.settings.tqrepos",
+    "displayName" : "Settings (Reporting): Can modify templated-query repos configuration",
+    "subPermissions" : [ "settings.ldp.enabled", "ldp.config.read", "ldp.config.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-ldp.all",
+    "displayName" : "Reporting: All permissions",
+    "subPermissions" : [ "module.ldp.enabled", "ui-ldp.settings.record-limits", "ui-ldp.settings.table-availability", "ui-ldp.settings.dbinfo", "ui-ldp.settings.tqrepos", "mod-settings.global.write.ui-ldp.queries" ],
+    "visible" : true
+  }, {
+    "permissionName" : "mod-settings.global.read.ui-ldp.admin",
+    "displayName" : "Settings (Reporting): read Reporting administrative settings",
+    "visible" : false
+  }, {
+    "permissionName" : "mod-settings.global.write.ui-ldp.admin",
+    "displayName" : "Settings (Reporting): write Reporting administrative settings",
+    "visible" : false
+  }, {
+    "permissionName" : "mod-settings.global.read.ui-ldp.queries",
+    "displayName" : "Settings (Reporting): browse and load Reporting saved queries",
+    "visible" : false
+  }, {
+    "permissionName" : "mod-settings.global.write.ui-ldp.queries",
+    "displayName" : "Settings (Reporting): create and update Reporting saved queries",
+    "visible" : false
+  } ]
+}

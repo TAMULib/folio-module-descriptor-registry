@@ -1,0 +1,286 @@
+{
+  "id" : "mod-oai-pmh-3.12.8",
+  "name" : "OAI-PMH Repository Module",
+  "requires" : [ {
+    "id" : "instance-storage",
+    "version" : "7.6 8.0 9.0 10.0"
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.0"
+  }, {
+    "id" : "source-storage-source-records",
+    "version" : "3.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "oaipmhview",
+    "version" : "1.1"
+  }, {
+    "id" : "alternative-title-types",
+    "version" : "1.0"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.2"
+  }, {
+    "id" : "electronic-access-relationships",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "modes-of-issuance",
+    "version" : "1.1"
+  }, {
+    "id" : "holdings-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "item-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "nature-of-content-terms",
+    "version" : "1.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.2"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "instance-formats",
+    "version" : "2.0"
+  }, {
+    "id" : "call-number-types",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "oai-pmh",
+    "version" : "3.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/records",
+      "permissionsRequired" : [ "oai-pmh.records.collection.get" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "inventory-storage.alternative-title-types.collection.get", "inventory-storage.call-number-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.electronic-access-relationships.collection.get", "inventory-storage.holdings-note-types.collection.get", "inventory-storage.identifier-types.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.source-record.marc-json.get", "inventory-storage.inventory-hierarchy.items-and-holdings.collection.post", "inventory-storage.inventory-hierarchy.updated-instances-ids.collection.get", "inventory-storage.item-note-types.collection.get", "inventory-storage.loan-types.collection.get", "inventory-storage.location-units.campuses.collection.get", "inventory-storage.location-units.institutions.collection.get", "inventory-storage.location-units.libraries.collection.get", "inventory-storage.locations.collection.get", "inventory-storage.material-types.collection.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "source-storage.records.get", "source-storage.sourceRecords.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai-pmh/sets/{id}",
+      "permissionsRequired" : [ "oai-pmh.sets.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/oai-pmh/sets/{id}",
+      "permissionsRequired" : [ "oai-pmh.sets.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/oai-pmh/sets",
+      "permissionsRequired" : [ "oai-pmh.sets.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/oai-pmh/sets/{id}",
+      "permissionsRequired" : [ "oai-pmh.sets.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai-pmh/sets",
+      "permissionsRequired" : [ "oai-pmh.sets.item.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai-pmh/filtering-conditions",
+      "permissionsRequired" : [ "oai-pmh.filtering-conditions.get" ],
+      "modulePermissions" : [ "inventory-storage.locations.collection.get", "inventory-storage.ill-policies.collection.get", "inventory-storage.material-types.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-formats.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/request-metadata",
+      "permissionsRequired" : [ "oai-pmh.request-metadata.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/request-metadata/{requestId}/failed-to-save-instances",
+      "permissionsRequired" : [ "oai-pmh.request-metadata.failed-to-save-instances.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/request-metadata/{requestId}/failed-instances",
+      "permissionsRequired" : [ "oai-pmh.request-metadata.failed-instances.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/request-metadata/{requestId}/skipped-instances",
+      "permissionsRequired" : [ "oai-pmh.request-metadata.skipped-instances.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/oai/request-metadata/{requestId}/suppressed-from-discovery-instances",
+      "permissionsRequired" : [ "oai-pmh.request-metadata.suppressed-from-discovery-instances.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/oai-pmh/clean-up-instances",
+      "permissionsRequired" : [ "oai-pmh.clean-up-instances.post" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/oai-pmh/clean-up-error-logs",
+      "permissionsRequired" : [ "oai-pmh.clean-up-error-logs.post" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.post" ]
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/oai-pmh/clean-up-instances",
+      "unit" : "hour",
+      "delay" : "2",
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/oai-pmh/clean-up-error-logs",
+      "unit" : "day",
+      "delay" : "1",
+      "modulePermissions" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "oai-pmh.records.collection.get",
+    "displayName" : "OAI-PMH - get list of records",
+    "description" : "Get records from repository"
+  }, {
+    "permissionName" : "oai-pmh.request-metadata.collection.get",
+    "displayName" : "OAI-PMH Request metadata - get collection",
+    "description" : "Retrieves request metadata collection"
+  }, {
+    "permissionName" : "oai-pmh.request-metadata.failed-to-save-instances.collection.get",
+    "displayName" : "OAI-PMH Request metadata - get collection of failed to save instances UUIDs",
+    "description" : "Retrieves request metadata collection - failed to save instances UUIDs"
+  }, {
+    "permissionName" : "oai-pmh.request-metadata.failed-instances.collection.get",
+    "displayName" : "OAI-PMH Request metadata - get collection of failed instances UUIDs",
+    "description" : "Retrieves request metadata collection - failed instances UUIDs"
+  }, {
+    "permissionName" : "oai-pmh.request-metadata.skipped-instances.collection.get",
+    "displayName" : "OAI-PMH Request metadata - get collection of skipped instances UUIDs",
+    "description" : "Retrieves request metadata collection - skipped instances UUIDs"
+  }, {
+    "permissionName" : "oai-pmh.request-metadata.suppressed-from-discovery-instances.collection.get",
+    "displayName" : "OAI-PMH Request metadata - get collection of suppressed from discovery instances UUIDs",
+    "description" : "Retrieves request metadata collection - suppressed from discovery instances UUIDs"
+  }, {
+    "permissionName" : "oai-pmh.all",
+    "displayName" : "OAI-PMH - all permissions",
+    "description" : "Entire set of permissions needed to use OAI-PMH",
+    "subPermissions" : [ "oai-pmh.records.collection.get", "oai-pmh.sets.item.get", "oai-pmh.sets.item.post", "oai-pmh.sets.item.put", "oai-pmh.sets.item.delete", "oai-pmh.sets.item.collection.get", "oai-pmh.filtering-conditions.get", "oai-pmh.request-metadata.collection.get", "oai-pmh.request-metadata.failed-to-save-instances.collection.get", "oai-pmh.request-metadata.failed-instances.collection.get", "oai-pmh.request-metadata.skipped-instances.collection.get", "oai-pmh.request-metadata.suppressed-from-discovery-instances.collection.get" ]
+  }, {
+    "permissionName" : "oai-pmh.sets.item.collection.get",
+    "displayName" : "OAI-PMH Set - get items",
+    "description" : "Manage oai-pmh get items"
+  }, {
+    "permissionName" : "oai-pmh.sets.item.get",
+    "displayName" : "OAI-PMH Set - get item",
+    "description" : "Manage oai-pmh get item"
+  }, {
+    "permissionName" : "oai-pmh.sets.item.post",
+    "displayName" : "OAI-PMH Set - post item",
+    "description" : "Manage oai-pmh set item"
+  }, {
+    "permissionName" : "oai-pmh.sets.item.put",
+    "displayName" : "OAI-PMH Set - put item",
+    "description" : "Manage oai-pmh update item"
+  }, {
+    "permissionName" : "oai-pmh.sets.item.delete",
+    "displayName" : "OAI-PMH Set - delete item",
+    "description" : "Manage oai-pmh delete item"
+  }, {
+    "permissionName" : "oai-pmh.filtering-conditions.get",
+    "displayName" : "OAI-PMH Filtering condition - get items",
+    "description" : "Retrieves filtering condition values"
+  }, {
+    "permissionName" : "oai-pmh.clean-up-instances.post",
+    "displayName" : "OAI-PMH - call to clean up retained instances",
+    "description" : "Entry point to start clean up process of retained instances"
+  }, {
+    "permissionName" : "oai-pmh.clean-up-error-logs.post",
+    "displayName" : "OAI-PMH - call to clean up old error logs",
+    "description" : "Entry point to start clean up process of error logs"
+  }, {
+    "permissionName" : "oai-pmh.set.all",
+    "displayName" : "OAI-PMH Set - all permissions",
+    "description" : "Entire set of permissions for managing oai-pmh set items",
+    "subPermissions" : [ "oai-pmh.sets.item.get", "oai-pmh.sets.item.post", "oai-pmh.sets.item.put", "oai-pmh.sets.item.delete", "oai-pmh.sets.item.collection.get", "oai-pmh.filtering-conditions.get", "oai-pmh.clean-up-instances.post", "oai-pmh.clean-up-error-logs.post" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioorg/mod-oai-pmh:3.12.8",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "2700000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "20"
+    }, {
+      "name" : "S3_URL",
+      "value" : "http://127.0.0.1:9000/"
+    }, {
+      "name" : "S3_REGION",
+      "value" : ""
+    }, {
+      "name" : "S3_BUCKET",
+      "value" : "test-bucket2"
+    }, {
+      "name" : "S3_ACCESS_KEY_ID",
+      "value" : "AKIAIOSFODNN7EXAMPLE"
+    }, {
+      "name" : "S3_SECRET_ACCESS_KEY",
+      "value" : ""
+    }, {
+      "name" : "S3_IS_AWS",
+      "value" : "false"
+    }, {
+      "name" : "CLEAN_UP_ERROR_LOGS_INTERVAL",
+      "value" : "30"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 603725575,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
