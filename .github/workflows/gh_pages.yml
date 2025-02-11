@@ -1,4 +1,4 @@
-name: gh_pages-modules_listing
+name: gh_pages
 on:
   push:
     branches:
