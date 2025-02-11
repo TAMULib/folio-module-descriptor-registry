@@ -39,7 +39,7 @@ bash script/populate_release.sh R1-2024-csp-9 quesnelia
 _Make sure to manually delete any already downloaded JSON files to avoid accidentally including the wrong dependencies for some flower release when executing this script for multiple flower releases._
 
 
-### Populate via Branches and Commit Hashes
+#### Populate via Branches and Commit Hashes
 
 The population can be done via a branch name or a commit hash rather than only a tag name.
 
