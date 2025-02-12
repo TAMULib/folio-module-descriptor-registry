@@ -1,0 +1,104 @@
+name: sync_snapshot
+run-name: Synchronize Snapshot by @${{ github.actor }}
+
+on:
+  schedule:
+    - cron: '0 0 */1 * *'
+
+  workflow_dispatch:
+    inputs:
+      prssDebug:
+        description: 'Debug Mode'
+        type: choice
+        required: false
+        default: ''
+        options:
+          yes
+          curl
+          curl_only
+          curl_git
+          git
+          git_only
+      prDestination:
+        description: 'Populate Release Destination'
+        type: string
+        required: false
+        default: ''
+      prFile:
+        description: 'Populate Release File'
+        type: string
+        required: false
+        default: ''
+      prFlower:
+        description: 'Populate Release Flower'
+        type: string
+        required: true
+        default: 'snapshot
+      prRepository:
+        description: 'Populate Release Repository'
+        type: string
+        required: false
+        default: ''
+      prRepositoryPart:
+        description: 'Populate Release Repository Part'
+        type: string
+        required: true
+        default: 'heads'
+      prRegistry:
+        description: Populate Release Registry
+        type: string
+        required: false
+        default: ''
+      prTarget:
+        description: 'Populate Release Target'
+        type: string
+        required: true
+        default: 'snapshot'
+      ssMessage:
+        description: 'Synchronize Snapshot Message'
+        type: string
+        required: false
+        default: ''
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    name: Update Registry
+    permissions:
+      contents: write # To push the changes.
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: scripts
+          sparse-checkout: |
+            script/populate_release.sh
+            script/sync_snapshot.sh
+      - name: Checkout Registry
+        uses: actions/checkout@v4
+        with:
+          ref: snapshot
+          path: snapshot
+      - name: Populate Snapshot
+        working-directory: ${GITHUB_WORKSPACE}/snapshot
+        env:
+          POPULATE_RELEASE_DEBUG: ${{ inputs.prssDebug }}
+          POPULATE_RELEASE_DESTINATION:  ${{ inputs.prDestination }}
+          POPULATE_RELEASE_FILE: ${{ inputs.prFile }}
+          POPULATE_RELEASE_FLOWER: ${{ inputs.prFlower }}
+          POPULATE_RELEASE_REPOSITORY: ${{ inputs.prRepository }}
+          POPULATE_RELEASE_REPOSITORY_PART: ${{ inputs.prRepositoryPart }}
+          POPULATE_RELEASE_REGISTRY: ${{ inputs.prRegistry }}
+          POPULATE_RELEASE_TARGET: ${{ inputs.prTarget }}ssMessage
+        run: |
+          bash ${GITHUB_WORKSPACE}/scripts/script/populate_release.sh
+      - name: Synchronize Snapshot
+        working-directory: ${GITHUB_WORKSPACE}/snapshot
+        env:
+          SYNC_SNAPSHOT_DEBUG: ${{ inputs.prssDebug }}
+          SYNC_SNAPSHOT_MESSAGE: ${{ inputs.ssMessage }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          bash ${GITHUB_WORKSPACE}/scripts/script/sync_snapshot.sh
