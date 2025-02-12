@@ -11,9 +11,11 @@ The **MDR** _GitHub Pages_ may be found at [https://tamulib.github.io/folio-modu
 
 The Module Descriptors for each release are found within the `release/` subdirectory.
 
+
 ## Scripts
 
 This repository provides additional scripts that may help facilitate the generation of the Module Descriptors.
+
 
 ### Populate Release
 
@@ -30,8 +32,27 @@ The flower release name in relation to its release date designation (which maps 
 View the documentation within the `populate_release.sh` script for further details on how to operate this script.
 
 Example usage:
-```sh
+```shell
 bash script/populate_release.sh R1-2024-csp-9 quesnelia
 ```
 
 _Make sure to manually delete any already downloaded JSON files to avoid accidentally including the wrong dependencies for some flower release when executing this script for multiple flower releases._
+
+
+#### Populate via Branches and Commit Hashes
+
+The population can be done via a branch name or a commit hash rather than only a tag name.
+
+The `POPULATE_RELEASE_REPOSITORY_PART` environment variable should be used to specify this.
+The value must be set to `heads` to use a branch name.
+The value must be set to an empty string to use a specific commit hash instead of either a tag name or a branch name.
+
+Example branch name usage:
+```shell
+POPULATE_RELEASE_REPOSITORY_PART="heads" bash script/populate_release.sh snapshot snapshot
+```
+
+Example commit hash usage:
+```shell
+POPULATE_RELEASE_REPOSITORY_PART="" bash script/populate_release.sh fe7223e040d5d024f3f4961a3bc324d99a6fe7f5 aggies
+```
