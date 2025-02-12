@@ -33,7 +33,7 @@ on:
         description: 'Populate Release Flower'
         type: string
         required: true
-        default: 'snapshot
+        default: 'snapshot'
       prRepository:
         description: 'Populate Release Repository'
         type: string
