@@ -1,9 +1,8 @@
-name: modules-listing
+name: gh_pages
 on:
   push:
     branches:
-      - main
-      - master
+      - snapshot
 
 jobs:
   pages-directory-listing:
@@ -14,6 +13,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: snapshot
 
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v4.0.0
