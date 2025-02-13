@@ -1,0 +1,43 @@
+name: sync_snapshot
+run-name: Synchronize Snapshot by @${{ github.actor }}
+
+on:
+  schedule:
+    - cron: '0 0 */1 * *'
+
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    name: Update Registry
+    permissions:
+      contents: write # To push the changes.
+    steps:
+      - name: Create Working Directories
+        run: |
+          mkdir scripts
+          mkdir populate
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: scripts
+          sparse-checkout: |
+            script/populate_release.sh
+            script/sync_snapshot.sh
+      - name: Checkout Registry
+        uses: actions/checkout@v4
+        with:
+          ref: snapshot
+          path: populate
+      - name: Populate Snapshot
+        working-directory: populate
+        run: |
+          bash ../scripts/script/populate_release.sh
+      - name: Synchronize Snapshot
+        working-directory: populate
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          bash ../scripts/script/sync_snapshot.sh
