@@ -1,6 +1,6 @@
 # FOLIO Module Descriptor Registry (MDR)
 
-Copyright © 2025 Texas A&M University Libraries under the [MIT](LICENSE).
+Copyright © 2025 Texas A&M University Libraries under the [MIT license](LICENSE).
 
 The [FOLIO](https://folio.org/) module **Module Descriptor Registry** (**MDR**) provides a listing of generated module descriptors.
 
