@@ -43,4 +43,5 @@ jobs:
           bash ../scripts/script/sync_snapshot.sh
 
   build_github_pages_workflow:
+    name: Build Github Pages Workflow
     uses: ./.github/workflows/gh_pages.yml
