@@ -32,6 +32,7 @@ jobs:
           path: 'release'  # Upload generated folder.
 
   deploy_github_pages:
+    name: Deploy Github Pages
     needs: build_github_pages
     permissions:
       pages: write     # To deploy to Pages.
