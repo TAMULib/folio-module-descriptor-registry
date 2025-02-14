@@ -1,4 +1,4 @@
-name: sync_snapshot
+name: Synchronize Snapshot
 run-name: Synchronize Snapshot by @${{ github.actor }}
 
 on:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-script:
+  synchronize_snapshot:
     runs-on: ubuntu-latest
     name: Update Registry
     permissions:
@@ -41,3 +41,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           bash ../scripts/script/sync_snapshot.sh
+
+  build_github_pages_workflow:
+    uses: ./.github/workflows/gh_pages.yml
