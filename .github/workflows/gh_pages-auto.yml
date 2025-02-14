@@ -1,10 +1,8 @@
-name: gh_pages
+name: gh_pages-auto
 on:
   push:
     branches:
       - snapshot
-
-  workflow_dispatch:
 
 jobs:
   pages-directory-listing:
