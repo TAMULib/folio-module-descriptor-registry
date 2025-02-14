@@ -44,4 +44,5 @@ jobs:
 
   build_github_pages_workflow:
     name: Build Github Pages Workflow
+    needs: synchronize_snapshot
     uses: ./.github/workflows/gh_pages.yml
