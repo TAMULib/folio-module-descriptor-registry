@@ -1,13 +1,16 @@
-name: gh_pages
+name: Build Github Pages
+run-name: Build Github Pages by @${{ github.actor }}
 on:
   push:
     branches:
       - snapshot
 
+  workflow_call:
+
   workflow_dispatch:
 
 jobs:
-  pages-directory-listing:
+  build_github_pages:
     runs-on: ubuntu-latest
     name: Directory Listings Index
     permissions:
@@ -28,8 +31,8 @@ jobs:
         with:
           path: 'release'  # Upload generated folder.
 
-  deploy:
-    needs: pages-directory-listing
+  deploy_github_pages:
+    needs: build_github_pages
     permissions:
       pages: write     # To deploy to Pages.
       id-token: write  # To verify the deployment originates from an appropriate source.
