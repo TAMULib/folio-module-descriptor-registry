@@ -1,0 +1,10 @@
+{
+  "id" : "folio_plugin-find-interface-5.2.1099000000003",
+  "name" : "Find and select interfaces plugin for Stripes",
+  "requires" : [ {
+    "id" : "organizations-storage.interfaces",
+    "version" : "2.1"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
