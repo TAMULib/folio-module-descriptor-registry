@@ -14,11 +14,14 @@
 #    SYNC_SNAPSHOT_DEBUG:   Enable debug verbosity, any non-empty string is enables this.
 #    SYNC_SNAPSHOT_MESSAGE: Specify a custom message to use for the commit.
 #    SYNC_SNAPSHOT_PATH:    Designate a path in which to analyze (default is an empty string, which means current directory).
+#    SYNC_SNAPSHOT_RESULT:  The file name to write the results of this script to.
 #    SYNC_SNAPSHOT_SIGN:    Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
 #
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git" to include printing the git commands.
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git_only" to only print the git commands, disabling all other debugging (does not pass -v to git).
 # Otherwise, any non-empty value will result in debug printing without the git command.
+#
+# If SYNC_SNAPSHOT_RESULT is a non-empty string, then on handled exit the contents of the specified file name will be "none" for no updates, "updated" for updates", and "failure" on error.
 #
 
 main() {
@@ -28,6 +31,7 @@ main() {
   local signoff=
   local changes=
   local message="Synchronize Snapshot Update."
+  local updated="none"
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -68,6 +72,25 @@ main() {
     signoff="--signoff"
   fi
 
+  synchronize_snapshot
+
+  if [[ $? -ne 0 ]] ; then
+    updated="failure"
+  elif [[ ${updated} == "none" ]] ; then
+    echo "Done: No changes to commit detected."
+  else
+    echo "Done: Pushed detected changes."
+  fi
+
+  if [[ ${SYNC_SNAPSHOT_RESULT} != "" ]] ; then
+    echo -n ${updated} > ${SYNC_SNAPSHOT_RESULT}
+  fi
+
+  return 0
+}
+
+synchronize_snapshot() {
+
   if [[ ${path} != "" ]] ; then
     cd ${path}
 
@@ -86,48 +109,46 @@ main() {
   changes=$(git status --porcelain --untracked-files=yes | grep '.*' -sho)
 
   if [[ ${changes} == "" ]] ; then
-    echo "Done: No changes to commit detected."
-  else
-    if [[ ${debug_git} != "" ]] ; then
-      print_git_debug "Adding" "git add -A ${debug}"
-    fi
+    return 0
+  fi
 
-    git add -A ${debug}
+  if [[ ${debug_git} != "" ]] ; then
+    print_git_debug "Adding" "git add -A ${debug}"
+  fi
 
-    let result=$?
-    if [[ ${result} -ne 0 ]] ; then
-      print_git_error "adding"
+  git add -A ${debug}
 
-      return ${result}
-    fi
+  let result=$?
+  if [[ ${result} -ne 0 ]] ; then
+    print_git_error "adding"
 
-    if [[ ${debug_git} != "" ]] ; then
-      print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
-    fi
+    return ${result}
+  fi
 
-    git commit -m "${message}" ${signoff} ${debug}
+  if [[ ${debug_git} != "" ]] ; then
+    print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
+  fi
 
-    let result=$?
-    if [[ ${result} -ne 0 ]] ; then
-      print_git_error "committing"
+  git commit -m "${message}" ${signoff} ${debug}
 
-      return ${result}
-    fi
+  let result=$?
+  if [[ ${result} -ne 0 ]] ; then
+    print_git_error "committing"
 
-    if [[ ${debug_git} != "" ]] ; then
-      print_git_debug "Pushing" "git push ${debug}"
-    fi
+    return ${result}
+  fi
 
-    git push ${debug}
+  if [[ ${debug_git} != "" ]] ; then
+    print_git_debug "Pushing" "git push ${debug}"
+  fi
 
-    let result=$?
-    if [[ ${result} -ne 0 ]] ; then
-      print_git_error "pushing"
+  git push ${debug}
 
-      return ${result}
-    fi
+  let result=$?
+  if [[ ${result} -ne 0 ]] ; then
+    print_git_error "pushing"
 
-    echo "Done: Pushed detected changes."
+    return ${result}
   fi
 
   return 0

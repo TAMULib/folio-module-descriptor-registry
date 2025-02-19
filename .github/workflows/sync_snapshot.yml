@@ -7,12 +7,18 @@ on:
 
   workflow_dispatch:
 
+  push:
+    branches:
+      - fer-conditional_deploy
+
 jobs:
   synchronize_snapshot:
     runs-on: ubuntu-latest
     name: Update Registry
     permissions:
       contents: write # To push the changes.
+    outputs:
+      SYNC_SNAPSHOT_RESULT: ${{ steps.synchronize_snapshot.outputs.SYNC_SNAPSHOT_RESULT }}
     steps:
       - name: Create Working Directories
         run: |
@@ -40,9 +46,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          bash ../scripts/script/sync_snapshot.sh
+          SYNC_SNAPSHOT_RESULT="../results.txt" bash ../scripts/script/sync_snapshot.sh
+          echo "SYNC_SNAPSHOT_RESULT=$(cat ../results.txt)" >> "${GITHUB_OUTPUT}"
 
   build_github_pages_workflow:
     name: Build Github Pages Workflow
     needs: synchronize_snapshot
+    if: needs.synchronize_snapshot.outputs.SYNC_SNAPSHOT_RESULT == 'updated'
     uses: ./.github/workflows/gh_pages.yml
