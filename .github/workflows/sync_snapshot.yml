@@ -46,8 +46,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          SYNC_SNAPSHOT_RESULT="../results.txt" bash ../scripts/script/sync_snapshot.sh
-          echo "SYNC_SNAPSHOT_RESULT=$(cat ../results.txt)" >> "${GITHUB_OUTPUT}"
+          SYNC_SNAPSHOT_RESULT="results.txt" bash ../scripts/script/sync_snapshot.sh
+          ls -lh
+          echo "SYNC_SNAPSHOT_RESULT=$(cat results.txt)" >> "${GITHUB_OUTPUT}"
 
   build_github_pages_workflow:
     name: Build Github Pages Workflow
