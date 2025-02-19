@@ -1,0 +1,13 @@
+{
+  "id" : "folio_plugin-query-builder-1.2.909900000000482",
+  "name" : "Create FQL query plugin for Stripes",
+  "requires" : [ {
+    "id" : "fqm-query",
+    "version" : "2.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
