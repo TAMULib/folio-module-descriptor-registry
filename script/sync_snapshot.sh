@@ -83,6 +83,7 @@ main() {
   fi
 
   if [[ ${SYNC_SNAPSHOT_RESULT} != "" ]] ; then
+    echo "DEBUG: SYNC_SNAPSHOT_RESULT=${SYNC_SNAPSHOT_RESULT}, file: $(cat ${SYNC_SNAPSHOT_RESULT})"
     echo -n ${updated} > ${SYNC_SNAPSHOT_RESULT}
   fi
 
@@ -116,7 +117,7 @@ synchronize_snapshot() {
     print_git_debug "Adding" "git add -A ${debug}"
   fi
 
-  git add -A ${debug}
+  echo git add -A ${debug}
 
   let result=$?
   if [[ ${result} -ne 0 ]] ; then
@@ -129,7 +130,7 @@ synchronize_snapshot() {
     print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
   fi
 
-  git commit -m "${message}" ${signoff} ${debug}
+  echo git commit -m "${message}" ${signoff} ${debug}
 
   let result=$?
   if [[ ${result} -ne 0 ]] ; then
@@ -142,7 +143,7 @@ synchronize_snapshot() {
     print_git_debug "Pushing" "git push ${debug}"
   fi
 
-  git push ${debug}
+  echo git push ${debug}
 
   let result=$?
   if [[ ${result} -ne 0 ]] ; then
