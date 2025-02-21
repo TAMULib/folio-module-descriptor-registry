@@ -1,0 +1,7 @@
+{
+  "id" : "folio_handler-stripes-registry-3.0.10990000000045",
+  "name" : "frontend registry for Stripes",
+  "requires" : [ ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

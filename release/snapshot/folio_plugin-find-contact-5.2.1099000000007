@@ -1,0 +1,13 @@
+{
+  "id" : "folio_plugin-find-contact-5.2.1099000000007",
+  "name" : "Find and select contacts plugin for Stripes",
+  "requires" : [ {
+    "id" : "organizations-storage.categories",
+    "version" : "1.1"
+  }, {
+    "id" : "organizations-storage.contacts",
+    "version" : "2.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

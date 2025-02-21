@@ -1,0 +1,16 @@
+{
+  "id" : "folio_plugin-find-erm-usage-data-provider-7.0.10990000000093",
+  "name" : "ERM-Usage-data-provider-finder for Stripes",
+  "requires" : [ {
+    "id" : "aggregator-settings",
+    "version" : "1.0 2.0"
+  }, {
+    "id" : "erm-usage-harvester",
+    "version" : "1.1 2.0"
+  }, {
+    "id" : "usage-data-providers",
+    "version" : "2.0 3.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

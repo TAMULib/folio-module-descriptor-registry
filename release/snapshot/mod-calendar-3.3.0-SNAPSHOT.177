@@ -1,0 +1,153 @@
+{
+  "id" : "mod-calendar-3.3.0-SNAPSHOT.177",
+  "name" : "Calendar for Service Point Opening Hours",
+  "requires" : [ ],
+  "provides" : [ {
+    "id" : "calendar",
+    "version" : "5.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/calendar/calendars",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/calendar/calendars",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/calendar/calendars",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/calendar/calendars/{calendarId}",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.calendarId.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/calendar/calendars/{calendarId}",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.calendarId.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/calendar/calendars/{calendarId}",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.calendarId.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/calendar/dates/{servicePointId}/surrounding-openings",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.surroundingOpenings.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/calendar/dates/{servicePointId}/all-openings",
+      "permissionsRequired" : [ "calendar.endpoint.calendars.allOpenings.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "calendar.view",
+    "displayName" : "Access and query calendar information",
+    "description" : "",
+    "subPermissions" : [ "calendar.endpoint.calendars.surroundingOpenings.get", "calendar.endpoint.calendars.allOpenings.get", "calendar.endpoint.calendars.calendarId.get", "calendar.endpoint.calendars.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.create",
+    "displayName" : "Create new calendars",
+    "description" : "",
+    "subPermissions" : [ "calendar.view", "calendar.endpoint.calendars.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.update",
+    "displayName" : "Edit existing calendars",
+    "description" : "",
+    "subPermissions" : [ "calendar.view", "calendar.endpoint.calendars.calendarId.put" ],
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.delete",
+    "displayName" : "Delete calendars",
+    "description" : "",
+    "subPermissions" : [ "calendar.view", "calendar.endpoint.calendars.delete", "calendar.endpoint.calendars.calendarId.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.get",
+    "displayName" : "Make GET requests to /calendar/calendars",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.surroundingOpenings.get",
+    "replaces" : [ "calendar.endpoint.dates.get" ],
+    "displayName" : "Make GET requests to /calendar/dates/{servicePointID}/surrounding-openings",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.allOpenings.get",
+    "replaces" : [ "calendar.endpoint.dates.get" ],
+    "displayName" : "Make GET requests to /calendar/dates/{servicePointId}/all-openings",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.post",
+    "displayName" : "Make POST requests to /calendar/calendars",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.delete",
+    "displayName" : "Make DELETE requests to /calendar/calendars",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.calendarId.get",
+    "displayName" : "Make GET requests to /calendar/calendars/{id}",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.calendarId.put",
+    "displayName" : "Make PUT requests to /calendar/calendars/{id}",
+    "description" : "",
+    "visible" : false
+  }, {
+    "permissionName" : "calendar.endpoint.calendars.calendarId.delete",
+    "displayName" : "Make DELETE requests to /calendar/calendars/{id}",
+    "description" : "",
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-calendar:3.3.0-SNAPSHOT.177",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "localhost"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 514572800,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
