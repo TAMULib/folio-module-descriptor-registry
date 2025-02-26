@@ -1,0 +1,55 @@
+{
+  "id" : "folio_plugin-find-po-line-6.0.10990000000012",
+  "name" : "Find and select PO lines plugin for Stripes",
+  "requires" : [ {
+    "id" : "acquisition-methods",
+    "version" : "1.0"
+  }, {
+    "id" : "acquisitions-units",
+    "version" : "1.1"
+  }, {
+    "id" : "configuration.prefixes",
+    "version" : "1.1"
+  }, {
+    "id" : "configuration.reasons-for-closure",
+    "version" : "1.0"
+  }, {
+    "id" : "configuration.suffixes",
+    "version" : "1.1"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.2"
+  }, {
+    "id" : "finance.expense-classes",
+    "version" : "2.0 3.0"
+  }, {
+    "id" : "finance.funds",
+    "version" : "1.4 2.0 3.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "inventory",
+    "version" : "10.0 11.0 12.0 13.0 14.0"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "order-lines",
+    "version" : "2.0 3.0"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.0"
+  }, {
+    "id" : "tags",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
