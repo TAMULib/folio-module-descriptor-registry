@@ -159,6 +159,7 @@ sync_snap_handle_result_git() {
 }
 
 sync_snap_print_git_debug() {
+
   if [[ ${debug_git} == "" ]] ; then return ; fi
 
   echo "${p_d}${1} Git Changes: ${2} ."
