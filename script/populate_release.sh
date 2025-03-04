@@ -116,39 +116,97 @@ main() {
     if [[ ! -f ${file} ]] ; then
       echo "${p_e}The install JSON file is either missing or is not a regular file: ${file} ."
 
-      return 1
+      let result=1
     fi
   else
-    if [[ ${debug} != "" ]] ; then
-      echo "${p_d}Curl requesting Install JSON from: ${source} ."
-      echo
+    pop_rel_prepare_source
+
+    pop_rel_curl_source
+  fi
+
+  pop_rel_prepare_releases
+
+  pop_rel_curl_releases
+
+  return ${result}
+}
+
+pop_rel_curl_releases() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ ${releases} == "" ]] ; then
+    echo "Done: No releases to fetch from."
+
+    return
+  fi
+
+  for i in ${releases} ; do
+
+    if [[ -f ${destination}${flower}/${i} ]] ; then
+      if [[ ${debug} != "" ]] ; then
+        echo "${p_d}Skipping existing Module Descriptor: ${destination}${flower}/${i} ."
+        echo
+      fi
+
+      continue
     fi
 
-    if [[ -e ${file} ]] ; then
-      rm ${debug} -f ${file}
-
-      let result=$?
-      if [[ ${result} -ne 0 ]] ; then
-        echo "${p_e}Create file failed (with system code ${result}) for install file: ${file} ."
-
-        return ${result}
-      fi
+    if [[ ${debug} != "" ]] ; then
+      echo "${p_d}Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
+      echo
+    else
+      echo "Curl requesting Module Descriptor: ${i}."
     fi
 
     if [[ ${debug_curl} != "" ]] ; then
-      echo "${p_d}Executing Package Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
+      echo "${p_d}Executing Descriptor Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
       echo
     fi
 
-    curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
+    curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
 
-    let result=$?
-    if [[ ${result} -ne 0 ]] ; then
-      echo "${p_e}Curl request failed (with system code ${result}) for: ${source} ."
+    pop_rel_handle_result "${p_e}Curl request failed (with system code ${result}) for: ${registry}${i} to ${destination}${flower}/${i}."
 
-      return ${result}
-    fi
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+  done
+
+  echo "Done: Module descriptors fetched as needed."
+}
+
+pop_rel_prepare_source() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ ${debug} != "" ]] ; then
+    echo "${p_d}Curl requesting Install JSON from: ${source} ."
+    echo
   fi
+
+  if [[ -e ${file} ]] ; then
+    rm ${debug} -f ${file}
+
+    pop_rel_handle_result "${p_e}Create file failed (with system code ${result}) for install file: ${file} ."
+  fi
+}
+
+pop_rel_curl_source() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ ${debug_curl} != "" ]] ; then
+    echo "${p_d}Executing Package Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
+    echo
+  fi
+
+  curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
+
+  pop_rel_handle_result "${p_e}Curl request failed (with system code ${result}) for: ${source} ."
+}
+
+pop_rel_prepare_releases() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ -f ${file} ]] ; then
     releases=$(grep -shr '"id" : "' ${file} | sed -e 's|^.*"id" : "||g' -e 's|",$||g')
@@ -157,54 +215,16 @@ main() {
   if [[ ! -d ${destination}${flower}/ ]] ; then
     mkdir ${debug} -p ${destination}${flower}/
 
-    let result=$?
-    if [[ ${result} -ne 0 ]] ; then
-      echo "${p_e}Create directory failed (with system code ${result}) for destination: ${destination}${flower}/ ."
-
-      return ${result}
-    fi
+    pop_rel_handle_result "${p_e}Create directory failed (with system code ${result}) for destination: ${destination}${flower}/ ."
   fi
+}
 
-  if [[ ${releases} == "" ]] ; then
-    echo "Done: No releases to fetch from."
-  else
-    for i in ${releases} ; do
+pop_rel_handle_result() {
+  let result=$?
 
-      if [[ -f ${destination}${flower}/${i} ]] ; then
-        if [[ ${debug} != "" ]] ; then
-          echo "${p_d}Skipping existing Module Descriptor: ${destination}${flower}/${i} ."
-          echo
-        fi
-
-        continue
-      fi
-
-      if [[ ${debug} != "" ]] ; then
-        echo "${p_d}Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
-        echo
-      else
-        echo "Curl requesting Module Descriptor: ${i}."
-      fi
-
-      if [[ ${debug_curl} != "" ]] ; then
-        echo "${p_d}Executing Descriptor Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
-        echo
-      fi
-
-      curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
-
-      let result=$?
-      if [[ ${result} -ne 0 ]] ; then
-        echo "${p_e}Curl request failed (with system code ${result}) for: ${registry}${i} to ${destination}${flower}/${i}."
-
-        return ${result}
-      fi
-    done
-
-    echo "Done: Module descriptors fetched as needed."
+  if [[ ${result} -ne 0 ]] ; then
+    echo "${1}"
   fi
-
-  return 0
 }
 
 main $*
