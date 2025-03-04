@@ -159,10 +159,7 @@ pop_rel_curl_releases() {
       echo "Curl requesting Module Descriptor: ${i}."
     fi
 
-    if [[ ${debug_curl} != "" ]] ; then
-      echo "${p_d}Executing Descriptor Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
-      echo
-    fi
+    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}"
 
     curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
 
@@ -194,10 +191,7 @@ pop_rel_curl_source() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ ${debug_curl} != "" ]] ; then
-    echo "${p_d}Executing Package Curl: curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file} ."
-    echo
-  fi
+  pop_rel_print_curl_debug "Executing Package" "curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}"
 
   curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
 
@@ -217,6 +211,14 @@ pop_rel_prepare_releases() {
 
     pop_rel_handle_result "${p_e}Create directory failed (with system code ${result}) for destination: ${destination}${flower}/ ."
   fi
+}
+
+pop_rel_print_curl_debug() {
+
+  if [[ ${debug_curl} == "" ]] ; then return ; fi
+
+  echo "${p_d}${1} Curl: ${2} ."
+  echo
 }
 
 pop_rel_handle_result() {
