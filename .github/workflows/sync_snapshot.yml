@@ -13,12 +13,16 @@ jobs:
     name: Update Registry
     permissions:
       contents: write # To push the changes.
+    outputs:
+      sync_result: ${{ steps.synchronize_snapshot.outputs.sync_result }}
     steps:
-      - name: Create Working Directories
+      - id: create_dirs
+        name: Create Working Directories
         run: |
           mkdir scripts
           mkdir populate
-      - name: Checkout Scripts
+      - id: checkout_scripts
+        name: Checkout Scripts
         uses: actions/checkout@v4
         with:
           ref: master
@@ -26,23 +30,28 @@ jobs:
           sparse-checkout: |
             script/populate_release.sh
             script/sync_snapshot.sh
-      - name: Checkout Registry
+      - id: checkout_registry
+        name: Checkout Registry
         uses: actions/checkout@v4
         with:
           ref: snapshot
           path: populate
-      - name: Populate Snapshot
+      - id: populate_snapshot
+        name: Populate Snapshot
         working-directory: populate
         run: |
           bash ../scripts/script/populate_release.sh
-      - name: Synchronize Snapshot
+      - id: synchronize_snapshot
+        name: Synchronize Snapshot
         working-directory: populate
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          bash ../scripts/script/sync_snapshot.sh
+          SYNC_SNAPSHOT_RESULT="results.txt" bash ../scripts/script/sync_snapshot.sh
+          echo "sync_result=$(cat results.txt)" >> "${GITHUB_OUTPUT}"
 
   build_github_pages_workflow:
     name: Build Github Pages Workflow
     needs: synchronize_snapshot
+    if: needs.synchronize_snapshot.outputs.sync_result == 'updates'
     uses: ./.github/workflows/gh_pages.yml
