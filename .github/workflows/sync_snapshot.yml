@@ -7,10 +7,6 @@ on:
 
   workflow_dispatch:
 
-  push:
-    branches:
-      - fer-conditional_deploy
-
 jobs:
   synchronize_snapshot:
     runs-on: ubuntu-latest
