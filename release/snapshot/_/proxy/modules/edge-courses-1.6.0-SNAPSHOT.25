@@ -1,0 +1,46 @@
+{
+  "id" : "edge-courses-1.6.0-SNAPSHOT.25",
+  "name" : "Retrieve course-reserve information Edge API",
+  "requires" : [ {
+    "id" : "course-reserves-storage",
+    "version" : "0.3"
+  }, {
+    "id" : "login",
+    "version" : "7.1"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-courses:1.6.0-SNAPSHOT.25",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "secure_store",
+      "value" : "Ephemeral"
+    }, {
+      "name" : "secure_store_props",
+      "value" : "src/main/resources/ephemeral.properties"
+    }, {
+      "name" : "token_cache_ttl_ms",
+      "value" : "3600000"
+    }, {
+      "name" : "null_token_cache_ttl_ms",
+      "value" : "30000"
+    }, {
+      "name" : "token_cache_capacity",
+      "value" : "100"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8080/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id" : "folio_plugin-find-organization-5.2.1099000000007",
+  "name" : "Organization-finder for Stripes",
+  "requires" : [ {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.0"
+  }, {
+    "id" : "tags",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

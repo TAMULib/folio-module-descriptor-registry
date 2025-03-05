@@ -1,0 +1,146 @@
+{
+  "id" : "mod-reading-room-1.0.1-SNAPSHOT.24",
+  "name" : "Manage reading room and its related access",
+  "requires" : [ {
+    "id" : "service-points",
+    "version" : "3.3"
+  }, {
+    "id" : "users",
+    "version" : "16.3"
+  } ],
+  "provides" : [ {
+    "id" : "reading-room",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/reading-room",
+      "permissionsRequired" : [ "reading-room.item.post" ],
+      "modulePermissions" : [ "inventory-storage.service-points.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/reading-room",
+      "permissionsRequired" : [ "reading-room.collection.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/reading-room/{readingRoomId}",
+      "permissionsRequired" : [ "reading-room.item.put" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/reading-room/{readingRoomId}",
+      "permissionsRequired" : [ "reading-room.item.delete" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/reading-room/{readingRoomId}/access-log",
+      "permissionsRequired" : [ "reading-room.access-log.post" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/reading-room/access-log",
+      "permissionsRequired" : [ "reading-room.access-log.collection.get" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "reading-room-patron-permission",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/reading-room-patron-permission/{patronId}",
+      "permissionsRequired" : [ "reading-room.patron-permission.item.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/reading-room-patron-permission/{patronId}",
+      "permissionsRequired" : [ "reading-room.patron-permission.item.put" ],
+      "modulePermissions" : [ "users.item.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "reading-room.item.post",
+    "displayName" : "creates new reading room",
+    "description" : "creates new reading room"
+  }, {
+    "permissionName" : "reading-room.item.put",
+    "displayName" : "update reading room details",
+    "description" : "update reading room details"
+  }, {
+    "permissionName" : "reading-room.item.delete",
+    "displayName" : "delete reading room",
+    "description" : "delete reading room"
+  }, {
+    "permissionName" : "reading-room.collection.get",
+    "displayName" : "get reading room collection",
+    "description" : "get reading room collection"
+  }, {
+    "permissionName" : "reading-room.access-log.post",
+    "displayName" : "create access log for reading room",
+    "description" : "create access log for reading room"
+  }, {
+    "permissionName" : "reading-room.patron-permission.item.get",
+    "displayName" : "get patron permission of all reading rooms",
+    "description" : "get patron permission of all reading rooms"
+  }, {
+    "permissionName" : "reading-room.patron-permission.item.put",
+    "displayName" : "update or create reading room patron permission",
+    "description" : "update or create reading room patron permission"
+  }, {
+    "permissionName" : "reading-room.access-log.collection.get",
+    "displayName" : "Get access log collection",
+    "description" : "Get access log collection"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-reading-room:1.0.1-SNAPSHOT.24",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

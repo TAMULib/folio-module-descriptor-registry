@@ -1,0 +1,10 @@
+{
+  "id" : "folio_plugin-find-authority-4.1.10990000000028",
+  "name" : "Stripes plugin to find authorities",
+  "requires" : [ ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.ui-plugin-find-authority.enabled",
+    "displayName" : "UI: find authorities plugin is enabled"
+  } ]
+}

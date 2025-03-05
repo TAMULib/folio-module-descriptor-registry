@@ -1,0 +1,79 @@
+{
+  "id" : "mod-ebsconet-2.4.0-SNAPSHOT.85",
+  "name" : "Ebsconet integration business logic module",
+  "requires" : [ {
+    "id" : "orders",
+    "version" : "12.0"
+  }, {
+    "id" : "order-lines",
+    "version" : "3.0"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.1"
+  }, {
+    "id" : "finance.expense-classes",
+    "version" : "3.0"
+  }, {
+    "id" : "finance.funds",
+    "version" : "3.0"
+  }, {
+    "id" : "notes",
+    "version" : "4.0"
+  } ],
+  "provides" : [ {
+    "id" : "ebsconet",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ebsconet/orders/order-lines/{polNumber}",
+      "permissionsRequired" : [ "ebsconet.order-lines.item.get" ],
+      "modulePermissions" : [ "finance.expense-classes.item.get", "orders.item.get", "orders.po-lines.collection.get", "organizations.organizations.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/ebsconet/orders/order-lines/{polNumber}",
+      "permissionsRequired" : [ "ebsconet.order-lines.item.put" ],
+      "modulePermissions" : [ "finance.funds.collection.get", "finance.expense-classes.collection.get", "finance.expense-classes.item.get", "orders.po-lines.collection.get", "orders.po-lines.item.get", "orders.po-lines.item.put", "notes.item.post", "notes.item.delete", "note.links.collection.get", "note.types.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ebsconet/validate",
+      "permissionsRequired" : [ "ebsconet.orders.validate.get" ],
+      "modulePermissions" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "ebsconet.all",
+    "displayName" : "Ebsconet API module - all permissions",
+    "description" : "All permissions for ebsconet module",
+    "subPermissions" : [ "ebsconet.order-lines.item.get", "ebsconet.order-lines.item.put", "ebsconet.orders.validate.get" ]
+  }, {
+    "permissionName" : "ebsconet.order-lines.item.get",
+    "displayName" : "get order line, related to the order line number",
+    "description" : "Get list of order line"
+  }, {
+    "permissionName" : "ebsconet.order-lines.item.put",
+    "displayName" : "update order line, related to the order line number",
+    "description" : "Update order line"
+  }, {
+    "permissionName" : "ebsconet.orders.validate.get",
+    "displayName" : "validate order",
+    "description" : "Validate order"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-ebsconet:2.4.0-SNAPSHOT.85",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=80.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

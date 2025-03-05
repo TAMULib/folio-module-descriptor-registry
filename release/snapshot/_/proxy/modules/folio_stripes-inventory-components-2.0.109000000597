@@ -1,0 +1,13 @@
+{
+  "id" : "folio_stripes-inventory-components-2.0.109000000597",
+  "name" : "",
+  "requires" : [ {
+    "id" : "instance-date-types",
+    "version" : "1.0"
+  }, {
+    "id" : "settings",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}

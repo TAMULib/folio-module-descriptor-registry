@@ -1,0 +1,114 @@
+{
+  "id" : "mod-circulation-item-1.1.1-SNAPSHOT.38",
+  "name" : "Circulation Item API module",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "permissions",
+    "version" : "5.7"
+  } ],
+  "provides" : [ {
+    "id" : "circulation-item",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/circulation-item/{itemId}",
+      "permissionsRequired" : [ "circulation-item.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/circulation-item/{itemId}",
+      "permissionsRequired" : [ "circulation-item.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/circulation-item",
+      "permissionsRequired" : [ "circulation-item.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/circulation-item/{itemId}",
+      "permissionsRequired" : [ "circulation-item.item.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "circulation-item.all",
+    "displayName" : "circulation item - all permissions",
+    "description" : "All permissions for circulation item module",
+    "subPermissions" : [ "circulation-item.collection.get", "circulation-item.item.get", "circulation-item.item.post", "circulation-item.item.put" ]
+  }, {
+    "permissionName" : "circulation-item.collection.get",
+    "displayName" : "circulation item - get item collection",
+    "description" : "get circulation item collection"
+  }, {
+    "permissionName" : "circulation-item.item.get",
+    "displayName" : "circulation item - get individual circulation item",
+    "description" : "get individual circulation item"
+  }, {
+    "permissionName" : "circulation-item.item.post",
+    "displayName" : "create circulation item",
+    "description" : "create circulation item"
+  }, {
+    "permissionName" : "circulation-item.item.put",
+    "displayName" : "update circulation item",
+    "description" : "update circulation item"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-circulation-item:1.1.1-SNAPSHOT.38",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=75.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "OKAPI_URL",
+      "value" : "http://okapi:9130"
+    }, {
+      "name" : "ENV",
+      "value" : "folio"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 712673984,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
