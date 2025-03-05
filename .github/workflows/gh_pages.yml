@@ -12,10 +12,11 @@ on:
 
 jobs:
   build_github_pages:
-    runs-on: ubuntu-latest
     name: Directory Listings Index
     permissions:
       contents: read  # Recommended checkout permissions.
+
+    runs-on: self-hosted
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -35,6 +36,7 @@ jobs:
   deploy_github_pages:
     name: Deploy Github Pages
     needs: build_github_pages
+
     permissions:
       pages: write     # To deploy to Pages.
       id-token: write  # To verify the deployment originates from an appropriate source.
@@ -44,8 +46,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    # Specify runner + deployment step.
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

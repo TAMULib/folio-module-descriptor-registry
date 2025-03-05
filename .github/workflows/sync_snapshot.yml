@@ -9,12 +9,15 @@ on:
 
 jobs:
   synchronize_snapshot:
-    runs-on: ubuntu-latest
     name: Update Registry
+
     permissions:
       contents: write # To push the changes.
+
     outputs:
       sync_result: ${{ steps.synchronize_snapshot.outputs.sync_result }}
+
+    runs-on: self-hosted
     steps:
       - id: create_dirs
         name: Create Working Directories
