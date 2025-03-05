@@ -19,8 +19,8 @@ jobs:
       - id: create_dirs
         name: Create Working Directories
         run: |
-          mkdir scripts
-          mkdir populate
+          mkdir -p scripts
+          mkdir -p populate
       - id: checkout_scripts
         name: Checkout Scripts
         uses: actions/checkout@v4
