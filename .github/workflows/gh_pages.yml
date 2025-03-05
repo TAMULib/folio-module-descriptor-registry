@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - snapshot
+      - gh_testing
 
   workflow_call:
 
