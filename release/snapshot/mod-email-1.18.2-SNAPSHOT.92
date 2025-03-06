@@ -1,0 +1,168 @@
+{
+  "id" : "mod-email-1.18.2-SNAPSHOT.92",
+  "name" : "email",
+  "requires" : [ {
+    "id" : "configuration",
+    "version" : "2.0"
+  } ],
+  "provides" : [ {
+    "id" : "email",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/email",
+      "permissionsRequired" : [ "email.message.post" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/email",
+      "permissionsRequired" : [ "email.message.collection.get" ]
+    } ]
+  }, {
+    "id" : "delayedTasks",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/delayedTask/expiredMessages",
+      "permissionsRequired" : [ "email.message.delete" ]
+    } ]
+  }, {
+    "id" : "smtpConfiguration",
+    "version" : "0.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/smtp-configuration",
+      "permissionsRequired" : [ "email.smtp-configuration.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/smtp-configuration/{smtpConfigurationId}",
+      "permissionsRequired" : [ "email.smtp-configuration.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/smtp-configuration",
+      "permissionsRequired" : [ "email.smtp-configuration.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/smtp-configuration/{smtpConfigurationId}",
+      "permissionsRequired" : [ "email.smtp-configuration.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/smtp-configuration/{smtpConfigurationId}",
+      "permissionsRequired" : [ "email.smtp-configuration.item.delete" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/delayedTask/expiredMessages",
+      "unit" : "minute",
+      "delay" : "30"
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/delayedTask/retryFailedEmails",
+      "unit" : "minute",
+      "delay" : "5",
+      "modulePermissions" : [ "configuration.entries.collection.get", "configuration.entries.item.delete" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "email.message.post",
+    "displayName" : "message - send email notifications",
+    "description" : "send email notifications"
+  }, {
+    "permissionName" : "email.message.collection.get",
+    "displayName" : "get email messages",
+    "description" : "get all email messages by query"
+  }, {
+    "permissionName" : "email.message.delete",
+    "displayName" : "delete email message",
+    "description" : "delete email messages by expiration date or status"
+  }, {
+    "permissionName" : "email.message.all",
+    "displayName" : "email entries - all permissions",
+    "description" : "Entire set of permissions needed to use the email module",
+    "subPermissions" : [ "email.message.post", "email.message.collection.get", "email.message.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "email.smtp-configuration.collection.get",
+    "displayName" : "get SMTP configurations",
+    "description" : "get configuration of the SMTP server"
+  }, {
+    "permissionName" : "email.smtp-configuration.item.get",
+    "displayName" : "get SMTP configuration",
+    "description" : "get configuration of the SMTP server"
+  }, {
+    "permissionName" : "email.smtp-configuration.item.post",
+    "displayName" : "create SMTP configuration",
+    "description" : "create configuration of the SMTP server"
+  }, {
+    "permissionName" : "email.smtp-configuration.item.put",
+    "displayName" : "update SMTP configuration",
+    "description" : "update configuration of the SMTP server"
+  }, {
+    "permissionName" : "email.smtp-configuration.item.delete",
+    "displayName" : "delete SMTP configuration",
+    "description" : "delete configuration of the SMTP server"
+  }, {
+    "permissionName" : "email.smtp-configuration.all",
+    "displayName" : "SMTP configuration - all permissions",
+    "description" : "Entire set of permissions needed to manage SMTP configuration",
+    "subPermissions" : [ "email.smtp-configuration.collection.get", "email.smtp-configuration.item.get", "email.smtp-configuration.item.post", "email.smtp-configuration.item.put", "email.smtp-configuration.item.delete" ],
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-email:1.18.2-SNAPSHOT.92",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
