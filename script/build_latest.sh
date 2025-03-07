@@ -220,9 +220,9 @@ build_latest_verify_files() {
 
       # Prevent jq from printing JSON if /dev/null exists when not debugging.
       if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
-        jq -M '.[]' ${i}
+        cat ${i} | jq
       else
-        jq -M '.[]' >> /dev/null
+        cat ${i} | jq >> /dev/null
       fi
 
       if [[ ${?} -ne 0 ]] ; then
