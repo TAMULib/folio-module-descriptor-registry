@@ -11,7 +11,7 @@
 #    1) (optional) A message to use for the Git commit.
 #
 #  Environment Variables:
-#    SYNC_SNAPSHOT_DEBUG:   Enable debug verbosity, any non-empty string is enables this.
+#    SYNC_SNAPSHOT_DEBUG:   Enable debug verbosity, any non-empty string enables this.
 #    SYNC_SNAPSHOT_MESSAGE: Specify a custom message to use for the commit.
 #    SYNC_SNAPSHOT_PATH:    Designate a path in which to analyze (default is an empty string, which means current directory).
 #    SYNC_SNAPSHOT_RESULT:  The file name to write the results of this script to.

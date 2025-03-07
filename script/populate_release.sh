@@ -13,10 +13,10 @@
 #    2) (optional) The Flower release name, such as "quesnelia" or "snapshot", used to create the destination directory.
 #
 #  Environment Variables:
-#    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string is enables this.
+#    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string enables this.
 #    POPULATE_RELEASE_DESTINATION:     Destination parent directory.
 #    POPULATE_RELEASE_FILE:            The name of the install.json file as it is stored locally after GET fetching.
-#    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing install.json file without GET fetching, any non-empty string is enables this.
+#    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing install.json file without GET fetching, any non-empty string enables this.
 #    POPULATE_RELEASE_FLOWER:          The Flower release name; If specified, then the associated parameter is ignored.
 #    POPULATE_RELEASE_REGISTRY:        The URL to GET the module descriptor from for some specific module version.
 #    POPULATE_RELEASE_REPOSITORY:      The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
