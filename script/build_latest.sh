@@ -88,15 +88,17 @@ build_latest_load_environment() {
   fi
 
   if [[ ${BUILD_LATEST_IGNORE} != "" ]] ; then
-    file=$(cat ${BUILD_LATEST_IGNORE} | sed -e 's|^\s*||' -e 's|\s*$||')
+    if [[ -f ${BUILD_LATEST_IGNORE} ]] ; then
+      file=$(cat ${BUILD_LATEST_IGNORE} | sed -e 's|^\s*||' -e 's|\s*$||')
 
-    if [[ ${file} != "" ]] ; then
-      for i in ${file} ; do
-        ignore="${ignore}${i} "
-      done
+      if [[ ${file} != "" ]] ; then
+        for i in ${file} ; do
+          ignore="${ignore}${i} "
+        done
+      fi
+
+      file=
     fi
-
-    file=
   fi
 
   # Load files from the command line parameters.
