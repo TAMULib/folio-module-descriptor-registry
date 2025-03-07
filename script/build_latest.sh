@@ -60,9 +60,9 @@ build_latest_load_environment() {
     elif [[ ${BUILD_LATEST_DEBUG} == "json_only" ]] ; then
       debug=""
       debug_json="y"
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "_only") != "" ]] ; then
       debug=""
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
       debug_json="y"
     fi
   fi
