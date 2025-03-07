@@ -1,5 +1,5 @@
 name: Build Github Pages
-run-name: Build Github Pages by @${{ github.actor }}
+run-name: Build Github Pages using registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
 
 on:
   push:
@@ -7,8 +7,20 @@ on:
       - snapshot
 
   workflow_call:
+    inputs:
+      registry_branch:
+        description: 'Branch name to checkout the registry from.'
+        required: true
+        type: string
+        default: 'snapshot'
 
   workflow_dispatch:
+    inputs:
+      registry_branch:
+        description: 'Branch name to checkout the registry from.'
+        required: true
+        type: string
+        default: 'snapshot'
 
 jobs:
   build_github_pages:
@@ -21,7 +33,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: snapshot
+          ref: ${{ inputs.registry_branch }}
 
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v4.0.0
