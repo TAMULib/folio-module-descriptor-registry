@@ -13,7 +13,7 @@
 #    *) A list of install.json file names to parse (order sensative).
 #
 #  Environment Variables:
-#    BUILD_LATEST_DEBUG:  Enable debug verbosity, any non-empty string is enables this.
+#    BUILD_LATEST_DEBUG:  Enable debug verbosity, any non-empty string enables this.
 #    BUILD_LATEST_FILES:  A list of files to build (applied before the command line arguments).
 #    BUILD_LATEST_IGNORE: A path to a space and new line separated file (such as "setting/ignore.txt") representing module names to ignore.
 #    BUILD_LATEST_PATH:   The destination path to write to.
