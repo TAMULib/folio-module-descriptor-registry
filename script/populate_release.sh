@@ -6,6 +6,7 @@
 #   - bash
 #   - curl
 #   - grep
+#   - jq
 #   - sed
 #
 #  Parameters:
@@ -215,7 +216,7 @@ pop_rel_prepare_releases() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ -f ${file} ]] ; then
-    releases=$(grep -sh '"id" : "' ${file} | sed -e 's|^.*"id" : "||g' -e 's|",$||g')
+    releases=$(jq -M '.[].id' ${file} | sed -e 's|"||g')
   fi
 
   if [[ ! -d ${destination}${flower}/ ]] ; then

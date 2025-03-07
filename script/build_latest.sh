@@ -157,7 +157,7 @@ build_latest_operate() {
 
   for i in ${files} ; do
 
-    releases=$(grep -sh '"id" : "' ${i} | sed -e 's|^.*"id" : "||g' -e 's|",$||g')
+    releases=$(jq -M '.[].id' ${i} | sed -e 's|"||g')
 
     for j in ${releases} ; do
 
@@ -218,9 +218,9 @@ build_latest_verify_files() {
 
       # Prevent jq from printing JSON if /dev/null exists when not debugging.
       if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
-        cat ${i} | jq
+        jq -M '.[]' ${i}
       else
-        cat ${i} | jq >> /dev/null
+        jq -M '.[]' >> /dev/null
       fi
 
       if [[ ${?} -ne 0 ]] ; then
