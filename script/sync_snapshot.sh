@@ -39,44 +39,7 @@ main() {
 
   local -i result=0
 
-  if [[ ${1} != "" ]] ; then
-    message=${1}
-  fi
-
-  if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
-    debug="-v"
-
-    if [[ ${SYNC_SNAPSHOT_DEBUG} == "git" ]] ; then
-      debug_git="y"
-    elif [[ ${SYNC_SNAPSHOT_DEBUG} == "git_only" ]] ; then
-      debug=""
-      debug_git="y"
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
-      debug=""
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "\<git\>") != "" ]] ; then
-      debug_git="y"
-    fi
-  fi
-
-  if [[ ${SYNC_SNAPSHOT_MESSAGE} != "" ]] ; then
-    message="${SYNC_SNAPSHOT_MESSAGE}"
-  fi
-
-  if [[ ${SYNC_SNAPSHOT_PATH} != "" ]] ; then
-    path="${SYNC_SNAPSHOT_PATH}"
-  fi
-
-  if [[ ${SYNC_SNAPSHOT_SIGN} == "yes" ]] ; then
-    signoff="--no-signoff"
-  elif [[ ${SYNC_SNAPSHOT_SIGN} == "no" ]] ; then
-    signoff="--signoff"
-  fi
-
-  if [[ ${path} != "" ]] ; then
-    cd ${path}
-
-    sync_snap_handle_result "${p_e}Failed (with system code ${result}) to change to path: ${path} ."
-  fi
+  sync_snap_load_environment
 
   sync_snap_determine
 
@@ -155,6 +118,48 @@ sync_snap_handle_result_git() {
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${p_e}Git failed (with system code ${result}) when ${1} changes."
+  fi
+}
+
+sync_snap_load_environment() {
+
+  if [[ ${1} != "" ]] ; then
+    message=${1}
+  fi
+
+  if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
+    debug="-v"
+
+    if [[ ${SYNC_SNAPSHOT_DEBUG} == "git" ]] ; then
+      debug_git="y"
+    elif [[ ${SYNC_SNAPSHOT_DEBUG} == "git_only" ]] ; then
+      debug=""
+      debug_git="y"
+    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
+      debug=""
+    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "\<git\>") != "" ]] ; then
+      debug_git="y"
+    fi
+  fi
+
+  if [[ ${SYNC_SNAPSHOT_MESSAGE} != "" ]] ; then
+    message="${SYNC_SNAPSHOT_MESSAGE}"
+  fi
+
+  if [[ ${SYNC_SNAPSHOT_PATH} != "" ]] ; then
+    path="${SYNC_SNAPSHOT_PATH}"
+  fi
+
+  if [[ ${SYNC_SNAPSHOT_SIGN} == "yes" ]] ; then
+    signoff="--no-signoff"
+  elif [[ ${SYNC_SNAPSHOT_SIGN} == "no" ]] ; then
+    signoff="--signoff"
+  fi
+
+  if [[ ${path} != "" ]] ; then
+    cd ${path}
+
+    sync_snap_handle_result "${p_e}Failed (with system code ${result}) to change to path: ${path} ."
   fi
 }
 

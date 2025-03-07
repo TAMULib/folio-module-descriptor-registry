@@ -19,10 +19,25 @@ The Module Descriptors for each release are found within the `release/` subdirec
 This repository provides additional scripts that may help facilitate the generation of the Module Descriptors.
 
 
+## Build Latest
+
+The **Build Latest** scripts provides a simple but automated way to create module descriptor symbolic links referencing the latest version.
+This script takes a simple approach of creating a symoblic link to the version specified by the given `install.json` files in the order in which they appear.
+
+The order in which the files are passed determines the order (left to right) in which overwrities of existing symbolic links are performed.
+The default behavior is to use the "-latest" in place of the version suffix.
+
+View the documentation within the `build_latest.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+BUILD_LATEST_PATH="release/snapshot" bash script/build_latest.sh install.json additional.json
+```
+
 ### Populate Release
 
 The **Populate Release** script helps automate building a list of module versions based on a specific flower release.
-This release is then used to fetch all of the available module descriptors from an upstream source, such as those found on the **FOLIO Registry**.
+This release is then used to fetch all of the available module descriptors from an upstream source (an `install.json` file), such as those found on the **FOLIO Registry**.
 
 This script is designed to accept environment variables, thereby allowing for easier integration with automation tools such as Docker.
 
