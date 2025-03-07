@@ -79,9 +79,9 @@ sync_snap_determine() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  sync_snap_print_git_debug "Determining" "git status --porcelain --untracked-files | grep '.*' -sho"
+  sync_snap_print_git_debug "Determining" "git status --porcelain --untracked-files"
 
-  changes=$(git status --porcelain --untracked-files | grep '.*' -sho)
+  changes=$(git status --porcelain --untracked-files)
 
   if [[ ${changes} != "" ]] ; then
     updated="updates"
