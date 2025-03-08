@@ -1,0 +1,352 @@
+{
+  "id" : "mod-erm-usage-5.1.0-SNAPSHOT.210",
+  "name" : "erm-usage",
+  "provides" : [ {
+    "id" : "usage-data-providers",
+    "version" : "3.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/usage-data-providers",
+      "permissionsRequired" : [ "usagedataproviders.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/usage-data-providers/{id}",
+      "permissionsRequired" : [ "usagedataproviders.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/usage-data-providers",
+      "permissionsRequired" : [ "usagedataproviders.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/usage-data-providers/{id}",
+      "permissionsRequired" : [ "usagedataproviders.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/usage-data-providers/{id}",
+      "permissionsRequired" : [ "usagedataproviders.item.delete" ]
+    } ]
+  }, {
+    "id" : "aggregator-settings",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/aggregator-settings",
+      "permissionsRequired" : [ "aggregatorsettings.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/aggregator-settings/{id}",
+      "permissionsRequired" : [ "aggregatorsettings.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/aggregator-settings",
+      "permissionsRequired" : [ "aggregatorsettings.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/aggregator-settings/{id}",
+      "permissionsRequired" : [ "aggregatorsettings.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/aggregator-settings/{id}",
+      "permissionsRequired" : [ "aggregatorsettings.item.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/aggregator-settings/{id}",
+      "permissionsRequired" : [ "aggregatorsettings.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/aggregator-settings/{id}/exportcredentials",
+      "permissionsRequired" : [ "aggregatorsettings.exportcredentials.item.get" ]
+    } ]
+  }, {
+    "id" : "counter-reports",
+    "version" : "4.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports",
+      "permissionsRequired" : [ "counterreports.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/{id}",
+      "permissionsRequired" : [ "counterreports.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/{id}/download",
+      "permissionsRequired" : [ "counterreports.download.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/counter-reports",
+      "permissionsRequired" : [ "counterreports.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/counter-reports/{id}",
+      "permissionsRequired" : [ "counterreports.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/counter-reports/{id}",
+      "permissionsRequired" : [ "counterreports.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/sorted/{udpId}",
+      "permissionsRequired" : [ "counterreports.sorted.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/export/{id}",
+      "permissionsRequired" : [ "counterreports.export.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/export/provider/{id}/report/{name}/version/{version}/from/{begin}/to/{end}",
+      "permissionsRequired" : [ "counterreports.export.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/counter-reports/multipartupload/provider/{id}",
+      "permissionsRequired" : [ "counterreports.upload.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/errors/codes",
+      "permissionsRequired" : [ "counterreports.errorcodes.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/reports/types",
+      "permissionsRequired" : [ "counterreports.reporttypes.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/counter-reports/reports/releases",
+      "permissionsRequired" : [ "counterreports.reportreleases.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/counter-reports/reports/delete",
+      "permissionsRequired" : [ "counterreports.collection.delete" ]
+    } ]
+  }, {
+    "id" : "custom-reports",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/custom-reports",
+      "permissionsRequired" : [ "customreports.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/custom-reports/{id}",
+      "permissionsRequired" : [ "customreports.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/custom-reports",
+      "permissionsRequired" : [ "customreports.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/custom-reports/{id}",
+      "permissionsRequired" : [ "customreports.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/custom-reports/{id}",
+      "permissionsRequired" : [ "customreports.item.delete" ]
+    } ]
+  }, {
+    "id" : "erm-usage-files",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/erm-usage/files/{id}",
+      "permissionsRequired" : [ "erm-usage.files.item.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/erm-usage/files/{id}",
+      "permissionsRequired" : [ "erm-usage.files.item.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/erm-usage/files",
+      "permissionsRequired" : [ "erm-usage.files.item.post" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "usagedataproviders.collection.get",
+    "displayName" : "usage data providers collection get",
+    "description" : "Get a collection of usage data providers"
+  }, {
+    "permissionName" : "usagedataproviders.item.get",
+    "displayName" : "usage data providers item get",
+    "description" : "Get a single usage data provider"
+  }, {
+    "permissionName" : "usagedataproviders.item.post",
+    "displayName" : "usage data providers item post",
+    "description" : "Create a new usage data provider"
+  }, {
+    "permissionName" : "usagedataproviders.item.put",
+    "displayName" : "usage data providers item put",
+    "description" : "Edit an usage data provider"
+  }, {
+    "permissionName" : "usagedataproviders.item.delete",
+    "displayName" : "usage data providers item delete",
+    "description" : "Delete an usage data provider"
+  }, {
+    "permissionName" : "aggregatorsettings.collection.get",
+    "displayName" : "aggregator settings collection get",
+    "description" : "Get a collection of aggregator setting"
+  }, {
+    "permissionName" : "aggregatorsettings.item.get",
+    "displayName" : "aggregator settings item get",
+    "description" : "Get a single aggregator setting"
+  }, {
+    "permissionName" : "aggregatorsettings.item.post",
+    "displayName" : "aggregator settings item post",
+    "description" : "Create a new aggregator setting"
+  }, {
+    "permissionName" : "aggregatorsettings.item.put",
+    "displayName" : "aggregator settings item put",
+    "description" : "Edit an aggregator setting"
+  }, {
+    "permissionName" : "aggregatorsettings.item.delete",
+    "displayName" : "aggregator settings item delete",
+    "description" : "Delete an aggregator setting"
+  }, {
+    "permissionName" : "aggregatorsettings.exportcredentials.item.get",
+    "displayName" : "aggregator settings export credentials item get",
+    "description" : "Export credentials for an aggregator setting"
+  }, {
+    "permissionName" : "counterreports.collection.delete",
+    "displayName" : "counter reports collection delete",
+    "description" : "Delete a collection of counter reports"
+  }, {
+    "permissionName" : "counterreports.collection.get",
+    "displayName" : "counter reports collection get",
+    "description" : "Get a collection of counter reports"
+  }, {
+    "permissionName" : "counterreports.errorcodes.collection.get",
+    "displayName" : "counter reports error codes collection get",
+    "description" : "Get a collection of counter report error codes"
+  }, {
+    "permissionName" : "counterreports.export.collection.get",
+    "displayName" : "counter reports export collection get",
+    "description" : "Export a collection of counter reports"
+  }, {
+    "permissionName" : "counterreports.export.item.get",
+    "displayName" : "counter reports export item get",
+    "description" : "Export a counter report"
+  }, {
+    "permissionName" : "counterreports.download.item.get",
+    "displayName" : "counter reports download item get",
+    "description" : "Download a counter report"
+  }, {
+    "permissionName" : "counterreports.item.get",
+    "displayName" : "counter reports item get",
+    "description" : "Get a single counter report"
+  }, {
+    "permissionName" : "counterreports.item.post",
+    "displayName" : "counter reports item post",
+    "description" : "Create a new counter report"
+  }, {
+    "permissionName" : "counterreports.item.put",
+    "displayName" : "counter reports item put",
+    "description" : "Edit a counter report"
+  }, {
+    "permissionName" : "counterreports.item.delete",
+    "displayName" : "counter reports item delete",
+    "description" : "Delete a counter report"
+  }, {
+    "permissionName" : "counterreports.reportreleases.collection.get",
+    "displayName" : "counter reports report releases collection get",
+    "description" : "Get a counter report report releases collection"
+  }, {
+    "permissionName" : "counterreports.reporttypes.collection.get",
+    "displayName" : "counter reports report types collection get",
+    "description" : "Get a counter report report types collection"
+  }, {
+    "permissionName" : "counterreports.sorted.collection.get",
+    "displayName" : "counter reports sorted collection get",
+    "description" : "Get a sorted counter report collection for a provider"
+  }, {
+    "permissionName" : "counterreports.upload.item.post",
+    "displayName" : "counter reports upload item post",
+    "description" : "Upload a counter report"
+  }, {
+    "permissionName" : "customreports.collection.get",
+    "displayName" : "custom reports collection get",
+    "description" : "Get a collection of custom reports"
+  }, {
+    "permissionName" : "customreports.item.get",
+    "displayName" : "custom reports item get",
+    "description" : "Get a single custom report"
+  }, {
+    "permissionName" : "customreports.item.post",
+    "displayName" : "custom reports item post",
+    "description" : "Create a new custom report"
+  }, {
+    "permissionName" : "customreports.item.put",
+    "displayName" : "custom reports item put",
+    "description" : "Edit a custom report"
+  }, {
+    "permissionName" : "customreports.item.delete",
+    "displayName" : "custom reports item delete",
+    "description" : "Delete a custom report"
+  }, {
+    "permissionName" : "erm-usage.files.item.get",
+    "displayName" : "erm-usage files item get",
+    "description" : "Get a single file"
+  }, {
+    "permissionName" : "erm-usage.files.item.post",
+    "displayName" : "erm-usage files item post",
+    "description" : "Post a single file"
+  }, {
+    "permissionName" : "erm-usage.files.item.delete",
+    "displayName" : "erm-usage files item delete",
+    "description" : "Delete a single file"
+  }, {
+    "permissionName" : "eusage.all",
+    "displayName" : "eusage all",
+    "description" : "All permissions for the mod-erm-usage module",
+    "subPermissions" : [ "usagedataproviders.collection.get", "usagedataproviders.item.get", "usagedataproviders.item.post", "usagedataproviders.item.put", "usagedataproviders.item.delete", "aggregatorsettings.collection.get", "aggregatorsettings.item.get", "aggregatorsettings.item.post", "aggregatorsettings.item.put", "aggregatorsettings.item.delete", "aggregatorsettings.exportcredentials.item.get", "counterreports.collection.delete", "counterreports.collection.get", "counterreports.errorcodes.collection.get", "counterreports.export.collection.get", "counterreports.export.item.get", "counterreports.download.item.get", "counterreports.item.get", "counterreports.item.post", "counterreports.item.put", "counterreports.item.delete", "counterreports.reportreleases.collection.get", "counterreports.reporttypes.collection.get", "counterreports.sorted.collection.get", "counterreports.upload.item.post", "customreports.collection.get", "customreports.item.get", "customreports.item.post", "customreports.item.put", "customreports.item.delete", "erm-usage.files.item.get", "erm-usage.files.item.post", "erm-usage.files.item.delete" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-erm-usage:5.1.0-SNAPSHOT.210",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 2147483648,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
