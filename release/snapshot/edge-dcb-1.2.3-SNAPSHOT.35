@@ -1,0 +1,31 @@
+{
+  "id" : "edge-dcb-1.2.3-SNAPSHOT.35",
+  "name" : "Edge DCB API",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "transactions",
+    "version" : "1.0"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-dcb:1.2.3-SNAPSHOT.35",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Drequest_timeout_ms=7200000"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
