@@ -6,6 +6,7 @@
 #   - bash
 #   - curl
 #   - grep
+#   - jq
 #   - sed
 #
 #  Parameters:
@@ -13,10 +14,10 @@
 #    2) (optional) The Flower release name, such as "quesnelia" or "snapshot", used to create the destination directory.
 #
 #  Environment Variables:
-#    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string is enables this.
+#    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string enables this.
 #    POPULATE_RELEASE_DESTINATION:     Destination parent directory.
 #    POPULATE_RELEASE_FILE:            The name of the install.json file as it is stored locally after GET fetching.
-#    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing install.json file without GET fetching, any non-empty string is enables this.
+#    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing install.json file without GET fetching, any non-empty string enables this.
 #    POPULATE_RELEASE_FLOWER:          The Flower release name; If specified, then the associated parameter is ignored.
 #    POPULATE_RELEASE_REGISTRY:        The URL to GET the module descriptor from for some specific module version.
 #    POPULATE_RELEASE_REPOSITORY:      The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
@@ -53,64 +54,7 @@ main() {
 
   local -i result=0
 
-  if [[ ${1} != "" ]] ; then
-    target=$(echo ${1} | sed -e 's|/||g')
-  fi
-
-  if [[ ${2} != "" ]] ; then
-    flower=$(echo ${2} | sed -e 's|/||g')
-  fi
-
-  if [[ ${POPULATE_RELEASE_DEBUG} != "" ]] ; then
-    debug="-v"
-    debug_curl=""
-
-    if [[ ${POPULATE_RELEASE_DEBUG} == "curl" ]] ; then
-      debug_curl="y"
-    elif [[ ${POPULATE_RELEASE_DEBUG} == "curl_only" ]] ; then
-      debug=""
-      debug_curl="y"
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
-      debug=""
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
-      debug_curl="y"
-    fi
-  fi
-
-  if [[ ${POPULATE_RELEASE_DESTINATION} != "" ]] ; then
-    destination=$(echo ${POPULATE_RELEASE_DESTINATION} | sed -e 's|/*$|/|g')
-  fi
-
-  if [[ ${POPULATE_RELEASE_FILE} != "" ]] ; then
-    file=$(echo ${POPULATE_RELEASE_FILE} | sed -e 's|/*$||')
-  fi
-
-  if [[ ${POPULATE_RELEASE_REGISTRY} != "" ]] ; then
-    registry=$(echo ${POPULATE_RELEASE_REGISTRY} | sed -e 's|/*$|/|g')
-  fi
-
-  if [[ ${POPULATE_RELEASE_TARGET} != "" ]] ; then
-    target=$(echo ${POPULATE_RELEASE_TARGET} | sed -e 's|/||g')
-  fi
-
-  if [[ ${POPULATE_RELEASE_FLOWER} != "" ]] ; then
-    flower=$(echo ${POPULATE_RELEASE_FLOWER} | sed -e 's|/||g')
-  fi
-
-  if [[ ${POPULATE_RELEASE_REPOSITORY} != "" ]] ; then
-    repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e 's|/*$|/|g')
-  fi
-
-  # May be empty, so use "-v" test rather than != "".
-  if [[ -v POPULATE_RELEASE_REPOSITORY_PART ]] ; then
-    part=${POPULATE_RELEASE_REPOSITORY_PART}
-  fi
-
-  if [[ ${part} != "" ]] ; then
-    part="refs/$(echo ${part} | sed -e 's|/*$|/|g')"
-  fi
-
-  source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${target}/${file}"
+  pop_rel_load_environment
 
   if [[ ${POPULATE_RELEASE_FILE_REUSE} != "" ]] ; then
     if [[ ! -f ${file} ]] ; then
@@ -132,6 +76,8 @@ main() {
 }
 
 pop_rel_curl_releases() {
+  local release=
+  local version=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -142,6 +88,11 @@ pop_rel_curl_releases() {
   fi
 
   for i in ${releases} ; do
+
+    # Skip any files without the dash in the name used to provide a version.
+    if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then
+      continue
+    fi
 
     if [[ -f ${destination}${flower}/${i} ]] ; then
       if [[ ${debug} != "" ]] ; then
@@ -169,6 +120,68 @@ pop_rel_curl_releases() {
   done
 
   echo "Done: Module descriptors fetched as needed."
+}
+
+pop_rel_load_environment() {
+
+  if [[ ${1} != "" ]] ; then
+    target=$(echo ${1} | sed -e 's|/||g')
+  fi
+
+  if [[ ${2} != "" ]] ; then
+    flower=$(echo ${2} | sed -e 's|/||g')
+  fi
+
+  if [[ ${POPULATE_RELEASE_DEBUG} != "" ]] ; then
+    debug="-v"
+    debug_curl=""
+
+    if [[ ${POPULATE_RELEASE_DEBUG} == "curl" ]] ; then
+      debug_curl="y"
+    elif [[ ${POPULATE_RELEASE_DEBUG} == "curl_only" ]] ; then
+      debug=""
+      debug_curl="y"
+    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
+      debug=""
+    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
+      debug_curl="y"
+    fi
+  fi
+
+  if [[ ${POPULATE_RELEASE_DESTINATION} != "" ]] ; then
+    destination=$(echo ${POPULATE_RELEASE_DESTINATION} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  fi
+
+  if [[ ${POPULATE_RELEASE_FILE} != "" ]] ; then
+    file=$(echo ${POPULATE_RELEASE_FILE} | sed -e 's|//*|/|g' -e 's|/*$||')
+  fi
+
+  if [[ ${POPULATE_RELEASE_REGISTRY} != "" ]] ; then
+    registry=$(echo ${POPULATE_RELEASE_REGISTRY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  fi
+
+  if [[ ${POPULATE_RELEASE_TARGET} != "" ]] ; then
+    target=$(echo ${POPULATE_RELEASE_TARGET} | sed -e 's|/||g')
+  fi
+
+  if [[ ${POPULATE_RELEASE_FLOWER} != "" ]] ; then
+    flower=$(echo ${POPULATE_RELEASE_FLOWER} | sed -e 's|/||g')
+  fi
+
+  if [[ ${POPULATE_RELEASE_REPOSITORY} != "" ]] ; then
+    repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  fi
+
+  # May be empty, so use "-v" test rather than != "".
+  if [[ -v POPULATE_RELEASE_REPOSITORY_PART ]] ; then
+    part=${POPULATE_RELEASE_REPOSITORY_PART}
+  fi
+
+  if [[ ${part} != "" ]] ; then
+    part="refs/$(echo ${part} | sed -e 's|//*|/|g' -e 's|/*$|/|g')"
+  fi
+
+  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${target}/${file}"
 }
 
 pop_rel_prepare_source() {
@@ -203,7 +216,7 @@ pop_rel_prepare_releases() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ -f ${file} ]] ; then
-    releases=$(grep -shr '"id" : "' ${file} | sed -e 's|^.*"id" : "||g' -e 's|",$||g')
+    releases=$(jq -M '.[].id' ${file} | sed -e 's|"||g')
   fi
 
   if [[ ! -d ${destination}${flower}/ ]] ; then

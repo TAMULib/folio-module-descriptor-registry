@@ -68,6 +68,11 @@ jobs:
         working-directory: populate
         run: |
           bash ../scripts/script/populate_release.sh
+      - id: build_latest
+        name: Build Latest Version Links
+        working-directory: populate
+        run: |
+          BUILD_LATEST_IGNORE=setting/ignore.txt BUILD_LATEST_PATH=release/snapshot bash ../scripts/script/build_latest.sh
       - id: synchronize_snapshot
         name: Synchronize Snapshot
         working-directory: populate
