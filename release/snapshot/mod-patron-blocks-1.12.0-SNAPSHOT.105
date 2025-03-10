@@ -1,0 +1,279 @@
+{
+  "id" : "mod-patron-blocks-1.12.0-SNAPSHOT.105",
+  "name" : "Patron Blocks Module",
+  "requires" : [ {
+    "id" : "pubsub-event-types",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-publishers",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-subscribers",
+    "version" : "0.1"
+  }, {
+    "id" : "loan-storage",
+    "version" : "7.0"
+  }, {
+    "id" : "users",
+    "version" : "15.1 16.0"
+  } ],
+  "provides" : [ {
+    "id" : "automated-patron-blocks",
+    "version" : "0.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/automated-patron-blocks/{userId}",
+      "permissionsRequired" : [ "patron-blocks.automated-patron-blocks.collection.get" ],
+      "modulePermissions" : [ "pubsub.event-types.post", "pubsub.publishers.post", "pubsub.subscribers.post", "users.item.get" ]
+    } ]
+  }, {
+    "id" : "user-summary",
+    "version" : "0.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/user-summary/{userId}",
+      "permissionsRequired" : [ "patron-blocks.user-summary.item.get" ]
+    } ]
+  }, {
+    "id" : "patron-blocks-event-handlers",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/fee-fine-balance-changed",
+      "permissionsRequired" : [ "patron-blocks.handlers.fee-fine-balance-changed.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/item-checked-out",
+      "permissionsRequired" : [ "patron-blocks.handlers.item-checked-out.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/item-checked-in",
+      "permissionsRequired" : [ "patron-blocks.handlers.item-checked-in.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/item-declared-lost",
+      "permissionsRequired" : [ "patron-blocks.handlers.item-declared-lost.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/item-aged-to-lost",
+      "permissionsRequired" : [ "patron-blocks.handlers.item-aged-to-lost.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/item-claimed-returned",
+      "permissionsRequired" : [ "patron-blocks.handlers.item-claimed-returned.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/loan-due-date-changed",
+      "permissionsRequired" : [ "patron-blocks.handlers.loan-due-date-changed.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/handlers/loan-closed",
+      "permissionsRequired" : [ "patron-blocks.handlers.loan-closed.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/synchronization/job",
+      "permissionsRequired" : [ "patron-blocks.synchronization.job.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/automated-patron-blocks/synchronization/job/{syncJobId}",
+      "permissionsRequired" : [ "patron-blocks.synchronization.job.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "pubsub.event-types.post", "pubsub.publishers.post", "pubsub.subscribers.post" ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "patron-block-conditions",
+    "version" : "0.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/patron-block-conditions",
+      "permissionsRequired" : [ "patron-blocks.patron-block-conditions.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/patron-block-conditions/{id}",
+      "permissionsRequired" : [ "patron-blocks.patron-block-conditions.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/patron-block-conditions/{id}",
+      "permissionsRequired" : [ "patron-blocks.patron-block-conditions.item.put" ]
+    } ]
+  }, {
+    "id" : "patron-block-limits",
+    "version" : "0.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/patron-block-limits",
+      "permissionsRequired" : [ "patron-blocks.patron-block-limits.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/patron-block-limits/{id}",
+      "permissionsRequired" : [ "patron-blocks.patron-block-limits.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/patron-block-limits",
+      "permissionsRequired" : [ "patron-blocks.patron-block-limits.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/patron-block-limits/{id}",
+      "permissionsRequired" : [ "patron-blocks.patron-block-limits.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/patron-block-limits/{id}",
+      "permissionsRequired" : [ "patron-blocks.patron-block-limits.item.delete" ]
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/automated-patron-blocks/synchronization/start",
+      "unit" : "minute",
+      "delay" : "1",
+      "modulePermissions" : [ "patron-blocks.synchronization-run.post", "circulation-storage.loans.collection.get", "circulation-storage.loans.item.get", "accounts.collection.get", "accounts.item.get" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "patron-blocks.patron-block-conditions.collection.get",
+    "replaces" : [ "patron-block-conditions.collection.get" ],
+    "displayName" : "Patron block conditions - get patron block condition collection",
+    "description" : "Get patron block condition collection"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-conditions.item.get",
+    "replaces" : [ "patron-block-conditions.item.get" ],
+    "displayName" : "Patron block conditions - get patron block condition",
+    "description" : "Get patron block condition by id"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-conditions.item.put",
+    "replaces" : [ "patron-block-conditions.item.put" ],
+    "displayName" : "Patron block conditions - put patron block condition",
+    "description" : "Put patron block condition by id"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-limits.collection.get",
+    "replaces" : [ "patron-block-limits.collection.get" ],
+    "displayName" : "Patron block limits - get patron block limit collection",
+    "description" : "Get patron block limit collection"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-limits.item.get",
+    "replaces" : [ "patron-block-limits.item.get" ],
+    "displayName" : "Patron block limits - get patron block limit",
+    "description" : "Get patron block limit by id"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-limits.item.post",
+    "replaces" : [ "patron-block-limits.item.post" ],
+    "displayName" : "Patron block limits - post patron block limit",
+    "description" : "Create patron block limit"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-limits.item.put",
+    "replaces" : [ "patron-block-limits.item.put" ],
+    "displayName" : "Patron block limits - put patron block limit",
+    "description" : "Put patron block limit by id"
+  }, {
+    "permissionName" : "patron-blocks.patron-block-limits.item.delete",
+    "replaces" : [ "patron-block-limits.item.delete" ],
+    "displayName" : "Patron block limits - delete patron block limit",
+    "description" : "Delete patron block limit by id"
+  }, {
+    "permissionName" : "patron-blocks.automated-patron-blocks.collection.get",
+    "replaces" : [ "automated-patron-blocks.collection.get" ],
+    "displayName" : "Patron blocks - get blocks for patron",
+    "description" : "Get automated patron blocks by user ID"
+  }, {
+    "permissionName" : "patron-blocks.user-summary.item.get",
+    "replaces" : [ "user-summary.item.get" ],
+    "displayName" : "User summary - get UserSummary object",
+    "description" : "Get UserSummary object by user ID"
+  }, {
+    "permissionName" : "patron-blocks.synchronization.job.post",
+    "displayName" : "Synchronization job - post Synchronization job",
+    "description" : "Post Synchronization job"
+  }, {
+    "permissionName" : "patron-blocks.synchronization.job.get",
+    "replaces" : [ "patron-blocks.synchronization.job.get" ],
+    "displayName" : "Synchronization job - get Synchronization job by ID",
+    "description" : "Get Synchronization job"
+  }, {
+    "permissionName" : "patron-blocks.handlers.fee-fine-balance-changed.post",
+    "displayName" : "Patron blocks - post fee fine balance changed event",
+    "description" : "Post fee fine balance changed event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.item-checked-out.post",
+    "displayName" : "Patron blocks - post item checked out event",
+    "description" : "Post item checked out event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.item-checked-in.post",
+    "displayName" : "Patron blocks - post item checked in event",
+    "description" : "Post item checked in event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.item-declared-lost.post",
+    "displayName" : "Patron blocks - post item declared lost event",
+    "description" : "Post item declared lost event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.item-aged-to-lost.post",
+    "displayName" : "Patron blocks - post item aged to lost event",
+    "description" : "Post item aged to lost event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.item-claimed-returned.post",
+    "displayName" : "Patron blocks - post item claimed returned event",
+    "description" : "Post item claimed returned event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.loan-due-date-changed.post",
+    "displayName" : "Patron blocks - post loan due date changed event",
+    "description" : "Post loan due date changed event"
+  }, {
+    "permissionName" : "patron-blocks.handlers.loan-closed.post",
+    "displayName" : "Patron blocks - post loan closed event",
+    "description" : "Post loan closed event"
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-patron-blocks:1.12.0-SNAPSHOT.105",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id" : "mod-copycat-1.7.1-SNAPSHOT.104",
+  "name" : "copycat",
+  "requires" : [ {
+    "id" : "source-manager-job-executions",
+    "version" : "3.4"
+  }, {
+    "id" : "source-manager-records",
+    "version" : "2.0"
+  }, {
+    "id" : "source-storage-source-records",
+    "version" : "3.2"
+  } ],
+  "provides" : [ {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "copycat-imports",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/copycat/imports",
+      "permissionsRequired" : [ "copycat.imports.post" ],
+      "modulePermissions" : [ "change-manager.jobexecutions.post", "change-manager.jobExecutions.item.get", "change-manager.jobExecutions.children.collection.get", "change-manager.jobExecutions.jobProfile.item.put", "change-manager.records.post", "source-storage.source-records.collection.get" ]
+    } ]
+  }, {
+    "id" : "copycat-profiles",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/copycat/profiles",
+      "permissionsRequired" : [ "copycat.profiles.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/copycat/profiles",
+      "permissionsRequired" : [ "copycat.profiles.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/copycat/profiles/{id}",
+      "permissionsRequired" : [ "copycat.profiles.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/copycat/profiles/{id}",
+      "permissionsRequired" : [ "copycat.profiles.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/copycat/profiles/{id}",
+      "permissionsRequired" : [ "copycat.profiles.item.delete" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "copycat.imports.post",
+    "displayName" : "CopyCat - import records from remote resource",
+    "description" : "Import records from remote and source"
+  }, {
+    "permissionName" : "copycat.profiles.collection.get",
+    "displayName" : "CopyCat - get CopyCat profiles",
+    "description" : "Retrieve CopyCat profiles"
+  }, {
+    "permissionName" : "copycat.profiles.item.post",
+    "displayName" : "CopyCat - create CopyCat profile",
+    "description" : "Create CopyCat profile"
+  }, {
+    "permissionName" : "copycat.profiles.item.get",
+    "displayName" : "CopyCat - get CopyCat profile",
+    "description" : "Get single CopyCat profile"
+  }, {
+    "permissionName" : "copycat.profiles.item.put",
+    "displayName" : "CopyCat - update CopyCat profile",
+    "description" : "Update single CopyCat profile"
+  }, {
+    "permissionName" : "copycat.profiles.item.delete",
+    "displayName" : "CopyCat - delete CopyCat profile",
+    "description" : "Delete single CopyCat profile"
+  }, {
+    "permissionName" : "copycat.profiles.all",
+    "displayName" : "CopyCat - all profile operations",
+    "description" : "Allow all operations on CopyCat profiles",
+    "subPermissions" : [ "copycat.profiles.collection.get", "copycat.profiles.item.post", "copycat.profiles.item.get", "copycat.profiles.item.put", "copycat.profiles.item.delete" ]
+  }, {
+    "permissionName" : "copycat.all",
+    "displayName" : "CopyCat - all permissions",
+    "description" : "All permissions for CopyCat",
+    "subPermissions" : [ "copycat.profiles.all", "copycat.imports.post" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-copycat:1.7.1-SNAPSHOT.104",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 536870912,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
