@@ -1,31 +1,58 @@
 name: Synchronize Snapshot
-run-name: Synchronize Snapshot by @${{ github.actor }}
+run-name: Synchronize Snapshot using script branch ${{ inputs.script_branch }} and registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
 
 on:
   schedule:
     - cron: '0 0 */1 * *'
 
+  workflow_call:
+    inputs:
+      script_branch:
+        description: 'Branch name to checkout scripts from.'
+        required: true
+        type: string
+        default: 'master'
+      registry_branch:
+        description: 'Branch name to checkout the registry from.'
+        required: true
+        type: string
+        default: 'snapshot'
+
   workflow_dispatch:
+    inputs:
+      script_branch:
+        description: 'Branch name to checkout scripts from.'
+        required: true
+        type: string
+        default: 'master'
+      registry_branch:
+        description: 'Branch name to checkout the registry from.'
+        required: true
+        type: string
+        default: 'snapshot'
 
 jobs:
   synchronize_snapshot:
-    runs-on: ubuntu-latest
     name: Update Registry
+
     permissions:
       contents: write # To push the changes.
+
     outputs:
       sync_result: ${{ steps.synchronize_snapshot.outputs.sync_result }}
+
+    runs-on: self-hosted
     steps:
       - id: create_dirs
-        name: Create Working Directories
+        name: Clean and Create Working Directories
         run: |
-          mkdir scripts
-          mkdir populate
+          rm -Rf populate scripts
+          mkdir populate scripts
       - id: checkout_scripts
         name: Checkout Scripts
         uses: actions/checkout@v4
         with:
-          ref: master
+          ref: ${{ inputs.script_branch }}
           path: scripts
           sparse-checkout: |
             script/populate_release.sh
@@ -34,7 +61,7 @@ jobs:
         name: Checkout Registry
         uses: actions/checkout@v4
         with:
-          ref: snapshot
+          ref: ${{ inputs.registry_branch }}
           path: populate
       - id: populate_snapshot
         name: Populate Snapshot
@@ -55,3 +82,5 @@ jobs:
     needs: synchronize_snapshot
     if: needs.synchronize_snapshot.outputs.sync_result == 'updates'
     uses: ./.github/workflows/gh_pages.yml
+    with:
+      registry_branch: ${{ inputs.registry_branch }}
