@@ -1,0 +1,7 @@
+{
+  "id" : "folio_plugin-find-fund-4.0.10990000000014",
+  "name" : "Find and select funds plugin for Stripes",
+  "requires" : [ ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
