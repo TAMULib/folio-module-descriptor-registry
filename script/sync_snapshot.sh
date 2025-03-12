@@ -112,6 +112,7 @@ sync_snap_handle_result() {
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"
+    echo
   fi
 }
 
@@ -161,7 +162,7 @@ sync_snap_load_environment() {
   if [[ ${path} != "" ]] ; then
     cd ${path}
 
-    sync_snap_handle_result "${p_e}Failed (with system code ${result}) to change to path: ${path} ."
+    sync_snap_handle_result "${p_e}Failed (with system code ${?}) to change to path: ${path} ."
   fi
 }
 

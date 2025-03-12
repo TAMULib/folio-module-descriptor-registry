@@ -14,6 +14,7 @@
 #    2) (optional) The Flower release name, such as "quesnelia" or "snapshot", used to create the destination directory.
 #
 #  Environment Variables:
+#    POPULATE_RELEASE_CURL_FAIL:       Designate how to handle curl failures. This can be one of: "fail", "none", and "report" (default).
 #    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string enables this.
 #    POPULATE_RELEASE_DESTINATION:     Destination parent directory.
 #    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing JSON files without GET fetching, any non-empty string enables this.
@@ -33,18 +34,31 @@
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl_only" to only print the curl commands, disabling all other debugging (does not pass -v to curl).
 # Otherwise, any non-empty value will result in debug printing without the curl command.
 #
+# The POPULATE_RELEASE_CURL_FAIL designate the fail mode of either "fail" or "continue".
+#
+# When the fail mode is "fail", then the "--fail" parameter is passed to curl.
+# This should result in a failure on 404.
+#
+# When the fail mode is "none", then the "--fail" parameter is not passed to curl.
+# This can result in bad data in the release files (non JSON data) on any 4xx error, such as a 404.
+#
+# When the fail mode is "report", then the "--fail" parameter is passed to curl, but the errors are printed and the script continues to operate, ignoring the failure.
+# There should be no release file created.
+#
 
 main() {
   local debug=
   local debug_curl=
-  local registry="https://folio-registry.dev.folio.org/_/proxy/modules/"
   local destination="release/"
+  local curl_fail="--fail"
+  local fail_mode="report"
   local files="install.json eureka-platform.json"
-  local part="heads"
-  local target="snapshot"
   local flower="snapshot"
-  local repository="https://raw.githubusercontent.com/folio-org/platform-complete/"
+  local part="heads"
+  local registry="https://folio-registry.dev.folio.org/_/proxy/modules/"
   local releases=
+  local repository="https://raw.githubusercontent.com/folio-org/platform-complete/"
+  local target="snapshot"
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -94,6 +108,25 @@ pop_rel_load_environment() {
       debug=
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
       debug_curl="y"
+    fi
+  fi
+
+  if [[ ${POPULATE_RELEASE_CURL_FAIL} != "" ]] ; then
+    if [[ ${POPULATE_RELEASE_CURL_FAIL} == "fail" ]] ; then
+      curl_fail="--fail"
+      fail_mode="fail"
+    elif [[ ${POPULATE_RELEASE_CURL_FAIL} == "none" ]] ; then
+      curl_fail=
+      fail_mode="none"
+    elif [[ ${POPULATE_RELEASE_CURL_FAIL} == "report" ]] ; then
+      curl_fail="--fail"
+      fail_mode="report"
+    else
+      echo "${p_e}Unknown POPULATE_RELEASE_CURL_FAIL value: ${POPULATE_RELEASE_CURL_FAIL} ."
+
+      let result=1
+
+      return
     fi
   fi
 
@@ -220,11 +253,18 @@ pop_rel_process_files_releases_curl() {
       echo "Curl requesting Module Descriptor: ${i}."
     fi
 
-    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}"
+    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}"
 
-    curl -w '\n' ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
+    curl -w '\n' ${curl_fail} ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
 
-    pop_rel_handle_result "${p_e}Curl request failed (with system code ${result}) for: ${registry}${i} to ${destination}${flower}/${i}."
+    pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${registry}${i} to ${destination}${flower}/${i}."
+
+    if [[ ${result} -ne 0 && ${fail_mode} == "report" ]] ; then
+      # A 404 results in a 22 status code returned.
+      if [[ ${result} -eq 22 ]] ; then
+        let result=0
+      fi
+    fi
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
@@ -243,7 +283,7 @@ pop_rel_process_files_releases_prepare() {
   if [[ ! -d ${destination}${flower}/ ]] ; then
     mkdir ${debug} -p ${destination}${flower}/
 
-    pop_rel_handle_result "${p_e}Create directory failed (with system code ${result}) for destination: ${destination}${flower}/ ."
+    pop_rel_handle_result "${p_e}Create directory failed (with system code ${?}) for destination: ${destination}${flower}/ ."
   fi
 }
 
@@ -279,7 +319,7 @@ pop_rel_process_sources_prepare() {
   if [[ -e ${file} ]] ; then
     rm ${debug} -f ${file}
 
-    pop_rel_handle_result "${p_e}Create file failed (with system code ${result}) for install file: ${file} ."
+    pop_rel_handle_result "${p_e}Create file failed (with system code ${?}) for install file: ${file} ."
   fi
 }
 
@@ -287,11 +327,11 @@ pop_rel_process_sources_curl() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  pop_rel_print_curl_debug "Executing Package" "curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}"
+  pop_rel_print_curl_debug "Executing Package" "curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}"
 
-  curl -w '\n' ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
+  curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
 
-  pop_rel_handle_result "${p_e}Curl request failed (with system code ${result}) for: ${source} ."
+  pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${source} ."
 }
 
 pop_rel_handle_result() {
@@ -299,6 +339,7 @@ pop_rel_handle_result() {
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"
+    echo
   fi
 }
 

@@ -147,6 +147,7 @@ build_latest_handle_result() {
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"
+    echo
   fi
 }
 
