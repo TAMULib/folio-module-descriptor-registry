@@ -1,5 +1,5 @@
 name: Build Github Pages
-run-name: Build Github Pages using registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
+run-name: Build Github Pages using script branch ${{ inputs.script_branch }} and registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
 
 on:
   push:
