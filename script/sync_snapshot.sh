@@ -52,8 +52,10 @@ main() {
   if [[ ${result} -ne 0 ]] ; then
     updated="failure"
   elif [[ ${updated} == "none" ]] ; then
+    echo
     echo "Done: No changes to commit detected."
   else
+    echo
     echo "Done: Pushed detected changes."
   fi
 
@@ -106,7 +108,7 @@ sync_snap_push() {
 }
 
 sync_snap_handle_result() {
-  let result=$?
+  let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"
@@ -114,7 +116,7 @@ sync_snap_handle_result() {
 }
 
 sync_snap_handle_result_git() {
-  let result=$?
+  let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${p_e}Git failed (with system code ${result}) when ${1} changes."
@@ -133,10 +135,10 @@ sync_snap_load_environment() {
     if [[ ${SYNC_SNAPSHOT_DEBUG} == "git" ]] ; then
       debug_git="y"
     elif [[ ${SYNC_SNAPSHOT_DEBUG} == "git_only" ]] ; then
-      debug=""
+      debug=
       debug_git="y"
     elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
-      debug=""
+      debug=
     elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "\<git\>") != "" ]] ; then
       debug_git="y"
     fi

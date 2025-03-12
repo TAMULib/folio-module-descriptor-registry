@@ -8,11 +8,21 @@ on:
 
   workflow_call:
     inputs:
+      debug_mode:
+        description: 'Debug mode flags.'
+        required: false
+        type: string
+        default: ''
       registry_branch:
         description: 'Branch name to checkout the registry from.'
         required: true
         type: string
         default: 'snapshot'
+      script_branch:
+        description: 'Branch name to checkout scripts from.'
+        required: true
+        type: string
+        default: 'master'
 
   workflow_dispatch:
     inputs:
@@ -21,29 +31,74 @@ on:
         required: true
         type: string
         default: 'snapshot'
+      script_branch:
+        description: 'Branch name to checkout scripts from.'
+        required: true
+        type: string
+        default: 'master'
+      debug_mode:
+        description: 'Debug mode flags.'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   build_github_pages:
     name: Directory Listings Index
     permissions:
-      contents: read  # Recommended checkout permissions.
+      contents: read # Recommended checkout permissions.
+    outputs:
+      instance: ${{ steps.initialize_instance.outputs.instance }} # Help make parallel execution safer.
 
     runs-on: self-hosted
     steps:
-      - name: Checkout Repository
+      - id: initialize_instance
+        name: Initialize Instance
+        run: |
+          export THIS_INSTANCE="run_${RANDOM}"
+          echo "Running with instance: ${THIS_INSTANCE}"
+          echo "instance=${THIS_INSTANCE}" >> "${GITHUB_OUTPUT}"
+
+      - id: create_dirs
+        name: Clean and Create Working Directories
+        run: |
+          rm -Rf ${{steps.initialize_instance.outputs.instance}}/{populate,scripts,work}
+          mkdir -p ${{steps.initialize_instance.outputs.instance}}/{populate,scripts,work}
+
+      - id: checkout_registry
+        name: Checkout Registry
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.registry_branch }}
+          path: ${{steps.initialize_instance.outputs.instance}}/populate
+
+      - id: checkout_scripts
+        name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.script_branch }}
+          path: ${{steps.initialize_instance.outputs.instance}}/scripts
+          sparse-checkout: |
+            script/build_pages.sh
+            setting
+            template
 
       - name: Generate Directory Listings
-        uses: jayanta525/github-pages-directory-listing@v4.0.0
-        with:
-          FOLDER: release  # Directory to generate index.
+        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        run: |
+          BUILD_PAGES_DEBUG="${{ inputs.debug_mode }}" BUILD_PAGES_WORK="../work" BUILD_PAGES_TEMPLATE_PATH="../scripts/template" bash ../scripts/script/build_pages.sh release/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'release'  # Upload generated folder.
+          path: ${{steps.initialize_instance.outputs.instance}}/work
+
+      - id: clean_up
+        name: Clean Up
+        working-directory: ${{steps.initialize_instance.outputs.instance}}
+        run: |
+          cd ..
+          rm -Rf ${{steps.initialize_instance.outputs.instance}}
 
   deploy_github_pages:
     name: Deploy Github Pages
@@ -53,7 +108,6 @@ jobs:
       pages: write     # To deploy to Pages.
       id-token: write  # To verify the deployment originates from an appropriate source.
 
-    # Deploy to the github-pages environment.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
