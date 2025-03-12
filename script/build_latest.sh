@@ -10,7 +10,7 @@
 #   - sed
 #
 #  Parameters:
-#    *) A list of install.json file names to parse (order sensative).
+#    *) A list of install.json file names to parse (order sensitive).
 #
 #  Environment Variables:
 #    BUILD_LATEST_DEBUG:  Enable debug verbosity, any non-empty string enables this.
@@ -28,11 +28,9 @@
 main() {
   local debug=
   local debug_json=
-  local default_file="install.json"
-  local files=
-  local i=
+  local files="install.json eureka-platform.json"
   local ignore=
-  local path=
+  local path="release/snapshot/"
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -50,6 +48,7 @@ main() {
 }
 
 build_latest_load_environment() {
+  local i=
   local file=
 
   if [[ ${BUILD_LATEST_DEBUG} != "" ]] ; then
@@ -67,24 +66,30 @@ build_latest_load_environment() {
     fi
   fi
 
-  if [[ ${BUILD_LATEST_FILES} != "" ]] ; then
-    file=$(echo ${BUILD_LATEST_FILES} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  if [[ $(echo ${BUILD_LATEST_FILES} | sed -e 's|\s||g') != "" ]] ; then
+    files=
 
-    if [[ -f ${BUILD_LATEST_FILES} ]] ; then
-      for i in $(cat ${BUILD_LATEST_FILES}) ; do
+    for i in ${BUILD_LATEST_FILES} ; do
+      file=$(echo ${POPULATE_RELEASE_FILES} | sed -e 's|//*|/|g' -e 's|/*$||')
+
+      if [[ -f ${BUILD_LATEST_FILES} ]] ; then
         build_latest_print_debug "Using File: ${i}"
 
-        files="${files}${i} "
-      done
-    else
-      echo "${p_e}The following path is not a valid directory: ${path} ."
+        files="${files}${file} "
+      else
+        echo "${p_e}The following path is not a valid directory: ${path} ."
 
-      let result=1
+        let result=1
 
-      return
-    fi
+        return
+      fi
+    done
 
     file=
+  elif [[ ${#} -gt 0 ]] ; then
+
+    # Remove the defualts when there are no command line parameters and no BUILD_LATEST_FILES provided.
+    files=
   fi
 
   if [[ ${BUILD_LATEST_IGNORE} != "" ]] ; then
@@ -108,7 +113,7 @@ build_latest_load_environment() {
     while [[ ${i} -le ${#} ]] ; do
 
       # Note: In ZSH this would instead be: file=${(P)i}.
-      file=${!i}
+      file=$(echo ${!i} | sed -e 's|//*|/|g' -e 's|/*$||')
 
       build_latest_print_debug "Using File: ${file}"
 
@@ -116,10 +121,6 @@ build_latest_load_environment() {
 
       let i++
     done
-  fi
-
-  if [[ ${files} == "" ]] ; then
-    files=${default_file}
   fi
 
   if [[ ${BUILD_LATEST_PATH} != "" ]] ; then
@@ -150,41 +151,42 @@ build_latest_handle_result() {
 }
 
 build_latest_operate() {
+  local file=
   local release=
   local releases=
-  local j=
+  local i=
   local version=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  for i in ${files} ; do
+  for file in ${files} ; do
 
-    releases=$(jq -M '.[].id' ${i} | sed -e 's|"||g')
+    releases=$(jq -M '.[].id' ${file} | sed -e 's|"||g')
 
-    for j in ${releases} ; do
+    for i in ${releases} ; do
 
       # Skip any files without the dash in the name used to provide a version.
-      if [[ $(echo ${j} | grep -sho '-') == "" ]] ; then
+      if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then
         continue
       fi
 
-      release=$(echo -n ${j} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
+      release=$(echo -n ${i} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
 
       if [[ $(echo -n ${ignore} | grep -sho "\<${release}\>") != "" ]] ; then
-        build_latest_print_debug "Ignoring from ${i}: ${release}"
+        build_latest_print_debug "Ignoring from ${file}: ${release}"
 
         continue;
       fi
 
-      if [[ ! -f ${path}${j} ]] ; then
-        echo "${p_e}Cannot find the version file to link to: ${path}${j} ."
+      if [[ ! -f ${path}${i} ]] ; then
+        echo "${p_e}Cannot find the version file in ${file} for ${release} to link to: ${path}${i} ."
 
         let result=1
 
         return
       fi
 
-      ln -vsf ${j} ${path}${release}-latest
+      ln -vsf ${i} ${path}${release}-latest
 
       build_latest_handle_result
 
@@ -205,6 +207,7 @@ build_latest_print_debug() {
 }
 
 build_latest_verify_files() {
+  local i=
   local problems=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
