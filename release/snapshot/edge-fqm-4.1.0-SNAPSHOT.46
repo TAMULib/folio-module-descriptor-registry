@@ -1,0 +1,42 @@
+{
+  "id" : "edge-fqm-4.1.0-SNAPSHOT.46",
+  "name" : "Edge FQM API",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.0"
+  }, {
+    "id" : "fqm-query",
+    "version" : "2.1"
+  }, {
+    "id" : "entity-types",
+    "version" : "2.1"
+  } ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-fqm:4.1.0-SNAPSHOT.46",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "okapi_url",
+      "value" : "http://okapi:9130"
+    }, {
+      "name" : "secure_store",
+      "value" : "Ephemeral"
+    }, {
+      "name" : "secure_store_props",
+      "value" : "src/main/resources/ephemeral.properties"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

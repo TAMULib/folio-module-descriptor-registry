@@ -1,0 +1,40 @@
+{
+  "id" : "edge-patron-5.4.0-SNAPSHOT.141",
+  "name" : "Patron Services Edge API",
+  "requires" : [ {
+    "id" : "patron",
+    "version" : "6.3"
+  }, {
+    "id" : "circulation",
+    "version" : "9.5 10.0 11.0 12.0 13.0 14.0"
+  }, {
+    "id" : "login",
+    "version" : "5.0 6.0 7.0"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-patron:5.4.0-SNAPSHOT.141",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "SECURE_REQUESTS_FEATURE_ENABLED",
+      "value" : "false"
+    }, {
+      "name" : "SECURE_TENANT_ID",
+      "value" : "securetenant"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
