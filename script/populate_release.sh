@@ -134,15 +134,15 @@ pop_rel_load_environment() {
 
   if [[ ${POPULATE_RELEASE_DEBUG} != "" ]] ; then
     debug="-v"
-    debug_curl=""
+    debug_curl=
 
     if [[ ${POPULATE_RELEASE_DEBUG} == "curl" ]] ; then
       debug_curl="y"
     elif [[ ${POPULATE_RELEASE_DEBUG} == "curl_only" ]] ; then
-      debug=""
+      debug=
       debug_curl="y"
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
-      debug=""
+      debug=
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
       debug_curl="y"
     fi
@@ -235,7 +235,7 @@ pop_rel_print_curl_debug() {
 }
 
 pop_rel_handle_result() {
-  let result=$?
+  let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"

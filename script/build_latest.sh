@@ -58,10 +58,10 @@ build_latest_load_environment() {
     if [[ ${BUILD_LATEST_DEBUG} == "json" ]] ; then
       debug_json="y"
     elif [[ ${BUILD_LATEST_DEBUG} == "json_only" ]] ; then
-      debug=""
+      debug=
       debug_json="y"
     elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "_only") != "" ]] ; then
-      debug=""
+      debug=
     elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
       debug_json="y"
     fi
@@ -142,7 +142,7 @@ build_latest_load_environment() {
 }
 
 build_latest_handle_result() {
-  let result=$?
+  let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
     echo "${1}"
@@ -192,6 +192,7 @@ build_latest_operate() {
     done
   done
 
+  echo
   echo "Done: Latest versions are built."
 }
 
