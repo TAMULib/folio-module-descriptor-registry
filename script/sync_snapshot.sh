@@ -19,7 +19,6 @@
 #
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git" to include printing the git commands.
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git_only" to only print the git commands, disabling all other debugging (does not pass -v to git).
-# Otherwise, any non-empty value will result in debug printing without the git command.
 #
 # If SYNC_SNAPSHOT_RESULT is a non-empty string, then on handled exit the contents of the specified file name will be "none" for no updates, "updated" for updates", and "failure" on error.
 #
@@ -96,17 +95,6 @@ sync_snap_determine() {
   fi
 }
 
-sync_snap_push() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  sync_snap_print_git_debug "Pushing" "git push ${debug}"
-
-  git push ${debug}
-
-  sync_snap_handle_result_git "pushing"
-}
-
 sync_snap_handle_result() {
   let result=${?}
 
@@ -133,9 +121,9 @@ sync_snap_load_environment() {
   if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ ${SYNC_SNAPSHOT_DEBUG} == "git" ]] ; then
+    if [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "^\s*git\s*$") != "" ]] ; then
       debug_git="y"
-    elif [[ ${SYNC_SNAPSHOT_DEBUG} == "git_only" ]] ; then
+    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "^\s*git_only\s*$") != "" ]] ; then
       debug=
       debug_git="y"
     elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
@@ -172,6 +160,17 @@ sync_snap_print_git_debug() {
 
   echo "${p_d}${1} Git Changes: ${2} ."
   echo
+}
+
+sync_snap_push() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  sync_snap_print_git_debug "Pushing" "git push ${debug}"
+
+  git push ${debug}
+
+  sync_snap_handle_result_git "pushing"
 }
 
 main $*

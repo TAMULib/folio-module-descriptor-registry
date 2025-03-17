@@ -32,7 +32,6 @@
 #
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl" to include printing the curl commands.
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl_only" to only print the curl commands, disabling all other debugging (does not pass -v to curl).
-# Otherwise, any non-empty value will result in debug printing without the curl command.
 #
 # The POPULATE_RELEASE_CURL_FAIL designate the fail mode of either "fail" or "continue".
 #
@@ -83,6 +82,15 @@ main() {
   return ${result}
 }
 
+pop_rel_handle_result() {
+  let result=${?}
+
+  if [[ ${result} -ne 0 ]] ; then
+    echo "${1}"
+    echo
+  fi
+}
+
 pop_rel_load_environment() {
   local i=
   local file=
@@ -99,9 +107,9 @@ pop_rel_load_environment() {
     debug="-v"
     debug_curl=
 
-    if [[ ${POPULATE_RELEASE_DEBUG} == "curl" ]] ; then
+    if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
       debug_curl="y"
-    elif [[ ${POPULATE_RELEASE_DEBUG} == "curl_only" ]] ; then
+    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
       debug=
       debug_curl="y"
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
@@ -335,15 +343,6 @@ pop_rel_process_sources_curl() {
   curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
 
   pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${source} ."
-}
-
-pop_rel_handle_result() {
-  let result=${?}
-
-  if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
-    echo
-  fi
 }
 
 main $*
