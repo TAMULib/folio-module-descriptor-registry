@@ -205,6 +205,9 @@ pop_rel_process_files() {
   for i in ${files} ; do
     file=${i}
 
+    echo
+    echo "Operating on ${file}."
+
     pop_rel_load_source
 
     pop_rel_process_files_releases_prepare
