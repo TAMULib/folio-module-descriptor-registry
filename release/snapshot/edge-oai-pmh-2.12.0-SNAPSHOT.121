@@ -1,0 +1,31 @@
+{
+  "id" : "edge-oai-pmh-2.12.0-SNAPSHOT.121",
+  "name" : "OAI-PMH Edge API",
+  "requires" : [ {
+    "id" : "oai-pmh",
+    "version" : "3.0"
+  }, {
+    "id" : "login",
+    "version" : "5.0 6.0 7.0"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-oai-pmh:2.12.0-SNAPSHOT.121",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Drequest_timeout_ms=7200000"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

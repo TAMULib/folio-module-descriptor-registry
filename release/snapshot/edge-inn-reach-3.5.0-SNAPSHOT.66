@@ -1,0 +1,34 @@
+{
+  "id" : "edge-inn-reach-3.5.0-SNAPSHOT.66",
+  "name" : "INN-REACH system Edge API module",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "users",
+    "version" : "16.4"
+  }, {
+    "id" : "permissions",
+    "version" : "5.8"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-inn-reach:3.5.0-SNAPSHOT.66",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
