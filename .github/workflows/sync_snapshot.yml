@@ -95,7 +95,7 @@ jobs:
         name: Build Latest Version Links
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
         run: |
-          BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" BUILD_LATEST_IGNORE=../scripts/setting/ignore.txt BUILD_LATEST_PATH=release/snapshot bash ../scripts/script/build_latest.sh
+          BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" BUILD_LATEST_IGNORE="../scripts/setting/ignore.txt" bash ../scripts/script/build_latest.sh
 
       - id: synchronize_snapshot
         name: Synchronize Snapshot
