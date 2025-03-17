@@ -13,10 +13,11 @@
 #    *) A list of install.json file names to parse (order sensitive).
 #
 #  Environment Variables:
-#    BUILD_LATEST_DEBUG:  Enable debug verbosity, any non-empty string enables this.
-#    BUILD_LATEST_FILES:  A list of files to build (applied before the command line arguments).
-#    BUILD_LATEST_IGNORE: A path to a space and new line separated file (such as "setting/ignore.txt") representing module names to ignore.
-#    BUILD_LATEST_PATH:   The destination path to write to.
+#    BUILD_LATEST_DEBUG:          Enable debug verbosity, any non-empty string enables this.
+#    BUILD_LATEST_FILES:          A list of files to build (applied before the command line arguments).
+#    BUILD_LATEST_IGNORE:         A path to a space and new line separated file (such as "setting/ignore.txt") representing module names to ignore.
+#    BUILD_LATEST_PATH:           The destination path to write to.
+#    BUILD_LATEST_SKIP_NOT_FOUND: Skip version files that are not found, any non-empty string enables this.
 #
 # The BUILD_LATEST_DEBUG may be specifically set to "json" to include printing the JSON files.
 # The BUILD_LATEST_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
@@ -37,6 +38,7 @@ main() {
   local p_e="ERROR: "
 
   local -i result=0
+  local -i skip_not_found=0
 
   build_latest_load_environment ${*}
 
@@ -104,6 +106,10 @@ build_latest_load_environment() {
 
       file=
     fi
+  fi
+
+  if [[ ${BUILD_LATEST_SKIP_NOT_FOUND} != "" ]] ; then
+    let skip_not_found=1
   fi
 
   # Load files from the command line parameters.
@@ -180,6 +186,12 @@ build_latest_operate() {
       fi
 
       if [[ ! -f ${path}${i} ]] ; then
+        if [[ ${skip_not_found} -ne 0 ]] ; then
+          build_latest_print_debug "Cannot find the version file in ${file} for ${release} to link against, skipping file: ${path}${i}"
+
+          continue
+        fi
+
         echo "${p_e}Cannot find the version file in ${file} for ${release} to link to: ${path}${i} ."
 
         let result=1
