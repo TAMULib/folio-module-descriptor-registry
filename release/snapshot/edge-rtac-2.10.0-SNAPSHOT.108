@@ -1,0 +1,31 @@
+{
+  "id" : "edge-rtac-2.10.0-SNAPSHOT.108",
+  "name" : "Real Time Availability Check Edge API",
+  "requires" : [ {
+    "id" : "rtac-batch",
+    "version" : "1.1"
+  }, {
+    "id" : "login",
+    "version" : "7.0"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-rtac:2.10.0-SNAPSHOT.108",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
