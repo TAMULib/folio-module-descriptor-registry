@@ -17,15 +17,7 @@
 #  Parameters:
 #    *) All descriptor source directories to process. This script uses simple logic, be careful about sub-directory naming conflicts.
 #
-#  Environment Variables:
-#    BUILD_PAGES_BASE:           The base URL where the generated pages are stored.
-#    BUILD_PAGES_DEBUG:          Enable debug verbosity, any non-empty string enables this.
-#    BUILD_PAGES_IGNORE_INVALID: Ignore non-JSON files rather than fail, any non-empty string enables this.
-#    BUILD_PAGES_TEMPLATE_BACK:  The name of the back HTML template within the BUILD_PAGES_TEMPLATE_PATH directory.
-#    BUILD_PAGES_TEMPLATE_BASE:  The name of the base HTML template within the BUILD_PAGES_TEMPLATE_PATH directory.
-#    BUILD_PAGES_TEMPLATE_ITEM:  The name of the item HTML template within the BUILD_PAGES_TEMPLATE_PATH directory.
-#    BUILD_PAGES_TEMPLATE_PATH:  The path to the template directory containing the HTML template files.
-#    BUILD_PAGES_WORK:           A working directory used to create the gh-pages structure (all templates and files are added here).
+# See the repository `README.md` for the listing of the environment variables and parameters.
 #
 # The BUILD_PAGES_DEBUG may be specifically set to "json" to include printing the JSON files.
 # The BUILD_PAGES_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
@@ -199,9 +191,10 @@ build_page_load_environment() {
 }
 
 build_page_operate() {
-  local indexes=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local indexes=
 
   build_page_operate_sources
 
@@ -214,11 +207,12 @@ build_page_operate() {
 }
 
 build_page_operate_sources() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local source=
   local j=
   local k=
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   for i in ${sources} ; do
 
@@ -252,12 +246,13 @@ build_page_operate_sources() {
 }
 
 build_page_operate_sources_process_files() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local file=
   local files=
   local items=
   local k=
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   for k in ${j}/* ; do
     file=$(basename ${k})
@@ -313,9 +308,10 @@ build_page_operate_sources_process_files_copy_file() {
 }
 
 build_page_operate_sources_process_files_template_item() {
-  local item=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local item=
 
   item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g")
   items="${items}${item}_REPLACE_EOL_ "
@@ -344,12 +340,13 @@ build_page_operate_sources_process_files_verify_file() {
 }
 
 build_page_operate_sources_process_index() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local index=${1}
   local title=${2}
   local snippet=${3}
   local back=${4}
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ $(echo ${snippet} | sed -e "s|\s||g") == "" ]] ; then
     snippet="There are no items available."
@@ -383,9 +380,10 @@ build_page_operate_sources_process_index() {
 }
 
 build_page_operate_sources_process_index_template_item() {
-  local item=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local item=
 
   item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g")
   indexes="${indexes}${item}_REPLACE_EOL_ "
