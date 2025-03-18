@@ -21,7 +21,6 @@
 #
 # The BUILD_LATEST_DEBUG may be specifically set to "json" to include printing the JSON files.
 # The BUILD_LATEST_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
-# Otherwise, any non-empty value will result in debug printing without the git command.
 #
 # If neither the BUILD_LATEST_FILES nor the command line parameter files are passed then the default file is used.
 #
@@ -29,7 +28,7 @@
 main() {
   local debug=
   local debug_json=
-  local files="install.json eureka-platform.json"
+  local files="install.json eureka-platform.json npm.json"
   local ignore=
   local path="release/snapshot/"
 
@@ -49,6 +48,15 @@ main() {
   return ${result}
 }
 
+build_latest_handle_result() {
+  let result=${?}
+
+  if [[ ${result} -ne 0 ]] ; then
+    echo "${1}"
+    echo
+  fi
+}
+
 build_latest_load_environment() {
   local i=
   local file=
@@ -56,9 +64,9 @@ build_latest_load_environment() {
   if [[ ${BUILD_LATEST_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ ${BUILD_LATEST_DEBUG} == "json" ]] ; then
+    if [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
       debug_json="y"
-    elif [[ ${BUILD_LATEST_DEBUG} == "json_only" ]] ; then
+    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
       debug=
       debug_json="y"
     elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "_only") != "" ]] ; then
@@ -145,15 +153,6 @@ build_latest_load_environment() {
         build_latest_handle_result "${p_e}The following path is could not be created: ${path} ."
       fi
     fi
-  fi
-}
-
-build_latest_handle_result() {
-  let result=${?}
-
-  if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
-    echo
   fi
 }
 

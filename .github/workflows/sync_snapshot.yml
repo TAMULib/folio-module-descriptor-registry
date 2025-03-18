@@ -1,5 +1,5 @@
 name: Synchronize Snapshot
-run-name: Synchronize Snapshot using script branch ${{ inputs.script_branch }} and registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
+run-name: Synchronize Snapshot using script branch '${{ inputs.script_branch }}' and registry branch '${{ inputs.registry_branch }}' by @${{ github.actor }}
 
 on:
   schedule:
@@ -50,6 +50,7 @@ jobs:
 
     outputs:
       instance: ${{ steps.initialize_instance.outputs.instance }} # Help make parallel execution safer.
+      top_dir: ${{ steps.initialize_instance.outputs.top_dir }}
       sync_result: ${{ steps.synchronize_snapshot.outputs.sync_result }}
 
     runs-on: self-hosted
@@ -60,12 +61,19 @@ jobs:
           export THIS_INSTANCE="run_${RANDOM}"
           echo "Running with instance: ${THIS_INSTANCE}"
           echo "instance=${THIS_INSTANCE}" >> "${GITHUB_OUTPUT}"
+          echo "top_dir=${PWD}/" >> "${GITHUB_OUTPUT}"
 
       - id: create_dirs
         name: Clean and Create Working Directories
         run: |
           rm -Rf ${{steps.initialize_instance.outputs.instance}}/{populate,scripts}
           mkdir -p ${{steps.initialize_instance.outputs.instance}}/{populate,scripts}
+
+      - id: assure_stripes
+        name: Assure Stripes
+        run: |
+          if [[ $(type -p stripes) == "" ]] ; then yarn config set @folio:registry https://repository.folio.org/repository/npm-folioci/ ; fi
+          if [[ $(type -p stripes) == "" ]] ; then yarn global add @folio/stripes-cli ; fi
 
       - id: checkout_registry
         name: Checkout Registry
@@ -81,21 +89,38 @@ jobs:
           ref: ${{ inputs.script_branch }}
           path: ${{steps.initialize_instance.outputs.instance}}/scripts
           sparse-checkout: |
+            script/populate_node.sh
             script/populate_release.sh
             script/sync_snapshot.sh
             setting
+            workspace
 
-      - id: populate_snapshot
-        name: Populate Snapshot
+      - id: populate_release
+        name: Populate Release
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
         run: |
-          POPULATE_RELEASE_DEBUG="${{ inputs.debug_mode }}" bash ../scripts/script/populate_release.sh
+          POPULATE_RELEASE_DEBUG="${{ inputs.debug_mode }}" \
+            bash ../scripts/script/populate_release.sh
+
+      - id: populate_node
+        name: Populate Node
+        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        run: |
+          POPULATE_NODE_DEBUG="${{ inputs.debug_mode }}" \
+          POPULATE_NODE_DESTINATION="${{ steps.initialize_instance.outputs.top_dir }}${{steps.initialize_instance.outputs.instance}}/populate/release/snapshot/" \
+          POPULATE_NODE_NPM_DIR="${{ steps.initialize_instance.outputs.top_dir }}${{steps.initialize_instance.outputs.instance}}/populate/" \
+          POPULATE_NODE_SKIP_BAD="y" \
+          POPULATE_NODE_WORKSPACE="${{ steps.initialize_instance.outputs.top_dir }}${{steps.initialize_instance.outputs.instance}}/scripts/workspace" \
+            bash ../scripts/script/populate_node.sh
 
       - id: build_latest
         name: Build Latest Version Links
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
         run: |
-          BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" BUILD_LATEST_IGNORE="../scripts/setting/ignore.txt" BUILD_LATEST_SKIP_NOT_FOUND="y" bash ../scripts/script/build_latest.sh
+          BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" \
+          BUILD_LATEST_IGNORE="../scripts/setting/ignore.txt" \
+          BUILD_LATEST_SKIP_NOT_FOUND="y" \
+            bash ../scripts/script/build_latest.sh
 
       - id: synchronize_snapshot
         name: Synchronize Snapshot
@@ -103,7 +128,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          SYNC_SNAPSHOT_DEBUG="${{ inputs.debug_mode }}" SYNC_SNAPSHOT_RESULT="results.txt" bash ../scripts/script/sync_snapshot.sh
+          SYNC_SNAPSHOT_DEBUG="${{ inputs.debug_mode }}" \
+          SYNC_SNAPSHOT_RESULT="results.txt" \
+            bash ../scripts/script/sync_snapshot.sh
           echo "sync_result=$(cat results.txt)" >> "${GITHUB_OUTPUT}"
 
       - id: clean_up

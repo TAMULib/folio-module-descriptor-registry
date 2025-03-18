@@ -29,10 +29,8 @@
 #
 # The BUILD_PAGES_DEBUG may be specifically set to "json" to include printing the JSON files.
 # The BUILD_PAGES_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
-# Otherwise, any non-empty value will result in debug printing without the git command.
 # The BUILD_PAGES_DEBUG may be specifically set to "verify" to include printing the individual verify/process file messages.
 # The BUILD_PAGES_DEBUG may be specifically set to "verify_only" to only print the the individual verify/process file messages, disabling all other debugging (does not pass -v).
-# Otherwise, any non-empty value will result in debug printing without the git command.
 #
 # If any of BUILD_PAGES_TEMPLATE_BASE, BUILD_PAGES_TEMPLATE_ITEM, or BUILD_PAGES_TEMPLATE_PATH are not specified, then the default is loaded for each unspecified variable.
 #
@@ -68,6 +66,14 @@ main() {
   return ${result}
 }
 
+build_page_handle_result() {
+  let result=${?}
+
+  if [[ ${result} -ne 0 ]] ; then
+    echo "${1}"
+  fi
+}
+
 build_page_load_environment() {
   local file=
   local parameter=
@@ -76,11 +82,11 @@ build_page_load_environment() {
   if [[ ${BUILD_PAGES_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ ${BUILD_PAGES_DEBUG} == "json" ]] ; then
+    if [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
       debug_json="y"
-    elif [[ ${BUILD_PAGES_DEBUG} == "verify" ]] ; then
+    elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*verify\s*$") != "" ]] ; then
       debug_verify="y"
-    elif [[ ${BUILD_PAGES_DEBUG} == "json_only" ]] ; then
+    elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
       debug=
       debug_json="y"
     elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "_only") != "" ]] ; then
@@ -189,14 +195,6 @@ build_page_load_environment() {
 
       sources="${sources}${file} "
     done
-  fi
-}
-
-build_page_handle_result() {
-  let result=${?}
-
-  if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
   fi
 }
 

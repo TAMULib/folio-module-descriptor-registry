@@ -86,6 +86,26 @@ bash script/populate_release.sh R1-2024-csp-9 quesnelia
 _Make sure to manually delete any already downloaded JSON files to avoid accidentally including the wrong dependencies for some flower release when executing this script for multiple flower releases._
 
 
+### Populate Node
+
+The **Populate Node** is a supplementary script to the **Populate Release**.
+
+The **Populate Release** script operates based on existing pre-generated install JSON files.
+The **Populate Node** script operates based on generating the install JSON files using the **FOLIO NPM Registry** (or whichever registry is configured via the `~/.yarnrc` file).
+
+The install JSON file by default is named `npm.json` by default to prevent confusing it with the other install JSON files, such as `install.json` and `eureka-platform.json`.
+This `npm.json` file is re-created on every run of this script.
+
+The currently implementation of this script limits the packages being operated on to those prefixed with `@folio/` in their package name.
+
+This is intended to handle the small number of packages that are known to not be available directly in the **FOLIO Registry**, namely `@folio/authorization-policies` and `@folio/authorization-roles`.
+
+Example usage:
+```shell
+bash script/populate_node.sh
+```
+
+
 #### Populate via Branches and Commit Hashes
 
 The population can be done via a branch name or a commit hash rather than only a tag name.
@@ -123,7 +143,7 @@ These input variables are available both as input variables for event triggers a
 
 |      Input Variable     |   Type    | Description
 | ----------------------- | --------- | -----------
-| `debug_mode`            | string    | Enables debugging when non-empty. Special options (space separated): `curl`, `git`, `json`, `verify`, `curl_only`, `git_only`, `json_only`, and `verify_only`.
+| `debug_mode`            | string    | Enables debugging when non-empty. Special options (space separated): `curl`, `git`, `json`, `verify`, `yarn`, `curl_only`, `git_only`, `json_only`, `verify_only`, and `yarn_only`.
 | `registry_branch`       | string    | The name of the branch containing the registry descriptor files, such as `snapshot`.
 | `script_branch`         | string    | The name of the branch containing the scripts, such as `master`.
 

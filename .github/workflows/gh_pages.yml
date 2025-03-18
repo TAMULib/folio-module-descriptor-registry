@@ -1,5 +1,5 @@
 name: Build Github Pages
-run-name: Build Github Pages using script branch ${{ inputs.script_branch }} and registry branch ${{ inputs.registry_branch }} by @${{ github.actor }}
+run-name: Build Github Pages using script branch '${{ inputs.script_branch }}' and registry branch '${{ inputs.registry_branch }}' by @${{ github.actor }}
 
 on:
   push:
@@ -86,7 +86,10 @@ jobs:
       - name: Generate Directory Listings
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
         run: |
-          BUILD_PAGES_DEBUG="${{ inputs.debug_mode }}" BUILD_PAGES_WORK="../work" BUILD_PAGES_TEMPLATE_PATH="../scripts/template" bash ../scripts/script/build_pages.sh release/
+          BUILD_PAGES_DEBUG="${{ inputs.debug_mode }}" \
+          BUILD_PAGES_WORK="../work" \
+          BUILD_PAGES_TEMPLATE_PATH="../scripts/template" \
+            bash ../scripts/script/build_pages.sh release/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
