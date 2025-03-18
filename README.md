@@ -51,12 +51,12 @@ This script takes a simple approach of creating a symbolic link to the version s
 The order in which the files are passed determines the order (left to right) in which overwrites of existing symbolic links are performed.
 The default behavior is to use the `-latest` in place of the version suffix.
 
-| Environment Variable Name        | Description (see script for further details)
-| -------------------------------- | --------------------------------
-| BUILD_LATEST_DEBUG               | Enable debug verbosity, any non-empty string enables this.
-| BUILD_LATEST_FILES               | A list of files to build.
-| BUILD_LATEST_PATH                | The destination path to write to.
-| BUILD_LATEST_SKIP_NOT_FOUND      | Skip version files that are not found, any non-empty string enables this.
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `BUILD_LATEST_DEBUG`               | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_LATEST_FILES`               | A list of files to build.
+| `BUILD_LATEST_PATH`                | The destination path to write to.
+| `BUILD_LATEST_SKIP_NOT_FOUND`      | Skip version files that are not found, any non-empty string enables this.
 
 View the documentation within the `build_latest.sh` script for further details on how to operate this script.
 
@@ -85,16 +85,16 @@ The `sed` statements in the script will need to be edited to enhance the templat
 | `_REPLACE_SECTION_TITLE_`   | A title to be displayed in HTML.
 | `_REPLACE_SECTION_SNIPPET_` | Used by the script to apply the `item.html` template (explicitly intended to have HTML).
 
-| Environment Variable Name        | Description (see script for further details)
-| -------------------------------- | --------------------------------
-| BUILD_PAGES_BASE                 | The base URL where the generated pages are stored.
-| BUILD_PAGES_DEBUG                | Enable debug verbosity, any non-empty string enables this.
-| BUILD_PAGES_IGNORE_INVALID       | Ignore non-JSON files rather than fail, any non-empty string enables this.
-| BUILD_PAGES_TEMPLATE_BACK        | The name of the back HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| BUILD_PAGES_TEMPLATE_BASE        | The name of the base HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| BUILD_PAGES_TEMPLATE_ITEM        | The name of the item HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| BUILD_PAGES_TEMPLATE_PATH        | The path to the template directory containing the HTML template files.
-| BUILD_PAGES_WORK                 | A working directory used to create the GitHub Pages structure (all templates and files are added here).
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `BUILD_PAGES_BASE`                 | The base URL where the generated pages are stored.
+| `BUILD_PAGES_DEBUG`                | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_PAGES_IGNORE_INVALID`       | Ignore non-JSON files rather than fail, any non-empty string enables this.
+| `BUILD_PAGES_TEMPLATE_BACK`        | The name of the back HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_BASE`        | The name of the base HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_ITEM`        | The name of the item HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_PATH`        | The path to the template directory containing the HTML template files.
+| `BUILD_PAGES_WORK`                 | A working directory used to create the GitHub Pages structure (all templates and files are added here).
 
 View the documentation within the `build_pages.sh` script for further details on how to operate this script.
 
@@ -111,18 +111,18 @@ This release is then used to fetch all of the available module descriptors from 
 
 The flower release name in relation to its release date designation (which maps to the tag name) can be found on the **FOLIO Project** wiki in the [Flower Release Names](https://folio-org.atlassian.net/wiki/spaces/REL/pages/5210505/Flower+Release+Names) page.
 
-| Environment Variable Name        | Description (see script for further details)
-| -------------------------------- | --------------------------------
-| POPULATE_RELEASE_CURL_FAIL       | Designate how to handle curl failures. This can be one of `fail`, `none`, and `report` (default).
-| POPULATE_RELEASE_DEBUG           | Enable debug verbosity, any non-empty string enables this.
-| POPULATE_RELEASE_DESTINATION     | Destination parent directory.
-| POPULATE_RELEASE_FILE_REUSE      | Enable re-using existing JSON files without GET fetching, any non-empty string enables this.
-| POPULATE_RELEASE_FILES           | The name of space separated JSON files, such as `install.json` and `eureka-platform.json` to GET fetch and store locally for processing.
-| POPULATE_RELEASE_FLOWER          | The Flower release name, such as `quesnelia` or `snapshot`.
-| POPULATE_RELEASE_REGISTRY        | The URL to GET the module descriptor from for some specific module version.
-| POPULATE_RELEASE_REPOSITORY      | The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
-| POPULATE_RELEASE_REPOSITORY_PART | The part of the GitHub repository URL specifying the tag, branch, or hash (but without either the specific tag/branch name or the file path).
-| POPULATE_RELEASE_TAG             | The GitHub release tag, such as `R1-2024-csp-9`.
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `POPULATE_RELEASE_CURL_FAIL`       | Designate how to handle curl failures. This can be one of `fail`, `none`, and `report` (default).
+| `POPULATE_RELEASE_DEBUG`           | Enable debug verbosity, any non-empty string enables this.
+| `POPULATE_RELEASE_DESTINATION`     | Destination parent directory.
+| `POPULATE_RELEASE_FILE_REUSE`      | Enable re-using existing JSON files without GET fetching, any non-empty string enables this.
+| `POPULATE_RELEASE_FILES`           | The name of space separated JSON files, such as `install.json` and `eureka-platform.json` to GET fetch and store locally for processing.
+| `POPULATE_RELEASE_FLOWER`          | The Flower release name, such as `quesnelia` or `snapshot`.
+| `POPULATE_RELEASE_REGISTRY`        | The URL to GET the module descriptor from for some specific module version.
+| `POPULATE_RELEASE_REPOSITORY`      | The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
+| `POPULATE_RELEASE_REPOSITORY_PART` | The part of the GitHub repository URL specifying the tag, branch, or hash (but without either the specific tag/branch name or the file path).
+| `POPULATE_RELEASE_TAG`             | The GitHub release tag, such as `R1-2024-csp-9`.
 
 View the documentation within the `populate_release.sh` script for further details on how to operate this script.
 
@@ -167,15 +167,15 @@ The current implementation of this script limits the packages being operated on 
 
 This is intended to handle the small number of packages that are known to not be available directly in the **FOLIO Registry**, namely `@folio/authorization-policies` and `@folio/authorization-roles`.
 
-| Environment Variable Name        | Description (see script for further details)
-| -------------------------------- | --------------------------------
-| POPULATE_NODE_DEBUG              | Enable debug verbosity, any non-empty string enables this.
-| POPULATE_NODE_DESTINATION        | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
-| POPULATE_NODE_NPM_DIR            | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
-| POPULATE_NODE_NPM_FILE           | The name of the NPM JSON file used to hold the generated projects and versions.
-| POPULATE_NODE_PROJECTS           | Designate the (space-separated) projects to operate on (specifying this overrides the default).
-| POPULATE_NODE_SKIP_BAD           | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
-| POPULATE_NODE_WORKSPACE          | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `POPULATE_NODE_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
+| `POPULATE_NODE_DESTINATION`        | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
+| `POPULATE_NODE_NPM_DIR`            | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
+| `POPULATE_NODE_NPM_FILE`           | The name of the NPM JSON file used to hold the generated projects and versions.
+| `POPULATE_NODE_PROJECTS`           | Designate the (space-separated) projects to operate on (specifying this overrides the default).
+| `POPULATE_NODE_SKIP_BAD`           | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
+| `POPULATE_NODE_WORKSPACE`          | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
 
 View the documentation within the `populate_node.sh` script for further details on how to operate this script.
 
@@ -189,13 +189,13 @@ POPULATE_NODE_WORKSPACE="/path/to/workspace" bash script/populate_node.sh
 
 The **Synchronize Snapshot** script identifies whether or no changes are detected and preforms the necessary `git` operations to push those changes to an upstream repository.
 
-| Environment Variable Name        | Description (see script for further details)
-| -------------------------------- | --------------------------------
-| SYNC_SNAPSHOT_DEBUG              | Enable debug verbosity, any non-empty string enables this.
-| SYNC_SNAPSHOT_MESSAGE            | Specify a custom message to use for the commit.
-| SYNC_SNAPSHOT_PATH               | Designate a path in which to analyze (default is an empty string, which means current directory).
-| SYNC_SNAPSHOT_RESULT             | The file name to write the results of this script to.
-| SYNC_SNAPSHOT_SIGN               | Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `SYNC_SNAPSHOT_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
+| `SYNC_SNAPSHOT_MESSAGE`            | Specify a custom message to use for the commit.
+| `SYNC_SNAPSHOT_PATH`               | Designate a path in which to analyze (default is an empty string, which means current directory).
+| `SYNC_SNAPSHOT_RESULT`             | The file name to write the results of this script to.
+| `SYNC_SNAPSHOT_SIGN`               | Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
 
 View the documentation within the `synchronize_snapshot.sh` script for further details on how to operate this script.
 
