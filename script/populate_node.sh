@@ -22,17 +22,7 @@
 #   - stripes-cli
 #   - yarn
 #
-#  Parameters:
-#    None.
-#
-#  Environment Variables:
-#    POPULATE_NODE_DEBUG:       Enable debug verbosity, any non-empty string enables this.
-#    POPULATE_NODE_DESTINATION: Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
-#    POPULATE_NODE_NPM_DIR:     Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
-#    POPULATE_NODE_NPM_FILE:    The name of the NPM JSON file used to hold the generated projects and versions.
-#    POPULATE_NODE_PROJECTS:    Designate the (space-separated) projects to operate on (specifying this overrides the default).
-#    POPULATE_NODE_SKIP_BAD:    Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
-#    POPULATE_NODE_WORKSPACE:   Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
+# See the repository `README.md` for the listing of the environment variables.
 #
 # The POPULATE_NODE_DEBUG may be specifically set to "json" to include printing the JSON files.
 # The POPULATE_NODE_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
@@ -220,10 +210,11 @@ pop_node_process_projects_build_descriptor() {
 }
 
 pop_node_process_projects_copy_descriptor() {
-  local name=folio_${project}
-  local release="${destination}folio_${project_simple}-${version}"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local name=folio_${project}
+  local release="${destination}folio_${project_simple}-${version}"
 
   cp ${debug} module-descriptor.json ${release}
 
@@ -231,9 +222,10 @@ pop_node_process_projects_copy_descriptor() {
 }
 
 pop_node_process_projects_extract_version() {
-  local file="package.json"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local file="package.json"
 
   if [[ ! -f ${file} ]] ; then
     echo "${p_e}The ${file} file is either missing or not a valid regular file for: ${project} (simple: ${project_simple})."
@@ -284,7 +276,6 @@ pop_node_process_projects_into_workspace() {
 }
 
 pop_node_process_projects_update_npm_json() {
-  local json=
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -295,7 +286,7 @@ pop_node_process_projects_update_npm_json() {
     echo "[{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" > ${npm_dir}${npm_file}
   else
     # Work around JQ's problems with using the input as the output.
-    json=$(cat ${npm_dir}${npm_file})
+    local json=$(cat ${npm_dir}${npm_file})
 
     pop_node_print_debug "echo ${json} | jq \". |= . + [{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" > ${npm_dir}${npm_file}"
 
@@ -306,10 +297,11 @@ pop_node_process_projects_update_npm_json() {
 }
 
 pop_node_verify_files() {
-  local workspace_file=${workspace}package.json
-  local workspace_json="{ \"name\": \"workspace\", \"private\": true, \"version\": \"1.0.0\", \"workspaces\": [ \"*\" ], \"dependencies\": { } }"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local workspace_file=${workspace}package.json
+  local workspace_json="{ \"name\": \"workspace\", \"private\": true, \"version\": \"1.0.0\", \"workspaces\": [ \"*\" ], \"dependencies\": { } }"
 
   pop_node_verify_files_workspace
 
@@ -411,4 +403,4 @@ pop_node_verify_files_workspace_file_json() {
   pop_node_handle_result "Invalid workspace JSON file: ${workspace_file}"
 }
 
-main $*
+main ${*}

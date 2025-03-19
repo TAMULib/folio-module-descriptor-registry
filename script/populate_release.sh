@@ -9,26 +9,12 @@
 #   - jq
 #   - sed
 #
-#  Parameters:
-#    1) (optional) The GitHub release tag (target), such as "R1-2024-csp-9" (If not needed but (2) is, then set this to an empty string).
-#    2) (optional) The Flower release name, such as "quesnelia" or "snapshot", used to create the destination directory.
-#
-#  Environment Variables:
-#    POPULATE_RELEASE_CURL_FAIL:       Designate how to handle curl failures. This can be one of: "fail", "none", and "report" (default).
-#    POPULATE_RELEASE_DEBUG:           Enable debug verbosity, any non-empty string enables this.
-#    POPULATE_RELEASE_DESTINATION:     Destination parent directory.
-#    POPULATE_RELEASE_FILE_REUSE:      Enable re-using existing JSON files without GET fetching, any non-empty string enables this.
-#    POPULATE_RELEASE_FILES:           The name of space separated JSON files, such as "install.json" and "eureka-platform.json" to GET fetch and store locally for processing.
-#    POPULATE_RELEASE_FLOWER:          The Flower release name; If specified, then the associated parameter is ignored.
-#    POPULATE_RELEASE_REGISTRY:        The URL to GET the module descriptor from for some specific module version.
-#    POPULATE_RELEASE_REPOSITORY:      The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
-#    POPULATE_RELEASE_REPOSITORY_PART: The part of the GitHub repository URL specifying the tag, branch, or hash (but without either the specific tag/branch name or the file path).
-#    POPULATE_RELEASE_TARGET:          The GitHub release tag; If specified, then the associated parameter is ignored.
+# See the repository `README.md` for the listing of the environment variables and parameters.
 #
 # The following POPULATE_RELEASE_REPOSITORY_PART are known to work in GitHub:
-#   - 'tags':  Designate that this uses a tag name that is specified via the POPULATE_RELEASE_TARGET.
-#   - 'heads': Designate that this uses a branch name that is specified via the POPULATE_RELEASE_TARGET (the default).
-#   - '':      Set to an empty string for when using a commit hash, in which case the POPULATE_RELEASE_TARGET must be a valid hash.
+#   - 'tags':  Designate that this uses a tag name that is specified via the POPULATE_RELEASE_TAG.
+#   - 'heads': Designate that this uses a branch name that is specified via the POPULATE_RELEASE_TAG (the default).
+#   - '':      Set to an empty string for when using a commit hash, in which case the POPULATE_RELEASE_TAG must be a valid hash.
 #
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl" to include printing the curl commands.
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl_only" to only print the curl commands, disabling all other debugging (does not pass -v to curl).
@@ -57,7 +43,7 @@ main() {
   local registry="https://folio-registry.dev.folio.org/_/proxy/modules/"
   local releases=
   local repository="https://raw.githubusercontent.com/folio-org/platform-complete/"
-  local target="snapshot"
+  local tag="snapshot"
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -94,14 +80,6 @@ pop_rel_handle_result() {
 pop_rel_load_environment() {
   local i=
   local file=
-
-  if [[ ${1} != "" ]] ; then
-    target=$(echo ${1} | sed -e 's|/||g')
-  fi
-
-  if [[ ${2} != "" ]] ; then
-    flower=$(echo ${2} | sed -e 's|/||g')
-  fi
 
   if [[ ${POPULATE_RELEASE_DEBUG} != "" ]] ; then
     debug="-v"
@@ -158,8 +136,8 @@ pop_rel_load_environment() {
     registry=$(echo ${POPULATE_RELEASE_REGISTRY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
   fi
 
-  if [[ ${POPULATE_RELEASE_TARGET} != "" ]] ; then
-    target=$(echo ${POPULATE_RELEASE_TARGET} | sed -e 's|/||g')
+  if [[ ${POPULATE_RELEASE_TAG} != "" ]] ; then
+    tag=$(echo ${POPULATE_RELEASE_TAG} | sed -e 's|/||g')
   fi
 
   if [[ ${POPULATE_RELEASE_FLOWER} != "" ]] ; then
@@ -184,7 +162,7 @@ pop_rel_load_source() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${target}/${file}"
+  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${tag}/${file}"
 }
 
 pop_rel_print_curl_debug() {
@@ -204,11 +182,12 @@ pop_rel_print_debug() {
 }
 
 pop_rel_process_files() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local file=
   local i=
   local source=
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   for i in ${files} ; do
     file=${i}
@@ -227,11 +206,12 @@ pop_rel_process_files() {
 }
 
 pop_rel_process_files_releases_curl() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local i=
   local release=
   local version=
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ ${releases} == "" ]] ; then
     echo "Done: No releases to fetch from."
@@ -239,7 +219,7 @@ pop_rel_process_files_releases_curl() {
     return
   fi
 
-  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${target}/${file}"
+  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${tag}/${file}"
 
   for i in ${releases} ; do
 
@@ -299,11 +279,12 @@ pop_rel_process_files_releases_prepare() {
 }
 
 pop_rel_process_sources() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
   local file=
   local i=
   local source=
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   for i in ${files} ; do
     file=${i}
@@ -345,4 +326,4 @@ pop_rel_process_sources_curl() {
   pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${source} ."
 }
 
-main $*
+main ${*}

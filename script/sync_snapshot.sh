@@ -7,15 +7,7 @@
 #   - grep
 #   - git
 #
-#  Parameters:
-#    1) (optional) A message to use for the Git commit.
-#
-#  Environment Variables:
-#    SYNC_SNAPSHOT_DEBUG:   Enable debug verbosity, any non-empty string enables this.
-#    SYNC_SNAPSHOT_MESSAGE: Specify a custom message to use for the commit.
-#    SYNC_SNAPSHOT_PATH:    Designate a path in which to analyze (default is an empty string, which means current directory).
-#    SYNC_SNAPSHOT_RESULT:  The file name to write the results of this script to.
-#    SYNC_SNAPSHOT_SIGN:    Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
+# See the repository `README.md` for the listing of the environment variables and parameters.
 #
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git" to include printing the git commands.
 # The SYNC_SNAPSHOT_DEBUG may be specifically set to "git_only" to only print the git commands, disabling all other debugging (does not pass -v to git).
@@ -114,10 +106,6 @@ sync_snap_handle_result_git() {
 
 sync_snap_load_environment() {
 
-  if [[ ${1} != "" ]] ; then
-    message=${1}
-  fi
-
   if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
     debug="-v"
 
@@ -173,4 +161,4 @@ sync_snap_push() {
   sync_snap_handle_result_git "pushing"
 }
 
-main $*
+main ${*}

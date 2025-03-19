@@ -94,7 +94,6 @@ jobs:
             script/populate_node.sh
             script/populate_release.sh
             script/sync_snapshot.sh
-            setting
             workspace
 
       - id: populate_release

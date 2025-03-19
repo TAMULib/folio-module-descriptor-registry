@@ -80,7 +80,6 @@ jobs:
           path: ${{steps.initialize_instance.outputs.instance}}/scripts
           sparse-checkout: |
             script/build_pages.sh
-            setting
             template
 
       - name: Generate Directory Listings
