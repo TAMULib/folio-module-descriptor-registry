@@ -2,6 +2,8 @@ name: Synchronize Snapshot
 run-name: Synchronize Snapshot using script branch '${{ inputs.script_branch }}' and registry branch '${{ inputs.registry_branch }}' by @${{ github.actor }}
 
 on:
+
+  # Note: GitHub Actions fail to recognize default values for inputs on schedule run, so the defaults must be re-applied on each use via something like ` || 'snapshot'`.
   schedule:
     - cron: '0 0 */1 * *'
 
@@ -79,14 +81,14 @@ jobs:
         name: Checkout Registry
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.registry_branch }}
+          ref: ${{ inputs.registry_branch || 'snapshot' }}
           path: ${{steps.initialize_instance.outputs.instance}}/populate
 
       - id: checkout_scripts
         name: Checkout Scripts
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.script_branch }}
+          ref: ${{ inputs.script_branch || 'master' }}
           path: ${{steps.initialize_instance.outputs.instance}}/scripts
           sparse-checkout: |
             script/populate_node.sh
@@ -147,5 +149,5 @@ jobs:
     uses: ./.github/workflows/gh_pages.yml
     with:
       debug_mode: ${{ inputs.debug_mode }}
-      registry_branch: ${{ inputs.registry_branch }}
-      script_branch: ${{ inputs.script_branch }}
+      registry_branch: ${{ inputs.registry_branch || 'snapshot' }}
+      script_branch: ${{ inputs.script_branch || 'master' }}
