@@ -91,6 +91,7 @@ jobs:
           ref: ${{ inputs.script_branch || 'master' }}
           path: ${{steps.initialize_instance.outputs.instance}}/scripts
           sparse-checkout: |
+            script/build_latest.sh
             script/populate_node.sh
             script/populate_release.sh
             script/sync_snapshot.sh
@@ -119,7 +120,6 @@ jobs:
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
         run: |
           BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" \
-          BUILD_LATEST_IGNORE="../scripts/setting/ignore.txt" \
           BUILD_LATEST_SKIP_NOT_FOUND="y" \
             bash ../scripts/script/build_latest.sh
 
