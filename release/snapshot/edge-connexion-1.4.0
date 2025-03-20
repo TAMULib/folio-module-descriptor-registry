@@ -1,0 +1,19 @@
+{
+  "id" : "edge-connexion-1.4.0",
+  "name" : "edge-connexion",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.0"
+  }, {
+    "id" : "copycat-imports",
+    "version" : "1.0"
+  }, {
+    "id" : "copycat-profiles",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "connexion",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ ]
+}
