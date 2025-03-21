@@ -1,0 +1,409 @@
+{
+  "id" : "mod-serials-management-2.1.0-SNAPSHOT.146",
+  "name" : "mod-serials-management",
+  "requires" : [ ],
+  "provides" : [ {
+    "id" : "serials-management",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/refdata",
+      "permissionsRequired" : [ "serials-management.refdata.category.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/refdata/{domain}/{property}",
+      "permissionsRequired" : [ "serials-management.refdata.value.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/refdata/{id}",
+      "permissionsRequired" : [ "serials-management.refdata.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/refdata",
+      "permissionsRequired" : [ "serials-management.refdata.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/serials-management/refdata/{id}",
+      "permissionsRequired" : [ "serials-management.refdata.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/serials-management/refdata/{id}",
+      "permissionsRequired" : [ "serials-management.refdata.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/serials",
+      "permissionsRequired" : [ "serials-management.serials.collection.get" ],
+      "modulePermissions" : [ "orders.po-lines.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/serials/{id}",
+      "permissionsRequired" : [ "serials-management.serials.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/serials",
+      "permissionsRequired" : [ "serials-management.serials.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/serials-management/serials/{id}",
+      "permissionsRequired" : [ "serials-management.serials.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/serials-management/serials/{id}",
+      "permissionsRequired" : [ "serials-management.serials.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/rulesets",
+      "permissionsRequired" : [ "serials-management.rulesets.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/rulesets/{id}",
+      "permissionsRequired" : [ "serials-management.rulesets.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets",
+      "permissionsRequired" : [ "serials-management.rulesets.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/serials-management/rulesets/{id}",
+      "permissionsRequired" : [ "serials-management.rulesets.item.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets/{id}/active",
+      "permissionsRequired" : [ "serials-management.rulesets.set-active.execute" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets/{id}/deprecated",
+      "permissionsRequired" : [ "serials-management.rulesets.set-deprecated.execute" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets/{id}/draft",
+      "permissionsRequired" : [ "serials-management.rulesets.set-draft.execute" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets/{id}/replaceAndDeprecate",
+      "permissionsRequired" : [ "serials-management.rulesets.replace-deprecate.execute" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/rulesets/{id}/replaceAndDelete",
+      "permissionsRequired" : [ "serials-management.rulesets.replace-delete.execute" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/predictedPieces",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/predictedPieces/{id}",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/serials-management/predictedPieces/{id}",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/predictedPieces/generate",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.transient.generate" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/predictedPieces/create",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.generate" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/serials-management/predictedPieces/{id}",
+      "permissionsRequired" : [ "serials-management.predictedPieceSets.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/locales",
+      "permissionsRequired" : [ "serials-management.locales.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/modelRulesets",
+      "permissionsRequired" : [ "serials-management.modelRulesets.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/serials-management/modelRulesets/{id}",
+      "permissionsRequired" : [ "serials-management.modelRulesets.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/serials-management/modelRulesets",
+      "permissionsRequired" : [ "serials-management.modelRulesets.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/serials-management/modelRulesets/{id}",
+      "permissionsRequired" : [ "serials-management.modelRulesets.item.delete" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "1.2",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST", "DELETE" ],
+      "pathPattern" : "/_/tenant",
+      "permissionsRequired" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant/disable",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "order-lines",
+    "version" : "3.3"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "serials-management.settings.get",
+    "displayName" : "settings get",
+    "description" : "get settings",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.settings.post",
+    "displayName" : "settings post",
+    "description" : "post settings",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.settings.put",
+    "displayName" : "settings put",
+    "description" : "put settings",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.settings.delete",
+    "displayName" : "settings delete",
+    "description" : "delete settings",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.settings.read",
+    "displayName" : "settings read",
+    "description" : "read settings",
+    "subPermissions" : [ "serials-management.settings.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.settings.write",
+    "displayName" : "settings write",
+    "description" : "write settings",
+    "subPermissions" : [ "serials-management.settings.read", "serials-management.settings.post", "serials-management.settings.put", "serials-management.settings.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.category.collection.get",
+    "replaces" : [ "serials-management.refdata.collection.get" ],
+    "displayName" : "Ref data category collection get",
+    "description" : "Get a collection of ref data category records",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.value.collection.get",
+    "replaces" : [ "serials-management.refdata.collection.get" ],
+    "displayName" : "Ref data value collection get",
+    "description" : "Get a collection of ref data value records",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.item.get",
+    "displayName" : "Ref data item get",
+    "description" : "Get a ref data record",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.item.post",
+    "displayName" : "Ref data item post",
+    "description" : "Post a ref data record",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.item.put",
+    "displayName" : "Ref data item put",
+    "description" : "Put a ref data record",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.item.delete",
+    "displayName" : "Ref data item delete",
+    "description" : "Delete a ref data record",
+    "visible" : false
+  }, {
+    "permissionName" : "serials-management.refdata.read",
+    "displayName" : "Refdata read",
+    "description" : "Read refdata as items or collections",
+    "subPermissions" : [ "serials-management.refdata.value.collection.get", "serials-management.refdata.category.collection.get", "serials-management.refdata.item.get" ]
+  }, {
+    "permissionName" : "serials-management.refdata.write",
+    "displayName" : "Refdata write",
+    "description" : "Read and write refdata entries",
+    "subPermissions" : [ "serials-management.refdata.read", "serials-management.refdata.item.post", "serials-management.refdata.item.put" ]
+  }, {
+    "permissionName" : "serials-management.refdata.manage",
+    "displayName" : "Refdata manage",
+    "description" : "Read, write and delete refdata entries",
+    "subPermissions" : [ "serials-management.refdata.write", "serials-management.refdata.item.delete" ]
+  }, {
+    "permissionName" : "serials-management.serials.collection.get",
+    "displayName" : "Serial collection get",
+    "description" : "Get a collection of serial records"
+  }, {
+    "permissionName" : "serials-management.serials.item.get",
+    "displayName" : "Serial item get",
+    "description" : "Get a serial record"
+  }, {
+    "permissionName" : "serials-management.serials.view",
+    "subPermissions" : [ "serials-management.serials.collection.get", "serials-management.serials.item.get" ]
+  }, {
+    "permissionName" : "serials-management.serials.item.post",
+    "displayName" : "Serial item post",
+    "description" : "Post a serial record"
+  }, {
+    "permissionName" : "serials-management.serials.item.put",
+    "displayName" : "Serial item put",
+    "description" : "Put a serial record"
+  }, {
+    "permissionName" : "serials-management.serials.edit",
+    "subPermissions" : [ "serials-management.serials.view", "serials-management.serials.item.post", "serials-management.serials.item.put" ]
+  }, {
+    "permissionName" : "serials-management.serials.item.delete",
+    "displayName" : "Serial item delete",
+    "description" : "Delete a serial record"
+  }, {
+    "permissionName" : "serials-management.serials.manage",
+    "subPermissions" : [ "serials-management.serials.edit", "serials-management.serials.item.delete" ]
+  }, {
+    "permissionName" : "serials-management.rulesets.collection.get",
+    "displayName" : "Ruleset collection get",
+    "description" : "Get a collection of ruleset records"
+  }, {
+    "permissionName" : "serials-management.rulesets.item.get",
+    "displayName" : "Ruleset item get",
+    "description" : "Get a ruleset record"
+  }, {
+    "permissionName" : "serials-management.rulesets.view",
+    "subPermissions" : [ "serials-management.rulesets.collection.get", "serials-management.rulesets.item.get" ]
+  }, {
+    "permissionName" : "serials-management.rulesets.item.post",
+    "displayName" : "Ruleset item post",
+    "description" : "Post a ruleset record"
+  }, {
+    "permissionName" : "serials-management.rulesets.set-active.execute",
+    "replaces" : [ "serials-management.rulesets.item.put" ],
+    "displayName" : "Set ruleset status active",
+    "description" : "Permit the changing of a ruleset status to \"active\""
+  }, {
+    "permissionName" : "serials-management.rulesets.set-deprecated.execute",
+    "replaces" : [ "serials-management.rulesets.item.put" ],
+    "displayName" : "Set ruleset status deprecated",
+    "description" : "Permit the changing of a ruleset status to \"deprecated\""
+  }, {
+    "permissionName" : "serials-management.rulesets.set-draft.execute",
+    "replaces" : [ "serials-management.rulesets.item.put" ],
+    "displayName" : "Set ruleset status draft",
+    "description" : "Permit the changing of a ruleset status to \"draft\""
+  }, {
+    "permissionName" : "serials-management.rulesets.replace-delete.execute",
+    "displayName" : "Replace and delete a ruleset",
+    "description" : "Permit the deletion and replacement of a ruleset"
+  }, {
+    "permissionName" : "serials-management.rulesets.replace-deprecate.execute",
+    "displayName" : "Replace and deprecate a ruleset",
+    "description" : "Permit the deprecation and replacement of a ruleset"
+  }, {
+    "permissionName" : "serials-management.rulesets.edit",
+    "subPermissions" : [ "serials-management.rulesets.view", "serials-management.rulesets.item.post", "serials-management.rulesets.set-active.execute", "serials-management.rulesets.set-deprecated.execute", "serials-management.rulesets.set-draft.execute", "serials-management.rulesets.replace-delete.execute", "serials-management.rulesets.replace-deprecate.execute" ]
+  }, {
+    "permissionName" : "serials-management.rulesets.item.delete",
+    "displayName" : "Ruleset item delete",
+    "description" : "Delete a ruleset record"
+  }, {
+    "permissionName" : "serials-management.rulesets.manage",
+    "subPermissions" : [ "serials-management.rulesets.edit", "serials-management.rulesets.item.delete" ]
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.collection.get",
+    "displayName" : "Predicted pieces collection get",
+    "description" : "Get a collection of predicted piece set records"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.item.get",
+    "displayName" : "Predicted pieces item get",
+    "description" : "Get a predicted piece set record"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.view",
+    "subPermissions" : [ "serials-management.predictedPieceSets.collection.get", "serials-management.predictedPieceSets.item.get" ]
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.transient.generate",
+    "replaces" : [ "serials-management.predictedPieceSets.item.post" ],
+    "displayName" : "Predicted piece set preview generate",
+    "description" : "Generate predicted piece set for preview without saving"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.generate",
+    "replaces" : [ "serials-management.predictedPieceSets.item.post" ],
+    "displayName" : "Predicted piece set generate",
+    "description" : "Generate predicted piece set"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.item.put",
+    "displayName" : "Predicted piece set item put",
+    "description" : "Put a predicted piece set record"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.item.delete",
+    "displayName" : "Predicted piece set item delete",
+    "description" : "Delete a predicted piece set record"
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.edit",
+    "subPermissions" : [ "serials-management.predictedPieceSets.view", "serials-management.predictedPieceSets.transient.generate", "serials-management.predictedPieceSets.generate", "serials-management.predictedPieceSets.item.put" ]
+  }, {
+    "permissionName" : "serials-management.predictedPieceSets.manage",
+    "subPermissions" : [ "serials-management.predictedPieceSets.edit", "serials-management.predictedPieceSets.item.delete" ]
+  }, {
+    "permissionName" : "serials-management.locales.collection.get",
+    "displayName" : "Locales collection get",
+    "description" : "Get the collection of locales"
+  }, {
+    "permissionName" : "serials-management.modelRulesets.collection.get",
+    "displayName" : "Model ruleset collection get",
+    "description" : "Get a collection of model ruleset records"
+  }, {
+    "permissionName" : "serials-management.modelRulesets.item.get",
+    "displayName" : "Model ruleset item get",
+    "description" : "Get a model ruleset record"
+  }, {
+    "permissionName" : "serials-management.modelRulesets.view",
+    "subPermissions" : [ "serials-management.modelRulesets.collection.get", "serials-management.modelRulesets.item.get" ]
+  }, {
+    "permissionName" : "serials-management.modelRulesets.item.post",
+    "displayName" : "Model ruleset item post",
+    "description" : "Post a model ruleset record"
+  }, {
+    "permissionName" : "serials-management.modelRulesets.edit",
+    "subPermissions" : [ "serials-management.modelRulesets.view", "serials-management.modelRulesets.item.post" ]
+  }, {
+    "permissionName" : "serials-management.modelRulesets.item.delete",
+    "displayName" : "Model ruleset item delete",
+    "description" : "Delete a model ruleset record"
+  }, {
+    "permissionName" : "serials-management.modelRulesets.manage",
+    "subPermissions" : [ "serials-management.modelRulesets.edit", "serials-management.modelRulesets.item.delete" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-serials-management:2.1.0-SNAPSHOT.146",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "50"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8080/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
