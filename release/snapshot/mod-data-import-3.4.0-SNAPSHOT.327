@@ -1,0 +1,351 @@
+{
+  "id" : "mod-data-import-3.4.0-SNAPSHOT.327",
+  "name" : "Data Import Module",
+  "requires" : [ {
+    "id" : "source-manager-job-executions",
+    "version" : "3.4"
+  }, {
+    "id" : "users",
+    "version" : "15.0 16.0"
+  } ],
+  "provides" : [ {
+    "id" : "data-import",
+    "version" : "3.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/splitStatus",
+      "permissionsRequired" : [ "data-import.splitconfig.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/uploadDefinitions",
+      "permissionsRequired" : [ "data-import.uploaddefinitions.post" ],
+      "modulePermissions" : [ "change-manager.jobexecutions.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/uploadDefinitions",
+      "permissionsRequired" : [ "data-import.uploadDefinitions.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}",
+      "permissionsRequired" : [ "data-import.uploadDefinitions.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}",
+      "permissionsRequired" : [ "data-import.uploaddefinitions.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}",
+      "permissionsRequired" : [ "data-import.uploaddefinitions.delete" ],
+      "modulePermissions" : [ "change-manager.jobExecutions.item.get", "change-manager.jobExecutions.children.collection.get", "change-manager.jobExecutions.status.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}/files/{fileId}",
+      "permissionsRequired" : [ "data-import.upload.file.post" ],
+      "modulePermissions" : [ "change-manager.jobexecutions.post", "change-manager.jobExecutions.status.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}/files",
+      "permissionsRequired" : [ "data-import.uploadDefinitions.files.item.post" ],
+      "modulePermissions" : [ "change-manager.jobexecutions.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}/files/{fileId}/assembleStorageFile",
+      "permissionsRequired" : [ "data-import.assembleStorageFile.post" ],
+      "modulePermissions" : [ "change-manager.jobExecutions.status.item.put", "change-manager.jobExecutions.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}/files/{fileId}",
+      "permissionsRequired" : [ "data-import.uploaddefinitions.files.delete" ],
+      "modulePermissions" : [ "change-manager.jobExecutions.status.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/uploadDefinitions/{uploadDefinitionId}/processFiles",
+      "permissionsRequired" : [ "data-import.uploadDefinitions.processFiles.item.post" ],
+      "permissionsDesired" : [ "invoices.acquisitions-units-assignments.assign", "orders.acquisitions-units-assignments.assign", "orders.acquisitions-units-assignments.manage", "orders.item.approve", "orders.item.reopen", "orders.item.unopen" ],
+      "modulePermissions" : [ "change-manager.jobExecutions.item.get", "change-manager.jobExecutions.children.collection.get", "change-manager.jobexecutions.post", "change-manager.jobExecutions.item.put", "change-manager.jobExecutions.status.item.put", "change-manager.jobExecutions.jobProfile.item.put", "mapping-metadata.item.get", "source-storage.records.collection.get", "source-storage.records.item.get", "source-storage.snapshots.item.get", "source-storage.snapshots.collection.get", "source-storage.snapshots.put", "users.collection.get", "inventory-storage.identifier-types.collection.get", "inventory-storage.classification-types.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.electronic-access-relationships.collection.get", "inventory-storage.instance-formats.collection.get", "inventory-storage.contributor-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.instance-note-types.collection.get", "inventory-storage.alternative-title-types.collection.get", "inventory-storage.modes-of-issuance.collection.get", "inventory-storage.item-damaged-statuses.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.nature-of-content-terms.collection.get", "inventory-storage.instance-relationship-types.collection.get", "inventory-storage.holdings-types.collection.get", "inventory-storage.holdings-note-types.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.ill-policies.collection.get", "inventory-storage.call-number-types.collection.get", "inventory-storage.statistical-codes.collection.get", "inventory-storage.statistical-code-types.collection.get", "inventory-storage.item-note-types.collection.get", "inventory-storage.authority-note-types.collection.get", "inventory-storage.authority-source-files.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "inventory-storage.items.item.put", "inventory-storage.items.item.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.put", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.item.post", "inventory-storage.instances.item.put", "inventory-storage.authorities.collection.get", "inventory-storage.authorities.item.get", "inventory-storage.authorities.item.post", "inventory-storage.authorities.item.put", "inventory-storage.preceding-succeeding-titles.item.post", "inventory-storage.preceding-succeeding-titles.collection.get", "inventory-storage.preceding-succeeding-titles.item.get", "inventory-storage.preceding-succeeding-titles.item.put", "inventory-storage.preceding-succeeding-titles.item.delete", "inventory-storage.subject-sources.collection.get", "inventory-storage.subject-types.collection.get", "inventory-storage.instance-date-types.collection.get", "converter-storage.field-protection-settings.item.get", "converter-storage.field-protection-settings.collection.get", "converter-storage.jobprofilesnapshots.get", "invoice-storage.invoices.item.post", "invoice-storage.invoice-number.get", "acquisitions-units.units.collection.get", "acquisitions-units.memberships.collection.get", "invoice-storage.invoice-line-number.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "invoice-storage.invoice-lines.item.post", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.collection.get", "acquisitions-units.units.collection.get", "acquisitions-units.memberships.collection.get", "orders.po-lines.item.get", "orders.po-lines.collection.get", "orders-storage.titles.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.post", "finance.exchange-rate.item.get", "finance.expense-classes.collection.get", "finance.funds.budget.item.get", "finance.funds.item.get", "finance.fiscal-years.item.get", "finance.ledgers.collection.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance-storage.budgets.collection.get", "finance-storage.budget-expense-classes.collection.get", "finance-storage.fiscal-years.item.get", "modperms.orders.item.post", "modperms.orders.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.po-line-number.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines.item.post", "orders-storage.alerts.item.post", "orders-storage.reporting-codes.item.post", "orders-storage.configuration.prefixes.collection.get", "orders-storage.configuration.suffixes.collection.get", "configuration.entries.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "isbn-utils.convert-to-13.get", "instance-authority-links.instances.collection.get", "instance-authority-links.instances.collection.put", "instance-authority.linking-rules.collection.get", "user-tenants.collection.get", "organizations.organizations.collection.get", "source-storage.records.post", "source-storage.records.put", "source-storage.snapshots.post", "source-storage.records.matching.collection.post", "source-storage.records.formatted.item.get", "source-storage.records.generation.item.put", "finance.funds.collection.get", "orders-storage.acquisition-methods.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/fileExtensions",
+      "permissionsRequired" : [ "data-import.fileExtensions.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/fileExtensions",
+      "permissionsRequired" : [ "data-import.fileExtensions.post" ],
+      "modulePermissions" : [ "users.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/fileExtensions/{id}",
+      "permissionsRequired" : [ "data-import.fileExtensions.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/data-import/fileExtensions/{id}",
+      "permissionsRequired" : [ "data-import.fileExtensions.put" ],
+      "modulePermissions" : [ "users.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/data-import/fileExtensions/{id}",
+      "permissionsRequired" : [ "data-import.fileExtensions.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/data-import/fileExtensions/restore/default",
+      "permissionsRequired" : [ "data-import.fileExtensions.default.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/dataTypes",
+      "permissionsRequired" : [ "data-import.datatypes.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/uploadUrl",
+      "permissionsRequired" : [ "data-import.uploadUrl.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/uploadUrl/subsequent",
+      "permissionsRequired" : [ "data-import.uploadUrl.subsequent.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/jobExecutions/{id}/downloadUrl",
+      "permissionsRequired" : [ "data-import.downloadUrl.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/data-import/jobExecutions/{jobExecutionId}/cancel",
+      "permissionsRequired" : [ "data-import.jobexecution.cancel" ],
+      "modulePermissions" : [ "change-manager.jobExecutions.item.put", "change-manager.jobExecutions.status.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/data-import/testFileSplit",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "data-import.assembleStorageFile.post",
+    "displayName" : "Data Import - assemble a file out of uploaded fragments",
+    "description" : "Permission to assemble a file out of uploaded fragments"
+  }, {
+    "permissionName" : "data-import.splitconfig.get",
+    "displayName" : "Data Import - get the status of file splitting configuration",
+    "description" : "Get the status of file splitting configuration"
+  }, {
+    "permissionName" : "data-import.uploaddefinitions.post",
+    "displayName" : "Data Import - create new upload definition",
+    "description" : "Post Upload Definition"
+  }, {
+    "permissionName" : "data-import.uploadDefinitions.item.get",
+    "replaces" : [ "data-import.uploaddefinitions.get" ],
+    "displayName" : "Data Import - get upload definition item",
+    "description" : "Get Upload Definition item"
+  }, {
+    "permissionName" : "data-import.uploadDefinitions.collection.get",
+    "replaces" : [ "data-import.uploaddefinitions.get" ],
+    "displayName" : "Data Import - get upload definition collection",
+    "description" : "Get Upload Definition collection"
+  }, {
+    "permissionName" : "data-import.uploaddefinitions.put",
+    "displayName" : "Data Import - update upload definition",
+    "description" : "Put Upload Definition"
+  }, {
+    "permissionName" : "data-import.uploaddefinitions.delete",
+    "displayName" : "Data Import - delete upload definition",
+    "description" : "Delete Upload Definition"
+  }, {
+    "permissionName" : "data-import.upload.file.post",
+    "displayName" : "Data Import - upload file into the storage",
+    "description" : "Upload file"
+  }, {
+    "permissionName" : "data-import.uploaddefinitions.files.delete",
+    "displayName" : "Data Import - delete file from upload definition and storage",
+    "description" : "Delete file"
+  }, {
+    "permissionName" : "data-import.uploadDefinitions.files.item.post",
+    "replaces" : [ "data-import.uploaddefinitions.files.post" ],
+    "displayName" : "Data Import - Create new File Definition",
+    "description" : "Create and handle File Definition"
+  }, {
+    "permissionName" : "data-import.uploadDefinitions.processFiles.item.post",
+    "replaces" : [ "data-import.uploaddefinitions.files.post" ],
+    "displayName" : "Data Import - Create new Process File Definition",
+    "description" : "Create and handle Process File Definition"
+  }, {
+    "permissionName" : "data-import.fileExtensions.item.get",
+    "replaces" : [ "data-import.fileExtensions.get" ],
+    "displayName" : "Data Import - get file extension",
+    "description" : "Get FileExtension"
+  }, {
+    "permissionName" : "data-import.fileExtensions.collection.get",
+    "replaces" : [ "data-import.fileExtensions.get" ],
+    "displayName" : "Data Import - get file extensions",
+    "description" : "Get FileExtensions"
+  }, {
+    "permissionName" : "data-import.fileExtensions.post",
+    "displayName" : "Data Import - create new file extension",
+    "description" : "Post FileExtension"
+  }, {
+    "permissionName" : "data-import.fileExtensions.put",
+    "displayName" : "Data Import - update file extension",
+    "description" : "Put FileExtension"
+  }, {
+    "permissionName" : "data-import.fileExtensions.delete",
+    "displayName" : "Data Import - delete file extension",
+    "description" : "Delete FileExtension"
+  }, {
+    "permissionName" : "data-import.fileExtensions.default.post",
+    "replaces" : [ "data-import.fileExtensions.default" ],
+    "displayName" : "Data Import - restore file extensions to default",
+    "description" : "Restore FileExtension to default"
+  }, {
+    "permissionName" : "data-import.datatypes.get",
+    "displayName" : "Data Import - get data types",
+    "description" : "Get DataTypes"
+  }, {
+    "permissionName" : "data-import.uploadUrl.item.get",
+    "replaces" : [ "data-import.uploadUrl.get" ],
+    "displayName" : "Data Import - get S3 upload URL for the first part of a file",
+    "description" : "Get S3 upload URL for the first part of a file"
+  }, {
+    "permissionName" : "data-import.uploadUrl.subsequent.item.get",
+    "replaces" : [ "data-import.uploadUrl.get" ],
+    "displayName" : "Data Import - get S3 upload URL for the last part of a file",
+    "description" : "Get S3 upload URL for the last part of a file"
+  }, {
+    "permissionName" : "data-import.downloadUrl.get",
+    "displayName" : "Data Import - get S3 download URL",
+    "description" : "Get S3 download URL"
+  }, {
+    "permissionName" : "data-import.jobexecution.cancel",
+    "displayName" : "Data Import - cancel running job",
+    "description" : "Cancel running job"
+  }, {
+    "permissionName" : "data-import.upload.all",
+    "displayName" : "Data Import File Upload - all permissions",
+    "description" : "Entire set of permissions needed to use file uploads",
+    "subPermissions" : [ "data-import.upload.file.post", "data-import.uploadUrl.item.get", "data-import.uploadUrl.subsequent.item.get", "data-import.uploaddefinitions.post", "data-import.uploadDefinitions.item.get", "data-import.uploadDefinitions.collection.get", "data-import.uploaddefinitions.put", "data-import.uploaddefinitions.delete", "data-import.uploaddefinitions.files.delete", "data-import.uploadDefinitions.files.item.post", "data-import.uploadDefinitions.processFiles.item.post", "data-import.fileExtensions.item.get", "data-import.fileExtensions.collection.get", "data-import.fileExtensions.post", "data-import.fileExtensions.put", "data-import.fileExtensions.delete", "data-import.fileExtensions.default.post", "data-import.datatypes.get" ],
+    "visible" : false
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-data-import:3.4.0-SNAPSHOT.327",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "AWS_URL",
+      "value" : "http://127.0.0.1:9000/"
+    }, {
+      "name" : "AWS_REGION",
+      "value" : ""
+    }, {
+      "name" : "AWS_BUCKET",
+      "value" : "example-bucket"
+    }, {
+      "name" : "AWS_ACCESS_KEY_ID",
+      "value" : "AKIAIOSFODNN7EXAMPLE"
+    }, {
+      "name" : "AWS_SECRET_ACCESS_KEY",
+      "value" : "wJalrXUtnFEMI/K7MDENG/EXAMPLEKEY"
+    }, {
+      "name" : "AWS_SDK",
+      "value" : "false"
+    }, {
+      "name" : "S3_FORCEPATHSTYLE",
+      "value" : "false"
+    }, {
+      "name" : "SPLIT_FILES_ENABLED",
+      "value" : "false"
+    }, {
+      "name" : "RECORDS_PER_SPLIT_FILE",
+      "value" : "1000"
+    }, {
+      "name" : "SCORE_JOB_SMALLEST",
+      "value" : "40"
+    }, {
+      "name" : "SCORE_JOB_LARGEST",
+      "value" : "-40"
+    }, {
+      "name" : "SCORE_JOB_REFERENCE",
+      "value" : "100000"
+    }, {
+      "name" : "SCORE_AGE_NEWEST",
+      "value" : "0"
+    }, {
+      "name" : "SCORE_AGE_OLDEST",
+      "value" : "50"
+    }, {
+      "name" : "SCORE_AGE_EXTREME_THRESHOLD_MINUTES",
+      "value" : "480"
+    }, {
+      "name" : "SCORE_AGE_EXTREME_VALUE",
+      "value" : "10000"
+    }, {
+      "name" : "SCORE_TENANT_USAGE_MIN",
+      "value" : "100"
+    }, {
+      "name" : "SCORE_TENANT_USAGE_MAX",
+      "value" : "-200"
+    }, {
+      "name" : "SCORE_PART_NUMBER_FIRST",
+      "value" : "1"
+    }, {
+      "name" : "SCORE_PART_NUMBER_LAST",
+      "value" : "0"
+    }, {
+      "name" : "SCORE_PART_NUMBER_LAST_REFERENCE",
+      "value" : "100"
+    }, {
+      "name" : "ASYNC_PROCESSOR_POLL_INTERVAL_MS",
+      "value" : "5000"
+    }, {
+      "name" : "ASYNC_PROCESSOR_MAX_WORKERS_COUNT",
+      "value" : "1"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 542293850,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
