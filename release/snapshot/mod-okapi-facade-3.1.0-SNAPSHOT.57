@@ -1,0 +1,506 @@
+{
+  "id" : "mod-okapi-facade-3.1.0-SNAPSHOT.57",
+  "name" : "Okapi facade",
+  "requires" : [ ],
+  "provides" : [ {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "okapi",
+    "version" : "1.9",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/deployment/modules",
+      "permissionsRequired" : [ "okapi.deployment.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/deployment/modules",
+      "permissionsRequired" : [ "okapi.deployment.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/deployment/modules/{instanceId}",
+      "permissionsRequired" : [ "okapi.deployment.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/deployment/modules/{instanceId}",
+      "permissionsRequired" : [ "okapi.deployment.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/discovery/modules",
+      "permissionsRequired" : [ "okapi.discovery.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/modules",
+      "permissionsRequired" : [ "okapi.discovery.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/modules/{serviceId}",
+      "permissionsRequired" : [ "okapi.discovery.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/modules/{serviceId}/{instanceId}",
+      "permissionsRequired" : [ "okapi.discovery.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/_/discovery/modules/{serviceId}/{instanceId}",
+      "permissionsRequired" : [ "okapi.discovery.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/discovery/modules",
+      "permissionsRequired" : [ "okapi.discovery.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/discovery/modules/{serviceId}",
+      "permissionsRequired" : [ "okapi.discovery.delete" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/discovery/modules/{serviceId}/{instanceId}",
+      "permissionsRequired" : [ "okapi.discovery.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/health",
+      "permissionsRequired" : [ "okapi.discovery.health.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/health/{serviceId}",
+      "permissionsRequired" : [ "okapi.discovery.health.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/health/{serviceId}/{instanceId}",
+      "permissionsRequired" : [ "okapi.discovery.health.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/nodes",
+      "permissionsRequired" : [ "okapi.discovery.nodes.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/_/discovery/nodes/{nodeId}",
+      "permissionsRequired" : [ "okapi.discovery.nodes.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/discovery/nodes/{nodeId}",
+      "permissionsRequired" : [ "okapi.discovery.nodes.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/import/modules",
+      "permissionsRequired" : [ "okapi.proxy.modules.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/cleanup/modules",
+      "permissionsRequired" : [ "okapi.proxy.cleanup.modules" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/modules",
+      "permissionsRequired" : [ "okapi.proxy.modules.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/modules",
+      "permissionsRequired" : [ "okapi.proxy.modules.list" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/modules/{moduleId}",
+      "permissionsRequired" : [ "okapi.proxy.modules.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/modules/{moduleId}",
+      "permissionsRequired" : [ "okapi.proxy.modules.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/tenants",
+      "permissionsRequired" : [ "okapi.proxy.tenants.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants",
+      "permissionsRequired" : [ "okapi.proxy.tenants.list" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/upgrade",
+      "permissionsRequired" : [ "okapi.proxy.tenants.upgrade.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/install",
+      "permissionsRequired" : [ "okapi.proxy.tenants.install.list" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/install",
+      "permissionsRequired" : [ "okapi.proxy.tenants.install.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/install",
+      "permissionsRequired" : [ "okapi.proxy.tenants.install.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/install/{installId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.install.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/install/{installId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.install.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.list" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules/{moduleId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.enabled.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules/{moduleId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.enabled.get" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/modules/{moduleId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.modules.enabled.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/interfaces",
+      "permissionsRequired" : [ "okapi.proxy.tenants.interfaces.list" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/interfaces/{interfaceId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.interfaces.get" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/timers",
+      "permissionsRequired" : [ "okapi.proxy.tenants.timers.list" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "PATCH" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/timers",
+      "permissionsRequired" : [ "okapi.proxy.tenants.timers.patch" ],
+      "permissionsRequiredTenant" : [ "okapi.proxy.self.timers.patch" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/timers/{timerId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.timers.get" ],
+      "permissionsRequiredTenant" : [ ]
+    }, {
+      "methods" : [ "PATCH" ],
+      "pathPattern" : "/_/proxy/tenants/{tenantId}/timers/{timerId}",
+      "permissionsRequired" : [ "okapi.proxy.tenants.timers.patch" ],
+      "permissionsRequiredTenant" : [ "okapi.proxy.self.timers.patch" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/proxy/health",
+      "permissionsRequired" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/proxy/pull/modules",
+      "permissionsRequired" : [ "okapi.proxy.pull.modules.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/env",
+      "permissionsRequired" : [ "okapi.env.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/env",
+      "permissionsRequired" : [ "okapi.env.list" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/env/{id}",
+      "permissionsRequired" : [ "okapi.env.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/env/{id}",
+      "permissionsRequired" : [ "okapi.env.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/version",
+      "permissionsRequired" : [ "okapi.version.get" ],
+      "permissionsRequiredTenant" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "okapi.deployment.get",
+    "displayName" : "Okapi - get deployment info",
+    "description" : "Get deployment info for module on 'this' node"
+  }, {
+    "permissionName" : "okapi.deployment.post",
+    "displayName" : "Okapi - deploy locally",
+    "description" : "Deploy a module on 'this' node"
+  }, {
+    "permissionName" : "okapi.deployment.delete",
+    "displayName" : "Okapi - undeploy locally",
+    "description" : "Undeploy a module on 'this' node"
+  }, {
+    "permissionName" : "okapi.discovery.get",
+    "displayName" : "Okapi - get discovery info",
+    "description" : "Get discovery info for module"
+  }, {
+    "permissionName" : "okapi.discovery.post",
+    "displayName" : "Okapi - deploy a module on a given node",
+    "description" : "Undeploy a module on 'this' node"
+  }, {
+    "permissionName" : "okapi.discovery.put",
+    "displayName" : "Okapi - update description of deployed module",
+    "description" : "Update description"
+  }, {
+    "permissionName" : "okapi.discovery.delete",
+    "displayName" : "Okapi - undeploy a module instance",
+    "description" : "Undeploy a given instance of a module"
+  }, {
+    "permissionName" : "okapi.discovery.health.get",
+    "displayName" : "Okapi - Get a health for module/node",
+    "description" : "Get health info"
+  }, {
+    "permissionName" : "okapi.discovery.nodes.get",
+    "displayName" : "Okapi - Get a node descriptor",
+    "description" : "Get a node descriptor"
+  }, {
+    "permissionName" : "okapi.discovery.nodes.put",
+    "displayName" : "Okapi - Update a node descriptor",
+    "description" : "Update a node descriptor, usually to give it a new name"
+  }, {
+    "permissionName" : "okapi.proxy.modules.list",
+    "displayName" : "Okapi - list modules",
+    "description" : "List modules"
+  }, {
+    "permissionName" : "okapi.proxy.modules.get",
+    "displayName" : "Okapi - get a module",
+    "description" : "Get a module"
+  }, {
+    "permissionName" : "okapi.proxy.modules.post",
+    "displayName" : "Okapi - announce a new module to the proxy",
+    "description" : "Announce a new module to the proxy"
+  }, {
+    "permissionName" : "okapi.proxy.modules.put",
+    "displayName" : "Okapi - update a module description",
+    "description" : "Update a module description"
+  }, {
+    "permissionName" : "okapi.proxy.modules.delete",
+    "displayName" : "Okapi - undeclare a module",
+    "description" : "Remove a moduleDescriptor from the system"
+  }, {
+    "permissionName" : "okapi.proxy.pull.modules.post",
+    "displayName" : "Okapi - get ModuleDescriptors",
+    "description" : "Get MDs from another Okapi, maybe a repo"
+  }, {
+    "permissionName" : "okapi.proxy.cleanup.modules",
+    "displayName" : "Okapi - clean up obsolete snapshot modules",
+    "description" : "Clean up obsolete snapshot modules"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.list",
+    "displayName" : "Okapi - list tenants",
+    "description" : "List tenants"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.get",
+    "displayName" : "Okapi - get a tenant",
+    "description" : "Get a tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.post",
+    "displayName" : "Okapi - create a tenant",
+    "description" : "Declare a tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.put",
+    "displayName" : "Okapi - Update a tenant",
+    "description" : "Update a tenant description"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.delete",
+    "displayName" : "Okapi - Delete a tenant",
+    "description" : "Remove a tenant description"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.install.list",
+    "displayName" : "Okapi - list all install jobs",
+    "description" : "Retrieve all install jobs"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.upgrade.post",
+    "displayName" : "Okapi - Upgrade modules",
+    "description" : "Check if newer versions available, and upgrade"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.install.get",
+    "displayName" : "Okapi - get install job",
+    "description" : "Retrieve install job by id"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.install.delete",
+    "displayName" : "Okapi - delete install job",
+    "description" : "Delete install job by id"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.install.post",
+    "displayName" : "Okapi - Enable modules and dependencies",
+    "description" : "Check dependencies and enable/disable modules as needed"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.modules.list",
+    "displayName" : "Okapi - List modules enabled for tenant",
+    "description" : "List modules enabled for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.modules.enabled.get",
+    "displayName" : "Okapi - Get module enabled for tenant",
+    "description" : "Get module enabled for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.modules.post",
+    "displayName" : "Okapi - Enable a module for tenant",
+    "description" : "Enable a module for the tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.modules.enabled.post",
+    "displayName" : "Okapi - Enable a module and disable another",
+    "description" : "Enable a module for the tenant, and disable another one"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.modules.enabled.delete",
+    "displayName" : "Okapi - Disable a module for tenant",
+    "description" : "Disable a module for the tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.interfaces.list",
+    "displayName" : "Okapi - list interfaces for tenant",
+    "description" : "List available interfaces for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.interfaces.get",
+    "displayName" : "Okapi - get modules that provides interface",
+    "description" : "get modules that provide some interface"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.timers.list",
+    "displayName" : "Okapi - list timers for tenant",
+    "description" : "List available timers for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.timers.get",
+    "displayName" : "Okapi - get timer for tenant",
+    "description" : "get timer for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.tenants.timers.patch",
+    "displayName" : "Okapi - get timer for tenant",
+    "description" : "get timer for tenant"
+  }, {
+    "permissionName" : "okapi.proxy.self.timers.patch",
+    "displayName" : "Okapi - patch timer for current tenant",
+    "description" : "patch (modify) timer for current tenant"
+  }, {
+    "permissionName" : "okapi.env.post",
+    "displayName" : "Okapi - post env variable",
+    "description" : "Set up an environment variable for all modules"
+  }, {
+    "permissionName" : "okapi.env.list",
+    "displayName" : "Okapi - list env variables",
+    "description" : "List the environment variables"
+  }, {
+    "permissionName" : "okapi.env.get",
+    "displayName" : "Okapi - get one env variable",
+    "description" : "Get one environment variable"
+  }, {
+    "permissionName" : "okapi.env.delete",
+    "displayName" : "Okapi - Delete env variable",
+    "description" : "Delete one environment variable"
+  }, {
+    "permissionName" : "okapi.version.get",
+    "displayName" : "Okapi - Get version",
+    "description" : "Get version"
+  }, {
+    "permissionName" : "okapi.deploy",
+    "displayName" : "Okapi - Manage deployments",
+    "description" : "Deploy and undeploy modules",
+    "subPermissions" : [ "okapi.deployment.post", "okapi.deployment.get", "okapi.deployment.delete", "okapi.discovery.post", "okapi.discovery.get", "okapi.discovery.put", "okapi.discovery.delete", "okapi.discovery.nodes.put", "okapi.discovery.health.get", "okapi.discovery.nodes.get" ]
+  }, {
+    "permissionName" : "okapi.modules",
+    "displayName" : "Okapi - Manage modules",
+    "description" : "Manage ModuleDescriptors known to the system",
+    "subPermissions" : [ "okapi.proxy.modules.list", "okapi.proxy.modules.get", "okapi.proxy.modules.post", "okapi.proxy.modules.put", "okapi.proxy.modules.delete", "okapi.proxy.pull.modules.post", "okapi.proxy.cleanup.modules" ]
+  }, {
+    "permissionName" : "okapi.tenants",
+    "displayName" : "Okapi - Manage tenants",
+    "description" : "Manage tenants known to the system",
+    "subPermissions" : [ "okapi.proxy.tenants.list", "okapi.proxy.tenants.get", "okapi.proxy.tenants.post", "okapi.proxy.tenants.put", "okapi.proxy.tenants.delete" ]
+  }, {
+    "permissionName" : "okapi.tenantmodules",
+    "displayName" : "Okapi - Manage modules enabled for a tenant",
+    "description" : "Enable and disable modules for a tenant",
+    "subPermissions" : [ "okapi.proxy.tenants.modules.list", "okapi.proxy.tenants.modules.post", "okapi.proxy.tenants.modules.enabled.get", "okapi.proxy.tenants.modules.enabled.post", "okapi.proxy.tenants.modules.enabled.delete", "okapi.proxy.tenants.upgrade.post", "okapi.proxy.tenants.install.list", "okapi.proxy.tenants.install.get", "okapi.proxy.tenants.install.delete", "okapi.proxy.tenants.install.post" ]
+  }, {
+    "permissionName" : "okapi.timers",
+    "displayName" : "Okapi - Timers",
+    "description" : "Manager timer for modules",
+    "subPermissions" : [ "okapi.proxy.tenants.timers.list", "okapi.proxy.tenants.timers.patch", "okapi.proxy.tenants.timers.get", "okapi.proxy.self.timers.patch" ]
+  }, {
+    "permissionName" : "okapi.interfaces",
+    "displayName" : "Okapi - Module interfaces",
+    "description" : "Discover modules that provide some interface",
+    "subPermissions" : [ "okapi.proxy.tenants.interfaces.list", "okapi.proxy.tenants.interfaces.get" ]
+  }, {
+    "permissionName" : "okapi.env",
+    "displayName" : "Okapi - Manage environment variables",
+    "description" : "Set up env vars for modules",
+    "subPermissions" : [ "okapi.env.post", "okapi.env.delete", "okapi.env.list", "okapi.env.get" ]
+  }, {
+    "permissionName" : "okapi.readonly",
+    "displayName" : "Okapi - Read only permissions",
+    "description" : "Permissions with no side effects",
+    "subPermissions" : [ "okapi.proxy.modules.list", "okapi.proxy.modules.get", "okapi.proxy.tenants.list", "okapi.proxy.tenants.get", "okapi.proxy.tenants.modules.list", "okapi.proxy.tenants.modules.enabled.get", "okapi.interfaces", "okapi.version.get" ]
+  }, {
+    "permissionName" : "okapi.all",
+    "displayName" : "Okapi - All permissions",
+    "description" : "Anything goes",
+    "subPermissions" : [ "okapi.deploy", "okapi.modules", "okapi.tenants", "okapi.tenantmodules", "okapi.timers", "okapi.interfaces", "okapi.version.get", "okapi.env" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-okapi-facade:3.1.0-SNAPSHOT.57",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
