@@ -194,16 +194,75 @@ build_page_operate() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local index=${work}/index.html
   local indexes=
 
   build_page_operate_sources
 
-  build_page_operate_sources_process_index "${work}/index.html" "${title_main}" "${indexes}"
+  build_page_operate_index_setup
+
+  build_page_operate_index_expand "${index}" "${title_main}"
+
+  build_page_operate_index_finalize "${index}" "${indexes}"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   echo
   echo "Done: Pages are built."
+}
+
+build_page_operate_index_expand() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local index=${1}
+  local title=${2}
+  local back=
+
+  if [[ ${3} == "back" ]] ; then
+    if [[ $(echo ${template_back_data} | sed -e "s|\s||g") != "" ]] ; then
+      back=$(echo ${template_back_data} | sed -e "s|\<_REPLACE_LINK_\>||g" -e "s|\<_REPLACE_SECTION_TITLE_\>|${title_main}|g")
+    fi
+  fi
+
+  sed -i \
+    -e "s|\<_REPLACE_BASE_PATH_\>|${base}|g" \
+    -e "s|\<_REPLACE_PAGE_BACK_\>|${back}|g" \
+    -e "s|\<_REPLACE_PAGE_TITLE_\>|${title}|g" \
+    -e "s|\<_REPLACE_SECTION_TITLE_\>|${title}|g" \
+    -e "s|\<_REPLACE_SECTION_DATE_\>|${now}|g" \
+    -e "s|\s*\<_REPLACE_EOL_\>\s*|\n|g" \
+    ${index}
+
+  build_page_handle_result "Failed to expand common template variables in ${index}"
+}
+
+build_page_operate_index_finalize() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local index=${1}
+  local snippet=${2}
+
+  sed -i \
+    -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${snippet}|g" \
+    -e "s|\s*\<_REPLACE_EOL_\>\s*|\n|g" \
+    ${index}
+
+  build_page_handle_result "Failed to expand final template variables in ${index}"
+}
+
+build_page_operate_index_setup() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ $(echo ${indexes} | sed -e "s|\s||g") == "" ]] ; then
+    indexes="There are no releases available to index."
+  fi
+
+  cp ${debug} ${template_path}${template_base} ${work}/index.html
+
+  build_page_handle_result "Failed to copy ${template_path}${template_item} to ${work}/index.html"
 }
 
 build_page_operate_sources() {
@@ -235,6 +294,10 @@ build_page_operate_sources() {
         if [[ ${result} -ne 0 ]] ; then break ; fi
         if [[ $(ls ${j}/) == "" ]] ; then continue ; fi
 
+        build_page_operate_sources_index_setup
+
+        build_page_operate_index_expand "${work}${source}/index.html" "Listing of ${source} Release" back
+
         build_page_operate_sources_process_files
 
         if [[ ${result} -ne 0 ]] ; then break ; fi
@@ -245,13 +308,23 @@ build_page_operate_sources() {
   done
 }
 
+build_page_operate_sources_index_setup() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local index=${work}${source}/index.html
+
+  cp ${debug} ${template_path}${template_base} ${index}
+
+  build_page_handle_result "Failed to copy ${template_path}${template_item} to ${index}"
+}
+
 build_page_operate_sources_process_files() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local file=
   local files=
-  local items=
   local k=
 
   for k in ${j}/* ; do
@@ -279,7 +352,7 @@ build_page_operate_sources_process_files() {
 
     build_page_operate_sources_process_files_copy_file
 
-    build_page_operate_sources_process_files_template_item "${source}/${file}" "${file}"
+    build_page_operate_sources_process_files_index_item
 
     # Reset error for each loop pass, the problems represents the final error state.
     if [[ ${result} -ne 0 ]] ; then
@@ -293,9 +366,9 @@ build_page_operate_sources_process_files() {
     echo "${p_e}Build Path failed, the following files are missing, invalid, or failed to be processed: ${problems}."
 
     let result=1
+  else
+    build_page_operate_index_finalize "${work}${source}/index.html"
   fi
-
-  build_page_operate_sources_process_index "${work}${source}/index.html" "Listing of ${source} Release" "${items}" yes
 }
 
 build_page_operate_sources_process_files_copy_file() {
@@ -307,14 +380,16 @@ build_page_operate_sources_process_files_copy_file() {
   build_page_handle_result "Failed to copy ${k} to ${work}${source}/${file}"
 }
 
-build_page_operate_sources_process_files_template_item() {
+build_page_operate_sources_process_files_index_item() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local item=
+  local item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g")
 
-  item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g")
-  items="${items}${item}_REPLACE_EOL_ "
+  # Expand the variable, but re-introduce the snippet on each run to allow replacements for each item.
+  sed -i -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${item}\n&|g" ${work}${source}/index.html
+
+  build_page_handle_result "Failed to expand item '${file}' template variables in ${work}${source}/index.html"
 }
 
 build_page_operate_sources_process_files_verify_file() {
@@ -337,46 +412,6 @@ build_page_operate_sources_process_files_verify_file() {
       let result=0
     fi
   fi
-}
-
-build_page_operate_sources_process_index() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local index=${1}
-  local title=${2}
-  local snippet=${3}
-  local back=${4}
-
-  if [[ $(echo ${snippet} | sed -e "s|\s||g") == "" ]] ; then
-    snippet="There are no items available."
-  fi
-
-  if [[ ${back} != "" ]] ; then
-    if [[ $(echo ${template_back_data} | sed -e "s|\s||g") == "" ]] ; then
-      back=
-    else
-      back=$(echo ${template_back_data} | sed -e "s|\<_REPLACE_LINK_\>||g" -e "s|\<_REPLACE_SECTION_TITLE_\>|${title_main}|g")
-    fi
-  fi
-
-  cp ${debug} ${template_path}${template_base} ${index}
-
-  build_page_handle_result "Failed to copy ${template_path}${template_item} to ${index}"
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  sed -i \
-    -e "s|\<_REPLACE_BASE_PATH_\>|${base}|g" \
-    -e "s|\<_REPLACE_PAGE_BACK_\>|${back}|g" \
-    -e "s|\<_REPLACE_PAGE_TITLE_\>|${title}|g" \
-    -e "s|\<_REPLACE_SECTION_TITLE_\>|${title}|g" \
-    -e "s|\<_REPLACE_SECTION_DATE_\>|${now}|g" \
-    -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${snippet}|g" \
-    -e "s|\s*\<_REPLACE_EOL_\>\s*|\n|g" \
-    ${index}
-
-  build_page_handle_result "Failed to expand template variables in ${index}"
 }
 
 build_page_operate_sources_process_index_template_item() {
