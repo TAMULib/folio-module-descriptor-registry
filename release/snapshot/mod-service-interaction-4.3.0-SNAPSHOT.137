@@ -1,0 +1,516 @@
+{
+  "id" : "mod-service-interaction-4.3.0-SNAPSHOT.137",
+  "name" : "mod-service-interaction",
+  "requires" : [ {
+    "id" : "okapi",
+    "version" : "1.9"
+  } ],
+  "provides" : [ {
+    "id" : "servint",
+    "version" : "4.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/settings*",
+      "permissionsRequired" : [ "servint.settings.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/settings*",
+      "permissionsRequired" : [ "servint.settings.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/settings*",
+      "permissionsRequired" : [ "servint.settings.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/settings*",
+      "permissionsRequired" : [ "servint.settings.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/refdata*",
+      "permissionsRequired" : [ "servint.refdata.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/refdata*",
+      "permissionsRequired" : [ "servint.refdata.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/refdata*",
+      "permissionsRequired" : [ "servint.refdata.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/refdata*",
+      "permissionsRequired" : [ "servint.refdata.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard",
+      "permissionsRequired" : [ "servint.dashboards.collection.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/my-dashboards",
+      "permissionsRequired" : [ "servint.dashboards.user.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/dashboard/my-dashboards",
+      "permissionsRequired" : [ "servint.dashboards.user.put" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/{id}",
+      "permissionsRequired" : [ "servint.dashboards.item.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/{id}/users",
+      "permissionsRequired" : [ "servint.dashboards.access.item.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/dashboard/{id}/users",
+      "permissionsRequired" : [ "servint.dashboards.access.item.post" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/{id}/widgets",
+      "permissionsRequired" : [ "servint.dashboards.widgets.collection.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/{id}/my-access",
+      "permissionsRequired" : [ "servint.dashboards.myAccess.item.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/dashboard/{id}/displayData",
+      "permissionsRequired" : [ "servint.dashboards.displayData.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/dashboard/{id}/displayData",
+      "permissionsRequired" : [ "servint.dashboards.displayData.put" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/dashboard",
+      "permissionsRequired" : [ "servint.dashboards.item.post" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/dashboard/{id}",
+      "permissionsRequired" : [ "servint.dashboards.item.put" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/dashboard/{id}",
+      "permissionsRequired" : [ "servint.dashboards.item.delete" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/definitions/global",
+      "permissionsRequired" : [ "servint.widgetDefinitions.collection.global.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/definitions",
+      "permissionsRequired" : [ "servint.widgetDefinitions.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/definitions/{id}",
+      "permissionsRequired" : [ "servint.widgetDefinitions.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/instances",
+      "permissionsRequired" : [ "servint.widgetInstances.collection.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/instances/{id}",
+      "permissionsRequired" : [ "servint.widgetInstances.item.get" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/widgets/instances/{id}",
+      "permissionsRequired" : [ "servint.widgetInstances.item.put" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/widgets/instances",
+      "permissionsRequired" : [ "servint.widgetInstances.item.post" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/widgets/instances/{id}",
+      "permissionsRequired" : [ "servint.widgetInstances.item.delete" ],
+      "permissionsDesired" : [ "servint.dashboards.admin.allops" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/widgets/types",
+      "permissionsRequired" : [ "servint.widgetTypes.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/admin/*",
+      "permissionsRequired" : [ "servint.admin.action.execute" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/numberGenerators",
+      "permissionsRequired" : [ "servint.numberGenerator.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/numberGenerators/{id}",
+      "permissionsRequired" : [ "servint.numberGenerator.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/numberGenerators",
+      "permissionsRequired" : [ "servint.numberGenerator.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/numberGenerators/{id}",
+      "permissionsRequired" : [ "servint.numberGenerator.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/numberGenerators/{id}",
+      "permissionsRequired" : [ "servint.numberGenerator.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/numberGenerators/getNextNumber",
+      "permissionsRequired" : [ "servint.numberGenerator.generate.execute" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/numberGeneratorSequences",
+      "permissionsRequired" : [ "servint.numberGeneratorSequence.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/servint/numberGeneratorSequences/{id}",
+      "permissionsRequired" : [ "servint.numberGeneratorSequence.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/servint/numberGeneratorSequences",
+      "permissionsRequired" : [ "servint.numberGeneratorSequence.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/servint/numberGeneratorSequences/{id}",
+      "permissionsRequired" : [ "servint.numberGeneratorSequence.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/servint/numberGeneratorSequences/{id}",
+      "permissionsRequired" : [ "servint.numberGeneratorSequence.item.delete" ]
+    } ]
+  }, {
+    "id" : "dashboard",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/dashboard/definitions",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "1.2",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST", "DELETE" ],
+      "pathPattern" : "/_/tenant",
+      "permissionsRequired" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant/disable",
+      "permissionsRequired" : [ ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "servint.settings.get",
+    "displayName" : "settings get",
+    "description" : "get settings",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.settings.post",
+    "displayName" : "settings post",
+    "description" : "post settings",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.settings.put",
+    "displayName" : "settings put",
+    "description" : "put settings",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.settings.delete",
+    "displayName" : "settings delete",
+    "description" : "delete settings",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.settings.read",
+    "displayName" : "settings read",
+    "description" : "read settings",
+    "subPermissions" : [ "servint.settings.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "servint.settings.write",
+    "displayName" : "settings write",
+    "description" : "write settings",
+    "subPermissions" : [ "servint.settings.read", "servint.settings.post", "servint.settings.put", "servint.settings.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.get",
+    "displayName" : "refdata get",
+    "description" : "get refdata",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.post",
+    "displayName" : "refdata post",
+    "description" : "post refdata",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.put",
+    "displayName" : "refdata put",
+    "description" : "put refdata",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.delete",
+    "displayName" : "refdata delete",
+    "description" : "delete refdata",
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.read",
+    "displayName" : "refdata read",
+    "description" : "read refdata",
+    "subPermissions" : [ "servint.refdata.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "servint.refdata.write",
+    "displayName" : "refdata write",
+    "description" : "write refdata",
+    "subPermissions" : [ "servint.refdata.read", "servint.refdata.post", "servint.refdata.put", "servint.refdata.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "servint.dashboards.user.get",
+    "displayName" : "Dashboard user collection get",
+    "description" : "Get a collection of dashboards for a user"
+  }, {
+    "permissionName" : "servint.dashboards.user.put",
+    "displayName" : "Dashboard user collection put",
+    "description" : "Edit a collection of dashboards for a user"
+  }, {
+    "permissionName" : "servint.dashboards.item.get",
+    "displayName" : "Dashboard user item get",
+    "description" : "Get a dashboard item for a user"
+  }, {
+    "permissionName" : "servint.dashboards.displayData.get",
+    "displayName" : "Dashboard display data get",
+    "description" : "Get display data for a dashboard"
+  }, {
+    "permissionName" : "servint.dashboards.myAccess.item.get",
+    "displayName" : "'My access' dashboard get",
+    "description" : "Get my user access level for a dashboard"
+  }, {
+    "permissionName" : "servint.dashboards.displayData.put",
+    "displayName" : "Dashboard display data put",
+    "description" : "Edit display data for a dashboard"
+  }, {
+    "permissionName" : "servint.dashboards.access.item.get",
+    "displayName" : "Dashboard access get",
+    "description" : "Get dashboard access informaton for a dashboard"
+  }, {
+    "permissionName" : "servint.dashboards.widgets.collection.get",
+    "displayName" : "Dashboard widget collection get",
+    "description" : "Get collection of widgets for a dashboard"
+  }, {
+    "permissionName" : "servint.dashboards.view",
+    "subPermissions" : [ "servint.dashboards.user.get", "servint.dashboards.item.get", "servint.dashboards.access.item.get", "servint.dashboards.myAccess.item.get", "servint.dashboards.displayData.get" ]
+  }, {
+    "permissionName" : "servint.dashboards.item.post",
+    "displayName" : "Dashboard user item post",
+    "description" : "Post a dashboard item for a user"
+  }, {
+    "permissionName" : "servint.dashboards.item.put",
+    "displayName" : "Dashboard user item put",
+    "description" : "Put a dashboard item for a user"
+  }, {
+    "permissionName" : "servint.dashboards.access.item.post",
+    "displayName" : "Dashboard access post",
+    "description" : "Control dashboard access for dashboards"
+  }, {
+    "permissionName" : "servint.widgetTypes.collection.get",
+    "displayName" : "WidgetTypes collection get",
+    "description" : "Get a collection of all WidgetTypes"
+  }, {
+    "permissionName" : "servint.widgetDefinitions.collection.global.get",
+    "displayName" : "WidgetDefinition collection global get",
+    "description" : "Get list of all WidgetDefinitions from all implementing modules"
+  }, {
+    "permissionName" : "servint.widgetDefinitions.collection.get",
+    "displayName" : "WidgetDefinition collection get",
+    "description" : "Get a collection of all WidgetDefinitions"
+  }, {
+    "permissionName" : "servint.widgetDefinitions.item.get",
+    "displayName" : "WidgetDefinition item get",
+    "description" : "Get a WidgetDefinition item"
+  }, {
+    "permissionName" : "servint.widgetInstances.user.get",
+    "displayName" : "Widget instances user collection get",
+    "description" : "Get a collection of WidgetInstances for a user"
+  }, {
+    "permissionName" : "servint.widgetInstances.collection.get",
+    "displayName" : "WidgetInstance collection get ",
+    "description" : "Get a collection of WidgetInstance items"
+  }, {
+    "permissionName" : "servint.widgetInstances.item.get",
+    "displayName" : "WidgetInstance item post",
+    "description" : "Get a WidgetInstance item"
+  }, {
+    "permissionName" : "servint.widgetInstances.item.post",
+    "displayName" : "WidgetInstance item post",
+    "description" : "Post a WidgetInstance item"
+  }, {
+    "permissionName" : "servint.widgetInstances.item.put",
+    "displayName" : "WidgetInstance item put",
+    "description" : "Put a WidgetInstance item"
+  }, {
+    "permissionName" : "servint.widgetInstances.item.delete",
+    "displayName" : "WidgetInstance item delete",
+    "description" : "Delete a WidgetInstance item"
+  }, {
+    "permissionName" : "servint.widget.view",
+    "displayName" : "Widget view",
+    "description" : "Allow user to view their own widgets",
+    "subPermissions" : [ "servint.dashboards.widgets.collection.get", "servint.widgetTypes.collection.get", "servint.widgetDefinitions.collection.global.get", "servint.widgetInstances.item.get", "servint.widgetInstances.user.get" ]
+  }, {
+    "permissionName" : "servint.widget.create",
+    "displayName" : "Widget creation",
+    "description" : "Allow user to access widgetDefinitions and post widgetInstances",
+    "subPermissions" : [ "servint.widget.view", "servint.widgetInstances.item.post" ]
+  }, {
+    "permissionName" : "servint.widget.edit",
+    "displayName" : "Widget editing",
+    "description" : "Allow user to edit and delete widgetInstances",
+    "subPermissions" : [ "servint.widgetInstances.item.put", "servint.widgetInstances.item.delete" ]
+  }, {
+    "permissionName" : "servint.dashboards.edit",
+    "displayName" : "Dashboards edit",
+    "description" : "Allow user to create, edit and add widgets to dashboards",
+    "subPermissions" : [ "servint.dashboards.view", "servint.dashboards.user.put", "servint.dashboards.item.post", "servint.dashboards.item.put", "servint.dashboards.access.item.post", "servint.dashboards.displayData.put", "servint.widget.create", "servint.widget.edit" ]
+  }, {
+    "permissionName" : "servint.dashboards.item.delete",
+    "displayName" : "Dashboard user item delete",
+    "description" : "Delete a dashboard item for a user"
+  }, {
+    "permissionName" : "servint.dashboards.manage",
+    "displayName" : "Dashboards manage",
+    "description" : "Dashboard edit and delete",
+    "subPermissions" : [ "servint.dashboards.edit", "servint.dashboards.item.delete" ]
+  }, {
+    "permissionName" : "servint.dashboards.collection.get",
+    "displayName" : "Dashboard collection get",
+    "description" : "Get all dashboards"
+  }, {
+    "permissionName" : "servint.widgetDefinitions.manage",
+    "displayName" : "Manage local WidgetDefinitions admin",
+    "description" : "Permissions to manage the local store of tenant defined WidgetDefinitions",
+    "subPermissions" : [ "servint.widgetDefinitions.collection.get", "servint.widgetDefinitions.item.get" ]
+  }, {
+    "permissionName" : "servint.admin.action.execute",
+    "replaces" : [ "servint.admin.action" ],
+    "displayName" : "Administrator actions",
+    "description" : "Allow administrator to perform actions"
+  }, {
+    "permissionName" : "servint.dashboards.admin.allops",
+    "replaces" : [ "servint.dashboards.admin" ],
+    "displayName" : "Dashboard admin override",
+    "description" : "Permission allowing user to perform any action regardless of ownership of dashboard resources"
+  }, {
+    "permissionName" : "servint.dashboards.admin.manage",
+    "displayName" : "Dashboard admin",
+    "description" : "Allow admin access to dashboards",
+    "subPermissions" : [ "servint.dashboards.admin.allops", "servint.widgetInstances.collection.get", "servint.dashboards.collection.get", "servint.dashboards.manage", "servint.admin.action.execute", "servint.widgetDefinitions.manage" ]
+  }, {
+    "permissionName" : "servint.numberGenerator.collection.get",
+    "displayName" : "NumberGenerator collection get ",
+    "description" : "Get a collection of NumberGenerator items"
+  }, {
+    "permissionName" : "servint.numberGenerator.item.get",
+    "displayName" : "NumberGenerator item get",
+    "description" : "Get a NumberGenerator item"
+  }, {
+    "permissionName" : "servint.numberGenerator.item.post",
+    "displayName" : "NumberGenerator item post",
+    "description" : "Post a NumberGenerator item"
+  }, {
+    "permissionName" : "servint.numberGenerator.item.put",
+    "displayName" : "NumberGenerator item put",
+    "description" : "Put a NumberGenerator item"
+  }, {
+    "permissionName" : "servint.numberGenerator.item.delete",
+    "displayName" : "NumberGenerator item delete",
+    "description" : "Delete a NumberGenerator item"
+  }, {
+    "permissionName" : "servint.numberGeneratorSequence.collection.get",
+    "displayName" : "NumberGeneratorSequence collection get ",
+    "description" : "Get a collection of NumberGeneratorSequence items"
+  }, {
+    "permissionName" : "servint.numberGeneratorSequence.item.get",
+    "displayName" : "NumberGeneratorSequence item get",
+    "description" : "Get a NumberGeneratorSequence item"
+  }, {
+    "permissionName" : "servint.numberGeneratorSequence.item.post",
+    "displayName" : "NumberGeneratorSequence item post",
+    "description" : "Post a NumberGeneratorSequence item"
+  }, {
+    "permissionName" : "servint.numberGeneratorSequence.item.put",
+    "displayName" : "NumberGeneratorSequence item put",
+    "description" : "Put a NumberGeneratorSequence item"
+  }, {
+    "permissionName" : "servint.numberGeneratorSequence.item.delete",
+    "displayName" : "NumberGeneratorSequence item delete",
+    "description" : "Delete a NumberGeneratorSequence item"
+  }, {
+    "permissionName" : "servint.numberGenerator.generate.execute",
+    "replaces" : [ "servint.numberGenerator.generate" ],
+    "displayName" : "NumberGeneratorSequence generate",
+    "description" : "Generate the next item in a NumberGenerator sequence"
+  }, {
+    "permissionName" : "servint.numberGenerator.view",
+    "displayName" : "NumberGenerator view",
+    "description" : "Allow user to view number generators",
+    "subPermissions" : [ "servint.numberGenerator.collection.get", "servint.numberGenerator.item.get", "servint.numberGeneratorSequence.collection.get", "servint.numberGeneratorSequence.item.get", "servint.refdata.read" ]
+  }, {
+    "permissionName" : "servint.numberGenerator.number.generate",
+    "replaces" : [ "servint.numberGenerator.use" ],
+    "displayName" : "NumberGenerator generate",
+    "description" : "Allow user to use number generators to generate the next number in a sequence",
+    "subPermissions" : [ "servint.numberGenerator.view", "servint.numberGenerator.generate.execute" ]
+  }, {
+    "permissionName" : "servint.numberGenerator.create",
+    "displayName" : "NumberGenerator create",
+    "description" : "Allow user to set up number generators and sequences",
+    "subPermissions" : [ "servint.numberGenerator.number.generate", "servint.numberGenerator.item.post", "servint.numberGeneratorSequence.item.post" ]
+  }, {
+    "permissionName" : "servint.numberGenerator.edit",
+    "replaces" : [ "servint.numberGenerator.config" ],
+    "displayName" : "NumberGenerator edit",
+    "description" : "Allow user to set up and edit number generators and sequences",
+    "subPermissions" : [ "servint.numberGenerator.create", "servint.numberGenerator.item.put", "servint.numberGeneratorSequence.item.put" ]
+  }, {
+    "permissionName" : "servint.numberGenerator.manage",
+    "displayName" : "NumberGenerator manage",
+    "description" : "Allow user to configure and delete number generators",
+    "subPermissions" : [ "servint.numberGenerator.edit", "servint.numberGenerator.item.delete", "servint.numberGeneratorSequence.item.delete" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-service-interaction:4.3.0-SNAPSHOT.137",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8080/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
