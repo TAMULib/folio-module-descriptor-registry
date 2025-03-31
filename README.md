@@ -78,7 +78,9 @@ The `sed` statements in the script will need to be edited to enhance the templat
 | Template Variable           | Description
 | --------------------------- | --------------------------------
 | `_REPLACE_LINK_`            | A URI (not intended to have HTML).
+| `_REPLACE_LINK_DOWNLOAD_`   | For adding `download` `<a>` tag attribute, such as `download="my_file.json"`.
 | `_REPLACE_LINK_NAME_`       | A name used for representing a link.
+| `_REPLACE_LINK_TYPE_`       | For adding `type` `<a>` tag attribute, such as `type="application/json"`.
 | `_REPLACE_PAGE_BACK_`       | Used by the script to apply the `back.html` template (explicitly intended to have HTML).
 | `_REPLACE_PAGE_TITLE_`      | A page title, added to the HTML `<HEAD>` (not intended to have HTML).
 | `_REPLACE_SECTION_DATE_`    | A date time stamp to display to users (defaults to a UTC date time).
