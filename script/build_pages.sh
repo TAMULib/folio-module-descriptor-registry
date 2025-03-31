@@ -384,7 +384,7 @@ build_page_operate_sources_process_files_index_item() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g")
+  local item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g" -e "s|\<_REPLACE_LINK_TYPE_\>|type="application/json"|g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>|download="${file}.json"|g")
 
   # Expand the variable, but re-introduce the snippet on each run to allow replacements for each item.
   sed -i -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${item}\n&|g" ${work}${source}/index.html
@@ -420,7 +420,7 @@ build_page_operate_sources_process_index_template_item() {
 
   local item=
 
-  item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g")
+  item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g" -e "s|\<_REPLACE_LINK_TYPE_\>||g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>||g")
   indexes="${indexes}${item}_REPLACE_EOL_ "
 }
 
