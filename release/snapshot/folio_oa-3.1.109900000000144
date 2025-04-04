@@ -1,0 +1,131 @@
+{
+  "id" : "folio_oa-3.1.109900000000144",
+  "name" : "FOLIO app for Open Access management",
+  "requires" : [ {
+    "id" : "oa",
+    "version" : "1.0 2.0"
+  } ],
+  "optional" : [ {
+    "id" : "invoice",
+    "version" : "7.0"
+  }, {
+    "id" : "erm",
+    "version" : "5.0 6.0 7.0"
+  }, {
+    "id" : "organizations",
+    "version" : "1.0"
+  }, {
+    "id" : "finance.exchange-rate",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "module.oa.enabled",
+    "displayName" : "UI: ui-oa module is enabled",
+    "subPermissions" : [ "oa.refdata.read", "oa.settings.read" ],
+    "visible" : false
+  }, {
+    "permissionName" : "settings.oa.enabled",
+    "displayName" : "Settings (OA): display list of settings pages",
+    "subPermissions" : [ "settings.enabled" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.allSettings.manage",
+    "displayName" : "Settings (Open Access): Manage all Open Access settings",
+    "description" : "Grants permission to view and edit all the Open Access settings",
+    "subPermissions" : [ "settings.oa.enabled", "oa.checklistItems.manage", "oa.refdata.manage", "oa.settings.write" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-oa.publicationRequest.view",
+    "displayName" : "Open Access Requests: Search & view publication requests",
+    "description" : "A user with this permission can search and view existing publication requests. This includes the permission to see and access the Open Access app in the Folio interface",
+    "subPermissions" : [ "module.oa.enabled", "oa.publicationRequest.view", "oa.correspondence.view", "oa.reports.item.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.publicationRequest.edit",
+    "displayName" : "Open Access Requests: Edit publication requests",
+    "description" : "Grants all permissions included in 'Open Access Requests: Search & view publication requests' plus the ability to edit publication requests",
+    "subPermissions" : [ "ui-oa.publicationRequest.view", "oa.publicationRequest.edit", "oa.correspondence.edit" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.publicationRequest.manage",
+    "displayName" : "Open Access Requests: Manage publication requests",
+    "description" : "Grants all permissions included in 'Open Access Requests: Edit publication requests' plus the ability to delete publication requests",
+    "subPermissions" : [ "ui-oa.publicationRequest.edit", "oa.publicationRequest.manage", "oa.correspondence.manage" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.charge.view",
+    "displayName" : "Open Access Requests: View charges",
+    "description" : "A user with this permission can view existing charges.",
+    "subPermissions" : [ "oa.charges.view" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.charge.edit",
+    "displayName" : "Open Access Requests: Edit people",
+    "description" : "Grants all permissions included in 'Open Access Requests: View charges' plus the ability to edit charges",
+    "subPermissions" : [ "ui-oa.charge.view", "oa.charges.edit" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.charge.manage",
+    "displayName" : "Open Access Requests: Manage charges",
+    "description" : "Grants all permissions included in 'Open Access Requests: Edit charges' plus the ability to delete charge records",
+    "subPermissions" : [ "ui-oa.charge.edit", "oa.charges.manage" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.party.view",
+    "displayName" : "Open Access Requests: Search & view people",
+    "description" : "A user with this permission can search and view existing people. This includes the permission to see and access the Open Access app in the Folio interface",
+    "subPermissions" : [ "module.oa.enabled", "oa.party.view" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.party.edit",
+    "displayName" : "Open Access Requests: Edit people",
+    "description" : "Grants all permissions included in 'Open Access Requests: Search & view people' plus the ability to edit people",
+    "subPermissions" : [ "ui-oa.party.view", "oa.party.edit" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.party.manage",
+    "displayName" : "Open Access Requests: Manage people",
+    "description" : "Grants all permissions included in 'Open Access Requests: Edit people' plus the ability to delete people records",
+    "subPermissions" : [ "ui-oa.party.edit", "oa.party.manage" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.journal.view",
+    "displayName" : "Open Access Requests: Search & view journals",
+    "description" : "A user with this permission can search and view existing journals. This includes the permission to see and access the Open Access app in the Folio interface",
+    "subPermissions" : [ "module.oa.enabled", "oa.works.view" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.checklist.view",
+    "displayName" : "Open Access Requests: View checklists",
+    "description" : "A user with this permission can view checklist items",
+    "subPermissions" : [ "oa.checklistItems.view" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.journal.edit",
+    "displayName" : "Open Access Requests: Edit journals",
+    "description" : "Grants all permissions included in 'Open Access Requests: Search & view journals' plus the ability to edit journals",
+    "subPermissions" : [ "ui-oa.journal.view", "oa.works.edit" ],
+    "visible" : false
+  }, {
+    "permissionName" : "ui-oa.all-open-access.view",
+    "replaces" : [ "ui-oa.oa.view", "ui-oa.view" ],
+    "displayName" : "Open Access Requests: Search & view all",
+    "description" : "A user with this permission can search and view existing Open Access publication requests and related information including checklists. This includes the permission to see and access the OA app in the Folio interface",
+    "subPermissions" : [ "module.oa.enabled", "ui-oa.publicationRequest.view", "ui-oa.party.view", "ui-oa.journal.view", "ui-oa.checklist.view", "ui-oa.charge.view" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-oa.all-open-access.edit",
+    "replaces" : [ "ui-oa.oa.manage", "ui-oa.edit" ],
+    "displayName" : "Open Access Requests: Edit all",
+    "description" : "A user with this permission can search, view and edit Open Access publication requests and related information including checklists. This includes the permission to create and edit new requests, parties (people), works, charges as well as to change the status and visibility of checklist items on a request",
+    "subPermissions" : [ "ui-oa.all-open-access.view", "ui-oa.publicationRequest.edit", "ui-oa.party.edit", "ui-oa.journal.edit", "ui-oa.charge.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-oa.all-open-access.manage",
+    "replaces" : [ "ui-oa.manage" ],
+    "displayName" : "Open Access Requests: Manage all",
+    "description" : "A user with this permission can search, view, edit and delete Open Access publication requests and related information with the exception of journal records.",
+    "subPermissions" : [ "ui-oa.all-open-access.edit", "ui-oa.publicationRequest.manage", "ui-oa.party.manage", "ui-oa.charge.manage" ],
+    "visible" : true
+  } ]
+}
