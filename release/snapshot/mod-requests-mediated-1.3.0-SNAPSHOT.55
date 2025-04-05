@@ -1,0 +1,236 @@
+{
+  "id" : "mod-requests-mediated-1.3.0-SNAPSHOT.55",
+  "name" : "Folio mod-requests-mediated module",
+  "requires" : [ {
+    "id" : "users",
+    "version" : "16.0"
+  }, {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "permissions",
+    "version" : "5.6"
+  }, {
+    "id" : "item-storage",
+    "version" : "10.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "10.0 11.0"
+  }, {
+    "id" : "circulation",
+    "version" : "14.2"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.1"
+  }, {
+    "id" : "service-points",
+    "version" : "3.4"
+  }, {
+    "id" : "search",
+    "version" : "1.3"
+  }, {
+    "id" : "consortium-search",
+    "version" : "2.1"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "requests-mediated",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/requests-mediated/mediated-requests",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.collection.get" ],
+      "modulePermissions" : [ "requests-mediated.internal.fetch-request-details.all" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/requests-mediated/mediated-requests/{requestId}",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.item.get" ],
+      "modulePermissions" : [ "requests-mediated.internal.fetch-request-details.all" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/requests-mediated/mediated-requests",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.item.post" ],
+      "modulePermissions" : [ "requests-mediated.internal.fetch-request-details.all" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/requests-mediated/mediated-requests/{requestId}",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.item.put" ],
+      "modulePermissions" : [ "requests-mediated.internal.fetch-request-details.all" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/requests-mediated/mediated-requests/{requestId}",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.item.delete" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "requests-mediated-actions",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/requests-mediated/confirm-item-arrival",
+      "permissionsRequired" : [ "requests-mediated.confirm-item-arrival.post" ],
+      "modulePermissions" : [ "inventory-storage.items.collection.get", "inventory-storage.items.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/requests-mediated/send-item-in-transit",
+      "permissionsRequired" : [ "requests-mediated.send-item-in-transit.post" ],
+      "modulePermissions" : [ "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.collection.get", "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.location-units.institutions.item.get", "inventory-storage.location-units.institutions.collection.get", "inventory-storage.location-units.campuses.item.get", "inventory-storage.location-units.campuses.collection.get", "inventory-storage.location-units.libraries.item.get", "inventory-storage.location-units.libraries.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "search.instances.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/requests-mediated/mediated-requests/{requestId}/confirm",
+      "permissionsRequired" : [ "requests-mediated.mediated-request.confirm.post" ],
+      "modulePermissions" : [ "user-tenants.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get", "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "circulation.requests.item.get", "circulation.requests.collection.get", "circulation.requests.item.post", "circulation.requests.item.put", "users.item.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/requests-mediated/mediated-requests/{requestId}/decline",
+      "permissionsRequired" : [ "requests-mediated.mediated-requests.decline.execute" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "users.collection.get", "users.item.post", "login.item.post", "login.item.delete", "perms.users.get", "perms.users.item.post", "perms.users.assign.immutable", "perms.users.assign.mutable" ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "ecs-tlr",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "requests-mediated.mediated-request.collection.get",
+    "displayName" : "requests-mediated - get mediated requests",
+    "description" : "Get mediated requests"
+  }, {
+    "permissionName" : "requests-mediated.mediated-request.item.get",
+    "displayName" : "requests-mediated - get mediated request by ID",
+    "description" : "Get mediated request"
+  }, {
+    "permissionName" : "requests-mediated.mediated-request.item.post",
+    "displayName" : "requests-mediated - create mediated request",
+    "description" : "Create mediated request"
+  }, {
+    "permissionName" : "requests-mediated.mediated-request.item.put",
+    "displayName" : "requests-mediated - update mediated request",
+    "description" : "Update mediated request"
+  }, {
+    "permissionName" : "requests-mediated.mediated-request.item.delete",
+    "displayName" : "requests-mediated - remove mediated request",
+    "description" : "Remove mediated request"
+  }, {
+    "permissionName" : "requests-mediated.confirm-item-arrival.post",
+    "displayName" : "requests-mediated - confirm item arrival",
+    "description" : "Confirm item arrival"
+  }, {
+    "permissionName" : "requests-mediated.send-item-in-transit.post",
+    "displayName" : "requests-mediated - send item in transit",
+    "description" : "Send item in transit"
+  }, {
+    "permissionName" : "requests-mediated.mediated-request.confirm.post",
+    "displayName" : "requests-mediated - confirm mediated request",
+    "description" : "Confirm mediated request"
+  }, {
+    "permissionName" : "requests-mediated.mediated-requests.decline.execute",
+    "replaces" : [ "requests-mediated.decline-mediated-request.execute" ],
+    "displayName" : "requests-mediated - decline mediated request",
+    "description" : "Decline mediated request"
+  }, {
+    "permissionName" : "requests-mediated.internal.fetch-request-details.all",
+    "displayName" : "Fetch mediated request details",
+    "description" : "Internal permission set for fetching mediated request details",
+    "subPermissions" : [ "inventory-storage.items.collection.get", "inventory-storage.items.item.get", "inventory-storage.instances.collection.get", "inventory-storage.instances.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.service-points.item.get", "search.instances.collection.get", "users.collection.get", "users.item.get", "usergroups.collection.get", "usergroups.item.get", "inventory-storage.locations.collection.get", "inventory-storage.locations.item.get", "inventory-storage.location-units.libraries.collection.get", "inventory-storage.location-units.libraries.item.get" ],
+    "visible" : false
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "tlr.ecs-tlr.post", "users.collection.get", "users.item.get", "users.item.post", "user-tenants.collection.get", "consortium-search.items.collection.get", "consortium-search.items.item.get", "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.location-units.libraries.item.get", "inventory-storage.location-units.libraries.collection.get", "mod-settings.entries.item.get", "mod-settings.entries.collection.get", "mod-settings.global.read.circulation" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-requests-mediated:1.3.0-SNAPSHOT.55",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "OKAPI_URL",
+      "value" : "http://okapi:9130"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "kafka"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "KAFKA_SECURITY_PROTOCOL",
+      "value" : "PLAINTEXT"
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value" : ""
+    }, {
+      "name" : "SYSTEM_USER_ENABLED",
+      "value" : "true"
+    }, {
+      "name" : "SYSTEM_USER_NAME",
+      "value" : "mod-requests-mediated"
+    }, {
+      "name" : "SYSTEM_USER_PASSWORD",
+      "value" : "mod-requests-mediated"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
