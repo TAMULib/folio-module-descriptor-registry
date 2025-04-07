@@ -8,11 +8,13 @@
 #   - cat
 #   - cp
 #   - date
+#   - find
 #   - grep
 #   - jq
 #   - ls
 #   - mkdir
 #   - sed
+#   - sort
 #
 #  Parameters:
 #    *) All descriptor source directories to process. This script uses simple logic, be careful about sub-directory naming conflicts.
@@ -50,6 +52,10 @@ main() {
   local p_e="ERROR: "
 
   local -i result=0
+
+  # Piping find result to while loop results in a sub-shell.
+  # Enable last pipe mode to designate running the while in the foreground thereby allow variables to be used outside of the loop.
+  shopt -s lastpipe
 
   build_page_load_environment ${*}
 
@@ -278,31 +284,29 @@ build_page_operate_sources() {
     echo
     echo "Operating on source: ${i} ."
 
-    if [[ $(ls ${i}) != "" ]] ; then
-      for j in ${i}* ; do
-        source=$(basename ${j})
+    find ${i} -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' j ; do
+      source=$(basename ${j})
 
-        build_page_operate_sources_process_index_template_item
+      echo
+      echo "Operating on source ${i} work source sub-directory: ${source} ."
 
-        echo
-        echo "Operating on source ${i} work source sub-directory: ${source} ."
+      mkdir ${debug} -p ${work}${source}
 
-        mkdir ${debug} -p ${work}${source}
+      build_page_handle_result "Failed to create work source sub-directory: ${work}${source}"
 
-        build_page_handle_result "Failed to create work source sub-directory: ${work}${source}"
+      if [[ ${result} -ne 0 ]] ; then break ; fi
+      if [[ $(ls ${j}/) == "" ]] ; then continue ; fi
 
-        if [[ ${result} -ne 0 ]] ; then break ; fi
-        if [[ $(ls ${j}/) == "" ]] ; then continue ; fi
+      build_page_operate_sources_process_index_template_item
 
-        build_page_operate_sources_index_setup
+      build_page_operate_sources_index_setup
 
-        build_page_operate_index_expand "${work}${source}/index.html" "Listing of ${source} Release" back
+      build_page_operate_index_expand "${work}${source}/index.html" "Listing of ${source} Release" back
 
-        build_page_operate_sources_process_files
+      build_page_operate_sources_process_files
 
-        if [[ ${result} -ne 0 ]] ; then break ; fi
-      done
-    fi
+      if [[ ${result} -ne 0 ]] ; then break ; fi
+    done
 
     if [[ ${result} -ne 0 ]] ; then break ; fi
   done
@@ -327,7 +331,7 @@ build_page_operate_sources_process_files() {
   local files=
   local k=
 
-  for k in ${j}/* ; do
+  find ${j} -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' k ; do
     file=$(basename ${k})
 
     if [[ $(echo -n ${file} | grep -sho "^\.") != "" ]] ; then
@@ -421,6 +425,7 @@ build_page_operate_sources_process_index_template_item() {
   local item=
 
   item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g" -e "s|\<_REPLACE_LINK_TYPE_\>||g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>||g")
+
   indexes="${indexes}${item}_REPLACE_EOL_ "
 }
 
