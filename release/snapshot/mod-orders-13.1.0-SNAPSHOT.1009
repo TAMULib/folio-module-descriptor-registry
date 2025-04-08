@@ -1,0 +1,1200 @@
+{
+  "id" : "mod-orders-13.1.0-SNAPSHOT.1009",
+  "name" : "Orders Business Logic Module",
+  "requires" : [ {
+    "id" : "acquisitions-units-storage.units",
+    "version" : "1.1"
+  }, {
+    "id" : "acquisitions-units-storage.memberships",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.acquisition-methods",
+    "version" : "1.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "orders-storage.purchase-orders",
+    "version" : "8.1"
+  }, {
+    "id" : "orders-storage.alerts",
+    "version" : "3.0"
+  }, {
+    "id" : "orders-storage.pieces",
+    "version" : "5.0"
+  }, {
+    "id" : "orders-storage.wrapper-pieces",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.receiving-history",
+    "version" : "4.0"
+  }, {
+    "id" : "orders-storage.reporting-codes",
+    "version" : "3.0"
+  }, {
+    "id" : "orders-storage.po-lines",
+    "version" : "12.3"
+  }, {
+    "id" : "orders-storage.order-templates",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "4.2 5.0 6.0 7.0 8.0"
+  }, {
+    "id" : "orders-storage.po-number",
+    "version" : "2.0"
+  }, {
+    "id" : "orders-storage.po-line-number",
+    "version" : "2.0"
+  }, {
+    "id" : "orders-storage.order-invoice-relationships",
+    "version" : "1.0"
+  }, {
+    "id" : "inventory",
+    "version" : "10.5 11.0 12.0 13.0 14.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "item-storage",
+    "version" : "8.5 9.0 10.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "isbn-utils",
+    "version" : "2.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.2"
+  }, {
+    "id" : "organizations-storage.organizations",
+    "version" : "3.1"
+  }, {
+    "id" : "finance.expense-classes",
+    "version" : "3.0"
+  }, {
+    "id" : "finance.funds",
+    "version" : "3.0"
+  }, {
+    "id" : "finance.transactions",
+    "version" : "6.0"
+  }, {
+    "id" : "finance.fiscal-years",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.ledgers",
+    "version" : "2.0"
+  }, {
+    "id" : "finance-storage.ledgers",
+    "version" : "4.0"
+  }, {
+    "id" : "finance.budgets",
+    "version" : "2.0"
+  }, {
+    "id" : "orders-storage.titles",
+    "version" : "1.1"
+  }, {
+    "id" : "orders-storage.configuration.reasons-for-closure",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.configuration.prefixes",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.configuration.suffixes",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.routing-lists",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.settings",
+    "version" : "1.0"
+  }, {
+    "id" : "circulation",
+    "version" : "10.0 11.0 12.0 13.0 14.0"
+  }, {
+    "id" : "request-move",
+    "version" : "0.7"
+  }, {
+    "id" : "finance-storage.budget-expense-classes",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.exchange-rate",
+    "version" : "1.0"
+  }, {
+    "id" : "finance.ledger-rollovers",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.ledger-rollovers-progress",
+    "version" : "1.0"
+  }, {
+    "id" : "finance.ledger-rollovers-errors",
+    "version" : "1.0"
+  }, {
+    "id" : "tags",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.export-history",
+    "version" : "1.0"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  }, {
+    "id" : "users",
+    "version" : "16.0"
+  }, {
+    "id" : "template-engine",
+    "version" : "2.2"
+  }, {
+    "id" : "holdings-sources",
+    "version" : "1.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.1"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.3"
+  }, {
+    "id" : "source-manager-job-executions",
+    "version" : "3.4"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.2"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.5"
+  } ],
+  "provides" : [ {
+    "id" : "orders",
+    "version" : "12.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/composite-orders",
+      "permissionsRequired" : [ "orders.collection.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.purchase-orders.collection.get", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/composite-orders",
+      "permissionsRequired" : [ "orders.item.post" ],
+      "permissionsDesired" : [ "orders.acquisitions-units-assignments.assign", "orders.item.approve" ],
+      "modulePermissions" : [ "modperms.orders.item.post", "orders-storage.titles.item.get", "orders-storage.configuration.prefixes.collection.get", "orders-storage.configuration.suffixes.collection.get", "finance.funds.item.get", "finance.transactions.collection.get", "finance.transactions.batch.execute" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/composite-orders/{id}",
+      "permissionsRequired" : [ "orders.item.get" ],
+      "modulePermissions" : [ "orders-storage.purchase-orders.item.get", "orders-storage.po-lines.collection.get", "orders-storage.alerts.item.get", "orders-storage.titles.collection.get", "orders-storage.reporting-codes.item.get", "orders-storage.order-invoice-relationships.collection.get", "configuration.entries.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "invoice.invoices.collection.get", "invoice.invoice-lines.collection.get", "finance.transactions.collection.get", "finance.exchange-rate.item.get", "finance.fiscal-years.item.get", "finance.fiscal-years.collection.get", "finance.funds.item.get", "finance.funds.collection.get", "finance.ledgers.current-fiscal-year.item.get", "finance.ledger-rollovers.collection.get", "finance.ledger-rollovers-progress.collection.get", "finance.ledger-rollovers-errors.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/composite-orders/{id}",
+      "permissionsRequired" : [ "orders.item.put" ],
+      "permissionsDesired" : [ "orders.acquisitions-units-assignments.manage", "orders.item.approve", "orders.item.unopen", "orders.item.reopen" ],
+      "modulePermissions" : [ "modperms.orders.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/composite-orders/{id}",
+      "permissionsRequired" : [ "orders.item.delete" ],
+      "modulePermissions" : [ "finance.transactions.batch.execute", "finance.transactions.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.delete", "orders-storage.po-lines.collection.get", "orders-storage.po-lines.item.delete", "orders-storage.alerts.item.delete", "orders-storage.reporting-codes.item.delete", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.order-invoice-relationships.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/composite-orders/{id}/re-encumber",
+      "permissionsRequired" : [ "orders.re-encumber.item.post" ],
+      "modulePermissions" : [ "orders-storage.purchase-orders.item.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines-batch.collection.put", "finance.funds.collection.get", "finance.ledgers.current-fiscal-year.item.get", "finance.funds.budget.item.get", "finance.transactions.collection.get", "finance.ledger-rollovers.collection.get", "finance.ledger-rollovers-progress.collection.get", "finance.ledger-rollovers-errors.collection.get", "finance.ledger-rollovers-errors.item.delete", "finance.exchange-rate.item.get", "finance-storage.ledgers.collection.get", "inventory-storage.holdings.collection.get" ]
+    } ]
+  }, {
+    "id" : "order-lines",
+    "version" : "3.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/order-lines",
+      "permissionsRequired" : [ "orders.po-lines.collection.get" ],
+      "permissionsDesired" : [ "orders.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.po-lines.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/order-lines",
+      "permissionsRequired" : [ "orders.po-lines.item.post" ],
+      "modulePermissions" : [ "orders-storage.purchase-orders.item.get", "orders-storage.po-line-number.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines.item.post", "orders-storage.alerts.item.post", "orders-storage.reporting-codes.item.post", "configuration.entries.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "inventory.instances.item.get", "inventory-storage.identifier-types.collection.get", "inventory-storage.holdings.collection.get", "isbn-utils.convert-to-13.get", "finance-storage.budget-expense-classes.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/order-lines/{id}",
+      "permissionsRequired" : [ "orders.po-lines.item.get" ],
+      "permissionsDesired" : [ "orders.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "orders-storage.po-lines.item.get", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "orders-storage.purchase-orders.item.get", "orders-storage.titles.collection.get", "configuration.entries.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/order-lines/{id}",
+      "permissionsRequired" : [ "orders.po-lines.item.put" ],
+      "permissionsDesired" : [ "orders.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "orders-storage.alerts.item.post", "orders-storage.alerts.item.put", "orders-storage.alerts.item.delete", "orders-storage.pieces.collection.get", "orders-storage.pieces-batch.collection.post", "orders-storage.po-lines.collection.get", "finance.funds.collection.get", "finance.funds.item.get", "finance.budgets.collection.get", "finance.funds.budget.item.get", "finance.pending-payments.item.put", "finance.ledgers.current-fiscal-year.item.get", "finance.fiscal-years.item.get", "finance.expense-classes.collection.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance-storage.ledgers.collection.get", "finance-storage.budget-expense-classes.collection.get", "inventory.instances.collection.get", "inventory.instances.item.post", "inventory.instances.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.reporting-codes.item.post", "orders-storage.reporting-codes.item.put", "orders-storage.reporting-codes.item.delete", "orders-storage.titles.collection.get", "configuration.entries.collection.get", "inventory-storage.identifier-types.collection.get", "inventory.items.item.put", "inventory.items.collection.get", "isbn-utils.convert-to-13.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "organizations-storage.organizations.collection.get", "invoice.invoice-lines.collection.get", "invoice.invoice-lines.item.put", "invoices.acquisition-units.bypass.execute", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.settings.collection.get", "consortia.user-tenants.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/order-lines/{id}",
+      "permissionsRequired" : [ "orders.po-lines.item.delete" ],
+      "modulePermissions" : [ "finance.transactions.batch.execute", "finance.transactions.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.delete", "orders-storage.alerts.item.delete", "orders-storage.reporting-codes.item.delete", "orders-storage.order-invoice-relationships.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "invoice.invoice-lines.collection.get" ]
+    }, {
+      "methods" : [ "PATCH" ],
+      "pathPattern" : "/orders/order-lines/{id}",
+      "permissionsRequired" : [ "orders.po-lines.item.patch" ],
+      "modulePermissions" : [ "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.delete", "inventory-storage.holdings.item.put", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory.items.item.get", "inventory.items.item.put", "inventory.items.item.delete", "inventory.items.collection.get", "inventory.instances.item.get", "orders-storage.po-lines.item.patch", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.pieces.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post", "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/order-lines/fund-distributions/validate",
+      "permissionsRequired" : [ "orders.po-lines.fund-distributions.validate" ]
+    } ]
+  }, {
+    "id" : "po-number",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/po-number/validate",
+      "permissionsRequired" : [ "orders.po-number.item.post" ],
+      "modulePermissions" : [ "orders-storage.purchase-orders.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/po-number",
+      "permissionsRequired" : [ "orders.po-number.item.get" ],
+      "modulePermissions" : [ "orders-storage.po-number.get" ]
+    } ]
+  }, {
+    "id" : "receiving",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/receive",
+      "permissionsRequired" : [ "orders.receiving.collection.post" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "orders-storage.pieces.item.put", "orders-storage.po-lines.collection.get", "orders-storage.po-lines-batch.collection.put", "orders-storage.po-lines.item.get", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.titles.collection.get", "inventory.items.collection.get", "inventory.items.item.put", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.post", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.purchase-orders.collection.get", "finance.funds.item.get", "finance.transactions.batch.execute", "finance.transactions.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/check-in",
+      "permissionsRequired" : [ "orders.check-in.collection.post" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "configuration.entries.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory.instances.collection.get", "inventory.items.collection.get", "inventory.items.item.put", "inventory.items.item.post", "inventory.items.item.delete", "inventory-storage.holdings.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.get", "inventory-storage.items.item.post", "inventory-storage.loan-types.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post", "finance.funds.item.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "orders-storage.pieces.collection.get", "orders-storage.pieces.item.put", "orders-storage.po-lines.collection.get", "orders-storage.po-lines-batch.collection.put", "orders-storage.po-lines.item.get", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.purchase-orders.collection.get", "orders-storage.titles.item.get", "orders-storage.titles.item.put", "orders-storage.titles.collection.get", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/expect",
+      "permissionsRequired" : [ "orders.expect.collection.post" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "orders-storage.pieces.item.put", "orders-storage.po-lines-batch.collection.put", "orders-storage.po-lines.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.titles.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/receiving-history",
+      "permissionsRequired" : [ "orders.receiving-history.collection.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.receiving-history.collection.get", "finance.transactions.collection.get" ]
+    } ]
+  }, {
+    "id" : "pieces",
+    "version" : "3.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/pieces",
+      "permissionsRequired" : [ "orders.pieces.collection.get" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "orders-storage.settings.collection.get", "consortia.user-tenants.collection.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/pieces",
+      "permissionsRequired" : [ "orders.pieces.item.post" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "configuration.entries.collection.get", "inventory.items.item.put", "inventory.items.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.items.item.post", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "finance.funds.budget.item.get", "finance.fiscal-years.item.get", "finance.transactions.batch.execute", "finance-storage.ledgers.collection.get", "orders-storage.pieces.item.post", "orders-storage.pieces.collection.get", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.po-lines.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.titles.item.get", "orders-storage.titles.item.put", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/pieces/{id}",
+      "permissionsRequired" : [ "orders.pieces.item.get" ],
+      "modulePermissions" : [ "orders-storage.pieces.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/pieces/{id}",
+      "permissionsRequired" : [ "orders.pieces.item.put" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "configuration.entries.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory.items.item.get", "inventory.items.item.put", "inventory.items.item.delete", "inventory.items.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings.item.delete", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.post", "inventory-storage.loan-types.collection.get", "inventory-storage.items.item.post", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "finance.transactions.batch.execute", "finance-storage.ledgers.collection.get", "orders-storage.pieces.item.get", "orders-storage.pieces.item.post", "orders-storage.pieces.item.put", "orders-storage.pieces.collection.get", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.po-lines.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.titles.item.get", "orders-storage.titles.item.put", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/pieces/{id}",
+      "permissionsRequired" : [ "orders.pieces.item.delete" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "circulation.requests.collection.get", "inventory.items.item.get", "inventory.items.item.delete", "inventory.items.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.delete", "inventory-storage.holdings.collection.get", "finance.funds.collection.get", "finance.funds.budget.item.get", "finance.fiscal-years.item.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance-storage.ledgers.collection.get", "orders-storage.pieces.item.delete", "orders-storage.pieces.item.get", "orders-storage.pieces.collection.get", "orders-storage.po-lines.item.put", "orders-storage.po-lines.item.get", "orders-storage.po-lines.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.titles.item.get", "invoice.invoice-lines.collection.get", "invoice.invoice-lines.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/pieces-batch",
+      "permissionsRequired" : [ "orders.pieces.collection.post" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "configuration.entries.collection.get", "inventory.items.item.put", "inventory.items.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory-storage.holdings.collection.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.items.item.post", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "finance.funds.budget.item.get", "finance.fiscal-years.item.get", "finance.transactions.batch.execute", "finance-storage.ledgers.collection.get", "orders-storage.pieces.collection.get", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.po-lines.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.titles.item.get", "orders-storage.titles.item.put", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post", "orders-storage.pieces-batch.collection.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/pieces-batch/status",
+      "permissionsRequired" : [ "orders.pieces.collection.put" ],
+      "modulePermissions" : [ "orders-storage.pieces.item.put", "orders-storage.pieces.collection.get", "orders-storage.pieces-batch.collection.put", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.po-lines.collection.get", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.titles.collection.get", "finance.funds.item.get", "finance.ledgers.current-fiscal-year.item.get", "finance.transactions.collection.get", "finance.transactions.batch.execute", "inventory.items.item.get", "inventory.items.item.put", "inventory.items.collection.get", "inventory-storage.holdings.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/pieces-requests",
+      "permissionsRequired" : [ "orders.piece-requests.collection.get" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "circulation.requests.collection.get" ]
+    } ]
+  }, {
+    "id" : "wrapper-pieces",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/wrapper-pieces",
+      "permissionsRequired" : [ "orders.wrapper-pieces.collection.get" ],
+      "modulePermissions" : [ "orders-storage.wrapper-pieces.collection.get", "orders-storage.settings.collection.get", "consortia.user-tenants.collection.get", "user-tenants.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/wrapper-pieces/{id}",
+      "permissionsRequired" : [ "orders.wrapper-pieces.item.get" ],
+      "modulePermissions" : [ "orders-storage.wrapper-pieces.item.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-methods",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/acquisition-methods",
+      "permissionsRequired" : [ "orders.acquisition-methods.collection.get" ],
+      "modulePermissions" : [ "orders-storage.acquisition-methods.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/acquisition-methods",
+      "permissionsRequired" : [ "orders.acquisition-method.item.post" ],
+      "modulePermissions" : [ "orders-storage.acquisition-method.item.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/acquisition-methods/{id}",
+      "permissionsRequired" : [ "orders.acquisition-method.item.put" ],
+      "modulePermissions" : [ "orders-storage.acquisition-method.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/acquisition-methods/{id}",
+      "permissionsRequired" : [ "orders.acquisition-method.item.get" ],
+      "modulePermissions" : [ "orders-storage.acquisition-method.item.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/acquisition-methods/{id}",
+      "permissionsRequired" : [ "orders.acquisition-method.item.delete" ],
+      "modulePermissions" : [ "orders-storage.acquisition-method.item.delete", "orders-storage.acquisition-method.item.get", "orders-storage.po-lines.collection.get" ]
+    } ]
+  }, {
+    "id" : "order-templates",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/order-templates",
+      "permissionsRequired" : [ "orders.order-templates.collection.get" ],
+      "modulePermissions" : [ "orders-storage.order-templates.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/order-templates",
+      "permissionsRequired" : [ "orders.order-templates.item.post" ],
+      "modulePermissions" : [ "orders-storage.order-templates.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/order-templates/{id}",
+      "permissionsRequired" : [ "orders.order-templates.item.get" ],
+      "modulePermissions" : [ "orders-storage.order-templates.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/order-templates/{id}",
+      "permissionsRequired" : [ "orders.order-templates.item.put" ],
+      "modulePermissions" : [ "orders-storage.order-templates.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/order-templates/{id}",
+      "permissionsRequired" : [ "orders.order-templates.item.delete" ],
+      "modulePermissions" : [ "orders-storage.order-templates.item.delete" ]
+    } ]
+  }, {
+    "id" : "acquisitions-units",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/acquisitions-units/units",
+      "permissionsRequired" : [ "acquisitions-units.units.collection.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/acquisitions-units/units",
+      "permissionsRequired" : [ "acquisitions-units.units.item.post" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/acquisitions-units/units/{id}",
+      "permissionsRequired" : [ "acquisitions-units.units.item.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/acquisitions-units/units/{id}",
+      "permissionsRequired" : [ "acquisitions-units.units.item.put" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/acquisitions-units/units/{id}",
+      "permissionsRequired" : [ "acquisitions-units.units.item.delete" ],
+      "modulePermissions" : [ "acquisitions-units-storage.units.item.get", "acquisitions-units-storage.units.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/acquisitions-units/memberships",
+      "permissionsRequired" : [ "acquisitions-units.memberships.collection.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/acquisitions-units/memberships",
+      "permissionsRequired" : [ "acquisitions-units.memberships.item.post" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/acquisitions-units/memberships/{id}",
+      "permissionsRequired" : [ "acquisitions-units.memberships.item.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/acquisitions-units/memberships/{id}",
+      "permissionsRequired" : [ "acquisitions-units.memberships.item.put" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/acquisitions-units/memberships/{id}",
+      "permissionsRequired" : [ "acquisitions-units.memberships.item.delete" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.item.delete" ]
+    } ]
+  }, {
+    "id" : "titles",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/titles",
+      "permissionsRequired" : [ "orders.titles.collection.get" ],
+      "modulePermissions" : [ "orders-storage.titles.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/titles",
+      "permissionsRequired" : [ "orders.titles.item.post" ],
+      "permissionsDesired" : [ "titles.acquisitions-units-assignments.assign" ],
+      "modulePermissions" : [ "orders-storage.titles.collection.get", "orders-storage.titles.item.post", "orders-storage.po-lines.item.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.item.post", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/titles/{id}",
+      "permissionsRequired" : [ "orders.titles.item.get" ],
+      "modulePermissions" : [ "orders-storage.titles.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/titles/{id}",
+      "permissionsRequired" : [ "orders.titles.item.put" ],
+      "permissionsDesired" : [ "titles.acquisitions-units-assignments.manage" ],
+      "modulePermissions" : [ "orders-storage.titles.item.get", "orders-storage.titles.item.put", "inventory.instances.item.get", "inventory.instances.collection.get", "inventory.instances.item.post", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.contributor-name-types.collection.get", "user-tenants.collection.get", "configuration.entries.collection.get", "consortia.sharing-instances.item.post", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/titles/{id}",
+      "permissionsRequired" : [ "orders.titles.item.delete" ],
+      "modulePermissions" : [ "orders-storage.titles.item.get", "orders-storage.titles.item.delete", "orders-storage.pieces.collection.get", "orders-storage.pieces.collection.delete", "orders-storage.po-lines.item.get", "inventory-storage.holdings.item.delete", "inventory-storage.items.collection.get", "inventory-storage.items.collection.delete", "configuration.entries.collection.get", "user-tenants.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    } ]
+  }, {
+    "id" : "configuration.reasons-for-closure",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/reasons-for-closure",
+      "permissionsRequired" : [ "orders.configuration.reasons-for-closure.collection.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.reasons-for-closure.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/configuration/reasons-for-closure",
+      "permissionsRequired" : [ "orders.configuration.reasons-for-closure.item.post" ],
+      "modulePermissions" : [ "orders-storage.configuration.reasons-for-closure.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/reasons-for-closure/{id}",
+      "permissionsRequired" : [ "orders.configuration.reasons-for-closure.item.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.reasons-for-closure.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/configuration/reasons-for-closure/{id}",
+      "permissionsRequired" : [ "orders.configuration.reasons-for-closure.item.put" ],
+      "modulePermissions" : [ "orders-storage.configuration.reasons-for-closure.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/configuration/reasons-for-closure/{id}",
+      "permissionsRequired" : [ "orders.configuration.reasons-for-closure.item.delete" ],
+      "modulePermissions" : [ "orders-storage.configuration.reasons-for-closure.item.delete" ]
+    } ]
+  }, {
+    "id" : "configuration.prefixes",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/prefixes",
+      "permissionsRequired" : [ "orders.configuration.prefixes.collection.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.prefixes.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/configuration/prefixes",
+      "permissionsRequired" : [ "orders.configuration.prefixes.item.post" ],
+      "modulePermissions" : [ "orders-storage.configuration.prefixes.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/prefixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.prefixes.item.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.prefixes.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/configuration/prefixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.prefixes.item.put" ],
+      "modulePermissions" : [ "orders-storage.configuration.prefixes.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/configuration/prefixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.prefixes.item.delete" ],
+      "modulePermissions" : [ "orders-storage.configuration.prefixes.item.delete", "orders-storage.configuration.prefixes.item.get", "orders-storage.purchase-orders.collection.get" ]
+    } ]
+  }, {
+    "id" : "configuration.suffixes",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/suffixes",
+      "permissionsRequired" : [ "orders.configuration.suffixes.collection.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.suffixes.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/configuration/suffixes",
+      "permissionsRequired" : [ "orders.configuration.suffixes.item.post" ],
+      "modulePermissions" : [ "orders-storage.configuration.suffixes.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/configuration/suffixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.suffixes.item.get" ],
+      "modulePermissions" : [ "orders-storage.configuration.suffixes.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/configuration/suffixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.suffixes.item.put" ],
+      "modulePermissions" : [ "orders-storage.configuration.suffixes.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/configuration/suffixes/{id}",
+      "permissionsRequired" : [ "orders.configuration.suffixes.item.delete" ],
+      "modulePermissions" : [ "orders-storage.configuration.suffixes.item.delete", "orders-storage.configuration.suffixes.item.get", "orders-storage.purchase-orders.collection.get" ]
+    } ]
+  }, {
+    "id" : "orders.rollover",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/rollover",
+      "permissionsRequired" : [ "orders.rollover.item.post" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "finance-storage.funds.collection.get", "finance.exchange-rate.item.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "orders-storage.purchase-orders.collection.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines-batch.collection.put", "finance.ledger-rollovers-errors.collection.get", "finance.ledger-rollovers-errors.item.post", "finance.ledger-rollovers-progress.item.put", "inventory-storage.holdings.collection.get" ]
+    } ]
+  }, {
+    "id" : "orders.holding-summary",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/holding-summary/{id}",
+      "permissionsRequired" : [ "orders.holding-summary.collection.get" ],
+      "modulePermissions" : [ "orders-storage.purchase-orders.collection.get", "orders-storage.po-lines.collection.get", "orders-storage.pieces.collection.get" ]
+    } ]
+  }, {
+    "id" : "orders.export-history",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/export-history",
+      "permissionsRequired" : [ "orders.export-history.collection.get" ],
+      "modulePermissions" : [ "orders-storage.export-history.collection.get" ]
+    } ]
+  }, {
+    "id" : "orders.routing-lists",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/routing-lists",
+      "permissionsRequired" : [ "orders.routing-lists.collection.get" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/routing-lists",
+      "permissionsRequired" : [ "orders.routing-lists.item.post" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.item.post", "orders-storage.po-lines.item.get", "orders-storage.routing-lists.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/routing-lists/{id}",
+      "permissionsRequired" : [ "orders.routing-lists.item.get" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/orders/routing-lists/{id}",
+      "permissionsRequired" : [ "orders.routing-lists.item.put" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.item.put", "orders-storage.po-lines.item.get", "orders-storage.routing-lists.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/routing-lists/{id}",
+      "permissionsRequired" : [ "orders.routing-lists.item.delete" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/orders/routing-lists/{id}/template",
+      "permissionsRequired" : [ "orders.routing-lists-template.item.get" ],
+      "modulePermissions" : [ "orders-storage.routing-lists.item.get", "orders-storage.po-lines.item.get", "orders-storage.settings.collection.get", "users.collection.get", "template-request.post" ]
+    } ]
+  }, {
+    "id" : "orders.bind-pieces",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/orders/bind-pieces",
+      "permissionsRequired" : [ "orders.bind-pieces.collection.post" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "orders-storage.pieces.item.put", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.purchase-orders.item.put", "orders-storage.titles.collection.get", "orders-storage.titles.item.put", "inventory.items.item.put", "inventory.items.collection.get", "inventory-storage.items.item.post", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings.item.post", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "circulation.requests.collection.get", "circulation.requests.item.move.post", "circulation.requests.item.put", "user-tenants.collection.get", "consortia.sharing-instances.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/orders/bind-pieces/{id}",
+      "permissionsRequired" : [ "orders.bind-pieces.item.delete" ],
+      "modulePermissions" : [ "orders-storage.pieces.collection.get", "orders-storage.pieces.item.get", "orders-storage.pieces.item.put", "orders-storage.titles.collection.get", "orders-storage.titles.item.put", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "user-tenants.collection.get" ]
+    } ]
+  }, {
+    "id" : "pieces.send-claims",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/pieces/claim",
+      "permissionsRequired" : [ "pieces.send-claims.collection.post" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "orders-storage.pieces.collection.get", "orders-storage.pieces.item.put", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.titles.item.get", "organizations-storage.organizations.item.get", "data-export.job.item.post", "data-export.job.send.item.execute" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "invoice",
+    "version" : "7.0"
+  }, {
+    "id" : "consortia",
+    "version" : "1.0"
+  }, {
+    "id" : "data-export-spring",
+    "version" : "2.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "orders.collection.get",
+    "displayName" : "orders - get orders collection",
+    "description" : "Get orders collection"
+  }, {
+    "permissionName" : "orders.item.post",
+    "displayName" : "orders - create a new order",
+    "description" : "Create a new order"
+  }, {
+    "permissionName" : "orders.item.get",
+    "displayName" : "orders - get an existing order",
+    "description" : "Get an existing order"
+  }, {
+    "permissionName" : "orders.item.put",
+    "displayName" : "orders - modify an existing order",
+    "description" : "Modify an existing order"
+  }, {
+    "permissionName" : "orders.item.delete",
+    "displayName" : "orders - delete an existing order",
+    "description" : "Delete an existing order"
+  }, {
+    "permissionName" : "orders.re-encumber.item.post",
+    "displayName" : "orders - re-encumber an order",
+    "description" : "Re-encumber an order"
+  }, {
+    "permissionName" : "orders.po-lines.collection.get",
+    "displayName" : "Orders - get collection of PO lines",
+    "description" : "Get collection of PO lines"
+  }, {
+    "permissionName" : "orders.po-lines.item.post",
+    "displayName" : "Orders - create a new PO line",
+    "description" : "Create a new PO line"
+  }, {
+    "permissionName" : "orders.po-lines.item.get",
+    "displayName" : "Orders - get an existing PO line",
+    "description" : "Get an existing PO line"
+  }, {
+    "permissionName" : "orders.po-lines.item.put",
+    "displayName" : "Orders - modify an existing PO line",
+    "description" : "Modify an existing PO line"
+  }, {
+    "permissionName" : "orders.po-lines.item.delete",
+    "displayName" : "Orders - delete an existing PO line",
+    "description" : "Delete an existing PO line"
+  }, {
+    "permissionName" : "orders.po-lines.item.patch",
+    "displayName" : "Orders - partial modify an existing PO line",
+    "description" : "Partial modify an existing PO line"
+  }, {
+    "permissionName" : "orders.po-lines.fund-distributions.validate",
+    "displayName" : "Orders - validate fund distributions for a PO line",
+    "description" : "Validate fund distributions for a PO line"
+  }, {
+    "permissionName" : "orders.po-number.item.get",
+    "displayName" : "Orders - generate a PO Number",
+    "description" : "Generate a PO Number"
+  }, {
+    "permissionName" : "orders.po-number.item.post",
+    "displayName" : "Orders - validate a PO Number",
+    "description" : "Validate a PO Number"
+  }, {
+    "permissionName" : "orders.receiving.collection.post",
+    "displayName" : "Orders - Receive items",
+    "description" : "Receive items spanning one or more po-lines in this order"
+  }, {
+    "permissionName" : "orders.check-in.collection.post",
+    "displayName" : "Orders - Check-in items",
+    "description" : "Check-in items spanning one or more po-lines in this order"
+  }, {
+    "permissionName" : "orders.expect.collection.post",
+    "displayName" : "Orders - Expect pieces",
+    "description" : "Expect pieces spanning one or more po-lines in this order"
+  }, {
+    "permissionName" : "orders.receiving-history.collection.get",
+    "displayName" : "Orders - Receiving history",
+    "description" : "Get receiving history matching the provided criteria"
+  }, {
+    "permissionName" : "orders.pieces.collection.get",
+    "displayName" : "Orders - Get pieces",
+    "description" : "Get order pieces"
+  }, {
+    "permissionName" : "orders.pieces.item.post",
+    "displayName" : "Orders - Piece",
+    "description" : "Create piece record"
+  }, {
+    "permissionName" : "orders.pieces.item.get",
+    "displayName" : "Orders - Get piece",
+    "description" : "Get order piece by id"
+  }, {
+    "permissionName" : "orders.pieces.item.put",
+    "displayName" : "orders - modify an existing piece record",
+    "description" : "Modify an existing piece"
+  }, {
+    "permissionName" : "orders.pieces.item.delete",
+    "displayName" : "orders - delete an existing piece record",
+    "description" : "Delete an existing piece"
+  }, {
+    "permissionName" : "orders.pieces.collection.post",
+    "displayName" : "orders - batch create pieces",
+    "description" : "Batch create pieces"
+  }, {
+    "permissionName" : "orders.pieces.collection.put",
+    "displayName" : "orders - batch update piece statuses",
+    "description" : "Batch update piece statuses"
+  }, {
+    "permissionName" : "orders.piece-requests.collection.get",
+    "displayName" : "Orders - Get piece requests",
+    "description" : "Get order piece requests"
+  }, {
+    "permissionName" : "orders.pieces.all",
+    "displayName" : "All piece permissions",
+    "description" : "All permissions for the pieces",
+    "subPermissions" : [ "orders.pieces.collection.get", "orders.pieces.collection.post", "orders.pieces.collection.put", "orders.pieces.item.post", "orders.pieces.item.get", "orders.pieces.item.put", "orders.pieces.item.delete", "orders.piece-requests.collection.get" ]
+  }, {
+    "permissionName" : "orders.wrapper-pieces.collection.get",
+    "displayName" : "orders.wrapper-pieces-collection get",
+    "description" : "Get a collection of wrapper pieces"
+  }, {
+    "permissionName" : "orders.wrapper-pieces.item.get",
+    "displayName" : "orders.wrapper-pieces-item get",
+    "description" : "Fetch a wrapper piece"
+  }, {
+    "permissionName" : "orders.wrapper-pieces.all",
+    "displayName" : "All orders wrapper pieces perms",
+    "description" : "All permissions for the orders-wrapper-pieces",
+    "subPermissions" : [ "orders.wrapper-pieces.collection.get", "orders.wrapper-pieces.item.get" ]
+  }, {
+    "permissionName" : "orders.acquisition-methods.collection.get",
+    "displayName" : "acquisition-methods-collection get",
+    "description" : "Get a collection of acquisition-methods"
+  }, {
+    "permissionName" : "orders.acquisition-method.item.post",
+    "displayName" : "acquisition-method-item post",
+    "description" : "Create a new acquisition-methods"
+  }, {
+    "permissionName" : "orders.acquisition-method.item.get",
+    "displayName" : "acquisition-method-item get",
+    "description" : "Fetch a acquisition-method"
+  }, {
+    "permissionName" : "orders.acquisition-method.item.put",
+    "displayName" : "acquisition-method put",
+    "description" : "Update a purchase acquisition method"
+  }, {
+    "permissionName" : "orders.acquisition-method.item.delete",
+    "displayName" : "acquisition-method-item delete",
+    "description" : "Delete a acquisition-method"
+  }, {
+    "permissionName" : "orders.acquisition-methods.all",
+    "displayName" : "All acquisition method perms",
+    "description" : "All permissions for the acquisition method",
+    "subPermissions" : [ "orders.acquisition-methods.collection.get", "orders.acquisition-method.item.post", "orders.acquisition-method.item.get", "orders.acquisition-method.item.put", "orders.acquisition-method.item.delete" ]
+  }, {
+    "permissionName" : "orders.order-templates.collection.get",
+    "displayName" : "Orders - Get template collection",
+    "description" : "Get a collection of order templates"
+  }, {
+    "permissionName" : "orders.order-templates.item.post",
+    "displayName" : "Orders - Create an order template",
+    "description" : "Create a new order template"
+  }, {
+    "permissionName" : "orders.order-templates.item.get",
+    "displayName" : "Orders - Get an order template",
+    "description" : "Fetch an order templates"
+  }, {
+    "permissionName" : "orders.order-templates.item.put",
+    "displayName" : "Orders - Update an order template",
+    "description" : "Update an order template"
+  }, {
+    "permissionName" : "orders.order-templates.item.delete",
+    "displayName" : "Orders - Delete an order template",
+    "description" : "Delete an order template"
+  }, {
+    "permissionName" : "orders.order-templates.all",
+    "displayName" : "All order-templates permissions",
+    "description" : "All permissions for the order-templates",
+    "subPermissions" : [ "orders.order-templates.collection.get", "orders.order-templates.item.post", "orders.order-templates.item.get", "orders.order-templates.item.put", "orders.order-templates.item.delete" ]
+  }, {
+    "permissionName" : "acquisitions-units.units.collection.get",
+    "displayName" : "Acquisitions units - get units",
+    "description" : "Get a collection of acquisitions units"
+  }, {
+    "permissionName" : "acquisitions-units.units.item.post",
+    "displayName" : "Acquisitions units - create unit",
+    "description" : "Create a new acquisitions unit"
+  }, {
+    "permissionName" : "acquisitions-units.units.item.get",
+    "displayName" : "Acquisitions units - get unit",
+    "description" : "Fetch an acquisitions unit"
+  }, {
+    "permissionName" : "acquisitions-units.units.item.put",
+    "displayName" : "Acquisitions units - update unit",
+    "description" : "Update an acquisitions unit"
+  }, {
+    "permissionName" : "acquisitions-units.units.item.delete",
+    "displayName" : "Acquisitions units - delete unit",
+    "description" : "Delete an acquisitions unit"
+  }, {
+    "permissionName" : "acquisitions-units.units.all",
+    "displayName" : "All acquisitions-units perms",
+    "description" : "All permissions for the acquisitions-units",
+    "subPermissions" : [ "acquisitions-units.units.collection.get", "acquisitions-units.units.item.post", "acquisitions-units.units.item.get", "acquisitions-units.units.item.put", "acquisitions-units.units.item.delete" ]
+  }, {
+    "permissionName" : "orders.acquisition-units.bypass.execute",
+    "replaces" : [ "orders.bypass-acquisition-units" ],
+    "displayName" : "Bypass acquisition units checks",
+    "description" : "Backend internal permission to bypass order acquisition units checks"
+  }, {
+    "permissionName" : "orders.acquisitions-units-assignments.assign",
+    "displayName" : "Acquisitions unit assignment - create unit assignment",
+    "description" : "Assign new order to acquisitions units"
+  }, {
+    "permissionName" : "orders.acquisitions-units-assignments.manage",
+    "displayName" : "Acquisitions units assignment - manage unit assignments",
+    "description" : "Manage unit assignments during orders update"
+  }, {
+    "permissionName" : "orders.acquisitions-units-assignments.all",
+    "displayName" : "All order acquisitions-unit-assignments permissions",
+    "description" : "All permissions for the acquisitions-unit-assignments",
+    "subPermissions" : [ "orders.acquisitions-units-assignments.assign", "orders.acquisitions-units-assignments.manage" ]
+  }, {
+    "permissionName" : "titles.acquisitions-units-assignments.assign",
+    "displayName" : "Acquisitions units assignment - create title unit assignments",
+    "description" : "Assign new title to acquisition units"
+  }, {
+    "permissionName" : "titles.acquisitions-units-assignments.manage",
+    "displayName" : "Acquisitions units assignment - manage title unit assignments",
+    "description" : "Manage acq unit assignments during title update"
+  }, {
+    "permissionName" : "titles.acquisitions-units-assignments.all",
+    "displayName" : "All titles acquisitions-unit-assignments permissions",
+    "description" : "All permissions for the title acquisitions-unit-assignments",
+    "subPermissions" : [ "titles.acquisitions-units-assignments.assign", "titles.acquisitions-units-assignments.manage" ]
+  }, {
+    "permissionName" : "acquisitions-units.memberships.collection.get",
+    "displayName" : "Acquisitions units memberships - get units memberships",
+    "description" : "Get a collection of acquisitions units memberships"
+  }, {
+    "permissionName" : "acquisitions-units.memberships.item.post",
+    "displayName" : "Acquisitions units memberships - create units membership",
+    "description" : "Create a new acquisitions units membership"
+  }, {
+    "permissionName" : "acquisitions-units.memberships.item.get",
+    "displayName" : "Acquisitions units memberships - get units membership",
+    "description" : "Fetch an acquisitions units membership"
+  }, {
+    "permissionName" : "acquisitions-units.memberships.item.put",
+    "displayName" : "Acquisitions units memberships - update units membership",
+    "description" : "Update an acquisitions units membership"
+  }, {
+    "permissionName" : "acquisitions-units.memberships.item.delete",
+    "displayName" : "Acquisitions units memberships - delete units membership",
+    "description" : "Delete an acquisitions units membership"
+  }, {
+    "permissionName" : "acquisitions-units.memberships.all",
+    "displayName" : "All acquisitions-units perms",
+    "description" : "All permissions for the acquisitions-units memberships",
+    "subPermissions" : [ "acquisitions-units.memberships.collection.get", "acquisitions-units.memberships.item.post", "acquisitions-units.memberships.item.get", "acquisitions-units.memberships.item.put", "acquisitions-units.memberships.item.delete" ]
+  }, {
+    "permissionName" : "orders.titles.collection.get",
+    "displayName" : "Titles - get titles collection",
+    "description" : "Get titles collection"
+  }, {
+    "permissionName" : "orders.titles.item.post",
+    "displayName" : "Titles - create a new title",
+    "description" : "Create a new title"
+  }, {
+    "permissionName" : "orders.titles.item.get",
+    "displayName" : "Titles - get an existing title",
+    "description" : "Get an existing title"
+  }, {
+    "permissionName" : "orders.titles.item.put",
+    "displayName" : "Titles - modify an existing title",
+    "description" : "Modify an existing title"
+  }, {
+    "permissionName" : "orders.titles.item.delete",
+    "displayName" : "Titles - delete an existing title",
+    "description" : "Delete an existing title"
+  }, {
+    "permissionName" : "orders.titles.all",
+    "displayName" : "All titles perms",
+    "description" : "All permissions for the titles",
+    "subPermissions" : [ "orders.titles.collection.get", "orders.titles.item.post", "orders.titles.item.get", "orders.titles.item.put", "orders.titles.item.delete" ]
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.collection.get",
+    "displayName" : "orders-configuration-reasons-for-closure-collection get",
+    "description" : "Get a collection of reasons for closure"
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.item.post",
+    "displayName" : "orders-configuration-reasons-for-closure-item post",
+    "description" : "Create a new reason for closure"
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.item.get",
+    "displayName" : "orders-configuration-reasons-for-closure-item get",
+    "description" : "Fetch a reason for closure"
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.item.put",
+    "displayName" : "orders-configuration-reasons-for-closure-item put",
+    "description" : "Update a reason for closure"
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.item.delete",
+    "displayName" : "orders-configuration-reasons-for-closure-item delete",
+    "description" : "Delete a reason for closure"
+  }, {
+    "permissionName" : "orders.configuration.reasons-for-closure.all",
+    "displayName" : "All orders reasons for closure perms",
+    "description" : "All permissions for the orders configuration - reasons for closure",
+    "subPermissions" : [ "orders.configuration.reasons-for-closure.collection.get", "orders.configuration.reasons-for-closure.item.post", "orders.configuration.reasons-for-closure.item.get", "orders.configuration.reasons-for-closure.item.put", "orders.configuration.reasons-for-closure.item.delete" ]
+  }, {
+    "permissionName" : "orders.configuration.prefixes.collection.get",
+    "displayName" : "orders-configuration-prefix-collection get",
+    "description" : "Get a collection of prefixes"
+  }, {
+    "permissionName" : "orders.configuration.prefixes.item.post",
+    "displayName" : "orders-configuration-prefixes-item post",
+    "description" : "Create a new prefix"
+  }, {
+    "permissionName" : "orders.configuration.prefixes.item.get",
+    "displayName" : "orders-configuration-prefixes-item get",
+    "description" : "Fetch a prefix"
+  }, {
+    "permissionName" : "orders.configuration.prefixes.item.put",
+    "displayName" : "orders-configuration-prefix-item put",
+    "description" : "Update a prefix"
+  }, {
+    "permissionName" : "orders.configuration.prefixes.item.delete",
+    "displayName" : "orders-configuration-prefixes-item delete",
+    "description" : "Delete a prefix"
+  }, {
+    "permissionName" : "orders.configuration.prefixes.all",
+    "displayName" : "All orders prefixes perms",
+    "description" : "All permissions for the orders configuration - prefixes",
+    "subPermissions" : [ "orders.configuration.prefixes.collection.get", "orders.configuration.prefixes.item.post", "orders.configuration.prefixes.item.get", "orders.configuration.prefixes.item.put", "orders.configuration.prefixes.item.delete" ]
+  }, {
+    "permissionName" : "orders.configuration.suffixes.collection.get",
+    "displayName" : "orders-configuration-suffixes-collection get",
+    "description" : "Get a collection of suffixes"
+  }, {
+    "permissionName" : "orders.configuration.suffixes.item.post",
+    "displayName" : "orders-configuration-suffixes-item post",
+    "description" : "Create a new suffix"
+  }, {
+    "permissionName" : "orders.configuration.suffixes.item.get",
+    "displayName" : "orders-configuration-suffixes-item get",
+    "description" : "Fetch a suffix"
+  }, {
+    "permissionName" : "orders.configuration.suffixes.item.put",
+    "displayName" : "orders-configuration-suffix-item put",
+    "description" : "Update a suffix"
+  }, {
+    "permissionName" : "orders.configuration.suffixes.item.delete",
+    "displayName" : "orders-configuration-suffixes-item delete",
+    "description" : "Delete a suffix"
+  }, {
+    "permissionName" : "orders.configuration.suffixes.all",
+    "displayName" : "All orders suffixes perms",
+    "description" : "All permissions for the orders configuration - suffixes",
+    "subPermissions" : [ "orders.configuration.suffixes.collection.get", "orders.configuration.suffixes.item.post", "orders.configuration.suffixes.item.get", "orders.configuration.suffixes.item.put", "orders.configuration.suffixes.item.delete" ]
+  }, {
+    "permissionName" : "orders.export-history.collection.get",
+    "displayName" : "orders-export-history-collection get",
+    "description" : "Fetch export history collection"
+  }, {
+    "permissionName" : "orders.export-history.all",
+    "displayName" : "All orders suffixes perms",
+    "description" : "All permissions for the export history",
+    "subPermissions" : [ "orders.export-history.collection.get" ]
+  }, {
+    "permissionName" : "orders.rollover.item.post",
+    "displayName" : "orders-rollover post",
+    "description" : "Rollover orders"
+  }, {
+    "permissionName" : "orders.holding-summary.collection.get",
+    "displayName" : "orders holding-summary get",
+    "description" : "Holding summary"
+  }, {
+    "permissionName" : "orders.routing-lists.collection.get",
+    "displayName" : "orders routing-list collection get",
+    "description" : "Orders routing-list collection get"
+  }, {
+    "permissionName" : "orders.routing-lists.item.post",
+    "displayName" : "orders routing-list item post",
+    "description" : "Orders routing-list item post"
+  }, {
+    "permissionName" : "orders.routing-lists.item.get",
+    "displayName" : "orders routing-list item get",
+    "description" : "Orders routing-list item get"
+  }, {
+    "permissionName" : "orders.routing-lists.item.put",
+    "displayName" : "orders routing-list item put",
+    "description" : "Orders routing-list item put"
+  }, {
+    "permissionName" : "orders.routing-lists.item.delete",
+    "displayName" : "orders routing-list item delete",
+    "description" : "Orders routing-list item delete"
+  }, {
+    "permissionName" : "orders.routing-lists-template.item.get",
+    "displayName" : "orders routing-list-template item get",
+    "description" : "Orders routing-list-template item get"
+  }, {
+    "permissionName" : "orders.routing-lists.all",
+    "displayName" : "All routing list perms",
+    "description" : "All permissions for the routing list",
+    "subPermissions" : [ "orders.routing-lists.collection.get", "orders.routing-lists.item.post", "orders.routing-lists.item.get", "orders.routing-lists.item.put", "orders.routing-lists.item.delete", "orders.routing-lists-template.item.get" ]
+  }, {
+    "permissionName" : "orders.bind-pieces.collection.post",
+    "displayName" : "bind-pieces collection post",
+    "description" : "Bind pieces collection post"
+  }, {
+    "permissionName" : "orders.bind-pieces.item.delete",
+    "displayName" : "bind-pieces item delete",
+    "description" : "Remove Binding from piece"
+  }, {
+    "permissionName" : "orders.bind-pieces.all",
+    "displayName" : "All bind pieces perms",
+    "description" : "All permissions for the bind pieces",
+    "subPermissions" : [ "orders.bind-pieces.collection.post", "orders.bind-pieces.item.delete" ]
+  }, {
+    "permissionName" : "pieces.send-claims.collection.post",
+    "displayName" : "send-claims collection post",
+    "description" : "Send claims collection post"
+  }, {
+    "permissionName" : "pieces.send-claims.all",
+    "displayName" : "All send claims perms",
+    "description" : "All permissions for the send claims",
+    "subPermissions" : [ "pieces.send-claims.collection.post" ]
+  }, {
+    "permissionName" : "orders.all",
+    "displayName" : "orders - all permissions",
+    "description" : "Entire set of permissions needed to use orders",
+    "subPermissions" : [ "orders.collection.get", "orders.item.post", "orders.item.get", "orders.item.put", "orders.item.delete", "orders.po-lines.collection.get", "orders.po-lines.item.post", "orders.po-lines.item.get", "orders.po-lines.item.put", "orders.po-lines.item.delete", "orders.po-lines.item.patch", "orders.po-lines.fund-distributions.validate", "orders.po-number.item.get", "orders.po-number.item.post", "orders.receiving.collection.post", "orders.check-in.collection.post", "orders.expect.collection.post", "orders.receiving-history.collection.get", "orders.pieces.all", "orders.wrapper-pieces.all", "orders.acquisitions-units-assignments.all", "orders.order-templates.all", "orders.titles.all", "orders.configuration.reasons-for-closure.all", "orders.configuration.prefixes.all", "orders.configuration.suffixes.all", "orders.re-encumber.item.post", "orders.rollover.item.post", "orders.holding-summary.collection.get", "orders.acquisition-methods.all", "orders.export-history.all", "orders.routing-lists.all", "orders.bind-pieces.all", "pieces.send-claims.all" ]
+  }, {
+    "permissionName" : "modperms.orders.item.put",
+    "displayName" : "module permissions for put purchase order",
+    "description" : "to reduce X-Okapi-Token size",
+    "subPermissions" : [ "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "circulation.requests.collection.get", "orders-storage.configuration.prefixes.collection.get", "orders-storage.configuration.suffixes.collection.get", "orders-storage.purchase-orders.collection.get", "orders-storage.purchase-orders.item.put", "orders-storage.purchase-orders.item.get", "orders-storage.po-lines.collection.get", "orders-storage.po-lines.item.get", "orders-storage.po-lines.item.post", "orders-storage.po-lines.item.put", "orders-storage.po-lines.item.delete", "orders-storage.alerts.item.post", "orders-storage.alerts.item.get", "orders-storage.alerts.item.put", "orders-storage.alerts.item.delete", "orders-storage.pieces-batch.collection.post", "orders-storage.pieces.item.get", "orders-storage.pieces.item.delete", "orders-storage.pieces.collection.get", "orders-storage.po-line-number.get", "orders-storage.reporting-codes.item.post", "orders-storage.reporting-codes.item.get", "orders-storage.reporting-codes.item.put", "orders-storage.reporting-codes.item.delete", "orders-storage.titles.collection.get", "orders-storage.titles.item.get", "orders-storage.order-invoice-relationships.collection.get", "configuration.entries.collection.get", "finance.funds.budget.item.get", "finance.funds.collection.get", "finance.funds.item.get", "finance.budgets.collection.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance.transactions.item.get", "finance.ledgers.current-fiscal-year.item.get", "finance.fiscal-years.item.get", "finance-storage.ledgers.collection.get", "finance.exchange-rate.item.get", "finance-storage.budget-expense-classes.collection.get", "finance.expense-classes.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory.items.collection.get", "inventory.items.item.get", "inventory.items.item.put", "inventory.items.item.delete", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.item.delete", "inventory-storage.holdings.collection.delete", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "inventory-storage.items.item.delete", "inventory.items.item.put", "inventory-storage.loan-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "inventory-storage.identifier-types.collection.get", "invoice.invoices.collection.get", "invoice.invoice-lines.collection.get", "invoices.acquisition-units.bypass.execute", "organizations-storage.organizations.collection.get", "organizations-storage.organizations.item.get", "isbn-utils.convert-to-13.get", "orders-storage.settings.collection.get", "consortia.user-tenants.collection.get", "user-tenants.collection.get", "consortia.sharing-instances.collection.get", "consortia.sharing-instances.item.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "modperms.orders.item.post",
+    "displayName" : "module permissions for post purchase order",
+    "description" : "to reduce X-Okapi-Token size",
+    "subPermissions" : [ "orders-storage.purchase-orders.collection.get", "orders-storage.purchase-orders.item.post", "orders-storage.purchase-orders.item.put", "orders-storage.alerts.item.post", "orders-storage.alerts.item.put", "orders-storage.po-lines.item.post", "orders-storage.po-lines.item.put", "orders-storage.po-lines.collection.get", "orders-storage.pieces-batch.collection.post", "orders-storage.pieces.collection.get", "orders-storage.po-line-number.get", "orders-storage.po-number.get", "orders-storage.reporting-codes.item.post", "orders-storage.reporting-codes.item.put", "orders-storage.titles.collection.get", "orders-storage.titles.item.put", "orders-storage.po-lines.item.get", "orders-storage.purchase-orders.item.get", "orders-storage.alerts.item.get", "orders-storage.reporting-codes.item.get", "configuration.entries.collection.get", "finance.funds.budget.item.get", "finance.funds.collection.get", "finance.budgets.collection.get", "finance.fiscal-years.item.get", "finance.ledgers.current-fiscal-year.item.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance.transactions.item.get", "finance.exchange-rate.item.get", "finance.expense-classes.collection.get", "finance-storage.budget-expense-classes.collection.get", "finance-storage.ledgers.collection.get", "inventory.instances.collection.get", "inventory.instances.item.get", "inventory.instances.item.post", "inventory.items.collection.get", "inventory-storage.instance-types.collection.get", "inventory-storage.instance-statuses.collection.get", "inventory-storage.holdings-sources.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.item.post", "inventory-storage.holdings.collection.get", "inventory-storage.items.collection.get", "inventory-storage.items.item.post", "inventory.items.item.get", "inventory.items.item.put", "inventory-storage.loan-types.collection.get", "inventory-storage.contributor-name-types.collection.get", "organizations-storage.organizations.collection.get", "organizations-storage.organizations.item.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "inventory-storage.identifier-types.collection.get", "isbn-utils.convert-to-13.get", "tags.collection.get", "tags.item.post", "user-tenants.collection.get", "consortia.sharing-instances.collection.get", "consortia.sharing-instances.item.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "orders.item.approve",
+    "displayName" : "Permission should be provided to approve order",
+    "description" : "Permission should be provided to approve order"
+  }, {
+    "permissionName" : "orders.item.unopen",
+    "displayName" : "Permission should be provided to unopen order",
+    "description" : "Permission should be provided to unopen order"
+  }, {
+    "permissionName" : "orders.item.reopen",
+    "displayName" : "Permission should be provided to reopen order",
+    "description" : "Permission should be provided to reopen order"
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "converter-storage.jobprofilesnapshots.get", "configuration.entries.collection.get", "finance-storage.fiscal-years.item.get", "acquisitions-units.memberships.collection.get", "acquisitions-units.units.collection.get", "modperms.orders.item.put", "modperms.orders.item.post", "orders-storage.acquisition-methods.collection.get", "orders.po-lines.collection.get", "orders.po-lines.item.get", "organizations.organizations.collection.get", "change-manager.jobExecutions.item.get" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-orders:13.1.0-SNAPSHOT.1009",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}

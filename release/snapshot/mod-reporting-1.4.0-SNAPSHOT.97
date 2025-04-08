@@ -1,0 +1,125 @@
+{
+  "id" : "mod-reporting-1.4.0-SNAPSHOT.97",
+  "name" : "reporting module",
+  "requires" : [ {
+    "id" : "settings",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "ldp-query",
+    "version" : "1.4",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/log",
+      "permissionsRequired" : [ "ldp.log.get" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/columns",
+      "permissionsRequired" : [ "ldp.columns.get" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/tables",
+      "permissionsRequired" : [ "ldp.tables.get" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/ldp/db/query",
+      "permissionsRequired" : [ "ldp.query.post" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/ldp/db/reports",
+      "permissionsRequired" : [ "ldp.reports.post" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/ldp/config/{id}",
+      "permissionsRequired" : [ "ldp.config.edit" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.entries.item.post", "mod-settings.entries.item.put", "mod-settings.global.read.ui-ldp.admin", "mod-settings.global.write.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/config*",
+      "permissionsRequired" : [ "ldp.config.read" ],
+      "modulePermissions" : [ "mod-settings.entries.collection.get", "mod-settings.global.read.ui-ldp.admin" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/version",
+      "permissionsRequired" : [ "ldp.version.read" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/updates",
+      "permissionsRequired" : [ "ldp.updates.read" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/ldp/db/processes",
+      "permissionsRequired" : [ "ldp.processes.read" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "ldp.log.get",
+    "displayName" : "LDP -- Read log",
+    "description" : "Read LDP log"
+  }, {
+    "permissionName" : "ldp.columns.get",
+    "displayName" : "LDP -- Read columns",
+    "description" : "Read LDP columns"
+  }, {
+    "permissionName" : "ldp.tables.get",
+    "displayName" : "LDP -- Read tables",
+    "description" : "Read LDP tables"
+  }, {
+    "permissionName" : "ldp.query.post",
+    "displayName" : "LDP -- send form query",
+    "description" : "Send LDP query"
+  }, {
+    "permissionName" : "ldp.reports.post",
+    "displayName" : "LDP -- send reports",
+    "description" : "Send LDP reports"
+  }, {
+    "permissionName" : "ldp.read",
+    "displayName" : "LDP -- Read",
+    "description" : "Read LDP data",
+    "subPermissions" : [ "ldp.log.get", "ldp.columns.get", "ldp.tables.get", "ldp.query.post", "ldp.reports.post" ]
+  }, {
+    "permissionName" : "ldp.config.read",
+    "displayName" : "LDP Config -- Read",
+    "description" : "Read LDP configuration data"
+  }, {
+    "permissionName" : "ldp.config.edit",
+    "displayName" : "LDP Config -- Edit",
+    "description" : "Edit LDP configuration data"
+  }, {
+    "permissionName" : "ldp.version.read",
+    "displayName" : "LDP -- Read version",
+    "description" : "Obtain the version of Metadb the module is connected to"
+  }, {
+    "permissionName" : "ldp.updates.read",
+    "displayName" : "LDP -- Read updates",
+    "description" : "Obtain information about last-updated times of data tables"
+  }, {
+    "permissionName" : "ldp.processes.read",
+    "displayName" : "LDP -- Read processes",
+    "description" : "Obtain information about long-running search processes"
+  }, {
+    "permissionName" : "ldp.all",
+    "displayName" : "LDP -- All",
+    "description" : "All LDP permissions",
+    "subPermissions" : [ "ldp.read", "ldp.config.read", "ldp.config.edit", "ldp.version.read", "ldp.updates.read", "ldp.processes.read" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-reporting:1.4.0-SNAPSHOT.97",
+    "dockerPull" : true,
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 100000000,
+        "PortBindings" : {
+          "12369/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
