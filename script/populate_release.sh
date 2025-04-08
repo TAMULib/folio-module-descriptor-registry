@@ -72,7 +72,7 @@ pop_rel_handle_result() {
   let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
+    echo "${p_e}${1} (system code ${result})."
     echo
   fi
 }
@@ -248,7 +248,7 @@ pop_rel_process_files_releases_curl() {
 
     curl -w '\n' ${curl_fail} ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
 
-    pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${registry}${i} to ${destination}${flower}/${i}."
+    pop_rel_handle_result "Curl request failed for: ${registry}${i} to ${destination}${flower}/${i}"
 
     if [[ ${result} -ne 0 && ${fail_mode} == "report" ]] ; then
       # A 404 results in a 22 status code returned.
@@ -274,7 +274,7 @@ pop_rel_process_files_releases_prepare() {
   if [[ ! -d ${destination}${flower}/ ]] ; then
     mkdir ${debug} -p ${destination}${flower}/
 
-    pop_rel_handle_result "${p_e}Create directory failed (with system code ${?}) for destination: ${destination}${flower}/ ."
+    pop_rel_handle_result "Create directory failed for destination: ${destination}${flower}/"
   fi
 }
 
@@ -311,7 +311,7 @@ pop_rel_process_sources_prepare() {
   if [[ -e ${file} ]] ; then
     rm ${debug} -f ${file}
 
-    pop_rel_handle_result "${p_e}Create file failed (with system code ${?}) for install file: ${file} ."
+    pop_rel_handle_result "Create file failed for install file: ${file}"
   fi
 }
 
@@ -323,7 +323,7 @@ pop_rel_process_sources_curl() {
 
   curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
 
-  pop_rel_handle_result "${p_e}Curl request failed (with system code ${?}) for: ${source} ."
+  pop_rel_handle_result "Curl request failed for: ${source}"
 }
 
 main ${*}

@@ -43,7 +43,7 @@ build_latest_handle_result() {
   let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
+    echo "${p_e}${1} (system code ${result})."
     echo
   fi
 }
@@ -106,7 +106,7 @@ build_latest_load_environment() {
       else
         mkdir ${debug} -p ${path}
 
-        build_latest_handle_result "${p_e}The following path is could not be created: ${path} ."
+        build_latest_handle_result "The following path is could not be created: ${path}"
       fi
     fi
   fi

@@ -73,7 +73,7 @@ pop_node_handle_result() {
   let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
+    echo "${p_e}${1} (system code ${result})."
     echo
   fi
 }
