@@ -5,7 +5,6 @@
 # This requires the following user-space programs:
 #   - bash
 #   - basename
-#   - cat
 #   - cp
 #   - date
 #   - find
@@ -165,8 +164,8 @@ build_page_load_environment() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  template_back_data=$(cat ${template_path}${template_back})
-  template_item_data=$(cat ${template_path}${template_item})
+  template_back_data=$(< ${template_path}${template_back})
+  template_item_data=$(< ${template_path}${template_item})
 
   if [[ ! -d ${work} ]] ; then
     mkdir ${debug} -p ${work}
@@ -402,9 +401,11 @@ build_page_operate_sources_process_files_verify_file() {
 
   # Prevent jq from printing JSON if /dev/null exists when not debugging.
   if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
-    cat ${k} | jq
+    jq < ${k}
+  elif [[ ${debug} != "" ]] ; then
+    jq < ${k} >> /dev/null
   else
-    cat ${k} | jq >> /dev/null
+    jq < ${k} &> /dev/null
   fi
 
   let result=${?}
