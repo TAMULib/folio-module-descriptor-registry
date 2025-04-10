@@ -91,7 +91,7 @@ sync_snap_handle_result() {
   let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
-    echo "${1}"
+    echo "${p_e}${1} (system code ${result})."
     echo
   fi
 }
@@ -100,7 +100,7 @@ sync_snap_handle_result_git() {
   let result=${?}
 
   if [[ ${result} -ne 0 ]] ; then
-    echo "${p_e}Git failed (with system code ${result}) when ${1} changes."
+    echo "${p_e}Git failed when ${1} changes (system code ${result})."
   fi
 }
 
@@ -138,7 +138,7 @@ sync_snap_load_environment() {
   if [[ ${path} != "" ]] ; then
     cd ${path}
 
-    sync_snap_handle_result "${p_e}Failed (with system code ${?}) to change to path: ${path} ."
+    sync_snap_handle_result "Failed to change to path: ${path}"
   fi
 }
 
