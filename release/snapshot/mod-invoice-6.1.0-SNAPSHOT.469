@@ -1,0 +1,710 @@
+{
+  "id" : "mod-invoice-6.1.0-SNAPSHOT.469",
+  "name" : "Invoice business logic module",
+  "requires" : [ {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.funds",
+    "version" : "3.0"
+  }, {
+    "id" : "invoice-storage.invoices",
+    "version" : "5.0"
+  }, {
+    "id" : "invoice-storage.invoice-lines",
+    "version" : "4.0"
+  }, {
+    "id" : "invoice-storage.invoice-number",
+    "version" : "1.0"
+  }, {
+    "id" : "invoice-storage.invoice-line-number",
+    "version" : "1.0"
+  }, {
+    "id" : "order-lines",
+    "version" : "3.0"
+  }, {
+    "id" : "voucher-storage.vouchers",
+    "version" : "1.2"
+  }, {
+    "id" : "voucher-storage.voucher-lines",
+    "version" : "2.0"
+  }, {
+    "id" : "voucher-storage.voucher-number",
+    "version" : "1.0"
+  }, {
+    "id" : "acquisitions-units-storage.units",
+    "version" : "1.1"
+  }, {
+    "id" : "acquisitions-units-storage.memberships",
+    "version" : "1.0"
+  }, {
+    "id" : "batch-voucher-storage.export-configurations",
+    "version" : "1.0"
+  }, {
+    "id" : "batch-voucher-storage.batch-vouchers",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.transactions",
+    "version" : "6.0"
+  }, {
+    "id" : "batch-group-storage.batch-groups",
+    "version" : "1.0"
+  }, {
+    "id" : "batch-voucher-storage.batch-voucher-exports",
+    "version" : "1.1"
+  }, {
+    "id" : "finance.ledgers",
+    "version" : "2.0"
+  }, {
+    "id" : "organizations-storage.organizations",
+    "version" : "3.1"
+  }, {
+    "id" : "finance-storage.budget-expense-classes",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.exchange-rate",
+    "version" : "1.0"
+  }, {
+    "id" : "finance.fiscal-years",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.budgets",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.expense-classes",
+    "version" : "3.0"
+  }, {
+    "id" : "orders-storage.order-invoice-relationships",
+    "version" : "1.0"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.4"
+  } ],
+  "provides" : [ {
+    "id" : "invoice",
+    "version" : "7.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoices",
+      "permissionsRequired" : [ "invoice.invoices.collection.get" ],
+      "permissionsDesired" : [ "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "invoice-storage.invoices.collection.get", "invoice-storage.invoice-lines.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/invoice/invoices",
+      "permissionsRequired" : [ "invoice.invoices.item.post" ],
+      "permissionsDesired" : [ "invoices.acquisitions-units-assignments.assign" ],
+      "modulePermissions" : [ "invoice-storage.invoices.item.post", "invoice-storage.invoice-number.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "organizations-storage.organizations.item.get", "finance.ledgers.current-fiscal-year.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoices/{id}",
+      "permissionsRequired" : [ "invoice.invoices.item.get" ],
+      "permissionsDesired" : [ "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "invoice-storage.invoices.item.get", "invoice-storage.invoice-lines.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/invoice/invoices/{id}",
+      "permissionsRequired" : [ "invoice.invoices.item.put" ],
+      "permissionsDesired" : [ "invoices.acquisitions-units-assignments.manage", "invoices.fiscal-year.update.execute", "invoice.item.approve.execute", "invoice.item.pay.execute", "invoice.item.cancel.execute", "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "invoice-storage.invoices.collection.get", "invoice-storage.invoices.item.put", "invoice-storage.invoices.item.get", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.collection.get", "orders.acquisition-units.bypass.execute", "orders.collection.get", "orders.po-lines.collection.get", "orders.po-lines.item.put", "orders.po-lines.item.get", "voucher-storage.vouchers.collection.get", "voucher-storage.vouchers.item.post", "voucher-storage.vouchers.item.put", "voucher-storage.voucher-lines.collection.get", "voucher-storage.voucher-lines.item.post", "voucher-storage.voucher-lines.item.delete", "voucher-storage.voucher-number.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "finance.transactions.batch.execute", "finance.transactions.collection.get", "finance.funds.item.get", "finance.funds.collection.get", "finance.funds.budget.item.get", "finance.budgets.collection.get", "finance.ledgers.collection.get", "finance.ledgers.item.get", "finance.ledgers.current-fiscal-year.item.get", "finance.expense-classes.collection.get", "finance.expense-classes.item.get", "finance-storage.budget-expense-classes.collection.get", "finance.exchange-rate.item.get", "finance.fiscal-years.item.get", "finance.fiscal-years.collection.get", "organizations-storage.organizations.item.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/invoice/invoices/{id}",
+      "permissionsRequired" : [ "invoice.invoices.item.delete" ],
+      "modulePermissions" : [ "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.delete", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoice-lines",
+      "permissionsRequired" : [ "invoice.invoice-lines.collection.get" ],
+      "permissionsDesired" : [ "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "invoice-storage.invoice-lines.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "finance.exchange-rate.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/invoice/invoice-lines",
+      "permissionsRequired" : [ "invoice.invoice-lines.item.post" ],
+      "modulePermissions" : [ "invoice-storage.invoice-line-number.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "invoice-storage.invoice-lines.item.post", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders.item.get", "orders.po-lines.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.post", "finance-storage.budget-expense-classes.collection.get", "finance.ledgers.collection.get", "finance.funds.budget.item.get", "finance-storage.fiscal-years.item.get", "finance.fiscal-years.item.get", "finance-storage.budgets.collection.get", "finance.transactions.collection.get", "finance.expense-classes.collection.get", "finance.exchange-rate.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoice-lines/{id}",
+      "permissionsRequired" : [ "invoice.invoice-lines.item.get" ],
+      "permissionsDesired" : [ "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "invoice-storage.invoice-lines.item.get", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.collection.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "finance.exchange-rate.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/invoice/invoice-lines/{id}",
+      "permissionsRequired" : [ "invoice.invoice-lines.item.put" ],
+      "permissionsDesired" : [ "invoices.acquisition-units.bypass.execute" ],
+      "modulePermissions" : [ "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.item.get", "invoice-storage.invoice-lines.collection.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "finance.exchange-rate.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.delete", "orders-storage.order-invoice-relationships.item.post", "orders.item.get", "orders.po-lines.item.get", "finance-storage.budget-expense-classes.collection.get", "finance.ledgers.collection.get", "finance.funds.budget.item.get", "finance-storage.fiscal-years.item.get", "finance.fiscal-years.item.get", "finance-storage.budgets.collection.get", "finance.transactions.collection.get", "finance.expense-classes.collection.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/invoice/invoice-lines/{id}",
+      "permissionsRequired" : [ "invoice.invoice-lines.item.delete" ],
+      "modulePermissions" : [ "invoice-storage.invoice-lines.item.get", "invoice-storage.invoice-lines.item.delete", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-lines.collection.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "invoice-storage.invoices.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders.po-lines.item.get", "orders.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoice-number",
+      "permissionsRequired" : [ "invoice.invoice-number.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoices/{id}/documents",
+      "permissionsRequired" : [ "invoice.invoices.documents.collection.get" ],
+      "modulePermissions" : [ "invoice-storage.invoices.documents.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/invoice/invoices/{id}/documents",
+      "permissionsRequired" : [ "invoice.invoices.documents.item.post" ],
+      "modulePermissions" : [ "invoice-storage.invoices.documents.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoices/{id}/documents/{documentId}",
+      "permissionsRequired" : [ "invoice.invoices.documents.item.get" ],
+      "modulePermissions" : [ "invoice-storage.invoices.documents.item.get" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/invoice/invoices/{id}/documents/{documentId}",
+      "permissionsRequired" : [ "invoice.invoices.documents.item.delete" ],
+      "modulePermissions" : [ "invoice-storage.invoices.documents.item.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/invoice/invoices/{id}/fiscal-years",
+      "permissionsRequired" : [ "invoice.invoices.fiscal-years.collection.get" ],
+      "modulePermissions" : [ "acquisitions-units-storage.memberships.collection.get", "acquisitions-units-storage.units.collection.get", "finance.budgets.collection.get", "finance.fiscal-years.collection.get", "invoice-storage.invoice-lines.collection.get", "invoice-storage.invoices.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/invoice/invoice-lines/fund-distributions/validate",
+      "permissionsRequired" : [ "invoice.invoice-lines.fund-distributions.validate" ]
+    } ]
+  }, {
+    "id" : "voucher",
+    "version" : "2.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/voucher/vouchers",
+      "permissionsRequired" : [ "voucher.vouchers.collection.get" ],
+      "modulePermissions" : [ "voucher-storage.vouchers.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/voucher/vouchers/{id}",
+      "permissionsRequired" : [ "voucher.vouchers.item.get" ],
+      "modulePermissions" : [ "voucher-storage.vouchers.item.get", "finance.exchange-rate.item.get", "organizations-storage.organizations.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/voucher/vouchers/{id}",
+      "permissionsRequired" : [ "voucher.vouchers.item.put" ],
+      "modulePermissions" : [ "voucher-storage.vouchers.item.get", "voucher-storage.vouchers.item.put", "finance.exchange-rate.item.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/voucher/voucher-lines",
+      "permissionsRequired" : [ "voucher.voucher-lines.collection.get" ],
+      "modulePermissions" : [ "voucher-storage.voucher-lines.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/voucher/voucher-lines/{id}",
+      "permissionsRequired" : [ "voucher.voucher-lines.item.get" ],
+      "modulePermissions" : [ "voucher-storage.voucher-lines.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/voucher/voucher-lines/{id}",
+      "permissionsRequired" : [ "voucher.voucher-lines.item.put" ],
+      "modulePermissions" : [ "voucher-storage.voucher-lines.item.put" ]
+    } ]
+  }, {
+    "id" : "voucher-number",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/voucher/voucher-number/start/{value}",
+      "permissionsRequired" : [ "voucher-number.start.post" ],
+      "modulePermissions" : [ "voucher-storage.voucher-number.start.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/voucher/voucher-number/start",
+      "permissionsRequired" : [ "voucher-number.start.get" ],
+      "modulePermissions" : [ "voucher-storage.voucher-number.start.get" ]
+    } ]
+  }, {
+    "id" : "batch-voucher.export-configurations",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/export-configurations",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.collection.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/export-configurations",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.item.post" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.item.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.item.put" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.item.delete" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.item.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}/credentials",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.credentials.item.post" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.credentials.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}/credentials",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.credentials.item.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.credentials.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}/credentials",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.credentials.item.put" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.credentials.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/export-configurations/{id}/credentials/test",
+      "permissionsRequired" : [ "batch-voucher.export-configurations.credentials.test" ],
+      "modulePermissions" : [ "batch-voucher-storage.export-configurations.item.get", "batch-voucher-storage.export-configurations.credentials.item.get" ]
+    } ]
+  }, {
+    "id" : "batch-group",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-groups",
+      "permissionsRequired" : [ "batch-groups.collection.get" ],
+      "modulePermissions" : [ "batch-group-storage.batch-groups.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-groups",
+      "permissionsRequired" : [ "batch-groups.item.post" ],
+      "modulePermissions" : [ "batch-group-storage.batch-groups.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-groups/{id}",
+      "permissionsRequired" : [ "batch-groups.item.get" ],
+      "modulePermissions" : [ "batch-group-storage.batch-groups.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/batch-groups/{id}",
+      "permissionsRequired" : [ "batch-groups.item.put" ],
+      "modulePermissions" : [ "batch-group-storage.batch-groups.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/batch-groups/{id}",
+      "permissionsRequired" : [ "batch-groups.item.delete" ],
+      "modulePermissions" : [ "batch-group-storage.batch-groups.item.delete" ]
+    } ]
+  }, {
+    "id" : "batch-voucher.batch-vouchers",
+    "version" : "2.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/batch-vouchers/{id}",
+      "permissionsRequired" : [ "batch-voucher.batch-vouchers.item.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-vouchers.item.get" ]
+    } ]
+  }, {
+    "id" : "batch-voucher.batch-voucher-exports",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports/{id}",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.item.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.collection.get" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.collection.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports/{id}",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.item.put" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports/{id}",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.item.delete" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.item.delete" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.item.post" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.item.post", "batch-voucher-storage.batch-voucher-exports.item.put", "batch-voucher-storage.batch-vouchers.item.post", "batch-voucher-storage.batch-vouchers.item.get", "batch-voucher-storage.export-configurations.collection.get", "batch-voucher-storage.export-configurations.credentials.item.get", "invoice-storage.invoices.item.get", "invoice-storage.invoices.collection.get", "invoice-storage.invoice-lines.collection.get", "voucher-storage.vouchers.collection.get", "voucher-storage.voucher-lines.collection.get", "batch-group-storage.batch-groups.item.get", "organizations-storage.organizations.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports/scheduled",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.scheduled.item.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/batch-voucher/batch-voucher-exports/{id}/upload",
+      "permissionsRequired" : [ "batch-voucher.batch-voucher-exports.upload.item.post" ],
+      "modulePermissions" : [ "batch-voucher-storage.batch-voucher-exports.item.put", "batch-voucher-storage.batch-voucher-exports.item.get", "batch-voucher-storage.export-configurations.collection.get", "batch-voucher-storage.export-configurations.credentials.item.get", "batch-voucher-storage.batch-vouchers.item.get" ]
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "orders",
+    "version" : "12.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "invoice.invoices.collection.get",
+    "displayName" : "Invoice - get collection of Invoice",
+    "description" : "Get collection of Invoice"
+  }, {
+    "permissionName" : "invoice.invoices.item.get",
+    "displayName" : "Invoice - get an existing Invoice",
+    "description" : "Get an existing Invoice"
+  }, {
+    "permissionName" : "invoice.invoices.item.post",
+    "displayName" : "Invoice - create a new Invoice",
+    "description" : "Create a new invoice"
+  }, {
+    "permissionName" : "invoice.invoices.item.put",
+    "displayName" : "Invoice - modify invoice",
+    "description" : "Modify an existing Invoice"
+  }, {
+    "permissionName" : "invoice.invoices.item.delete",
+    "displayName" : "Invoice - delete an existing Invoice",
+    "description" : "Delete an existing Invoice"
+  }, {
+    "permissionName" : "invoice.item.approve.execute",
+    "replaces" : [ "invoice.item.approve" ],
+    "displayName" : "Invoice - approve an existing Invoice",
+    "description" : "Approve an existing Invoice"
+  }, {
+    "permissionName" : "invoice.item.pay.execute",
+    "replaces" : [ "invoice.item.pay" ],
+    "displayName" : "Invoice - pay an existing Invoice",
+    "description" : "Pay an existing Invoice"
+  }, {
+    "permissionName" : "invoice.item.cancel.execute",
+    "replaces" : [ "invoice.item.cancel" ],
+    "displayName" : "Invoice - cancel an existing Invoice",
+    "description" : "Cancel an existing Invoice"
+  }, {
+    "permissionName" : "invoice.invoice-lines.collection.get",
+    "displayName" : "Invoice Line - get collection of Invoice lines",
+    "description" : "Get collection of Invoice lines"
+  }, {
+    "permissionName" : "invoice.invoice-lines.fund-distributions.validate",
+    "displayName" : "Invoices - validate fund distributions for a invoice line",
+    "description" : "Validate fund distributions for a invoice line"
+  }, {
+    "permissionName" : "invoice.invoice-lines.item.get",
+    "displayName" : "Invoice - get an existing Invoice line",
+    "description" : "Get an existing Invoice line"
+  }, {
+    "permissionName" : "invoice.invoice-lines.item.post",
+    "displayName" : "Invoice - create a new Invoice line",
+    "description" : "Create a new Invoice line"
+  }, {
+    "permissionName" : "invoice.invoice-lines.item.put",
+    "displayName" : "Invoice - modify an existing Invoice line",
+    "description" : "Modify an existing Invoice line"
+  }, {
+    "permissionName" : "invoice.invoice-lines.item.delete",
+    "displayName" : "Invoice - delete an existing Invoice line",
+    "description" : "Delete an existing Invoice line"
+  }, {
+    "permissionName" : "invoice.invoice-number.item.get",
+    "displayName" : "Invoice - generate a Invoice Number",
+    "description" : "Generate a Invoice Number"
+  }, {
+    "permissionName" : "voucher.vouchers.collection.get",
+    "displayName" : "Voucher - get collection of Voucher",
+    "description" : "Get collection of Voucher"
+  }, {
+    "permissionName" : "voucher.vouchers.item.get",
+    "displayName" : "Voucher - get an existing Voucher",
+    "description" : "Get an existing Voucher"
+  }, {
+    "permissionName" : "voucher.vouchers.item.put",
+    "displayName" : "Voucher - modify an existing Voucher",
+    "description" : "Modify an existing Voucher"
+  }, {
+    "permissionName" : "voucher.voucher-lines.collection.get",
+    "displayName" : "Voucher - get collection of lines",
+    "description" : "Get collection of Voucher lines"
+  }, {
+    "permissionName" : "voucher.voucher-lines.item.get",
+    "displayName" : "Voucher - get an existing Voucher line",
+    "description" : "Get an existing Voucher line"
+  }, {
+    "permissionName" : "voucher.voucher-lines.item.put",
+    "displayName" : "Voucher - modify an existing Voucher line",
+    "description" : "Modify an existing Voucher line"
+  }, {
+    "permissionName" : "voucher-number.start.post",
+    "displayName" : "Post voucher number sequence start value",
+    "description" : "Voucher number sequence - re(set) the start value of the sequence"
+  }, {
+    "permissionName" : "voucher-number.start.get",
+    "displayName" : "Get voucher number sequence start value",
+    "description" : "Voucher number sequence - get the start value of the sequence"
+  }, {
+    "permissionName" : "voucher.all",
+    "displayName" : "Invoice module - all Voucher permissions",
+    "description" : "Entire set of permissions needed to use Vouchers",
+    "subPermissions" : [ "voucher.vouchers.collection.get", "voucher.vouchers.item.get", "voucher.vouchers.item.put", "voucher.voucher-lines.collection.get", "voucher.voucher-lines.item.get", "voucher.voucher-lines.item.put" ],
+    "visible" : false
+  }, {
+    "permissionName" : "invoice.invoices.documents.collection.get",
+    "displayName" : "Document - get collection of Documents",
+    "description" : "Get collection of Documents"
+  }, {
+    "permissionName" : "invoice.invoices.documents.item.post",
+    "displayName" : "Document - create Document",
+    "description" : "Create new Document"
+  }, {
+    "permissionName" : "invoice.invoices.documents.item.get",
+    "displayName" : "Document - get an existing Document",
+    "description" : "Get an existing Document"
+  }, {
+    "permissionName" : "invoice.invoices.documents.item.delete",
+    "displayName" : "Document - modify an existing Document",
+    "description" : "Modify an existing Document"
+  }, {
+    "permissionName" : "invoice.invoices.documents.all",
+    "displayName" : "All documents perms",
+    "description" : "All permissions for the documents",
+    "subPermissions" : [ "invoice.invoices.documents.collection.get", "invoice.invoices.documents.item.post", "invoice.invoices.documents.item.get", "invoice.invoices.documents.item.delete" ]
+  }, {
+    "permissionName" : "invoice.invoices.fiscal-years.collection.get",
+    "displayName" : "Get an invoice fiscal years",
+    "description" : "Get the past and present fiscal years associated with an invoice"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.collection.get",
+    "displayName" : "Batch voucher - get batch voucher export configuration collection",
+    "description" : "Get batch voucher export configuration collection"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.item.get",
+    "displayName" : "Batch voucher - get individual batch voucher export configuration",
+    "description" : "Get individual batch voucher"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.item.post",
+    "displayName" : "Batch voucher - create batch voucher export configuration",
+    "description" : "Create batch voucher export configuration"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.item.put",
+    "displayName" : "Batch voucher - modify batch voucher export configuration",
+    "description" : "Modify batch voucher export configuration"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.item.delete",
+    "displayName" : "Batch voucher - delete batch voucher export configuration",
+    "description" : "Delete batch voucher export configuration"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.credentials.item.get",
+    "displayName" : "Batch voucher - get individual batch voucher export configuration credentials",
+    "description" : "Get individual batch voucher credentials"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.credentials.item.post",
+    "displayName" : "Batch voucher - create batch voucher export configuration credentials",
+    "description" : "Create batch voucher export configuration credentials"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.credentials.item.put",
+    "displayName" : "Batch voucher - modify batch voucher export configuration credentials",
+    "description" : "Modify batch voucher export configuration credentials"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.credentials.test",
+    "displayName" : "Batch voucher - test batch voucher export configuration credentials",
+    "description" : "Test batch voucher export configuration credentials"
+  }, {
+    "permissionName" : "batch-voucher.export-configurations.all",
+    "displayName" : "All batch voucher export configurations perms",
+    "description" : "All permissions for the batch voucher export configuration",
+    "subPermissions" : [ "batch-voucher.export-configurations.collection.get", "batch-voucher.export-configurations.item.get", "batch-voucher.export-configurations.item.post", "batch-voucher.export-configurations.item.put", "batch-voucher.export-configurations.item.delete", "batch-voucher.export-configurations.credentials.item.get", "batch-voucher.export-configurations.credentials.item.post", "batch-voucher.export-configurations.credentials.item.put", "batch-voucher.export-configurations.credentials.test" ]
+  }, {
+    "permissionName" : "invoices.acquisition-units.bypass.execute",
+    "replaces" : [ "invoices.bypass-acquisition-units" ],
+    "displayName" : "Bypass acquisition units checks",
+    "description" : "Backend internal permission to bypass invoice acquisition units checks"
+  }, {
+    "permissionName" : "invoices.acquisitions-units-assignments.assign",
+    "displayName" : "Acquisitions unit assignment - create unit assignment",
+    "description" : "Assign new invoice to acquisitions units"
+  }, {
+    "permissionName" : "invoices.acquisitions-units-assignments.manage",
+    "displayName" : "Acquisitions units assignment - manage unit assignments",
+    "description" : "Manage unit assignments during invoice update"
+  }, {
+    "permissionName" : "invoices.acquisitions-units-assignments.all",
+    "displayName" : "All invoice acquisitions-unit-assignments permissions",
+    "description" : "All permissions for the acquisitions-unit-assignments",
+    "subPermissions" : [ "invoices.acquisitions-units-assignments.assign", "invoices.acquisitions-units-assignments.manage" ]
+  }, {
+    "permissionName" : "invoices.fiscal-year.update.execute",
+    "replaces" : [ "invoices.fiscal-year.update" ],
+    "displayName" : "Invoice - update fiscal year",
+    "description" : "Update a fiscal year"
+  }, {
+    "permissionName" : "batch-groups.collection.get",
+    "displayName" : "Batch-group - get collection of Batch-group",
+    "description" : "Get collection of Batch-group"
+  }, {
+    "permissionName" : "batch-groups.item.get",
+    "displayName" : "Batch-group - get an existing Batch-group",
+    "description" : "Get an existing Batch-group"
+  }, {
+    "permissionName" : "batch-groups.item.post",
+    "displayName" : "Batch-group - create a new Batch-group",
+    "description" : "Create a new Batch-group"
+  }, {
+    "permissionName" : "batch-groups.item.put",
+    "displayName" : "Batch-group - modify Batch-group",
+    "description" : "Modify an existing Batch-group"
+  }, {
+    "permissionName" : "batch-groups.item.delete",
+    "displayName" : "Batch-group - delete an existing Batch-group",
+    "description" : "Delete an existing Batch-group"
+  }, {
+    "permissionName" : "batch-groups.all",
+    "displayName" : "Batch-group module - all permissions",
+    "description" : "Entire set of permissions needed to use the batch-group module",
+    "subPermissions" : [ "batch-groups.collection.get", "batch-groups.item.get", "batch-groups.item.post", "batch-groups.item.put", "batch-groups.item.delete" ],
+    "visible" : false
+  }, {
+    "permissionName" : "batch-voucher.batch-vouchers.item.get",
+    "displayName" : "Batch-voucher - get an existing Batch-voucher",
+    "description" : "Get an existing Batch-voucher"
+  }, {
+    "permissionName" : "batch-voucher.all",
+    "displayName" : "Batch-voucher module - all permissions",
+    "description" : "Entire set of permissions needed to use the batch-voucher module",
+    "subPermissions" : [ "batch-voucher.batch-vouchers.item.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.collection.get",
+    "displayName" : "Batch-voucher-exports - get collection of Batch-voucher-exports",
+    "description" : "Get collection of Batch-voucher-exports"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.item.get",
+    "displayName" : "Batch-voucher-exports - get an existing Batch-voucher-export",
+    "description" : "Get an existing Batch-voucher-export"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.item.post",
+    "displayName" : "Batch-voucher-exports - create a new Batch-voucher-export",
+    "description" : "Create a new Batch-voucher-export"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.scheduled.item.post",
+    "displayName" : "Batch-voucher-exports - Conditionally create a batch voucher export",
+    "description" : "Conditionally create a batch voucher export"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.upload.item.post",
+    "displayName" : "Batch-voucher-exports - (Re)upload the batch voucher associated with this voucher export to the configured URI, using the configured credentials",
+    "description" : "(Re)upload the batch voucher associated with this voucher export to the configured URI, using the configured credentials"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.item.put",
+    "displayName" : "Batch-voucher-exports - modify a existing Batch-voucher-export",
+    "description" : "Modify an existing Batch-voucher-export"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.item.delete",
+    "displayName" : "Batch-voucher-exports - delete an existing Batch-voucher-export",
+    "description" : "Delete an existing Batch-voucher-export"
+  }, {
+    "permissionName" : "batch-voucher.batch-voucher-exports.all",
+    "displayName" : "Batch-voucher-exports module - all permissions",
+    "description" : "Entire set of permissions needed to use the batch-voucher-exports module",
+    "subPermissions" : [ "batch-voucher.batch-voucher-exports.collection.get", "batch-voucher.batch-voucher-exports.item.get", "batch-voucher.batch-voucher-exports.item.post", "batch-voucher.batch-voucher-exports.item.put", "batch-voucher.batch-voucher-exports.item.delete", "batch-voucher.batch-voucher-exports.scheduled.item.post", "batch-voucher.batch-voucher-exports.upload.item.post" ],
+    "visible" : false
+  }, {
+    "permissionName" : "invoice.all",
+    "displayName" : "Invoice module - all permissions",
+    "description" : "Entire set of permissions needed to use the invoice module",
+    "subPermissions" : [ "invoice.invoices.collection.get", "invoice.invoices.item.get", "invoice.invoices.item.post", "invoice.invoices.item.put", "invoice.invoices.item.delete", "invoice.item.approve.execute", "invoice.item.pay.execute", "invoice.item.cancel.execute", "invoice.invoice-lines.collection.get", "invoice.invoice-lines.item.get", "invoice.invoice-lines.item.post", "invoice.invoice-lines.item.put", "invoice.invoice-lines.fund-distributions.validate", "invoice.invoice-lines.item.delete", "invoice.invoice-number.item.get", "voucher-number.start.post", "voucher-number.start.get", "voucher.all", "invoice.invoices.documents.all", "invoice.invoices.fiscal-years.collection.get", "invoices.acquisitions-units-assignments.all", "batch-voucher.export-configurations.all", "batch-groups.all", "batch-voucher.all", "batch-voucher.batch-voucher-exports.all" ],
+    "visible" : false
+  }, {
+    "permissionName" : "invoices.acquisitions-units-assignments.assign",
+    "displayName" : "Ability to assign acquisition unit and create invoice",
+    "description" : "Ability to assign acquisition unit and create invoice"
+  }, {
+    "permissionName" : "invoices.acquisitions-units-assignments.manage",
+    "displayName" : "Ability to manage acquisition unit and update invoice",
+    "description" : "Ability to manage acquisition unit and update invoice"
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "finance-storage.fiscal-years.item.get", "converter-storage.jobprofilesnapshots.get", "organizations-storage.organizations.item.get", "invoice-storage.invoice-lines.collection.get", "invoice-storage.invoice-lines.item.post", "invoice-storage.invoice-line-number.get", "invoice-storage.invoice-lines.item.put", "invoice-storage.invoice-number.get", "invoice-storage.invoices.item.post", "invoice-storage.invoices.item.get", "invoice-storage.invoices.item.put", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.units.collection.get", "acquisitions-units-storage.memberships.collection.get", "orders.po-lines.collection.get", "orders.po-lines.item.get", "orders-storage.order-invoice-relationships.collection.get", "orders-storage.order-invoice-relationships.item.post", "acquisitions-units-storage.memberships.collection.get" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-invoice:6.1.0-SNAPSHOT.469",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "dataimport.consumer.verticle.mandatory",
+      "value" : "false"
+    }, {
+      "name" : "dataimport.max-active-threads",
+      "value" : "1"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 838860800,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
