@@ -22,9 +22,9 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
   - [Scripts](#scripts)
     - [Build Latest](#build-latest)
     - [Build Pages](#build-pages)
+    - [Populate Node](#populate-node)
     - [Populate Release](#populate-release)
       - [Populate via Branches and Commit Hashes](#populate-via-branches-and-commit-hashes)
-    - [Populate Node](#populate-node)
     - [Synchronize Snapshot](#synchronize-snapshot)
   - [GitHub Workflows](#github-workflows)
     - [Build GitHub Pages Workflow](#build-github-pages-workflow)
@@ -106,6 +106,38 @@ BUILD_PAGES_WORK="../work" bash script/build_pages.sh
 ```
 
 
+### Populate Node
+
+The **Populate Node** is a supplementary script to the **Populate Release**.
+
+The **Populate Release** script operates based on existing pre-generated install JSON files.
+The **Populate Node** script operates based on generating the install JSON files using the **FOLIO NPM Registry** (or whichever registry is configured via the `~/.yarnrc` file).
+
+The install JSON file by default is named `npm.json` by default to prevent confusing it with the other install JSON files, such as `install.json` and `eureka-platform.json`.
+This `npm.json` file is re-created on every run of this script.
+
+The current implementation of this script limits the packages being operated on to those prefixed with `@folio/` in their package name.
+
+This is intended to handle the small number of packages that are known to not be available directly in the **FOLIO Registry**, namely `@folio/authorization-policies` and `@folio/authorization-roles`.
+
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `POPULATE_NODE_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
+| `POPULATE_NODE_DESTINATION`        | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
+| `POPULATE_NODE_NPM_DIR`            | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
+| `POPULATE_NODE_NPM_FILE`           | The name of the NPM JSON file used to hold the generated projects and versions.
+| `POPULATE_NODE_PROJECTS`           | Designate the (space-separated) projects to operate on (specifying this overrides the default).
+| `POPULATE_NODE_SKIP_BAD`           | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
+| `POPULATE_NODE_WORKSPACE`          | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
+
+View the documentation within the `populate_node.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+POPULATE_NODE_WORKSPACE="/path/to/workspace" bash script/populate_node.sh
+```
+
+
 ### Populate Release
 
 The **Populate Release** script helps automate building a list of module versions based on a specific flower release.
@@ -152,38 +184,6 @@ POPULATE_RELEASE_REPOSITORY_PART="heads" POPULATE_RELEASE_FLOWER="snapshot" POPU
 Example commit hash usage:
 ```shell
 POPULATE_RELEASE_REPOSITORY_PART="" POPULATE_RELEASE_FLOWER="aggies" POPULATE_RELEASE_TAG="fe7223e040d5d024f3f4961a3bc324d99a6fe7f5" bash script/populate_release.sh
-```
-
-
-### Populate Node
-
-The **Populate Node** is a supplementary script to the **Populate Release**.
-
-The **Populate Release** script operates based on existing pre-generated install JSON files.
-The **Populate Node** script operates based on generating the install JSON files using the **FOLIO NPM Registry** (or whichever registry is configured via the `~/.yarnrc` file).
-
-The install JSON file by default is named `npm.json` by default to prevent confusing it with the other install JSON files, such as `install.json` and `eureka-platform.json`.
-This `npm.json` file is re-created on every run of this script.
-
-The current implementation of this script limits the packages being operated on to those prefixed with `@folio/` in their package name.
-
-This is intended to handle the small number of packages that are known to not be available directly in the **FOLIO Registry**, namely `@folio/authorization-policies` and `@folio/authorization-roles`.
-
-| Environment Variable               | Description (see script for further details)
-| ---------------------------------- | --------------------------------
-| `POPULATE_NODE_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
-| `POPULATE_NODE_DESTINATION`        | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
-| `POPULATE_NODE_NPM_DIR`            | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
-| `POPULATE_NODE_NPM_FILE`           | The name of the NPM JSON file used to hold the generated projects and versions.
-| `POPULATE_NODE_PROJECTS`           | Designate the (space-separated) projects to operate on (specifying this overrides the default).
-| `POPULATE_NODE_SKIP_BAD`           | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
-| `POPULATE_NODE_WORKSPACE`          | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
-
-View the documentation within the `populate_node.sh` script for further details on how to operate this script.
-
-Example usage:
-```shell
-POPULATE_NODE_WORKSPACE="/path/to/workspace" bash script/populate_node.sh
 ```
 
 
