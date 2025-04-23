@@ -71,14 +71,14 @@ build_latest_load_environment() {
     files=
 
     for i in ${BUILD_LATEST_FILES} ; do
-      file=$(echo ${POPULATE_RELEASE_FILES} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(echo ${i} | sed -e 's|//*|/|g' -e 's|/*$||')
 
-      if [[ -f ${BUILD_LATEST_FILES} ]] ; then
-        build_latest_print_debug "Using File: ${i}"
+      if [[ -f ${file} ]] ; then
+        build_latest_print_debug "Using File: ${file}"
 
         files="${files}${file} "
       else
-        echo "${p_e}The following path is not a valid directory: ${path} ."
+        echo "${p_e}The following path is not a valid file: ${file} ."
 
         let result=1
 
