@@ -1,0 +1,352 @@
+{
+  "id" : "mod-source-record-storage-5.11.0-SNAPSHOT.677",
+  "name" : "Source Record Storage Module",
+  "provides" : [ {
+    "id" : "source-storage-snapshots",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/snapshots",
+      "permissionsRequired" : [ "source-storage.snapshots.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/snapshots",
+      "permissionsRequired" : [ "source-storage.snapshots.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/snapshots/{jobExecutionId}",
+      "permissionsRequired" : [ "source-storage.snapshots.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/source-storage/snapshots/{jobExecutionId}",
+      "permissionsRequired" : [ "source-storage.snapshots.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/source-storage/snapshots/{jobExecutionId}",
+      "permissionsRequired" : [ "source-storage.snapshots.delete" ],
+      "modulePermissions" : [ "inventory.instances.item.delete" ]
+    } ]
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.4",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/records",
+      "permissionsRequired" : [ "source-storage.records.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/records",
+      "permissionsRequired" : [ "source-storage.records.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/records/{id}",
+      "permissionsRequired" : [ "source-storage.records.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/source-storage/records/{id}",
+      "permissionsRequired" : [ "source-storage.records.put" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/source-storage/records/{id}/generation",
+      "permissionsRequired" : [ "source-storage.records.generation.item.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/records/{id}/un-delete",
+      "permissionsRequired" : [ "source-storage.records.undelete.item.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/source-storage/records/{id}",
+      "permissionsRequired" : [ "source-storage.records.delete" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/records/{id}/formatted",
+      "permissionsRequired" : [ "source-storage.records.formatted.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/source-storage/records/{id}/suppress-from-discovery",
+      "permissionsRequired" : [ "source-storage.records.update" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/records/matching",
+      "permissionsRequired" : [ "source-storage.records.matching.collection.post" ]
+    } ]
+  }, {
+    "id" : "source-storage-source-records",
+    "version" : "3.2",
+    "handlers" : [ {
+      "methods" : [ "GET", "POST" ],
+      "pathPattern" : "/source-storage/source-records",
+      "permissionsRequired" : [ "source-storage.source-records.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/source-records/{id}",
+      "permissionsRequired" : [ "source-storage.source-records.item.get" ]
+    } ]
+  }, {
+    "id" : "source-storage-test-records",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/populate-test-marc-records",
+      "permissionsRequired" : [ "source-storage.records.populate.collection.post" ]
+    } ]
+  }, {
+    "id" : "source-storage-stream",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/stream/records",
+      "permissionsRequired" : [ "source-storage.stream.records.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/stream/source-records",
+      "permissionsRequired" : [ "source-storage.stream.source-records.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/stream/marc-record-identifiers",
+      "permissionsRequired" : [ "source-storage.stream.marc-record-identifiers.collection.post" ]
+    } ]
+  }, {
+    "id" : "source-storage-batch",
+    "version" : "1.3",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/batch/records",
+      "permissionsRequired" : [ "source-storage.batch.records.collection.post" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/source-storage/batch/parsed-records",
+      "permissionsRequired" : [ "source-storage.parsed-records.collection.put" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/batch/parsed-records/fetch",
+      "permissionsRequired" : [ "source-storage.parsed-records.fetch.collection.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/batch/verified-records",
+      "permissionsRequired" : [ "source-storage.verified-records.collection.post" ]
+    } ]
+  }, {
+    "id" : "source-storage-async-migrations",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/source-storage/migrations/jobs",
+      "permissionsRequired" : [ "source-storage.migrations.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/source-storage/migrations/jobs/{id}",
+      "permissionsRequired" : [ "source-storage.migrations.item.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant"
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "mapping-metadata-provider",
+    "version" : "1.0"
+  }, {
+    "id" : "data-import-converter-storage",
+    "version" : "1.2"
+  }, {
+    "id" : "instance-authority-links",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-authority-linking-rules",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "source-storage.records.populate.collection.post",
+    "replaces" : [ "source-storage.populate.records" ],
+    "displayName" : "Source Storage - populate storage with test records",
+    "description" : "Populate storage with test records"
+  }, {
+    "permissionName" : "source-storage.snapshots.item.get",
+    "replaces" : [ "source-storage.snapshots.get" ],
+    "displayName" : "Source Storage - get snapshot",
+    "description" : "Get Snapshot"
+  }, {
+    "permissionName" : "source-storage.snapshots.collection.get",
+    "replaces" : [ "source-storage.snapshots.get" ],
+    "displayName" : "Source Storage - get snapshots",
+    "description" : "Get Snapshots"
+  }, {
+    "permissionName" : "source-storage.snapshots.post",
+    "displayName" : "Source Storage - create new snapshot",
+    "description" : "Post Snapshot"
+  }, {
+    "permissionName" : "source-storage.snapshots.put",
+    "displayName" : "Source Storage - update snapshot",
+    "description" : "Put Snapshot"
+  }, {
+    "permissionName" : "source-storage.snapshots.delete",
+    "displayName" : "Source Storage - delete snapshot and records",
+    "description" : "Delete Snapshot and all related Records"
+  }, {
+    "permissionName" : "source-storage.records.post",
+    "displayName" : "Source Storage - create new record",
+    "description" : "Post Record"
+  }, {
+    "permissionName" : "source-storage.records.put",
+    "displayName" : "Source Storage - update record",
+    "description" : "Put Record"
+  }, {
+    "permissionName" : "source-storage.records.generation.item.put",
+    "displayName" : "Source Storage - update record's generation",
+    "description" : "Update record's generation"
+  }, {
+    "permissionName" : "source-storage.records.undelete.item.post",
+    "displayName" : "Source Storage - undelete record",
+    "description" : "Undelete record"
+  }, {
+    "permissionName" : "source-storage.parsed-records.collection.put",
+    "displayName" : "Source Storage - update records",
+    "description" : "Update records"
+  }, {
+    "permissionName" : "source-storage.parsed-records.fetch.collection.post",
+    "replaces" : [ "source-storage.records.fetch" ],
+    "displayName" : "Source Storage - fetch records",
+    "description" : "Fetch Records"
+  }, {
+    "permissionName" : "source-storage.batch.records.collection.post",
+    "displayName" : "Source Storage - stream collection of records",
+    "description" : "Stream collection of records"
+  }, {
+    "permissionName" : "source-storage.stream.source-records.collection.get",
+    "replaces" : [ "source-storage.sourceRecords.get" ],
+    "displayName" : "Source Storage - get results",
+    "description" : "Source Storage - get results"
+  }, {
+    "permissionName" : "source-storage.stream.marc-record-identifiers.collection.post",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - post record's identifiers",
+    "description" : "Post record's identifiers"
+  }, {
+    "permissionName" : "source-storage.records.update",
+    "displayName" : "Source Storage - update record",
+    "description" : "Update Record's fields"
+  }, {
+    "permissionName" : "source-storage.records.delete",
+    "displayName" : "Source Storage - delete record",
+    "description" : "Delete Record"
+  }, {
+    "permissionName" : "source-storage.source-records.item.get",
+    "replaces" : [ "source-storage.sourceRecords.get" ],
+    "displayName" : "Source Storage - get source record",
+    "description" : "Get Source Record"
+  }, {
+    "permissionName" : "source-storage.records.collection.get",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - get records",
+    "description" : "Get Records"
+  }, {
+    "permissionName" : "source-storage.records.item.get",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - get record",
+    "description" : "Get Record"
+  }, {
+    "permissionName" : "source-storage.source-records.collection.get",
+    "replaces" : [ "source-storage.sourceRecords.get" ],
+    "displayName" : "Source Storage - get source record collection",
+    "description" : "Get Source Records"
+  }, {
+    "permissionName" : "source-storage.records.formatted.item.get",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - get formatter record",
+    "description" : "Get formatted Record"
+  }, {
+    "permissionName" : "source-storage.stream.records.collection.get",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - stream record",
+    "description" : "Stream record"
+  }, {
+    "permissionName" : "source-storage.records.matching.collection.post",
+    "replaces" : [ "source-storage.records.get" ],
+    "displayName" : "Source Storage - get pairs of marc record ID to external entity ID",
+    "description" : "Get pairs of marc record ID to external entity ID"
+  }, {
+    "permissionName" : "source-storage.verified-records.collection.post",
+    "displayName" : "Source Storage - validate marc bib ids in the system",
+    "description" : "Return marc bib ids, which doesn't exist in the system"
+  }, {
+    "permissionName" : "source-storage.migrations.post",
+    "displayName" : "Source Storage - initiate migration job",
+    "description" : "Initiate asynchronous migration job"
+  }, {
+    "permissionName" : "source-storage.migrations.item.get",
+    "replaces" : [ "source-storage.migrations.get" ],
+    "displayName" : "Source Storage - get migration job(s)",
+    "description" : "Get migration job(s)"
+  }, {
+    "permissionName" : "source-storage.all",
+    "displayName" : "Source Record Storage - all permissions",
+    "description" : "Entire set of permissions needed to manage snapshots and records",
+    "subPermissions" : [ "source-storage.records.populate.collection.post", "source-storage.snapshots.item.get", "source-storage.snapshots.collection.get", "source-storage.snapshots.post", "source-storage.snapshots.put", "source-storage.snapshots.delete", "source-storage.records.post", "source-storage.records.put", "source-storage.parsed-records.fetch.collection.post", "source-storage.records.delete", "source-storage.records.update", "source-storage.source-records.item.get", "source-storage.source-records.collection.get", "source-storage.verified-records.collection.post", "source-storage.migrations.post", "source-storage.migrations.item.get", "source-storage.records.generation.item.put", "source-storage.records.undelete.item.post", "source-storage.parsed-records.collection.put", "source-storage.batch-records.collection.post", "source-storage.batch.records.collection.post", "source-storage.stream.source-records.collection.get", "source-storage.records.formatted.item.get", "source-storage.stream.marc-record-identifiers.collection.post", "source-storage.records.item.get", "source-storage.records.collection.get", "source-storage.stream.records.collection.get", "source-storage.records.matching.collection.post" ],
+    "visible" : false
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "instance-authority-links.instances.collection.get", "instance-authority.linking-rules.collection.get", "instance-authority-links.instances.collection.put", "converter-storage.jobprofilesnapshots.get", "user-tenants.collection.get", "mapping-metadata.item.get" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-source-record-storage:5.11.0-SNAPSHOT.677",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "15"
+    }, {
+      "name" : "DB_RECONNECTATTEMPTS",
+      "value" : "3"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
