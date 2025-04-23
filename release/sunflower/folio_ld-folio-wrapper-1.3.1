@@ -1,0 +1,32 @@
+{
+  "id" : "folio_ld-folio-wrapper-1.3.1",
+  "name" : "Linked Data Editor - Folio Wrapper",
+  "requires" : [ {
+    "id" : "linked-data",
+    "version" : "1.0"
+  }, {
+    "id" : "search",
+    "version" : "1.3"
+  }, {
+    "id" : "browse",
+    "version" : "2.0"
+  }, {
+    "id" : "authority-source-files",
+    "version" : "2.2"
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.4"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.ld-folio-wrapper.enabled",
+    "displayName" : "Linked Data: Module is enabled",
+    "subPermissions" : [ ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-linked-data.all",
+    "displayName" : "Linked Data: All Permissions",
+    "subPermissions" : [ "module.ld-folio-wrapper.enabled", "inventory-storage.authority-source-files.collection.get", "linked-data.authority-assignment-check.post", "linked-data.resources.bib.get", "linked-data.resources.bib.post", "linked-data.resources.bib.put", "linked-data.resources.bib.delete", "linked-data.resources.bib.marc.get", "linked-data.resources.reindex.post", "linked-data.resources.graph.get", "linked-data.resources.bib.id.get", "linked-data.resources.support-check.get", "linked-data.resources.preview.get", "linked-data.resources.import.post", "linked-data.profiles.get", "search.linked-data.work.collection.get", "search.authorities.collection.get", "browse.authorities.collection.get", "search.facets.collection.get", "source-storage.records.formatted.item.get" ],
+    "visible" : true
+  } ]
+}
