@@ -151,7 +151,7 @@ build_latest_operate() {
 
       ln -vsf ${i} ${path}${release}-latest
 
-      build_latest_handle_result
+      build_latest_handle_result "Failed create symbolic link to '${i}' from '${path}${release}-latest'"
 
       if [[ ${result} -ne 0 ]] ; then return ; fi
     done
