@@ -1,0 +1,18 @@
+{
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dokapi_url=http://kong.kong.svc:8000 -Dsecure_store=Ephemeral -Dsecure_store_props=/etc/folio/edge/edge-ephemeral.properties -Dapi_key_sources=PARAM,HEADER,PATH -Dlog4j2.formatMsgNoLookups=true",
+  "[VOLUMES]": [
+    {
+      "name": "edge-ephemeral",
+      "secret": {
+        "defaultMode": 420,
+        "optional": true,
+        "secretName": "edge-securestore-props"
+      }
+    }
+  ],
+  "[VOLUME_MOUNTS]": {
+    "mountPath": "/etc/folio/edge",
+    "name": "edge-ephemeral",
+    "readOnly": true
+  }
+}

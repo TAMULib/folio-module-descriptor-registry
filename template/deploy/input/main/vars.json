@@ -1,0 +1,57 @@
+{
+  "[CONTAINER_PORT]": 8081,
+  "[CPU_RESOURCE]": "500m",
+  "[DOCKER_IMAGE]": "folioorg/{name:}:{version:}",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "[JAVA_OPTIONS]"
+    }
+  ],
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true",
+  "[LIVENESS_PROBE]": {
+    "failureThreshold": 3,
+    "httpGet": {
+      "path": "/admin/health",
+      "port": "8081",
+      "scheme": "HTTP"
+    },
+    "initialDelaySeconds": 45,
+    "periodSeconds": 60,
+    "successThreshold": 1,
+    "timeoutSeconds": 5
+  },
+  "[MEMORY_RESOURCE]": "1Gi",
+  "[PORTS]": [
+    {
+      "containerPort": "[CONTAINER_PORT]",
+      "name": "primary",
+      "protocol": "TCP"
+    }
+  ],
+  "[READINESS_PROBE]": {
+    "failureThreshold": 3,
+    "httpGet": {
+      "path": "/admin/health",
+      "port": "8081",
+      "scheme": "HTTP"
+    },
+    "initialDelaySeconds": 45,
+    "periodSeconds": 60,
+    "successThreshold": 1,
+    "timeoutSeconds": 5
+  },
+  "[WORKLOAD]": "folio_module"
+}

@@ -1,0 +1,20 @@
+{
+  "[CPU_RESOURCE]": "4000m",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "mgr-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[MEMORY_RESOURCE]": "8Gi"
+}

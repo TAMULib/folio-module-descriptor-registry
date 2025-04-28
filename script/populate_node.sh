@@ -48,6 +48,7 @@ main() {
   local destination=
   local npm_dir=$(echo ${PWD} | sed -e 's|/*$|/|')
   local npm_file="npm.json"
+  local null="/dev/null"
   local projects="@folio/authorization-policies @folio/authorization-roles"
   local workspace="${PWD}/workspace/"
 
@@ -235,7 +236,14 @@ pop_node_process_projects_extract_version() {
     return;
   fi
 
-  version=$(jq -M '.version' ${file} | sed -e 's|"||g' -e 's|\s||g')
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    releases=$(jq -r -M '.version' ${file} | -e 's|\s||g')
+  elif [[ ${debug} != "" ]] ; then
+    releases=$(jq -r -M '.version' ${file} >> ${null} | -e 's|\s||g')
+  else
+    releases=$(jq -r -M '.version' ${file} &> ${null} | -e 's|\s||g')
+  fi
 
   if [[ ${version} == "" ]] ; then
     echo "${p_e}The ${file} file has no valid version ('${version}') for: ${project} (simple: ${project_simple})."
@@ -393,11 +401,11 @@ pop_node_verify_files_workspace_file_json() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  # Prevent jq from printing JSON if /dev/null exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
     cat ${workspace_file} | jq
   else
-    cat ${workspace_file} | jq >> /dev/null
+    cat ${workspace_file} | jq >> ${null}
   fi
 
   pop_node_handle_result "Invalid workspace JSON file: ${workspace_file}"

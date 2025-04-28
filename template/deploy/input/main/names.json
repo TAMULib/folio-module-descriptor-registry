@@ -1,0 +1,18 @@
+[
+  "[CONFIG_MAP]",
+  "[CONTAINER_PORT]",
+  "[CPU_RESOURCE]",
+  "[DOCKER_IMAGE]",
+  "[ENV_FROM]",
+  "[ENVIRONMENT]",
+  "[JAVA_OPTIONS]",
+  "[LIVENESS_PROBE]",
+  "[MEMORY_RESOURCE]",
+  "[PORTS]",
+  "[READINESS_PROBE]",
+  "[SECRET_MAP]",
+  "[SECRET_NAME]",
+  "[VOLUME_MOUNTS]",
+  "[VOLUMES]",
+  "[WORKLOAD]"
+]

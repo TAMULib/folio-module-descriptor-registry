@@ -20,7 +20,9 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
 
 ## Navigation
   - [Scripts](#scripts)
+    - [Build Deployments](#build-deployments)
     - [Build Latest](#build-latest)
+    - [Build Module Discovery](#build-module-discovery)
     - [Build Pages](#build-pages)
     - [Populate Node](#populate-node)
     - [Populate Release](#populate-release)
@@ -43,6 +45,83 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
 This repository provides additional scripts that may help facilitate the generation of the Module Descriptors and related Continuous Integration and Continuous Delivery (CI/CD) operations.
 
 
+# Build Deployments
+
+The **Build Deployments** script prives a way to build the **Fleet** YAML data.
+This requires the **Module Discovery Descriptor** as an input source.
+There are several template files used as input data that are conditionally expanded based on a configurable set of names.
+
+The input path, such as `template/deploy/input/`, contains three main sub-directories: `main`, `specific`, and `vars`.
+
+The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `maps.json` file maps specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or be otherwise too extreme.
+The `names.json` is a JSON array of names to expand of the form `[SOME_NAME]`.
+The `deployment.json` is a JSON object used for all deployments being built.
+The `vars.json` is a JSON object map containing the names and the values that they each map to.
+The values in `vars.json` may themselves be complex structures such as arrays or objects.
+Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or the specific JSON.
+
+The `specific` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment name, such as `mod-configuration.json`.
+Each of these specific JSON files is a JSON object just like the `deployment.json` from the `main` sub-directory.
+The specific JSON file is merged with the loaded `deployment.json` file for each deployment described in the **Module Discovery Descriptor**.
+
+The `vars` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment name, such as `mod-configuration.json`.
+Each of these specific JSON files is a JSON object just like the `vars.json` from the `main` sub-directory.
+The specific vars JSON file is merged with the loaded `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
+
+The output path, such as `template/deploy/output/`, contains two main sub-directories: `json`, and `yaml`.
+
+The `json` sub-directory contains the built JSON files for each individual deployment.
+The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
+
+The script does not operate recursively.
+Instead, it makes multiple passes up to a limit specified by `BUILD_DEPLOY_PASSES`.
+
+There are two types of variable substitution being used in this script.
+
+The first type utilizes `vars` (and therefore also `names`).
+The `vars` type is directly passed to `jq` and `yq` as needed for doing a JSON compatible replacement of entire values.
+This type does not replace individual parts of a value.
+These are of the form `[NAME]` and must be part of a JSON string.
+The substituted value does not have to be a string and can be any valid JSON type.
+
+The second type utilizes the **Module Discovery Descriptor** keys and values.
+This **Module Discovery Descriptor** type is key on a combination of special reserved words and module names.
+This operates only on a string matching level using `sed` and cannot safely handle JSON data.
+This type allows for partial replacements, such as `"folioorg/{name:}:{version:}"`.
+This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, and `version`.
+The `module` is either not specified (empty) to designate using information from the currently processed module or is the name of a module.
+This is useful for situations where say the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of say `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
+This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`, such as in the following:
+```json
+  "[ENVIRONMENT]": [
+    {
+      "name": "MOD_USERS_URL",
+      "value": "http://mod-users-{version:mod-users}.folio-modules.svc"
+    }
+  ],
+```
+
+| Environment Variable        | Description (see script for further details)
+| --------------------------- | --------------------------------
+| `BUILD_DEPLOY_ACTIONS`      | Allow limiting the actions to either `expand`, `combine`, or `both` (default is `both` when this is an empty string).
+| `BUILD_DEPLOY_DEBUG`        | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_DEPLOY_DISCOVERY`    | The path to the **Module Discovery Descriptor** JSON file.
+| `BUILD_DEPLOY_INPUT_PATH`   | The path to the input template directory.
+| `BUILD_DEPLOY_NAMES`        | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to.
+| `BUILD_DEPLOY_OUTPUT_FILE`  | The name of the output file without the file extension (not the full path), such as `fleet`.q
+| `BUILD_DEPLOY_OUTPUT_FORCE` | Allow writing over existing output files without failing on error, any non-empty string enables this.
+| `BUILD_DEPLOY_OUTPUT_PATH`  | The path to the output directory.
+| `BUILD_DEPLOY_PASSES`       | The number of passes to make when expanding variables.
+
+View the documentation within the `build_deployments.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+BUILD_DEPLOY_DISCOVERY="module_discovery-1.0.0-SNAPSHOT.2188.json" bash script/build_deployments.sh
+```
+
+
 ### Build Latest
 
 The **Build Latest** script provides a simple but automated way to create module descriptor symbolic links referencing the latest version.
@@ -51,12 +130,12 @@ This script takes a simple approach of creating a symbolic link to the version s
 The order in which the files are passed determines the order (left to right) in which overwrites of existing symbolic links are performed.
 The default behavior is to use the `-latest` in place of the version suffix.
 
-| Environment Variable               | Description (see script for further details)
-| ---------------------------------- | --------------------------------
-| `BUILD_LATEST_DEBUG`               | Enable debug verbosity, any non-empty string enables this.
-| `BUILD_LATEST_FILES`               | A list of files to build.
-| `BUILD_LATEST_PATH`                | The destination path to write to.
-| `BUILD_LATEST_SKIP_NOT_FOUND`      | Skip version files that are not found, any non-empty string enables this.
+| Environment Variable          | Description (see script for further details)
+| ----------------------------- | --------------------------------
+| `BUILD_LATEST_DEBUG`          | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_LATEST_FILES`          | A list of files to build.
+| `BUILD_LATEST_PATH`           | The destination path to write to.
+| `BUILD_LATEST_SKIP_NOT_FOUND` | Skip version files that are not found, any non-empty string enables this.
 
 View the documentation within the `build_latest.sh` script for further details on how to operate this script.
 
@@ -66,9 +145,38 @@ BUILD_LATEST_PATH="release/snapshot" bash script/build_latest.sh
 ```
 
 
+# Build Module Discovery
+
+The **Build Module Discovery** script prives a way to build a **Module Discovery** JSON file.
+This JSON file can then be used to register the **Module Discovery** as well as to be used for building the **Fleet** YAML data.
+
+| Environment Variable             | Description (see script for further details)
+| -------------------------------- | --------------------------------
+| `BUILD_MOD_DISCOVERY_DEBUG`      | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_MOD_DISCOVERY_FIELD`      | The field to use when building the discovery. One of `id`, `name`, and `version`.
+| `BUILD_MOD_DISCOVERY_INPUT`      | The input **Application Descriptor** JSON file. (May be passed as the first argument to the script.)
+| `BUILD_MOD_DISCOVERY_OUTPUT`     | The output **Module Discovery Descriptor** JSON file. (May be passed as the second argument to the script.)
+| `BUILD_MOD_DISCOVERY_OVERWRITE`  | Allow writing over existing **Module Discovery Descriptor** JSON file instead of failing as error, any non-empty string enables this.
+| `BUILD_MOD_DISCOVERY_URL_PREFIX` | The left hand side of the built URL, such as `http://`.
+| `BUILD_MOD_DISCOVERY_URL_SUFFIX` | The right hand side of the built URL, such as `.folio-modules.svc`.
+
+The URL is built as follows `${BUILD_MOD_DISCOVERY_URL_PREFIX}${BUILD_MOD_DISCOVERY_FIELD}${BUILD_MOD_DISCOVERY_URL_SUFFIX}`, which by default will build something like this `http://my_module-1.0.folio-modules.svc`.
+
+View the documentation within the `build_module_discovery.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+BUILD_MOD_DISCOVERY_INPUT="app-platform-minimal-1.0.0-SNAPSHOT.2188.json" BUILD_MOD_DISCOVERY_OUTPUT="module_discovery-1.0.0-SNAPSHOT.2188.json" bash script/build_module_discovery.sh
+```
+Example alternate usage:
+```shell
+bash script/build_module_discovery.sh "app-platform-minimal-1.0.0-SNAPSHOT.2188.json" "module_discovery-1.0.0-SNAPSHOT.2188.json"
+```
+
+
 ### Build Pages
 
-The **Build Pages** script provides a to generate **GitHub Pages** using a set of very simple templates.
+The **Build Pages** script provides a way to generate **GitHub Pages** using a set of very simple templates.
 The templates are provided by default, but custom templates are supported.
 
 The template functionality is not intended to handle complex cases and only utilizes simple logic.
@@ -87,16 +195,16 @@ The `sed` statements in the script will need to be edited to enhance the templat
 | `_REPLACE_SECTION_TITLE_`   | A title to be displayed in HTML.
 | `_REPLACE_SECTION_SNIPPET_` | Used by the script to apply the `item.html` template (explicitly intended to have HTML).
 
-| Environment Variable               | Description (see script for further details)
-| ---------------------------------- | --------------------------------
-| `BUILD_PAGES_BASE`                 | The base URL where the generated pages are stored.
-| `BUILD_PAGES_DEBUG`                | Enable debug verbosity, any non-empty string enables this.
-| `BUILD_PAGES_IGNORE_INVALID`       | Ignore non-JSON files rather than fail, any non-empty string enables this.
-| `BUILD_PAGES_TEMPLATE_BACK`        | The name of the back HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| `BUILD_PAGES_TEMPLATE_BASE`        | The name of the base HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| `BUILD_PAGES_TEMPLATE_ITEM`        | The name of the item HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
-| `BUILD_PAGES_TEMPLATE_PATH`        | The path to the template directory containing the HTML template files.
-| `BUILD_PAGES_WORK`                 | A working directory used to create the GitHub Pages structure (all templates and files are added here).
+| Environment Variable         | Description (see script for further details)
+| ---------------------------- | --------------------------------
+| `BUILD_PAGES_BASE`           | The base URL where the generated pages are stored.
+| `BUILD_PAGES_DEBUG`          | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_PAGES_IGNORE_INVALID` | Ignore non-JSON files rather than fail, any non-empty string enables this.
+| `BUILD_PAGES_TEMPLATE_BACK`  | The name of the back HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_BASE`  | The name of the base HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_ITEM`  | The name of the item HTML template within the `BUILD_PAGES_TEMPLATE_PATH` directory.
+| `BUILD_PAGES_TEMPLATE_PATH`  | The path to the template directory containing the HTML template files.
+| `BUILD_PAGES_WORK`           | A working directory used to create the GitHub Pages structure (all templates and files are added here).
 
 View the documentation within the `build_pages.sh` script for further details on how to operate this script.
 
@@ -120,15 +228,15 @@ The current implementation of this script limits the packages being operated on 
 
 This is intended to handle the small number of packages that are known to not be available directly in the **FOLIO Registry**, namely `@folio/authorization-policies` and `@folio/authorization-roles`.
 
-| Environment Variable               | Description (see script for further details)
-| ---------------------------------- | --------------------------------
-| `POPULATE_NODE_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
-| `POPULATE_NODE_DESTINATION`        | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
-| `POPULATE_NODE_NPM_DIR`            | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
-| `POPULATE_NODE_NPM_FILE`           | The name of the NPM JSON file used to hold the generated projects and versions.
-| `POPULATE_NODE_PROJECTS`           | Designate the (space-separated) projects to operate on (specifying this overrides the default).
-| `POPULATE_NODE_SKIP_BAD`           | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
-| `POPULATE_NODE_WORKSPACE`          | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
+| Environment Variable        | Description (see script for further details)
+| --------------------------- | --------------------------------
+| `POPULATE_NODE_DEBUG`       | Enable debug verbosity, any non-empty string enables this.
+| `POPULATE_NODE_DESTINATION` | Destination directory the release files are stored in (this defaults to `${PWD}/release/snapshot`).
+| `POPULATE_NODE_NPM_DIR`     | Designate a directory where the NPM JSON file is located (this defaults to `${PWD}`).
+| `POPULATE_NODE_NPM_FILE`    | The name of the NPM JSON file used to hold the generated projects and versions.
+| `POPULATE_NODE_PROJECTS`    | Designate the (space-separated) projects to operate on (specifying this overrides the default).
+| `POPULATE_NODE_SKIP_BAD`    | Skip projects that fail to fetch and build instead of aborting the script, any non-empty string enables this.
+| `POPULATE_NODE_WORKSPACE`   | Designate a workspace directory to use (This directory must already have a `package.json` workspace file).
 
 View the documentation within the `populate_node.sh` script for further details on how to operate this script.
 
@@ -191,13 +299,13 @@ POPULATE_RELEASE_REPOSITORY_PART="" POPULATE_RELEASE_FLOWER="aggies" POPULATE_RE
 
 The **Synchronize Snapshot** script identifies whether or no changes are detected and preforms the necessary `git` operations to push those changes to an upstream repository.
 
-| Environment Variable               | Description (see script for further details)
-| ---------------------------------- | --------------------------------
-| `SYNC_SNAPSHOT_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
-| `SYNC_SNAPSHOT_MESSAGE`            | Specify a custom message to use for the commit.
-| `SYNC_SNAPSHOT_PATH`               | Designate a path in which to analyze (default is an empty string, which means current directory).
-| `SYNC_SNAPSHOT_RESULT`             | The file name to write the results of this script to.
-| `SYNC_SNAPSHOT_SIGN`               | Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
+| Environment Variable    | Description (see script for further details)
+| ----------------------- | --------------------------------
+| `SYNC_SNAPSHOT_DEBUG`   | Enable debug verbosity, any non-empty string enables this.
+| `SYNC_SNAPSHOT_MESSAGE` | Specify a custom message to use for the commit.
+| `SYNC_SNAPSHOT_PATH`    | Designate a path in which to analyze (default is an empty string, which means current directory).
+| `SYNC_SNAPSHOT_RESULT`  | The file name to write the results of this script to.
+| `SYNC_SNAPSHOT_SIGN`    | Set to "yes" to explicitly sign, set to "no" to explicitly not sign, and do not set (or set to empty string) to use user-space default.
 
 View the documentation within the `synchronize_snapshot.sh` script for further details on how to operate this script.
 
@@ -224,11 +332,11 @@ _The `self-hosted` runner is expected to perform its own maintenance to ensure t
 These GitHub Workflows support some common input variables.
 These input variables are available both as input variables for event triggers and as input variables if called by other GitHub Workflows.
 
-|      Input Variable     |   Type    | Description
-| ----------------------- | --------- | -----------
-| `debug_mode`            | string    | Enables debugging when non-empty. Special options (space separated): `curl`, `git`, `json`, `verify`, `yarn`, `curl_only`, `git_only`, `json_only`, `verify_only`, and `yarn_only`.
-| `registry_branch`       | string    | The name of the branch containing the registry descriptor files, such as `snapshot`.
-| `script_branch`         | string    | The name of the branch containing the scripts, such as `master`.
+| Input Variable    | Type      | Description
+| ----------------- | --------- | -----------
+| `debug_mode`      | string    | Enables debugging when non-empty. Special options (space separated): `curl`, `git`, `json`, `verify`, `yarn`, `curl_only`, `git_only`, `json_only`, `verify_only`, and `yarn_only`.
+| `registry_branch` | string    | The name of the branch containing the registry descriptor files, such as `snapshot`.
+| `script_branch`   | string    | The name of the branch containing the scripts, such as `master`.
 
 
 ### Build GitHub Pages Workflow
@@ -262,8 +370,8 @@ The primary focus is on provide module descriptors, but there may be some cross-
 
 ### Repository Branch Design
 
-There are two primary types of branches in use, called trunks.
-These two trunks, `master` and `snapshot`, operate from different fundamental concepts.
+There are three primary types of branches in use, called trunks.
+These three trunks, `master`, `snapshot`, and `fleet`, operate from different fundamental concepts.
 
 The first trunk, `master`, is the most common trunk design.
 This houses scripts, workflows, documentation, and any other programmatic tool.
@@ -276,6 +384,10 @@ This houses only descriptor files and other release related content.
 There are no scripts, documentation, or other non-release related content.
 This is maintained as a separate trunk to help maintain a clean repository structure.
 There will be a lot of automated commits entirely unrelated to the code itself.
+
+The third trunk, `fleet`, is designed to provide the YAML file needed for **Fleet** operations.
+This house the `fleet.yaml` and other related **Fleet** files.
+These files can be accessed by **Fleet** using either the GitHub Webhooks or the **Fleet** polling.
 
 
 ### GitHub Workflows Design

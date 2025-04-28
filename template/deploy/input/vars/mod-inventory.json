@@ -1,0 +1,40 @@
+{
+  "[CONTAINER_PORT]": 9403,
+  "[CPU_RESOURCE]": "1",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "[JAVA_OPTIONS]"
+    },
+    {
+      "name": "inventory.kafka.DataImportConsumerVerticle.instancesNumber",
+      "value": "10"
+    },
+    {
+      "name": "inventory.kafka.MarcBibInstanceHridSetConsumerVerticle.instancesNumber",
+      "value": "10"
+    },
+    {
+      "name": "kafka.consumer.max.poll.records",
+      "value": "10"
+    }
+  ],
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dorg.folio.metadata.inventory.storage.type=okapi -Dlog4j2.formatMsgNoLookups=true",
+  "[MEMORY_RESOURCE]": "3Gi"
+}

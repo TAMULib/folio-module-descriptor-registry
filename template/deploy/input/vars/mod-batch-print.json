@@ -1,0 +1,5 @@
+{
+  "[CPU_RESOURCE]": "1",
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dport=8081 -Dlog4j2.formatMsgNoLookups=true",
+  "[MEMORY_RESOURCE]": "2Gi"
+}

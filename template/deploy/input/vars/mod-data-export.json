@@ -1,0 +1,24 @@
+{
+  "[CPU_RESOURCE]": "1",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "minio-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "minio-connect",
+        "optional": false
+      }
+    }
+  },
+  "[MEMORY_RESOURCE]": "4Gi"
+}

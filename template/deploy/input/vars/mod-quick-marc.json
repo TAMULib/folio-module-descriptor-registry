@@ -1,0 +1,20 @@
+{
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=85.0 -Dlog4j2.formatMsgNoLookups=true",
+  "[MEMORY_RESOURCE]": "2Gi"
+}

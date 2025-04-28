@@ -1,0 +1,29 @@
+{
+  "[CPU_RESOURCE]": "1",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "minio-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "minio-connect",
+        "optional": false
+      }
+    }
+  },
+  "[JAVA_OPTIONS]": "-XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx2048m -XX:MaxRAMPercentage=88.0 -Dlog4j2.formatMsgNoLookups=true",
+  "[MEMORY_RESOURCE]": "4Gi"
+}

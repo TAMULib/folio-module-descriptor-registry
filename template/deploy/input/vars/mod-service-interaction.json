@@ -1,0 +1,4 @@
+{
+  "[CONTAINER_PORT]": 8080,
+  "[JAVA_OPTIONS]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true"
+}

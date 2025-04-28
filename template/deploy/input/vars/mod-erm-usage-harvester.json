@@ -1,0 +1,61 @@
+{
+  "[CONTAINER_PORT]": 8081,
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kong-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[ENVIRONMENT]": [
+    {
+      "name": "CONFIG",
+      "value": "{\"okapiUrl\": \"http://kong.kong.svc:8000\"}"
+    },
+    {
+      "name": "HAZELCAST_IP",
+      "value": "$(MOD_ERM_USAGE_HARVESTER_SERVICE_HOST)"
+    },
+    {
+      "name": "HAZELCAST_PORT",
+      "value": "5701"
+    },
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "[JAVA_OPTIONS]"
+    }
+  ],
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dhazelcast.config=/hazelcast/hazelcast.xml -Dhazelcast.ip=$HAZELCAST_IP -Dhazelcast.port=$HAZELCAST_PORT --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED",
+  "[MEMORY_RESOURCE]": "2Gi",
+  "[PORTS]": [
+    {
+      "containerPort": 5701,
+      "name": "5701tcp2",
+      "protocol": "TCP"
+    },
+    {
+      "containerPort": 5702,
+      "name": "5702tcp2",
+      "protocol": "TCP"
+    },
+    {
+      "containerPort": 54327,
+      "name": "54327tcp2",
+      "protocol": "TCP"
+    },
+    {
+      "containerPort": "[CONTAINER_PORT]",
+      "name": "primary",
+      "protocol": "TCP"
+    }
+  ]
+}

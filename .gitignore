@@ -4,6 +4,7 @@ install-extras.json
 npm.json
 okapi-install.json
 results.txt
+template/deploy/output
 work
 workspace/node_modules
 workspace/yarn.lock

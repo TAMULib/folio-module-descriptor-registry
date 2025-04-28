@@ -1,0 +1,38 @@
+{
+  "[CPU_RESOURCE]": "1",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  },
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "[JAVA_OPTIONS]"
+    },
+    {
+      "name": "data.import.storage.type",
+      "value": "LOCAL_STORAGE"
+    },
+    {
+      "name": "data.import.storage.path",
+      "value": "/storage/upload"
+    },
+    {
+      "name": "file.processing.buffer.chunk.size",
+      "value": "10"
+    }
+  ],
+  "[MEMORY_RESOURCE]": "4Gi"
+}
