@@ -1,0 +1,300 @@
+{
+  "id" : "mod-tlr-1.2.0-SNAPSHOT.76",
+  "name" : "Folio mod-tlr module",
+  "requires" : [ {
+    "id" : "users",
+    "version" : "16.3"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  }, {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "permissions",
+    "version" : "5.7"
+  }, {
+    "id" : "circulation",
+    "version" : "14.4"
+  }, {
+    "id" : "circulation-item",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "8.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "11.0"
+  }, {
+    "id" : "item-storage",
+    "version" : "10.1"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.3"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.1"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "request-storage",
+    "version" : "6.1"
+  }, {
+    "id" : "search",
+    "version" : "1.3"
+  }, {
+    "id" : "consortium-search",
+    "version" : "2.1"
+  }, {
+    "id" : "allowed-service-points",
+    "version" : "1.2"
+  }, {
+    "id" : "service-points",
+    "version" : "3.4"
+  }, {
+    "id" : "ecs-request-transactions",
+    "version" : "1.0"
+  }, {
+    "id" : "transactions",
+    "version" : "1.0"
+  } ],
+  "provides" : [ {
+    "id" : "ecs-tlr",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tlr/ecs-tlr/{requestId}",
+      "permissionsRequired" : [ "tlr.ecs-tlr.item.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/tlr/ecs-tlr",
+      "permissionsRequired" : [ "tlr.ecs-tlr.post" ],
+      "modulePermissions" : [ "circulation.requests.instances.item.post", "circulation.requests.item.post", "circulation-item.item.get", "circulation-item.collection.get", "circulation-item.item.post", "circulation-item.item.put", "search.instances.collection.get", "users.item.get", "users.collection.get", "users.item.post", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.service-points.item.post", "user-tenants.collection.get", "dcb.ecs-request.transactions.put" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/tlr/ecs-tlr/{requestId}",
+      "permissionsRequired" : [ "tlr.ecs-tlr.put" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/tlr/ecs-tlr/{requestId}",
+      "permissionsRequired" : [ "tlr.ecs-tlr.delete" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "ecs-request-external",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/tlr/create-ecs-request-external",
+      "permissionsRequired" : [ "tlr.ecs-request-external.post" ],
+      "modulePermissions" : [ "circulation.requests.instances.item.post", "circulation.requests.item.post", "circulation-item.item.get", "circulation-item.collection.get", "circulation-item.item.post", "circulation-item.item.put", "search.instances.collection.get", "users.item.get", "users.collection.get", "users.item.post", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.service-points.item.post" ]
+    } ]
+  }, {
+    "id" : "ecs-tlr-allowed-service-points",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tlr/allowed-service-points",
+      "permissionsRequired" : [ "tlr.ecs-tlr-allowed-service-points.get" ],
+      "modulePermissions" : [ "circulation.requests.allowed-service-points.get", "users.item.get", "users.collection.get", "search.instances.collection.get", "circulation-storage.requests.item.get", "circulation-storage.requests.collection.get", "consortium-search.items.item.get", "consortium-search.items.collection.get" ]
+    } ]
+  }, {
+    "id" : "tlr-settings",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tlr/settings",
+      "permissionsRequired" : [ "tlr.settings.get" ],
+      "modulePermissions" : [ ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/tlr/settings",
+      "permissionsRequired" : [ "tlr.settings.put" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "tlr-staff-slips",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tlr/staff-slips/pick-slips/{servicePointId}",
+      "permissionsRequired" : [ "tlr.pick-slips.collection.get" ],
+      "modulePermissions" : [ "user-tenants.collection.get", "circulation-storage.requests.item.get", "circulation-storage.requests.collection.get", "users.item.get", "users.collection.get", "usergroups.item.get", "usergroups.collection.get", "departments.item.get", "departments.collection.get", "addresstypes.item.get", "addresstypes.collection.get", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/tlr/staff-slips/search-slips/{servicePointId}",
+      "permissionsRequired" : [ "tlr.search-slips.collection.get" ],
+      "modulePermissions" : [ "user-tenants.collection.get", "circulation-storage.requests.item.get", "circulation-storage.requests.collection.get", "users.item.get", "users.collection.get", "usergroups.item.get", "usergroups.collection.get", "departments.item.get", "departments.collection.get", "addresstypes.item.get", "addresstypes.collection.get", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get" ]
+    } ]
+  }, {
+    "id" : "ecs-loans",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/tlr/loans/check-out-by-barcode",
+      "permissionsRequired" : [ "tlr.loans.check-out-by-barcode.execute" ],
+      "modulePermissions" : [ "consortium-search.items.batch.collection.get", "circulation.check-out-by-barcode.post", "circulation.check-out-by-barcode-dry-run.post", "circulation-storage.loan-policies.collection.get", "circulation-storage.loan-policies.item.get", "circulation-storage.loan-policies.item.post" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "users.collection.get", "users.item.post", "login.item.post", "login.item.delete", "perms.users.get", "perms.users.item.post", "perms.users.assign.immutable", "perms.users.assign.mutable" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/_/tenant"
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/tlr/ecs-tlr-processing",
+      "unit" : "second",
+      "delay" : "30"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "consortia",
+    "version" : "1.1"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "tlr.ecs-tlr.item.get",
+    "displayName" : "ecs-tlr - get ECS TLR by ID",
+    "description" : "Get ECS TLR"
+  }, {
+    "permissionName" : "tlr.ecs-tlr.post",
+    "displayName" : "ecs-tlr - create ECS TLR",
+    "description" : "Create ECS TLR"
+  }, {
+    "permissionName" : "tlr.ecs-tlr.put",
+    "displayName" : "ecs-tlr - update ECS TLR",
+    "description" : "Update ECS TLR"
+  }, {
+    "permissionName" : "tlr.ecs-tlr.delete",
+    "displayName" : "ecs-tlr - remove ECS TLR",
+    "description" : "Remove ECS TLR"
+  }, {
+    "permissionName" : "tlr.settings.get",
+    "displayName" : "tlr-settings - get ECS TLR Settings",
+    "description" : "Get ECS TLR Settings"
+  }, {
+    "permissionName" : "tlr.settings.put",
+    "displayName" : "tlr-settings - update ECS TLR Settings",
+    "description" : "Update ECS TLR"
+  }, {
+    "permissionName" : "tlr.consortium-tlr.view",
+    "displayName" : "Settings (Circulation): Consortium title level requests view",
+    "description" : "Entire set of permissions needed to use Consortium title level requests settings view",
+    "subPermissions" : [ "tlr.settings.get", "settings.circulation.enabled", "mod-settings.global.read.circulation", "mod-settings.entries.collection.get", "mod-settings.entries.item.get" ],
+    "visible" : false
+  }, {
+    "permissionName" : "tlr.consortium-tlr.edit",
+    "displayName" : "Settings (Circulation): Consortium title level requests edit",
+    "description" : "Entire set of permissions needed to use Consortium title level requests settings edit",
+    "subPermissions" : [ "tlr.settings.put", "tlr.consortium-tlr.view", "mod-settings.global.write.circulation", "mod-settings.entries.item.put", "mod-settings.entries.item.post" ],
+    "visible" : true
+  }, {
+    "permissionName" : "tlr.ecs-tlr-allowed-service-points.get",
+    "displayName" : "ecs-tlr - allowed service points",
+    "description" : "Get ECS TLR allowed service points"
+  }, {
+    "permissionName" : "tlr.pick-slips.collection.get",
+    "displayName" : "ecs-tlr - pick slips",
+    "description" : "Get pick slips"
+  }, {
+    "permissionName" : "tlr.search-slips.collection.get",
+    "displayName" : "ecs-tlr - search slips",
+    "description" : "Get search slips"
+  }, {
+    "permissionName" : "tlr.ecs-request-external.post",
+    "displayName" : "ecs-request-external - create ECS request external",
+    "description" : "Create ECS request external"
+  }, {
+    "permissionName" : "tlr.loans.check-out-by-barcode.execute",
+    "displayName" : "ecs-loans - check item out by barcode",
+    "description" : "Check item out by barcode"
+  } ],
+  "metadata" : {
+    "user" : {
+      "type" : "system",
+      "permissions" : [ "users.collection.get", "users.item.get", "users.item.post", "users.item.put", "user-tenants.collection.get", "usergroups.item.post", "usergroups.item.put", "search.instances.collection.get", "circulation.requests.instances.item.post", "circulation.requests.item.post", "circulation.requests.queue-item.collection.get", "circulation.requests.queue-instance.collection.get", "circulation.requests.queue.item-reorder.collection.post", "circulation.requests.queue.instance-reorder.collection.post", "circulation-storage.requests.item.get", "circulation-storage.requests.collection.get", "circulation-storage.requests.item.put", "circulation-storage.loan-policies.collection.get", "circulation-storage.loan-policies.item.get", "inventory-storage.service-points.item.get", "inventory-storage.service-points.collection.get", "inventory-storage.service-points.item.post", "dcb.ecs-request.transactions.post", "circulation.requests.allowed-service-points.get", "dcb.transactions.status.get", "dcb.transactions.status.put", "inventory-storage.items.item.get", "inventory-storage.items.collection.get", "inventory-storage.instances.item.get", "inventory-storage.instances.collection.get", "circulation-item.item.post", "circulation-item.item.put", "circulation-item.item.get", "circulation-item.collection.get", "inventory-storage.holdings.item.get", "inventory-storage.holdings.collection.get", "inventory-storage.material-types.item.get", "inventory-storage.material-types.collection.get", "inventory-storage.loan-types.item.get", "inventory-storage.loan-types.collection.get", "inventory-storage.locations.item.get", "inventory-storage.locations.collection.get", "inventory-storage.location-units.libraries.item.get", "inventory-storage.location-units.libraries.collection.get", "inventory-storage.location-units.campuses.item.get", "inventory-storage.location-units.campuses.collection.get", "inventory-storage.location-units.institutions.item.get", "inventory-storage.location-units.institutions.collection.get", "circulation.rules.request-policy.get", "mod-settings.entries.item.get", "mod-settings.entries.collection.get", "mod-settings.global.read.circulation", "consortia.sharing-instances.item.post", "circulation.check-out-by-barcode-dry-run.post", "configuration.entries.collection.get", "dcb.ecs-request.transactions.put" ]
+    }
+  },
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-tlr:1.2.0-SNAPSHOT.76",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "OKAPI_URL",
+      "value" : "http://okapi:9130"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "kafka"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "KAFKA_SECURITY_PROTOCOL",
+      "value" : "PLAINTEXT"
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value" : ""
+    }, {
+      "name" : "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value" : ""
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "SYSTEM_USER_USERNAME",
+      "value" : "mod-tlr"
+    }, {
+      "name" : "SYSTEM_USER_PASSWORD",
+      "value" : "mod-tlr"
+    }, {
+      "name" : "SYSTEM_USER_ENABLED",
+      "value" : "true"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 1073741824,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
