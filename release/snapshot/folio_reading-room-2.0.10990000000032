@@ -1,0 +1,24 @@
+{
+  "id" : "folio_reading-room-2.0.10990000000032",
+  "name" : "Reading Room Access",
+  "requires" : [ {
+    "id" : "users",
+    "version" : "16.3"
+  }, {
+    "id" : "reading-room-patron-permission",
+    "version" : "1.0"
+  }, {
+    "id" : "reading-room",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.reading-room.enabled",
+    "displayName" : "UI: ui-reading-room module is enabled"
+  }, {
+    "permissionName" : "ui-reading-room.all",
+    "displayName" : "Reading room access: In app - track access",
+    "subPermissions" : [ "module.reading-room.enabled", "users.collection.get", "users.item.get", "usergroups.collection.get", "usergroups.item.get", "users.configurations.item.get", "users.profile-picture.item.get", "reading-room.access-log.post", "reading-room.patron-permission.item.get", "reading-room.collection.get" ],
+    "visible" : true
+  } ]
+}

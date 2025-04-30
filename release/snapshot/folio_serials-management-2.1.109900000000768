@@ -1,0 +1,108 @@
+{
+  "id" : "folio_serials-management-2.1.109900000000768",
+  "name" : "FOLIO app for serials-management",
+  "requires" : [ {
+    "id" : "serials-management",
+    "version" : "1.0 2.0"
+  } ],
+  "optional" : [ {
+    "id" : "orders",
+    "version" : "12.1 13.0"
+  }, {
+    "id" : "order-lines",
+    "version" : "3.0 4.0"
+  }, {
+    "id" : "organizations",
+    "version" : "2.0"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "pieces",
+    "version" : "3.0"
+  }, {
+    "id" : "acquisitions-units",
+    "version" : "1.1"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "6.0 7.0 8.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "titles",
+    "version" : "1.2"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "module.serials-management.enabled",
+    "displayName" : "UI: ui-serials-management module is enabled",
+    "subPermissions" : [ "serials-management.refdata.read", "serials-management.locales.collection.get" ]
+  }, {
+    "permissionName" : "settings.serials-management.enabled",
+    "displayName" : "Settings (serials-management): display list of settings pages",
+    "subPermissions" : [ "settings.enabled" ]
+  }, {
+    "permissionName" : "ui-serials-management.serials.view",
+    "displayName" : "Serials: Search & view serials",
+    "description" : "A user with this permission can search and view existing serials. This includes the permission to see and access the Serials app in the Folio interface and permission to view publication patterns.",
+    "subPermissions" : [ "module.serials-management.enabled", "serials-management.serials.view", "serials-management.rulesets.view" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.serials.edit",
+    "displayName" : "Serials: Edit serials",
+    "description" : "Grants all permissions included in Serials: Search & view serials plus the ability to edit serials. It does not include the ability to create Publication patterns.",
+    "subPermissions" : [ "ui-serials-management.serials.view", "serials-management.serials.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.serials.manage",
+    "displayName" : "Serials: Manage serials",
+    "description" : "Grants all permissions included in Serials: Edit serials plus the ability to delete serials.",
+    "subPermissions" : [ "ui-serials-management.serials.edit", "serials-management.serials.manage" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.rulesets.edit",
+    "displayName" : "Serials: Edit publication patterns",
+    "description" : "Grants all permissions included in Serials: Edit serials plus the ability to create publication patterns.",
+    "subPermissions" : [ "ui-serials-management.serials.edit", "serials-management.rulesets.edit", "serials-management.modelRulesets.view" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.modelrulesets.manage",
+    "displayName" : "Serials: Manage publication pattern templates",
+    "description" : "Grants permissions to create and delete publication pattern templates.",
+    "subPermissions" : [ "serials-management.modelRulesets.manage" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.predictedpieces.view",
+    "displayName" : "Serials: Search & view predicted pieces",
+    "description" : "Grants all permissions included in Serials: Search & view serials plus the ability to search and view predicted pieces.",
+    "subPermissions" : [ "ui-serials-management.serials.view", "serials-management.predictedPieceSets.view" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.predictedpieces.edit",
+    "displayName" : "Serials: Create predicted pieces",
+    "description" : "Grants all permissions included in Serials: Search & view predicted pieces plus the ability to creatre predicted pieces based on publication patterns.",
+    "subPermissions" : [ "ui-serials-management.predictedpieces.view", "serials-management.predictedPieceSets.edit" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.predictedpieces.delete",
+    "displayName" : "Serials: Delete predicted pieces",
+    "description" : "Grants all permissions included in Serials: Search & view predicted pieces plus the ability to delete predicted pieces that are not linked to receiving pieces.",
+    "subPermissions" : [ "ui-serials-management.predictedpieces.view", "serials-management.predictedPieceSets.item.delete" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.picklists.view",
+    "displayName" : "Settings (Serials): View pick lists and values",
+    "description" : "A user with this permission can access the settings for the Serials app and view pick lists and pick list values.",
+    "subPermissions" : [ "settings.serials-management.enabled", "serials-management.refdata.read" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-serials-management.picklists.manage",
+    "displayName" : "Settings (Serials): Manage pick lists and values",
+    "description" : "Grants all permissions included in 'Settings (Serials): View pick lists and values' plus the ability to manage pick lists and pick list values.",
+    "subPermissions" : [ "ui-serials-management.picklists.view", "serials-management.refdata.manage", "settings.configuration.manage" ],
+    "visible" : true
+  } ]
+}
