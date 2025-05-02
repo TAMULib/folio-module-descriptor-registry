@@ -47,29 +47,30 @@ This repository provides additional scripts that may help facilitate the generat
 
 # Build Deployments
 
-The **Build Deployments** script prives a way to build the **Fleet** YAML data.
+The **Build Deployments** script provides a way to build the YAML data for services such as **Fleet**.
 This requires the **Module Discovery Descriptor** as an input source.
 There are several template files used as input data that are conditionally expanded based on a configurable set of names.
+These template files are intended and expected to be altered as needed.
 
 The input path, such as `template/deploy/input/`, contains three main sub-directories: `main`, `specific`, and `vars`.
 
 The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
-The `maps.json` file maps specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or be otherwise too extreme.
+The `deployment.json` contains a JSON object used for all deployments being built.
+The `maps.json` file maps specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
 The `names.json` is a JSON array of names to expand of the form `[SOME_NAME]`.
-The `deployment.json` is a JSON object used for all deployments being built.
-The `vars.json` is a JSON object map containing the names and the values that they each map to.
+Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or similar JSON files.
+The `vars.json` contains a JSON object map containing the names and the values that they each map to.
 The values in `vars.json` may themselves be complex structures such as arrays or objects.
-Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or the specific JSON.
 
-The `specific` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment name, such as `mod-configuration.json`.
-Each of these specific JSON files is a JSON object just like the `deployment.json` from the `main` sub-directory.
+The `specific` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment, such as `mod-configuration.json`.
+Each of these specific JSON files contain a JSON object just like the `deployment.json` from the `main` sub-directory.
 The specific JSON file is merged with the loaded `deployment.json` file for each deployment described in the **Module Discovery Descriptor**.
 
 The `vars` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment name, such as `mod-configuration.json`.
-Each of these specific JSON files is a JSON object just like the `vars.json` from the `main` sub-directory.
-The specific vars JSON file is merged with the loaded `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
+Each of these specific JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
+The specific `vars` JSON file is merged with the loaded `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
 
-The output path, such as `template/deploy/output/`, contains two main sub-directories: `json`, and `yaml`.
+The output path, such as `template/deploy/output/`, contains two main sub-directories: `json` and `yaml`.
 
 The `json` sub-directory contains the built JSON files for each individual deployment.
 The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
@@ -90,8 +91,8 @@ This **Module Discovery Descriptor** type is key on a combination of special res
 This operates only on a string matching level using `sed` and cannot safely handle JSON data.
 This type allows for partial replacements, such as `"folioorg/{name:}:{version:}"`.
 This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, and `version`.
-The `module` is either not specified (empty) to designate using information from the currently processed module or is the name of a module.
-This is useful for situations where say the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of say `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
+The `module` is either not specified (like `{id:}`) to designate using information from the currently processed module.
+This is useful for situations such as where the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
 This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`, such as in the following:
 ```json
   "[ENVIRONMENT]": [
@@ -99,7 +100,7 @@ This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`,
       "name": "MOD_USERS_URL",
       "value": "http://mod-users-{version:mod-users}.folio-modules.svc"
     }
-  ],
+  ]
 ```
 
 | Environment Variable        | Description (see script for further details)
@@ -108,9 +109,9 @@ This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`,
 | `BUILD_DEPLOY_DEBUG`        | Enable debug verbosity, any non-empty string enables this.
 | `BUILD_DEPLOY_DISCOVERY`    | The path to the **Module Discovery Descriptor** JSON file.
 | `BUILD_DEPLOY_INPUT_PATH`   | The path to the input template directory.
-| `BUILD_DEPLOY_NAMES`        | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to.
-| `BUILD_DEPLOY_OUTPUT_FILE`  | The name of the output file without the file extension (not the full path), such as `fleet`.q
-| `BUILD_DEPLOY_OUTPUT_FORCE` | Allow writing over existing output files without failing on error, any non-empty string enables this.
+| `BUILD_DEPLOY_NAMES`        | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to. This does support names not defined in the **Module Discovery Descriptor** file.
+| `BUILD_DEPLOY_OUTPUT_FILE`  | The name of the output file without the file extension (not the full path), such as `fleet`.
+| `BUILD_DEPLOY_OUTPUT_FORCE` | If non-empty, then allow writing over existing output files without failing on error.
 | `BUILD_DEPLOY_OUTPUT_PATH`  | The path to the output directory.
 | `BUILD_DEPLOY_PASSES`       | The number of passes to make when expanding variables.
 
@@ -147,16 +148,16 @@ BUILD_LATEST_PATH="release/snapshot" bash script/build_latest.sh
 
 # Build Module Discovery
 
-The **Build Module Discovery** script prives a way to build a **Module Discovery** JSON file.
+The **Build Module Discovery** script provides a way to build a **Module Discovery** JSON file.
 This JSON file can then be used to register the **Module Discovery** as well as to be used for building the **Fleet** YAML data.
 
 | Environment Variable             | Description (see script for further details)
 | -------------------------------- | --------------------------------
 | `BUILD_MOD_DISCOVERY_DEBUG`      | Enable debug verbosity, any non-empty string enables this.
 | `BUILD_MOD_DISCOVERY_FIELD`      | The field to use when building the discovery. One of `id`, `name`, and `version`.
+| `BUILD_MOD_DISCOVERY_FORCE`      | If non-empty, then allow writing over existing output **Module Discovery Descriptor** JSON file without failing on error.
 | `BUILD_MOD_DISCOVERY_INPUT`      | The input **Application Descriptor** JSON file. (May be passed as the first argument to the script.)
 | `BUILD_MOD_DISCOVERY_OUTPUT`     | The output **Module Discovery Descriptor** JSON file. (May be passed as the second argument to the script.)
-| `BUILD_MOD_DISCOVERY_OVERWRITE`  | Allow writing over existing **Module Discovery Descriptor** JSON file instead of failing as error, any non-empty string enables this.
 | `BUILD_MOD_DISCOVERY_URL_PREFIX` | The left hand side of the built URL, such as `http://`.
 | `BUILD_MOD_DISCOVERY_URL_SUFFIX` | The right hand side of the built URL, such as `.folio-modules.svc`.
 
@@ -170,7 +171,7 @@ BUILD_MOD_DISCOVERY_INPUT="app-platform-minimal-1.0.0-SNAPSHOT.2188.json" BUILD_
 ```
 Example alternate usage:
 ```shell
-bash script/build_module_discovery.sh "app-platform-minimal-1.0.0-SNAPSHOT.2188.json" "module_discovery-1.0.0-SNAPSHOT.2188.json"
+bash script/build_module_discovery.sh app-platform-minimal-1.0.0-SNAPSHOT.2188.json module_discovery-1.0.0-SNAPSHOT.2188.json
 ```
 
 
