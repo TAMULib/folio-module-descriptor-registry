@@ -296,7 +296,7 @@ pop_node_process_projects_update_npm_json() {
     echo "[{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" > ${npm_dir}${npm_file}
   else
     # Work around JQ's problems with using the input as the output.
-    local json=$(cat ${npm_dir}${npm_file})
+    local json=$(< ${npm_dir}${npm_file})
 
     pop_node_print_debug "echo ${json} | jq \". |= . + [{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" > ${npm_dir}${npm_file}"
 
@@ -405,9 +405,9 @@ pop_node_verify_files_workspace_file_json() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    cat ${workspace_file} | jq
+    jq . ${workspace_file}
   else
-    cat ${workspace_file} | jq >> ${null}
+    jq . ${workspace_file} >> ${null}
   fi
 
   pop_node_handle_result "Invalid workspace JSON file: ${workspace_file}"

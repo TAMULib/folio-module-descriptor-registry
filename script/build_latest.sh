@@ -4,7 +4,6 @@
 #
 # This requires the following user-space programs:
 #   - bash
-#   - cat
 #   - grep
 #   - jq
 #   - sed
@@ -206,9 +205,9 @@ build_latest_verify_files() {
 
       # Prevent jq from printing JSON if ${null} exists when not debugging.
       if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-        cat ${i} | jq
+        jq . ${i}
       else
-        cat ${i} | jq >> ${null}
+        jq . ${i} >> ${null}
       fi
 
       if [[ ${?} -ne 0 ]] ; then
