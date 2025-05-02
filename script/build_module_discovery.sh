@@ -23,7 +23,7 @@ main() {
   local field="name"
   local file_input=
   local file_output=
-  local file_overwrite=0
+  local file_force=0
   local null="/dev/null"
   local url_prefix="http://"
   local url_suffix=".folio-modules.svc"
@@ -160,8 +160,8 @@ build_mod_disc_load_environment() {
     file_output=${BUILD_MOD_DISCOVERY_OUTPUT}
   fi
 
-  if [[ ${BUILD_MOD_DISCOVERY_OVERWRITE} != "" ]] ; then
-    let file_overwrite=1
+  if [[ ${BUILD_MOD_DISCOVERY_FORCE} != "" ]] ; then
+    let file_force=1
   fi
 
   if [[ ${BUILD_MOD_DISCOVERY_URL_PREFIX} != "" ]] ; then
@@ -208,7 +208,7 @@ build_mod_disc_verify_output() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ -e ${file_output} && ${file_overwrite} -eq 0 ]] ; then
+  if [[ -e ${file_output} && ${file_force} -eq 0 ]] ; then
     echo "${p_e}The output file '${file_output} already exists."
     echo
 
