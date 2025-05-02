@@ -191,7 +191,11 @@ pop_node_process_projects() {
     pop_node_process_projects_into_workspace
 
     if [[ ${result} -ne 0 ]] ; then
-      if [[ ${skip_bad} -ne 0 ]] ; then continue ; fi
+      if [[ ${skip_bad} -ne 0 ]] ; then
+        let result=0
+
+        continue
+      fi
 
       break
     fi
