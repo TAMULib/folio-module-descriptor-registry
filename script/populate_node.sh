@@ -238,11 +238,11 @@ pop_node_process_projects_extract_version() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    releases=$(jq -r -M '.version' ${file} | -e 's|\s||g')
+    releases=$(jq -r -M '.version' ${file} | sed -e 's|\s||g')
   elif [[ ${debug} != "" ]] ; then
-    releases=$(jq -r -M '.version' ${file} >> ${null} | -e 's|\s||g')
+    releases=$(jq -r -M '.version' ${file} >> ${null} | sed -e 's|\s||g')
   else
-    releases=$(jq -r -M '.version' ${file} &> ${null} | -e 's|\s||g')
+    releases=$(jq -r -M '.version' ${file} &> ${null} | sed -e 's|\s||g')
   fi
 
   if [[ ${version} == "" ]] ; then
