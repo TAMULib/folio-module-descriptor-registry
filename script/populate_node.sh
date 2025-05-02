@@ -244,7 +244,7 @@ pop_node_process_projects_extract_version() {
   fi
 
   if [[ ${version} == "" ]] ; then
-    echo "${p_e}The ${file} file has no valid version ('${version}') for: ${project} (simple: ${project_simple})."
+    echo "${p_e}The ${file} file has no valid version for: ${project} (simple: ${project_simple})."
 
     let result=1
   fi
