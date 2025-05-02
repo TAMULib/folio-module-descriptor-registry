@@ -244,7 +244,7 @@ pop_node_process_projects_extract_version() {
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
     releases=$(jq -r -M '.version' ${file} | sed -e 's|\s||g')
   else
-    releases=$(jq -r -M '.version' ${file} &> ${null} | sed -e 's|\s||g')
+    releases=$(jq -r -M '.version' ${file} 2> ${null} | sed -e 's|\s||g')
   fi
 
   if [[ ${version} == "" ]] ; then

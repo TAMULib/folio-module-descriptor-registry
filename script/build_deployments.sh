@@ -778,7 +778,7 @@ build_depls_verify_json() {
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
     echo ${code} | jq -M .
   else
-    echo ${code} | jq -M . &> ${null}
+    echo ${code} | jq -M . 2> ${null}
   fi
 
   build_depls_handle_result "JSON Verification failed for ${name} file: ${file}"
