@@ -777,8 +777,6 @@ build_depls_verify_json() {
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
     echo ${code} | jq -M .
-  elif [[ ${debug} != "" ]] ; then
-    echo ${code} | jq -M . >> ${null}
   else
     echo ${code} | jq -M . &> ${null}
   fi

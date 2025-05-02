@@ -189,8 +189,6 @@ build_mod_disc_verify_json() {
   else
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
       jq < ${file}
-    elif [[ ${debug} != "" ]] ; then
-      jq < ${file} >> ${null}
     else
       jq < ${file} &> ${null}
     fi
