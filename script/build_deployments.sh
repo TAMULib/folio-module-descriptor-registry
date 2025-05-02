@@ -529,7 +529,7 @@ build_depls_load_instructions() {
         else
           f
         end;
-    expand_template(.)'
+    expand_template(.) | del(.. | select(. == null))'
 
   # Use jq -s to combine exactly two JSON files.
   # Both files must have either a single top-level object or a single top-level array.
