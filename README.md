@@ -387,7 +387,7 @@ This is maintained as a separate trunk to help maintain a clean repository struc
 There will be a lot of automated commits entirely unrelated to the code itself.
 
 The third trunk, `fleet`, is designed to provide the YAML file needed for **Fleet** operations.
-This house the `fleet.yaml` and other related **Fleet** files.
+This houses the `fleet.yaml` and other related **Fleet** files.
 These files can be accessed by **Fleet** using either the GitHub Webhooks or the **Fleet** polling.
 
 
