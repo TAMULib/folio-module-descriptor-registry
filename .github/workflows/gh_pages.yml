@@ -87,7 +87,7 @@ jobs:
         run: |
           BUILD_PAGES_DEBUG="${{ inputs.debug_mode }}" \
           BUILD_PAGES_WORK="../work" \
-          BUILD_PAGES_TEMPLATE_PATH="../scripts/template" \
+          BUILD_PAGES_TEMPLATE_PATH="../scripts/template/page" \
             bash ../scripts/script/build_pages.sh release/
 
       - name: Upload artifact

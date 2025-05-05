@@ -5,7 +5,6 @@
 # This requires the following user-space programs:
 #   - bash
 #   - basename
-#   - cat
 #   - cp
 #   - date
 #   - find
@@ -37,6 +36,7 @@ main() {
   local i=
   local ignore_invalid=
   local now=$(date -u)
+  local null="/dev/null"
   local sources=
   local title_main="Listing of FOLIO Releases"
   local template_back="back.html"
@@ -44,7 +44,7 @@ main() {
   local template_base="base.html"
   local template_item="item.html"
   local template_item_data=
-  local template_path="template/"
+  local template_path="template/page"
   local work="work/"
 
   # Custom prefixes for debug and error.
@@ -165,8 +165,8 @@ build_page_load_environment() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  template_back_data=$(cat ${template_path}${template_back})
-  template_item_data=$(cat ${template_path}${template_item})
+  template_back_data=$(< ${template_path}${template_back})
+  template_item_data=$(< ${template_path}${template_item})
 
   if [[ ! -d ${work} ]] ; then
     mkdir ${debug} -p ${work}
@@ -400,11 +400,11 @@ build_page_operate_sources_process_files_verify_file() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  # Prevent jq from printing JSON if /dev/null exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
-    cat ${k} | jq
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq . ${k}
   else
-    cat ${k} | jq >> /dev/null
+    jq . ${k} >> ${null}
   fi
 
   let result=${?}

@@ -132,7 +132,7 @@ jobs:
           SYNC_SNAPSHOT_DEBUG="${{ inputs.debug_mode }}" \
           SYNC_SNAPSHOT_RESULT="results.txt" \
             bash ../scripts/script/sync_snapshot.sh
-          echo "sync_result=$(cat results.txt)" >> "${GITHUB_OUTPUT}"
+          echo "sync_result=$(< results.txt)" >> "${GITHUB_OUTPUT}"
 
       - id: clean_up
         name: Clean Up

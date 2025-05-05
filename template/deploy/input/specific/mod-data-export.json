@@ -1,0 +1,15 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-Dbucket.name=folio-data-export"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

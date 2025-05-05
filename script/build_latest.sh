@@ -1,10 +1,9 @@
 #!/bin/bash
 #
-# Determine the latest version and make symbolic links with "-latest" in place of the version suffix.
+# Determine the latest version and make symbolic links with a suffix like "-latest" in place of the version suffix.
 #
 # This requires the following user-space programs:
 #   - bash
-#   - cat
 #   - grep
 #   - jq
 #   - sed
@@ -21,7 +20,9 @@ main() {
   local debug=
   local debug_json=
   local files="install.json eureka-platform.json npm.json"
+  local null="/dev/null"
   local path="release/snapshot/"
+  local suffix="-latest"
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -124,7 +125,9 @@ build_latest_operate() {
 
   for file in ${files} ; do
 
-    releases=$(jq -M '.[].id' ${file} | sed -e 's|"||g')
+    build_latest_operate_releases_prepare
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
 
     for i in ${releases} ; do
 
@@ -149,9 +152,9 @@ build_latest_operate() {
         return
       fi
 
-      ln -vsf ${i} ${path}${release}-latest
+      ln -vsf ${i} ${path}${release}${suffix}
 
-      build_latest_handle_result "Failed create symbolic link to '${i}' from '${path}${release}-latest'"
+      build_latest_handle_result "Failed create symbolic link to '${i}' from '${path}${release}${suffix}'"
 
       if [[ ${result} -ne 0 ]] ; then return ; fi
     done
@@ -159,6 +162,20 @@ build_latest_operate() {
 
   echo
   echo "Done: Latest versions are built."
+}
+
+build_latest_operate_releases_prepare() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    releases=$(jq -r -M '.[].id' ${file})
+  else
+    releases=$(jq -r -M '.[].id' ${file} 2> ${null})
+  fi
+
+  pop_rel_handle_result "Failed to load release IDs from JSON: ${file}"
 }
 
 build_latest_print_debug() {
@@ -186,11 +203,11 @@ build_latest_verify_files() {
         continue
       fi
 
-      # Prevent jq from printing JSON if /dev/null exists when not debugging.
-      if [[ ${debug_json} != "" || ! -e /dev/null ]] ; then
-        cat ${i} | jq
+      # Prevent jq from printing JSON if ${null} exists when not debugging.
+      if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+        jq . ${i}
       else
-        cat ${i} | jq >> /dev/null
+        jq . ${i} >> ${null}
       fi
 
       if [[ ${?} -ne 0 ]] ; then

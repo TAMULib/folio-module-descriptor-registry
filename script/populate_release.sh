@@ -16,6 +16,9 @@
 #   - 'heads': Designate that this uses a branch name that is specified via the POPULATE_RELEASE_TAG (the default).
 #   - '':      Set to an empty string for when using a commit hash, in which case the POPULATE_RELEASE_TAG must be a valid hash.
 #
+# The POPULATE_RELEASE_DEBUG may be specifically set to "json" to include printing the JSON files.
+# The POPULATE_RELEASE_DEBUG may be specifically set to "json_only" to only print the JSON files, disabling all other debugging (does not pass -v).
+#
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl" to include printing the curl commands.
 # The POPULATE_RELEASE_DEBUG may be specifically set to "curl_only" to only print the curl commands, disabling all other debugging (does not pass -v to curl).
 #
@@ -34,11 +37,13 @@
 main() {
   local debug=
   local debug_curl=
+  local debug_json=
   local destination="release/"
   local curl_fail="--fail"
   local fail_mode="report"
   local files="install.json eureka-platform.json"
   local flower="snapshot"
+  local null="/dev/null"
   local part="heads"
   local registry="https://folio-registry.dev.folio.org/_/proxy/modules/"
   local releases=
@@ -84,16 +89,28 @@ pop_rel_load_environment() {
   if [[ ${POPULATE_RELEASE_DEBUG} != "" ]] ; then
     debug="-v"
     debug_curl=
+    debug_json=
 
     if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
       debug_curl="y"
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
       debug=
       debug_curl="y"
+    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+      debug_json="y"
+    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+      debug=
+      debug_json="y"
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
       debug=
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
-      debug_curl="y"
+    else
+      if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
+        debug_curl="y"
+      fi
+
+      if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+        debug_json="y"
+      fi
     fi
   fi
 
@@ -268,7 +285,14 @@ pop_rel_process_files_releases_prepare() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ -f ${file} ]] ; then
-    releases=$(jq -M '.[].id' ${file} | sed -e 's|"||g')
+    # Prevent jq from printing JSON if ${null} exists when not debugging.
+    if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+      releases=$(jq -r -M '.[].id' ${file})
+    else
+      releases=$(jq -r -M '.[].id' ${file} 2> ${null})
+    fi
+
+    pop_rel_handle_result "Failed to load release IDs from JSON: ${file}"
   fi
 
   if [[ ! -d ${destination}${flower}/ ]] ; then

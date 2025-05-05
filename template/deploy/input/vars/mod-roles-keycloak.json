@@ -1,0 +1,45 @@
+{
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "kong-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "keycloak-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "vault-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "vault-connect",
+        "optional": false
+      }
+    }
+  },
+  "[ENVIRONMENT]": [
+    {
+      "name": "MOD_USERS_URL",
+      "value": "http://mod-users.folio-modules.svc"
+    },
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "[JAVA_OPTIONS]"
+    }
+  ]
+}
+

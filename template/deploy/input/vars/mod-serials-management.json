@@ -1,0 +1,19 @@
+{
+  "[CONTAINER_PORT]": 8080,
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kong-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      }
+    }
+  }
+}

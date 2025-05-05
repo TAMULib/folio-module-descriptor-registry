@@ -1,0 +1,32 @@
+{
+  "[CPU_RESOURCE]": "1",
+  "[ENV_FROM]": {
+    "value": {
+      "configMapRef": {
+        "name": "kafka-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "db-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "kong-connect",
+        "optional": false
+      },
+      "configMapRef": {
+        "name": "elasticsearch-connect",
+        "optional": false
+      },
+      "secretRef": {
+        "name": "mod-search",
+        "optional": false
+      }
+    }
+  },
+  "[MEMORY_RESOURCE]": "4Gi"
+}
