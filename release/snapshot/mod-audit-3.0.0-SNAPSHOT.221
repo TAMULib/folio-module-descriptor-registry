@@ -1,0 +1,369 @@
+{
+  "id" : "mod-audit-3.0.0-SNAPSHOT.221",
+  "name" : "Audit Module",
+  "requires" : [ {
+    "id" : "pubsub-event-types",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-publishers",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-subscribers",
+    "version" : "0.1"
+  }, {
+    "id" : "pubsub-publish",
+    "version" : "0.1"
+  }, {
+    "id" : "users",
+    "version" : "16.4"
+  }, {
+    "id" : "template-engine",
+    "version" : "2.2"
+  }, {
+    "id" : "inventory",
+    "version" : "14.1"
+  }, {
+    "id" : "cancellation-reason-storage",
+    "version" : "1.2"
+  } ],
+  "provides" : [ {
+    "id" : "audit",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data",
+      "permissionsRequired" : [ "audit.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/audit-data",
+      "permissionsRequired" : [ "audit.item.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/audit-data/{id}",
+      "permissionsRequired" : [ "audit.item.delete" ]
+    } ]
+  }, {
+    "id" : "acquisition-order-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/order/{id}",
+      "permissionsRequired" : [ "acquisition.order.events.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-order-line-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/order-line/{id}",
+      "permissionsRequired" : [ "acquisition.order-line.events.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-piece-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/piece/{id}",
+      "permissionsRequired" : [ "acquisition.piece.events.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/piece/{id}/status-change-history",
+      "permissionsRequired" : [ "acquisition.piece.events.history.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-invoice-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/invoice/{id}",
+      "permissionsRequired" : [ "acquisition.invoice.events.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-invoice-line-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/invoice-line/{id}",
+      "permissionsRequired" : [ "acquisition.invoice-line.events.get" ]
+    } ]
+  }, {
+    "id" : "acquisition-organization-events",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/acquisition/organization/{id}",
+      "permissionsRequired" : [ "acquisition.organization.events.get" ]
+    } ]
+  }, {
+    "id" : "circulation-logs",
+    "version" : "1.2",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/circulation/logs",
+      "permissionsRequired" : [ "circulation-logs.collection.get" ]
+    } ]
+  }, {
+    "id" : "audit-data-event-handlers",
+    "version" : "1.1",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/audit/handlers/log-record",
+      "permissionsRequired" : [ "audit.pub-sub-handlers.log-record-event.post" ],
+      "modulePermissions" : [ "users.item.get", "users.collection.get", "templates.item.get", "inventory.items.item.get", "inventory-storage.holdings.item.get", "circulation-storage.cancellation-reasons.collection.get", "circulation-item.item.get" ]
+    } ]
+  }, {
+    "id" : "audit-config",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit/config/groups",
+      "permissionsRequired" : [ "audit.config.groups.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit/config/groups/{groupId}/settings",
+      "permissionsRequired" : [ "audit.config.groups.settings.collection.get" ],
+      "permissionsDesired" : [ "audit.config.groups.settings.*" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/audit/config/groups/{groupId}/settings/{settingId}",
+      "permissionsRequired" : [ "audit.config.groups.settings.item.put" ],
+      "permissionsDesired" : [ "audit.config.groups.settings.*" ]
+    } ]
+  }, {
+    "id" : "audit-inventory",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/inventory/instance/{entityId}",
+      "permissionsRequired" : [ "audit.inventory.instance.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/inventory/holdings/{entityId}",
+      "permissionsRequired" : [ "audit.inventory.holdings.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/inventory/item/{entityId}",
+      "permissionsRequired" : [ "audit.inventory.item.collection.get" ]
+    } ]
+  }, {
+    "id" : "audit-marc",
+    "version" : "1.0",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/marc/bib/{entityId}",
+      "permissionsRequired" : [ "audit.marc.bib.collection.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/audit-data/marc/authority/{entityId}",
+      "permissionsRequired" : [ "audit.marc.authority.collection.get" ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "pubsub.event-types.post", "pubsub.publishers.post", "pubsub.subscribers.post" ]
+    }, {
+      "methods" : [ "DELETE", "GET" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/audit-data/cleanup/timer",
+      "schedule" : {
+        "cron" : "0 2 * * *"
+      }
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "circulation-item",
+    "version" : "1.0"
+  }, {
+    "id" : "item-storage",
+    "version" : "10.1"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "8.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "11.1"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "audit.collection.get",
+    "displayName" : "Audit - get audit records",
+    "description" : "Get audit records"
+  }, {
+    "permissionName" : "audit.item.get",
+    "displayName" : "Audit - get specific audit record",
+    "description" : "Get specific audit record"
+  }, {
+    "permissionName" : "audit.item.post",
+    "displayName" : "Audit - create a new audit record",
+    "description" : "Create a new audit record"
+  }, {
+    "permissionName" : "audit.item.put",
+    "displayName" : "Audit - update specific audit record",
+    "description" : "Update specific audit record"
+  }, {
+    "permissionName" : "audit.item.delete",
+    "displayName" : "Audit - delete specific audit record",
+    "description" : "Delete specific audit record"
+  }, {
+    "permissionName" : "circulation-logs.collection.get",
+    "displayName" : "Circulation audit logs - get circulation log records",
+    "description" : "Get circulation audit logs records"
+  }, {
+    "permissionName" : "acquisition.order.events.get",
+    "displayName" : "Acquisition order events - get order change events",
+    "description" : "Get order change events"
+  }, {
+    "permissionName" : "acquisition.order-line.events.get",
+    "displayName" : "Acquisition order-line events - get order-line change events",
+    "description" : "Get order-line change events"
+  }, {
+    "permissionName" : "acquisition.piece.events.get",
+    "displayName" : "Acquisition piece events - get piece change events",
+    "description" : "Get piece change events"
+  }, {
+    "permissionName" : "acquisition.piece.events.history.get",
+    "displayName" : "Acquisition piece status change history events - get piece status change events",
+    "description" : "Get piece status change events"
+  }, {
+    "permissionName" : "acquisition.invoice.events.get",
+    "displayName" : "Acquisition invoice events - get invoice change events",
+    "description" : "Get invoice change events"
+  }, {
+    "permissionName" : "acquisition.invoice-line.events.get",
+    "displayName" : "Acquisition invoice-line events - get invoice-line change events",
+    "description" : "Get invoice-line change events"
+  }, {
+    "permissionName" : "acquisition.organization.events.get",
+    "displayName" : "Acquisition organization events - get organization change events",
+    "description" : "Get organization change events"
+  }, {
+    "permissionName" : "audit.config.groups.collection.get",
+    "displayName" : "Audit Configuration - get settings groups",
+    "description" : "Get settings groups"
+  }, {
+    "permissionName" : "audit.config.groups.settings.collection.get",
+    "displayName" : "Audit Configuration - get settings for a group",
+    "description" : "Get settings for a group"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.inventory.collection.get",
+    "displayName" : "Audit Configuration - get settings for a audit inventory group",
+    "description" : "Get settings for a audit inventory group"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.authority.collection.get",
+    "displayName" : "Audit Configuration - get settings for a audit authority group",
+    "description" : "Get settings for a audit authority group"
+  }, {
+    "permissionName" : "audit.config.groups.settings.item.put",
+    "displayName" : "Audit Configuration - update setting for a group",
+    "description" : "Update setting for a group"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.inventory.records.page.size.item.put",
+    "displayName" : "Audit Configuration - update setting for a audit inventory records page size",
+    "description" : "Update setting for a audit inventory records page size"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.authority.records.page.size.item.put",
+    "displayName" : "Audit Configuration - update setting for a audit authority records page size",
+    "description" : "Update setting for a audit authority records page size"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.inventory.records.retention.period.item.put",
+    "displayName" : "Audit Configuration - update setting for a audit inventory records retention period",
+    "description" : "Update setting for a audit inventory records retention period"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.authority.records.retention.period.item.put",
+    "displayName" : "Audit Configuration - update setting for a audit authority records retention period",
+    "description" : "Update setting for a audit authority records retention period"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.inventory.enabled.item.put",
+    "displayName" : "Audit Configuration - enable/disable audit inventory records",
+    "description" : "Enable/disable audit inventory records"
+  }, {
+    "permissionName" : "audit.config.groups.settings.audit.authority.enabled.item.put",
+    "displayName" : "Audit Configuration - enable/disable audit authority records",
+    "description" : "Enable/disable audit authority records"
+  }, {
+    "permissionName" : "audit.inventory.instance.collection.get",
+    "displayName" : "Inventory Audit - get instance events",
+    "description" : "Get inventory instance audit events"
+  }, {
+    "permissionName" : "audit.inventory.holdings.collection.get",
+    "displayName" : "Inventory Audit - get holdings events",
+    "description" : "Get inventory holdings audit events"
+  }, {
+    "permissionName" : "audit.inventory.item.collection.get",
+    "displayName" : "Inventory Audit - get item events",
+    "description" : "Get inventory item audit events"
+  }, {
+    "permissionName" : "audit.marc.bib.collection.get",
+    "displayName" : "Marc Audit - get Marc Bib events",
+    "description" : "Get Marc Bib audit events"
+  }, {
+    "permissionName" : "audit.marc.authority.collection.get",
+    "displayName" : "Marc Audit - get Marc Authority events",
+    "description" : "Get Marc Authority audit events"
+  }, {
+    "permissionName" : "audit.all",
+    "displayName" : "Audit - all permissions",
+    "description" : "Audit - all permissions",
+    "subPermissions" : [ "audit.collection.get", "audit.item.get", "audit.item.post", "audit.item.put", "audit.item.delete", "circulation-logs.collection.get", "acquisition.order.events.get", "acquisition.order-line.events.get", "acquisition.piece.events.get", "acquisition.piece.events.history.get", "acquisition.invoice.events.get", "acquisition.invoice-line.events.get", "acquisition.organization.events.get", "audit.inventory.instance.collection.get", "audit.inventory.holdings.collection.get", "audit.inventory.item.collection.get", "audit.marc.bib.collection.get", "audit.marc.authority.collection.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-audit:3.0.0-SNAPSHOT.221",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 715827883,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
