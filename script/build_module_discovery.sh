@@ -190,7 +190,7 @@ build_mod_disc_verify_json() {
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
       jq < ${file}
     else
-      jq < ${file} 2> ${null}
+      jq < ${file} >> ${null} 2>&1
     fi
 
     let result=${?}
