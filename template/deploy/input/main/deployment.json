@@ -44,7 +44,7 @@
             "imagePullPolicy": "Always",
             "livenessProbe": "[LIVENESS_PROBE]",
             "name": "{name:}",
-            "ports": "[PORTS]",
+            "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",
             "resources": {
               "limits": {

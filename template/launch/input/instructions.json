@@ -1,0 +1,17 @@
+[
+  {
+    "map": "[HOST_MEMORY]",
+    "type": "field",
+    "value": ".launchDescriptor.dockerArgs.HostConfig.Memory"
+  },
+  {
+    "map": "[ENVIRONMENT]",
+    "type": "field",
+    "value": ".launchDescriptor.env"
+  },
+  {
+    "map": "[CONTAINER_PORTS]",
+    "type": "container_port",
+    "value": ".launchDescriptor.dockerArgs.HostConfig.PortBindings"
+  }
+]

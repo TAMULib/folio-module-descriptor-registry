@@ -38,13 +38,7 @@
             "imagePullPolicy": "Always",
             "livenessProbe": "[LIVENESS_PROBE]",
             "name": "{name:}",
-            "ports": [
-              {
-                "containerPort": "[CONTAINER_PORT]",
-                "name": "primary",
-                "protocol": "TCP"
-              }
-            ],
+            "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",
             "resources": {
               "limits": {

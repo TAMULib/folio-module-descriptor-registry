@@ -1,5 +1,12 @@
 {
   "[CONTAINER_PORT]": 8081,
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": "[CONTAINER_PORT]",
+      "name": "primary",
+      "protocol": "TCP"
+    }
+  ],
   "[CPU_RESOURCE]": "500m",
   "[DOCKER_IMAGE]": "folioorg/{name:}:{version:}",
   "[ENV_FROM]": {
@@ -15,12 +22,23 @@
     }
   },
   "[ENVIRONMENT]": [
-    {
-      "name": "JAVA_OPTIONS",
-      "value": "[JAVA_OPTIONS]"
-    }
+    "[DB_HOST_MAP]",
+    "[DB_PORT_MAP]",
+    "[DB_USERNAME_MAP]",
+    "[DB_PASSWORD_MAP]",
+    "[DB_DATABASE_MAP]",
+    "[DB_QUERYTIMEOUT_MAP]",
+    "[DB_CHARSET_MAP]",
+    "[DB_MAXPOOLSIZE_MAP]",
+    "[JAVA_OPTIONS_MAP]",
+    "[KAFKA_HOST_MAP]",
+    "[KAFKA_PORT_MAP]"
   ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true",
+  "[JAVA_OPTIONS_MAP]": {
+    "name": "JAVA_OPTIONS",
+    "value": "[JAVA_OPTIONS]"
+  },
   "[LIVENESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
@@ -34,13 +52,6 @@
     "timeoutSeconds": 5
   },
   "[MEMORY_RESOURCE]": "1Gi",
-  "[PORTS]": [
-    {
-      "containerPort": "[CONTAINER_PORT]",
-      "name": "primary",
-      "protocol": "TCP"
-    }
-  ],
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
