@@ -22,6 +22,7 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
   - [Scripts](#scripts)
     - [Build Deployments](#build-deployments)
     - [Build Latest](#build-latest)
+    - [Build Launches](#build-launches)
     - [Build Module Discovery](#build-module-discovery)
     - [Build Pages](#build-pages)
     - [Populate Node](#populate-node)
@@ -45,46 +46,59 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
 This repository provides additional scripts that may help facilitate the generation of the Module Descriptors and related Continuous Integration and Continuous Delivery (CI/CD) operations.
 
 
-# Build Deployments
+### Build Deployments
 
 The **Build Deployments** script provides a way to build the YAML data for services such as **Fleet**.
 This requires the **Module Discovery Descriptor** as an input source.
 There are several template files used as input data that are conditionally expanded based on a configurable set of names.
 These template files are intended and expected to be altered as needed.
 
-The input path, such as `template/deploy/input/`, contains three main sub-directories: `main`, `specific`, and `vars`.
+The input path, such as `template/deploy/input/`, contains multiple sub-directories: `launches`, `main`, `specific`, and `vars`.
+
+The `launches` sub-directory contains variable substitution JSON files generated using a script like `build_launches.sh` based on the `launchDescriptor` provided by each module descriptor.
+Theese JSON files are named based on the `name` of the module, such as `mod-configuration.json`.
+Each of these JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
+These `launches` JSON files are merged with the specific `vars` JSON files and the loaded `vars.json` file.
 
 The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
-The `deployment.json` contains a JSON object used for all deployments being built.
-The `maps.json` file maps specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
-The `names.json` is a JSON array of names to expand of the form `[SOME_NAME]`.
+The `deployment.json` file is a JSON object used for all deployments being built.
+The `maps.json` file is a JSON file mapping specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
+The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
 Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or similar JSON files.
-The `vars.json` contains a JSON object map containing the names and the values that they each map to.
+The `vars.json` file is a JSON object map containing the names and the values that they each map to.
 The values in `vars.json` may themselves be complex structures such as arrays or objects.
 
-The `specific` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment, such as `mod-configuration.json`.
+The `specific` sub-directory contains an optional set of variable substitution JSON files that are named based on the `name` of the module, such as `mod-configuration.json`.
 Each of these specific JSON files contain a JSON object just like the `deployment.json` from the `main` sub-directory.
 The specific JSON file is merged with the loaded `deployment.json` file for each deployment described in the **Module Discovery Descriptor**.
 
-The `vars` sub-directory contains an optional set of JSON files that are named based on the `name` of the deployment name, such as `mod-configuration.json`.
+The `vars` sub-directory contains an optional set of variable substitution JSON files that are named based on the `name` of the module, such as `mod-configuration.json`.
 Each of these specific JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
-The specific `vars` JSON file is merged with the loaded `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
+The specific `vars` JSON file is merged with the `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
 
 The output path, such as `template/deploy/output/`, contains two main sub-directories: `json` and `yaml`.
 
 The `json` sub-directory contains the built JSON files for each individual deployment.
 The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
 
+The variable substition and module processing order are as follows:
+  1. `deployment.json`, or other file such as `stateful_set.json` as defined by `maps.json`.
+  2. `vars.json`.
+  3. `launches` JSON file for each module.
+  4. `vars` JSON file for each module.
+  5. `specific` JSON file for each module.
+
 The script does not operate recursively.
 Instead, it makes multiple passes up to a limit specified by `BUILD_DEPLOY_PASSES`.
 
 There are two types of variable substitution being used in this script.
 
-The first type utilizes `vars` (and therefore also `names`).
-The `vars` type is directly passed to `jq` and `yq` as needed for doing a JSON compatible replacement of entire values.
+The first type utilizes substitution files like `vars.json` (and therefore also `names.json`).
+This type is directly passed to `jq` and `yq` as needed for doing a JSON compatible replacement of entire values.
 This type does not replace individual parts of a value.
 These are of the form `[NAME]` and must be part of a JSON string.
 The substituted value does not have to be a string and can be any valid JSON type.
+The JSON files in the `launches` sub-directory, JSON files in the `vars` sub-directory, and the `vars.json` JSON file are associated with this substitution type.
 
 The second type utilizes the **Module Discovery Descriptor** keys and values.
 This **Module Discovery Descriptor** type is key on a combination of special reserved words and module names.
@@ -146,7 +160,43 @@ BUILD_LATEST_PATH="release/snapshot" bash script/build_latest.sh
 ```
 
 
-# Build Module Discovery
+### Build Launches
+
+The **Build Launches** script utilizes the _Launch Descriptor_ from a given set of module descriptors.
+This script is intended to be used to generate the _Launch Descriptor_ variable substitution for the `launches` directory used by the **Build Deployments** script.
+This is expected to be called after the **Build Latest** script is executed.
+
+This does support using suffixed other than the `-latest`.
+
+An input JSON file at `template/launch/input/instructions.json` is used to provide the properties to be extracted from the _Launch Descriptor_ of the module.
+This file is a JSON array of mapping objects with three named keys: `map`, `type`, and `value`.
+The `map` is the mapping name used by variable substitution, such as `[ENVIRONMENT]`.
+The `type` is one of the following supported types:
+  1. `field`: This type designates that the field from the _Launch Descriptor_ is to be directly used.
+  2. `container_port`: This type designates that a container port structure from the _Launch Descriptor_ needs to be interpeted and re-mapped as a container port type for the deployment manifest (multiple ports are supported).
+The `value` is different depending on the type but in general directly represents a `jq` query designating which field to select from the _Launch Descriptor_ of the module.
+The `value` for the `field` type is a direct mapping.
+The `value` for the `container_port` expects the structure of the form `{ "123/tcp": [ { "HostPort" : "%p" } ] }`.
+The `"123/tcp"` is extracted and split into a port number and protocol name.
+For each named object in the `container_port` structure, a name is generated from the index and protocol, such as `123_TCP_0`.
+
+| Environment Variable          | Description (see script for further details)
+| ----------------------------- | --------------------------------
+| `BUILD_LAUNCHES_DEBUG`        | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_LAUNCHES_INPUT_PATH`   | The path containing the input files, such as the `instructions.json` file.
+| `BUILD_LAUNCHES_OUTPUT_PATH`  | The path to write the generated `launch` files in, such as `template/deploy/input/` (this has `input/` because these files are used as input for the **Build Deployments** script).
+| `BUILD_LAUNCHES_RELEASE_PATH` | The path containing the release files, such as the `release/snapshot/`.
+| `BUILD_LAUNCHES_VERSION`      | The version to use as the suffix to match when selecting the releases files, such as `latest` or `5.1.0-SNAPSHOT.272`.
+
+View the documentation within the `build_launches.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+bash script/build_launches.sh
+```
+
+
+### Build Module Discovery
 
 The **Build Module Discovery** script provides a way to build a **Module Discovery** JSON file.
 This JSON file can then be used to register the **Module Discovery** as well as to be used for building the **Fleet** YAML data.

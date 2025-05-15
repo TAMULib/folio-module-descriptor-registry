@@ -160,7 +160,6 @@ build_latest_operate() {
     done
   done
 
-  echo
   echo "Done: Latest versions are built."
 }
 

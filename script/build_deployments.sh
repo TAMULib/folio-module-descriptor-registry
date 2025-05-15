@@ -42,6 +42,7 @@ main() {
   local maps_name="maps"
   local input_base="deployment"
   local input_path="template/deploy/input/"
+  local input_path_launches="${input_path}launches/"
   local input_path_main="${input_path}main/"
   local input_path_specific="${input_path}specific/"
   local input_path_vars="${input_path}vars/"
@@ -53,8 +54,9 @@ main() {
   local jq_select_map=
   local jq_select_names=
   local jq_set=
-  local jq_vars=
-  local jq_vars_main=
+  local json_vars=
+  local json_vars_launches=
+  local json_vars_main=
   local names=
   local names_base="names"
   local null="/dev/null"
@@ -183,7 +185,9 @@ build_depls_expand() {
 
     build_depls_expand_file_load_template
 
-    build_depls_load_vars
+    build_depls_load_merge launches "${input_path_vars}" "${json_vars_main}"
+
+    build_depls_load_merge specific "${input_path_launches}" "${json_vars_launches}"
 
     while [[ ${result} -eq 0 ]] ; do
       build_depls_expand_file
@@ -196,6 +200,8 @@ build_depls_expand() {
       else
         break
       fi
+
+      if [[ ${result} -ne 0 ]] ; then return ; fi
     done
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -210,9 +216,9 @@ build_depls_expand_file() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    echo ${json} | jq --argjson vars "${jq_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output}
+    echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output}
   else
-    echo ${json} | jq --argjson vars "${jq_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output} 2> ${null}
+    echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output} 2> ${null}
   fi
 
   build_depls_handle_result "Failed to expand ${what} into ${output}"
@@ -429,6 +435,7 @@ build_depls_load_environment() {
 
   if [[ ${BUILD_DEPLOY_INPUT_PATH} != "" ]] ; then
     input_path=$(echo -n ${BUILD_DEPLOY_INPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    input_path_launches="${input_path}launches/"
     input_path_main="${input_path}main/"
     input_path_specific="${input_path}specific/"
     input_path_vars="${input_path}vars/"
@@ -575,7 +582,7 @@ build_depls_load_instructions_vars() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  jq_vars_main=$(< ${input_path_main}${vars_name}.json)
+  json_vars_main=$(< ${input_path_main}${vars_name}.json)
 
   build_depls_handle_result "Failed to load JQ vars from: ${input_path_main}${vars_name}.json"
 }
@@ -655,27 +662,40 @@ build_depls_load_json_discovery_names() {
   build_depls_handle_result "Failed to load Discovery Module names from \$BUILD_DEPLOY_DISCOVERY: ${file}"
 }
 
-build_depls_load_vars() {
+build_depls_load_merge() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ -f ${input_path_vars}${name}.json ]] ; then
-    build_depls_print_debug "Loading main JQ vars data with specific JQ vars for ${what}"
+  local data=
+  local file=${2}${name}.json
+  local target=${1}
+  local with=${3}
 
-    build_depls_verify_json "'specific vars' input file" ${input_path_vars}${name}.json
+  if [[ -f ${file} ]] ; then
+    local vars_file=${file}
+
+    build_depls_print_debug "Combining loaded template variables data with ${target} variables for ${what} from ${1}"
+
+    build_depls_verify_json "'${target} vars' input file" ${file}
 
     # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-      jq_vars=$(echo "${jq_vars_main} $(< ${input_path_vars}${name}.json)" | jq -M -s "${jq_merge_replace}")
+      data=$(echo "${with} $(< ${file})" | jq -M -s "${jq_merge_replace}")
     else
-      jq_vars=$(echo "${jq_vars_main} $(< ${input_path_vars}${name}.json)" | jq -M -s "${jq_merge_replace}" 2> ${null})
+      data=$(echo "${with} $(< ${file})" | jq -M -s "${jq_merge_replace}" 2> ${null})
     fi
 
-    build_depls_handle_result "Failed to combine main JQ vars with ${input_path_vars}${name}.json"
+    build_depls_handle_result "Failed to combine loaded template variables data with ${target} variables from ${file}"
   else
-    build_depls_print_debug "Loading only main JQ vars data for ${what}"
+    build_depls_print_debug "Using only loaded template variables data with ${target} variables for ${what}"
 
-    jq_vars=${jq_vars_main}
+    data=${with}
+  fi
+
+  if [[ ${target} == "launches" ]] ; then
+    json_vars_launches=${data}
+  else
+    json_vars=${data}
   fi
 }
 
