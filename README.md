@@ -82,7 +82,7 @@ The output path, such as `template/deploy/output/`, contains two main sub-direct
 The `json` sub-directory contains the built JSON files for each individual deployment.
 The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
 
-The variable substition and module processing order are as follows:
+The variable substitution and module processing order are as follows:
   1. `deployment.json`, or other file such as `stateful_set.json` as defined by `maps.json`.
   2. `vars.json`.
   3. `launches` JSON file for each module.
