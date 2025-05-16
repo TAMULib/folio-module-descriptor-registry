@@ -52,6 +52,7 @@
     "timeoutSeconds": 5
   },
   "[MEMORY_RESOURCE]": "1Gi",
+  "[NAMESPACE]": "folio-modules",
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
@@ -63,6 +64,5 @@
     "periodSeconds": 60,
     "successThreshold": 1,
     "timeoutSeconds": 5
-  },
-  "[WORKLOAD]": "folio_module"
+  }
 }

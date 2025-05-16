@@ -2,19 +2,14 @@
   "apiVersion": "apps/v1",
   "kind": "Deployment",
   "metadata": {
-    "annotations": {
-      "field.cattle.io/creatorId": "null"
-    },
     "labels": {
-      "cattle.io/creator": "norman",
       "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}"
     },
-    "name": "{name:}"
+    "name": "{name:}",
+    "namespace": "[NAMESPACE]"
   },
   "spec": {
-    "minReadySeconds": 0,
     "replicas": 1,
-    "revisionHistoryLimit": 10,
     "selector": {
       "matchLabels": {
         "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}"
@@ -30,10 +25,10 @@
     "template": {
       "metadata": {
         "labels": {
-          "workload": "[WORKLOAD]",
           "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}",
           "app": "{name:}"
-        }
+        },
+        "namespace": "[NAMESPACE]"
       },
       "spec": {
         "containers": [
@@ -52,24 +47,9 @@
                 "memory": "[MEMORY_RESOURCE]"
               }
             },
-            "securityContext": {
-              "allowPrivilegeEscalation": false,
-              "privileged": false,
-              "procMount": "Default",
-              "readOnlyRootFilesystem": false,
-              "runAsNonRoot": false
-            },
-            "stdin": true,
-            "terminationMessagePath": "/dev/termination-log",
-            "terminationMessagePolicy": "File",
-            "tty": true,
             "volumeMounts": "[VOLUME_MOUNTS]"
           }
         ],
-        "dnsPolicy": "ClusterFirst",
-        "restartPolicy": "Always",
-        "schedulerName": "default-scheduler",
-        "securityContext": {},
         "volumes": "[VOLUMES]"
       }
     }

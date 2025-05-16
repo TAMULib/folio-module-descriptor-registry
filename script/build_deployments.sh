@@ -40,7 +40,8 @@ main() {
   local discovery_names=
   local field="name"
   local maps_name="maps"
-  local input_base="deployment"
+  local input_base="base"
+  local input_name="deployment"
   local input_path="template/deploy/input/"
   local input_path_launches="${input_path}launches/"
   local input_path_main="${input_path}main/"
@@ -53,7 +54,6 @@ main() {
   local jq_select_by=
   local jq_select_map=
   local jq_select_names=
-  local jq_set=
   local json_vars=
   local json_vars_launches=
   local json_vars_main=
@@ -95,11 +95,13 @@ build_depls_combine() {
 
   if [[ ${result} -ne 0 || ${do_combine} -eq 0 || ${names} == "" ]] ; then return ; fi
 
+  local base=${input_path_main}${input_base}.json
   local name=
   local specific=
+  local temp=${output_path_yaml}${combined_file}.json
   local yaml=${output_path_yaml}${combined_file}.yaml
 
-  build_depls_combine_set
+  build_depls_combine_initialize
 
   for name in ${names} ; do
 
@@ -117,35 +119,79 @@ build_depls_combine() {
       continue
     fi
 
-    build_depls_print_debug "Combining ${specific} with ${yaml}"
+    build_depls_print_debug "Combining ${specific} with ${temp}"
+
+    combined=
 
     build_depls_combine_append
+    build_depls_combine_write
 
-    if [[ ${result} -ne 0 ]] ; then return ; fi
+    if [[ ${result} -ne 0 ]] ; then break ; fi
   done
+
+  build_depls_combine_finalize
+
+  # Always delete temporary JSON file.
+  rm -f ${temp}
 }
 
 build_depls_combine_append() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local jq_append='.items += [$item]'
+  local data=
+
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    yq -y -M "${jq_set}" ${specific} >> ${yaml}
+    combined=$(jq --argjson item "$(< ${specific})" -M "${jq_append}" ${temp})
   else
-    yq -y -M "${jq_set}" ${specific} >> ${yaml} 2> ${null}
+    combined=$(jq --argjson item "$(< ${specific})" -M "${jq_append}" ${temp} 2> ${null})
   fi
 
-  build_depls_handle_result "Failed to append ${specific} with ${yaml}"
+  build_depls_handle_result "Failed to append ${specific} with ${temp}"
 }
 
-build_depls_combine_set() {
+build_depls_combine_finalize() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  echo -n > ${yaml}
+  # Prevent yq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    yq -y -M '.' ${temp} > ${yaml}
+  else
+    yq -y -M '.' ${temp} > ${yaml} 2> ${null}
+  fi
 
-  build_depls_handle_result "Failed to initialize ${yaml}"
+  build_depls_handle_result "Failed to finalize ${yaml}"
+}
+
+build_depls_combine_initialize() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq -M '.' ${base} > ${temp}
+  else
+    jq -M '.' ${base} > ${temp} 2> ${null}
+  fi
+
+  build_depls_handle_result "Failed to initialize ${temp}"
+}
+
+build_depls_combine_write() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq -M . <<< ${combined} > ${temp}
+  else
+    jq -M . <<< ${combined} > ${temp} 2> ${null}
+  fi
+
+  build_depls_handle_result "Failed to write combined ${specific} into ${temp}"
 }
 
 build_depls_expand() {
@@ -230,7 +276,7 @@ build_depls_expand_file_load_template() {
 
   local base=
   local specific=
-  local template=${input_path_main}${input_base}.json
+  local template=${input_path_main}${input_name}.json
 
   build_depls_expand_file_load_template_maps
   build_depls_expand_file_load_template_base
@@ -253,7 +299,7 @@ build_depls_expand_file_load_template_combine() {
 
   if [[ ${base} == "" || ${specific} == "" ]] ; then
     if [[ ${base} == "" && ${specific} == "" ]] ; then
-      build_depls_print_debug "No data found in for ${name} in either ${input_path_main}${input_base}.json or ${input_path_main}${name}.json"
+      build_depls_print_debug "No data found in for ${name} in either ${input_path_main}${input_name}.json or ${input_path_main}${name}.json"
 
       return
     fi
@@ -263,7 +309,7 @@ build_depls_expand_file_load_template_combine() {
       what="${input_path_specific}${name}.json"
     else
       json=${base}
-      what="${input_path_main}${input_base}.json"
+      what="${input_path_main}${input_name}.json"
     fi
   else
     # Prevent jq from printing JSON if ${null} exists when not debugging.
@@ -275,7 +321,7 @@ build_depls_expand_file_load_template_combine() {
 
     build_depls_handle_result "Failed to merge ${input_path_main}${name}.json and ${input_path_specific}${name}.json files"
 
-    what="${input_path_main}${input_base}.json and ${input_path_specific}${name}.json"
+    what="${input_path_main}${input_name}.json and ${input_path_specific}${name}.json"
   fi
 }
 
@@ -392,9 +438,9 @@ build_depls_expand_file_regex_do_load() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    use=$(echo -n "${discovery_data}" | jq -r -M "${jq_select_by}")
+    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data})
   else
-    use=$(echo -n "${discovery_data}" | jq -r -M "${jq_select_by}" 2> ${null})
+    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load Discovery Data for field='${field}' and key='${key}' from ${discovery_file}"
@@ -475,12 +521,12 @@ build_depls_load_environment() {
   build_depls_verify_directory "'YAML' output path" ${output_path_yaml} create
   build_depls_verify_directory "'JSON' output path" ${output_path_json} create
 
-  build_depls_verify_file "'base' input file" ${input_path_main}${input_base}.json
+  build_depls_verify_file "'base' input file" ${input_path_main}${input_name}.json
   build_depls_verify_file "'names' input file" ${input_path_main}${names_base}.json create array
   build_depls_verify_file "'vars' input file" ${input_path_main}${vars_name}.json create object
   build_depls_verify_file "'combined' output file" ${output_path_yaml}${combined_file}.yaml not ${output_force}
 
-  build_depls_verify_json "'base' input file" ${input_path_main}${input_base}.json
+  build_depls_verify_json "'base' input file" ${input_path_main}${input_name}.json
   build_depls_verify_json "'names' input file" ${input_path_main}${names_base}.json
   build_depls_verify_json "'vars' input file" ${input_path_main}${vars_name}.json
 
@@ -544,7 +590,6 @@ build_depls_load_instructions() {
   jq_merge_join='reduce .[] as $f ({}; . * $f)'
   jq_merge_replace='.[0] as $f1 | .[1] as $f2 | $f1 + $f2'
   jq_select_names=".discovery[].name"
-  jq_set='[.]'
 
   build_depls_load_instructions_names
   build_depls_load_instructions_vars

@@ -60,7 +60,8 @@ Theese JSON files are named based on the `name` of the module, such as `mod-conf
 Each of these JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
 These `launches` JSON files are merged with the specific `vars` JSON files and the loaded `vars.json` file.
 
-The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `main` sub-directory contains `base.json`, `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `base.json` file is a JSON object containing the base image used to initialize the final manifest.
 The `deployment.json` file is a JSON object used for all deployments being built.
 The `maps.json` file is a JSON file mapping specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
 The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
