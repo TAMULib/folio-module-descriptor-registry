@@ -140,7 +140,6 @@ build_depls_combine_append() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local jq_append='.items += [$item]'
-  local data=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
@@ -155,6 +154,8 @@ build_depls_combine_append() {
 build_depls_combine_finalize() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  build_depls_print_debug "Writing to ${yaml}"
 
   # Prevent yq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
