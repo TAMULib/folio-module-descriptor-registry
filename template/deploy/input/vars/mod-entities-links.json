@@ -1,29 +1,37 @@
 {
   "[CPU_RESOURCE]": "1",
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "kong-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-entities-links",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=85.0 -Dlog4j2.formatMsgNoLookups=true -Dspring.datasource.hikari.connection-timeout=3000",
   "[MEMORY_RESOURCE]": "4Gi"
 }

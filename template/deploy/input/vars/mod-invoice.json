@@ -1,11 +1,11 @@
 {
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[MEMORY_RESOURCE]": "2Gi"
 }

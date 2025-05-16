@@ -3,7 +3,7 @@
   "kind": "Deployment",
   "metadata": {
     "labels": {
-      "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}"
+      "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
     },
     "name": "{name:}",
     "namespace": "[NAMESPACE]"
@@ -12,7 +12,7 @@
     "replicas": 1,
     "selector": {
       "matchLabels": {
-        "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}"
+        "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
       }
     },
     "strategy": {
@@ -21,7 +21,7 @@
     "template": {
       "metadata": {
         "labels": {
-          "workload.user.cattle.io/workloadselector": "deployment-folio-scratch-{name:}",
+          "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}",
           "app": "{name:}"
         },
         "namespace": "[NAMESPACE]"

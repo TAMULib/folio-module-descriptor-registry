@@ -1,36 +1,48 @@
 {
   "[CPU_RESOURCE]": "1",
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "kong-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "minio-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "minio-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-data-export-spring",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[MEMORY_RESOURCE]": "4Gi"
 }

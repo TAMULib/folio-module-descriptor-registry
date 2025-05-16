@@ -1,23 +1,29 @@
 {
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-dcb",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
 }

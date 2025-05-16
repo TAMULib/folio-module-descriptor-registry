@@ -1,32 +1,42 @@
 {
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kong-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "minio-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "minio-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-lists",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dmod-lists.list-export.s3-startup-check.enabled=false",
   "[MEMORY_RESOURCE]": "3Gi"
 }
