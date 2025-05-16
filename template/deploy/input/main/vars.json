@@ -9,18 +9,20 @@
   ],
   "[CPU_RESOURCE]": "500m",
   "[DOCKER_IMAGE]": "folioorg/{name:}:{version:}",
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[ENVIRONMENT]": [
     "[DB_HOST_MAP]",
     "[DB_PORT_MAP]",
@@ -43,7 +45,7 @@
     "failureThreshold": 3,
     "httpGet": {
       "path": "/admin/health",
-      "port": "8081",
+      "port": 8081,
       "scheme": "HTTP"
     },
     "initialDelaySeconds": 45,
@@ -52,11 +54,12 @@
     "timeoutSeconds": 5
   },
   "[MEMORY_RESOURCE]": "1Gi",
+  "[NAMESPACE]": "folio-modules",
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
       "path": "/admin/health",
-      "port": "8081",
+      "port": 8081,
       "scheme": "HTTP"
     },
     "initialDelaySeconds": 45,
@@ -64,5 +67,10 @@
     "successThreshold": 1,
     "timeoutSeconds": 5
   },
-  "[WORKLOAD]": "folio_module"
+  "[RESOURCES]": {
+    "limits": {
+      "cpu": "[CPU_RESOURCE]",
+      "memory": "[MEMORY_RESOURCE]"
+    }
+  }
 }

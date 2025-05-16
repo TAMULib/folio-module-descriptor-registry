@@ -60,7 +60,8 @@ Theese JSON files are named based on the `name` of the module, such as `mod-conf
 Each of these JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
 These `launches` JSON files are merged with the specific `vars` JSON files and the loaded `vars.json` file.
 
-The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `main` sub-directory contains `base.json`, `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `base.json` file is a JSON object containing the base image used to initialize the final manifest.
 The `deployment.json` file is a JSON object used for all deployments being built.
 The `maps.json` file is a JSON file mapping specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
 The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
@@ -81,7 +82,7 @@ The output path, such as `template/deploy/output/`, contains two main sub-direct
 The `json` sub-directory contains the built JSON files for each individual deployment.
 The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
 
-The variable substition and module processing order are as follows:
+The variable substitution and module processing order are as follows:
   1. `deployment.json`, or other file such as `stateful_set.json` as defined by `maps.json`.
   2. `vars.json`.
   3. `launches` JSON file for each module.

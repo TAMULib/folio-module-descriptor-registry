@@ -1,22 +1,26 @@
 {
   "[CONTAINER_PORT]": 9403,
   "[CPU_RESOURCE]": "1",
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[ENVIRONMENT]": [
     {
       "name": "JAVA_OPTIONS",

@@ -1,25 +1,31 @@
 {
   "[CPU_RESOURCE]": "1",
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    {
       "configMapRef": {
         "name": "kafka-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "configMapRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "db-connect",
-        "optional": false
-      },
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-remote-storage",
-        "optional": false
+        "optional": true
       }
     }
-  },
+  ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=75.0 -Dlog4j2.formatMsgNoLookups=true",
   "[MEMORY_RESOURCE]": "4Gi"
 }
