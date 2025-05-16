@@ -1,0 +1,112 @@
+{
+  "[HOST_MEMORY]": 357913941,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules"
+    },
+    {
+      "name": "DB_QUERYTIMEOUT",
+      "value": "60000"
+    },
+    {
+      "name": "DB_CHARSET",
+      "value": "UTF-8"
+    },
+    {
+      "name": "DB_MAXPOOLSIZE",
+      "value": "5"
+    },
+    {
+      "name": "KC_CONFIG_STORE_TYPE",
+      "value": "ephemeral"
+    },
+    {
+      "name": "KC_CONFIG_CACHE_CAPACITY",
+      "value": "100"
+    },
+    {
+      "name": "KC_CONFIG_CACHE_TTL_MS",
+      "value": "3600000"
+    },
+    {
+      "name": "KC_CONFIG_FAILURE_CACHE_TTL_MS",
+      "value": "30000"
+    },
+    {
+      "name": "KC_CONFIG_EPHEMERAL_CREDENTIALS",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_AWS_SSM_REGION",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_AWS_SSM_USE_IAM",
+      "value": "true"
+    },
+    {
+      "name": "KC_CONFIG_AWS_SSM_ECS_CREDENTIALS_ENDPOINT",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_AWS_SSM_ECS_CREDENTIALS_PATH",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_TOKEN",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_ADDRESS",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_ENABLE_SSL",
+      "value": "false"
+    },
+    {
+      "name": "KC_CONFIG_VAULT_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_PEM_FILE_PATH",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_KEYSTORE_FILE_PATH",
+      "value": ""
+    },
+    {
+      "name": "KC_CONFIG_VAULT_TRUSTSTORE_FILE_PATH",
+      "value": ""
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

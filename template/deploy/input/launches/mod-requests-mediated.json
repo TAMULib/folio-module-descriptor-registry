@@ -1,0 +1,92 @@
+{
+  "[HOST_MEMORY]": 1073741824,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    },
+    {
+      "name": "OKAPI_URL",
+      "value": "http://okapi:9130"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules"
+    },
+    {
+      "name": "DB_QUERYTIMEOUT",
+      "value": "60000"
+    },
+    {
+      "name": "DB_CHARSET",
+      "value": "UTF-8"
+    },
+    {
+      "name": "DB_MAXPOOLSIZE",
+      "value": "5"
+    },
+    {
+      "name": "KAFKA_HOST",
+      "value": "kafka"
+    },
+    {
+      "name": "KAFKA_PORT",
+      "value": "9092"
+    },
+    {
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT"
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "SYSTEM_USER_ENABLED",
+      "value": "true"
+    },
+    {
+      "name": "SYSTEM_USER_NAME",
+      "value": "mod-requests-mediated"
+    },
+    {
+      "name": "SYSTEM_USER_PASSWORD",
+      "value": "mod-requests-mediated"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

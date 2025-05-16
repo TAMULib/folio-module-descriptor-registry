@@ -1,0 +1,80 @@
+{
+  "[HOST_MEMORY]": 629145600,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    },
+    {
+      "name": "server.port",
+      "value": "8081"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_HOST_READER",
+      "value": ""
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432"
+    },
+    {
+      "name": "DB_PORT_READER",
+      "value": "5432"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules"
+    },
+    {
+      "name": "DB_QUERYTIMEOUT",
+      "value": "60000"
+    },
+    {
+      "name": "DB_CHARSET",
+      "value": "UTF-8"
+    },
+    {
+      "name": "DB_MAXPOOLSIZE",
+      "value": "5"
+    },
+    {
+      "name": "QUERY_RETENTION_DURATION",
+      "value": "3h"
+    },
+    {
+      "name": "spring.task.execution.pool.max-size",
+      "value": "12"
+    },
+    {
+      "name": "MAX_QUERY_SIZE",
+      "value": "1250000"
+    },
+    {
+      "name": "mod-fqm-manager.entity-type-cache-timeout-seconds",
+      "value": "300"
+    },
+    {
+      "name": "IS_EUREKA",
+      "value": "false"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

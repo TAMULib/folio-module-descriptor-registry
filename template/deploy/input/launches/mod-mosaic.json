@@ -1,0 +1,51 @@
+{
+  "[HOST_MEMORY]": 502293850,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=75.0"
+    },
+    {
+      "name": "ENV",
+      "value": "folio",
+      "description": "The logical name of the deployment, must be unique across all environments using the same shared resources"
+    },
+    {
+      "name": "OKAPI_URL",
+      "value": "http://sidecar:8081",
+      "description": "Okapi URL"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres",
+      "description": "Postgres hostname"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432",
+      "description": "Postgres port"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin",
+      "description": "Postgres username"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin",
+      "description": "Postgres username password"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules",
+      "description": "Postgres database name"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "[HOST_MEMORY]": 357913941,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    },
+    {
+      "name": "okapi_url",
+      "value": "http://okapi:9130"
+    },
+    {
+      "name": "secure_store",
+      "value": "Ephemeral"
+    },
+    {
+      "name": "secure_store_props",
+      "value": "src/main/resources/ephemeral.properties"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

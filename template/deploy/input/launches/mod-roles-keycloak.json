@@ -1,0 +1,60 @@
+{
+  "[HOST_MEMORY]": 357913941,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=85.0"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules"
+    },
+    {
+      "name": "KC_URL",
+      "value": "keycloak:8080"
+    },
+    {
+      "name": "KC_CLIENT_SECRET",
+      "value": "mod-roles-keycloak"
+    },
+    {
+      "name": "KC_CLIENT_ID",
+      "value": "secret"
+    },
+    {
+      "name": "KC_POLICIES_CLIENT_NAME",
+      "value": "mod-login-keycloak"
+    },
+    {
+      "name": "KC_TOKEN_TTL",
+      "value": "59"
+    },
+    {
+      "name": "KC_CLIENT_ID_TTL",
+      "value": "3600"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

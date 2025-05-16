@@ -1,0 +1,16 @@
+{
+  "[HOST_MEMORY]": 357913941,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8080,
+      "name": "8080-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

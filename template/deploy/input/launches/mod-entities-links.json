@@ -1,0 +1,231 @@
+{
+  "[HOST_MEMORY]": 1073741824,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=85.0"
+    },
+    {
+      "name": "ENV",
+      "value": "folio",
+      "description": "The logical name of the deployment, must be unique across all environments using the same shared Kafka/Elasticsearch clusters, `a-z (any case)`, `0-9`, `-`, `_` symbols only allowed"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "localhost",
+      "description": "Postgres hostname"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432",
+      "description": "Postgres port"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin",
+      "description": "Postgres username"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin",
+      "description": "Postgres username password"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules",
+      "description": "Postgres database name"
+    },
+    {
+      "name": "DB_MAXPOOLSIZE",
+      "value": "10",
+      "description": "This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections"
+    },
+    {
+      "name": "DB_MINIMUM_IDLE",
+      "value": "10",
+      "description": "This property controls the minimum number of idle connections that HikariCP tries to maintain in the pool"
+    },
+    {
+      "name": "DB_CONNECTION_TIMEOUT",
+      "value": "30000",
+      "description": "This property controls the maximum number of milliseconds that a client will wait for a connection from the pool"
+    },
+    {
+      "name": "DB_IDLE_TIMEOUT",
+      "value": "600000",
+      "description": "This property controls the maximum amount of time that a connection is allowed to sit idle in the pool. This setting only applies when `DB_MINIMUM_IDLE` is defined to be less than `DB_MAXPOOLSIZE`"
+    },
+    {
+      "name": "DB_KEEPALIVE_TIME",
+      "value": "0",
+      "description": "This property controls how frequently HikariCP will attempt to keep a connection alive, in order to prevent it from being timed out by the database or network infrastructure (0 - disabled)"
+    },
+    {
+      "name": "DB_MAX_LIFETIME",
+      "value": "1800000",
+      "description": "This property controls the maximum lifetime of a connection in the pool"
+    },
+    {
+      "name": "DB_VALIDATION_TIMEOUT",
+      "value": "5000",
+      "description": "This property controls the maximum amount of time that a connection will be tested for aliveness. This value must be less than the `DB_CONNECTION_TIMEOUT`"
+    },
+    {
+      "name": "DB_INITIALIZATION_FAIL_TIMEOUT",
+      "value": "30000",
+      "description": "This property controls whether the pool will \"fail fast\" if the pool cannot be seeded with an initial connection successfully"
+    },
+    {
+      "name": "DB_LEAK_DETECTION_THRESHOLD",
+      "value": "30000",
+      "description": "This property controls the amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak (0 - disabled)"
+    },
+    {
+      "name": "OKAPI_URL",
+      "value": "okapi",
+      "description": "Okapi URL"
+    },
+    {
+      "name": "KAFKA_HOST",
+      "value": "kafka",
+      "description": "Kafka broker hostname"
+    },
+    {
+      "name": "KAFKA_PORT",
+      "value": "9092",
+      "description": "Kafka broker port"
+    },
+    {
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT",
+      "description": "Kafka security protocol used to communicate with brokers (SSL or PLAINTEXT)"
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": "",
+      "description": "The location of the Kafka key store file. This is optional for client and can be used for two-way authentication for client."
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": "",
+      "description": "The store password for the Kafka key store file. This is optional for client and only needed if 'ssl.keystore.location' is configured."
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": "",
+      "description": "The location of the Kafka trust store file."
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": "",
+      "description": "The password for the Kafka trust store file. If a password is not set, trust store file configured will still be used, but integrity checking is disabled."
+    },
+    {
+      "name": "KAFKA_CONSUMER_MAX_POLL_RECORDS",
+      "value": "50",
+      "description": "Maximum number of records returned in a single call to poll()."
+    },
+    {
+      "name": "KAFKA_AUTHORITY_SOURCE_FILE_TOPIC_PARTITIONS",
+      "value": "1",
+      "description": "Amount of partitions for `authority-authority-source-file` topic."
+    },
+    {
+      "name": "KAFKA_AUTHORITY_SOURCE_FILE_TOPIC_REPLICATION_FACTOR",
+      "value": "",
+      "description": "Replication factor for `authority-authority-source-file` topic."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_TOPIC_PARTITIONS",
+      "value": "10",
+      "description": "Amount of partitions for `links.instance-authority` topic."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_TOPIC_REPLICATION_FACTOR",
+      "value": "",
+      "description": "Replication factor for `links.instance-authority` topic."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_STATS_TOPIC_PARTITIONS",
+      "value": "10",
+      "description": "Amount of partitions for `links.instance-authority-stats` topic."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_STATS_TOPIC_REPLICATION_FACTOR",
+      "value": "",
+      "description": "Replication factor for `links.instance-authority-stats` topic."
+    },
+    {
+      "name": "KAFKA_AUTHORITIES_CONSUMER_CONCURRENCY",
+      "value": "1",
+      "description": "Number of kafka concurrent threads for `inventory.authority` message consuming."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_STATS_CONSUMER_CONCURRENCY",
+      "value": "1",
+      "description": "Number of kafka concurrent threads for `links.instance-authority-stats` message consuming."
+    },
+    {
+      "name": "KAFKA_INSTANCE_AUTHORITY_CHANGE_PARTITIONS",
+      "value": "100",
+      "description": "Number of instance-authority links `links.instance-authority` event contains while processing authority link source change."
+    },
+    {
+      "name": "INSTANCE_STORAGE_QUERY_BATCH_SIZE",
+      "value": "50",
+      "description": "Number of instances to retrieve from inventory storage per one request (Max 90 - based on maximum URI length)"
+    },
+    {
+      "name": "AUTHORITY_ARCHIVES_EXPIRATION_PERIOD",
+      "value": "7",
+      "description": "The retention period in days for keeping the deleted authorities in authority_archive DB table"
+    },
+    {
+      "name": "S3_URL",
+      "value": "http://localhost:9000/",
+      "description": "S3 compatible service url"
+    },
+    {
+      "name": "S3_REGION",
+      "value": "",
+      "description": "S3 compatible service region"
+    },
+    {
+      "name": "S3_BUCKET",
+      "value": "marc-migrations",
+      "description": "S3 compatible service bucket"
+    },
+    {
+      "name": "S3_ACCESS_KEY_ID",
+      "value": "",
+      "description": "S3 compatible service access key"
+    },
+    {
+      "name": "S3_SECRET_ACCESS_KEY",
+      "value": "",
+      "description": "S3 compatible service secret key"
+    },
+    {
+      "name": "S3_IS_AWS",
+      "value": "true",
+      "description": "Specify if AWS S3 is used as files storage"
+    },
+    {
+      "name": "S3_RETRY_COUNT",
+      "value": "3",
+      "description": "Specify number of retries if S3 client return any kind of error"
+    },
+    {
+      "name": "S3_RETRY_DELAY_MS",
+      "value": "500",
+      "description": "Specify millisecond delay between retries if S3 client return any kind of error"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

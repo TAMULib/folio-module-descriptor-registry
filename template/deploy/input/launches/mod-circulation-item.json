@@ -1,0 +1,56 @@
+{
+  "[HOST_MEMORY]": 712673984,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=75.0"
+    },
+    {
+      "name": "DB_HOST",
+      "value": "postgres"
+    },
+    {
+      "name": "DB_PORT",
+      "value": "5432"
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "folio_admin"
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "okapi_modules"
+    },
+    {
+      "name": "DB_QUERYTIMEOUT",
+      "value": "60000"
+    },
+    {
+      "name": "DB_CHARSET",
+      "value": "UTF-8"
+    },
+    {
+      "name": "DB_MAXPOOLSIZE",
+      "value": "5"
+    },
+    {
+      "name": "OKAPI_URL",
+      "value": "http://okapi:9130"
+    },
+    {
+      "name": "ENV",
+      "value": "folio"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}

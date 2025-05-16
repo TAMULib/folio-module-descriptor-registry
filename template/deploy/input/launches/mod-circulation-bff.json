@@ -1,0 +1,32 @@
+{
+  "[HOST_MEMORY]": 357913941,
+  "[ENVIRONMENT]": [
+    {
+      "name": "JAVA_OPTIONS",
+      "value": "-XX:MaxRAMPercentage=66.0"
+    },
+    {
+      "name": "ENV",
+      "value": "folio"
+    },
+    {
+      "name": "SYSTEM_USER_USERNAME",
+      "value": "mod-circulation-bff"
+    },
+    {
+      "name": "SYSTEM_USER_PASSWORD",
+      "value": "mod-circulation-bff"
+    },
+    {
+      "name": "SYSTEM_USER_ENABLED",
+      "value": "true"
+    }
+  ],
+  "[CONTAINER_PORTS]": [
+    {
+      "containerPort": 8081,
+      "name": "8081-tcp-0",
+      "protocol": "TCP"
+    }
+  ]
+}
