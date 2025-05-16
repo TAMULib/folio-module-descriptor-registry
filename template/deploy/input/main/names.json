@@ -16,6 +16,7 @@
   "[ENVIRONMENT]",
   "[HOST_MEMORY]",
   "[JAVA_OPTIONS]",
+  "[JAVA_OPTIONS_MAP]",
   "[KAFKA_HOST]",
   "[KAFKA_HOST_MAP]",
   "[KAFKA_PORT]",
