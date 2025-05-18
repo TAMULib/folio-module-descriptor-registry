@@ -1,0 +1,35 @@
+{
+  "id": "folio_authorization-policies-2.0.10990000000085",
+  "name": "FOLIO app for Authorization Policies",
+  "permissionSets": [
+    {
+      "permissionName": "settings.authorization-policies.enabled",
+      "displayName": "Settings (Authorization policies): display list of settings pages",
+      "subPermissions": [
+        "settings.enabled"
+      ]
+    },
+    {
+      "permissionName": "ui-authorization-policies.settings.admin",
+      "displayName": "Settings (Authorization policies): Can manage authorization policies",
+      "description": "",
+      "subPermissions": [
+        "settings.authorization-policies.enabled",
+        "policies.item.get",
+        "policies.item.put",
+        "policies.item.delete",
+        "policies.item.post",
+        "policies.collection.get",
+        "policies.collection.post"
+      ],
+      "visible": true
+    }
+  ],
+  "requires": [
+    {
+      "id": "policies",
+      "version": "1.1"
+    }
+  ],
+  "optional": []
+}

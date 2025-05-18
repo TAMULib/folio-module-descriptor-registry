@@ -1,0 +1,28 @@
+{
+  "id" : "folio_myprofile-11.0.10990000000086",
+  "name" : "My profile",
+  "requires" : [ {
+    "id" : "settings",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.myprofile.enabled",
+    "displayName" : "UI: My-profile module is enabled"
+  }, {
+    "permissionName" : "settings.myprofile.enabled",
+    "displayName" : "Settings (My profile): display list of settings pages",
+    "subPermissions" : [ "settings.enabled", "mod-settings.entries.collection.get", "mod-settings.entries.item.post", "mod-settings.entries.item.put", "mod-settings.owner.read.stripes-core.prefs.manage", "mod-settings.owner.write.stripes-core.prefs.manage", "mod-settings.global.read.stripes-core.prefs.manage" ]
+  }, {
+    "permissionName" : "ui-myprofile.settings.change-password",
+    "displayName" : "Settings (My profile): Can change your local password",
+    "description" : "Some subperms can be deleted later when submodules use modern permission names",
+    "subPermissions" : [ "settings.myprofile.enabled", "users.collection.get", "users-bl.item.get", "users.item.get" ],
+    "visible" : true
+  }, {
+    "permissionName" : "ui-myprofile.settings.main-nav-order.manage",
+    "displayName" : "Settings (My profile): Can change application order in main navigation",
+    "subPermissions" : [ "settings.myprofile.enabled", "mod-settings.entries.collection.get", "mod-settings.entries.item.post", "mod-settings.entries.item.put", "mod-settings.entries.item.delete", "mod-settings.owner.read.stripes-core.prefs.manage", "mod-settings.owner.write.stripes-core.prefs.manage" ],
+    "visible" : true
+  } ]
+}

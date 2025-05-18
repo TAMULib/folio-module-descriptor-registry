@@ -1,0 +1,10 @@
+{
+  "id" : "folio_plugin-find-user-8.0.10990000000065",
+  "name" : "User-finder for Stripes",
+  "requires" : [ ],
+  "optional" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "module.ui-plugin-find-user.enabled",
+    "displayName" : "UI: find-user plugin is enabled"
+  } ]
+}
