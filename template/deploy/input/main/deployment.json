@@ -29,6 +29,7 @@
       "spec": {
         "containers": [
           {
+            "args": "[CONTAINER_ARGS]",
             "env": "[ENVIRONMENT]",
             "envFrom": "[ENV_FROM]",
             "image": "[CONTAINER_IMAGE]",
