@@ -6,6 +6,12 @@
     "[ENV_FROM_KAFKA_CONNECT]",
     "[ENV_FROM_KONG_CONNECT]",
     {
+      "configMapRef": {
+        "name": "mod-entities-links",
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-entities-links",
         "optional": true
@@ -13,7 +19,6 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=85.0 -Dlog4j2.formatMsgNoLookups=true -Dspring.datasource.hikari.connection-timeout=3000"
+    "[JAVA_OPTIONS]"
+  ]
 }

@@ -7,6 +7,6 @@
     "[ENV_FROM_KONG_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ]
 }

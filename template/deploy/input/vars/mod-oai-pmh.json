@@ -5,7 +5,10 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx2160m -Dlog4j2.formatMsgNoLookups=true"
+    "[JAVA_OPTIONS]",
+    {
+      "name": "CLEAN_UP_ERROR_LOGS_INTERVAL",
+      "value": "30"
+    }
+  ]
 }

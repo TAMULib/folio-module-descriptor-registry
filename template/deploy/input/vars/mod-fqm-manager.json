@@ -5,7 +5,10 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dmod-fqm-manager.entity-type-cache-timeout-seconds=86400"
+    "[JAVA_OPTIONS]",
+    {
+      "name": "IS_EUREKA",
+      "value": "true"
+    }
+  ]
 }

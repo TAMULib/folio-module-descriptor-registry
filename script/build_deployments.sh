@@ -59,6 +59,7 @@ main() {
   local json_vars_main=
   local names=
   local names_base="names"
+  local namespace="folio-modules"
   local null="/dev/null"
   local only_these=
   local output_force=
@@ -399,6 +400,7 @@ build_depls_expand_file_regex_do() {
 
   local field=${1}
   local match=${1}
+  local match_global_namespace="{global:namespace}"
   local match_id="{id:${match}}"
   local match_location="{location:${match}}"
   local match_name="{name:${match}}"
@@ -451,7 +453,13 @@ build_depls_expand_file_regex_do_sed() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  sed -i -e "s|${match_id}|${use_id}|g" -e "s|${match_location}|${use_location}|g" -e "s|${match_name}|${use_name}|g" -e "s|${match_version}|${use_version}|g" ${output}
+  sed -i \
+    -e "s|${match_id}|${use_id}|g" \
+    -e "s|${match_location}|${use_location}|g" \
+    -e "s|${match_name}|${use_name}|g" \
+    -e "s|${match_version}|${use_version}|g" \
+    -e "s|${match_global_namespace}|${namespace}|g" \
+    ${output}
 
   build_depls_handle_result "Failed regex replace using sed for field='${field}' on ${output}"
 }
@@ -503,6 +511,17 @@ build_depls_load_environment() {
   fi
 
   build_depls_verify_name ${combined_file} "combined name"
+
+  if [[ ${BUILD_DEPLOY_NAMESPACE} != "" ]] ; then
+    namespace=${BUILD_DEPLOY_NAMESPACE}
+  fi
+
+  if [[ $(echo -n ${namespace} | sed -e 's|\-||g' | grep -shPo '\W') != "" ]] ; then
+    echo "${p_e}The namespace may only contain word characters or the dash '-' character."
+
+    let result=1
+    return
+  fi
 
   if [[ ${BUILD_DEPLOY_PASSES} != "" ]] ; then
     let passes=${BUILD_DEPLOY_PASSES}

@@ -10,11 +10,8 @@
     "[ENV_FROM_VAULT_CONNECT_SECRET]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]",
-    {
-      "name": "MOD_USERS_URL",
-      "value": "http://mod-users.folio-modules.svc"
-    },
+    "[JAVA_OPTIONS]",
+    "[MOD_USERS_URL]",
     {
       "name": "KAFKA_SYS_USER_TOPIC_PATTERN",
       "value": "(folio\\.)(.*\\.)mgr-tenant-entitlements.system-user"

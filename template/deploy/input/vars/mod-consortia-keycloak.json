@@ -10,10 +10,27 @@
     "[ENV_FROM_VAULT_CONNECT_SECRET]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]",
+    "[JAVA_OPTIONS]",
+    "[MOD_USERS_URL]",
     {
-      "name": "MOD_USERS_URL",
-      "value": "http://mod-users.folio-modules.svc"
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT"
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": ""
     }
   ]
 }

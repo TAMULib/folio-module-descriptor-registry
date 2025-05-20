@@ -6,6 +6,6 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ]
 }

@@ -12,7 +12,6 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=75.0 -Dlog4j2.formatMsgNoLookups=true"
+    "[JAVA_OPTIONS]"
+  ]
 }

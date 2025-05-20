@@ -7,19 +7,7 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]",
-    {
-      "name": "inventory.kafka.DataImportConsumerVerticle.instancesNumber",
-      "value": "10"
-    },
-    {
-      "name": "inventory.kafka.MarcBibInstanceHridSetConsumerVerticle.instancesNumber",
-      "value": "10"
-    },
-    {
-      "name": "kafka.consumer.max.poll.records",
-      "value": "10"
-    }
+    "[JAVA_OPTIONS]"
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dorg.folio.metadata.inventory.storage.type=okapi -Dlog4j2.formatMsgNoLookups=true"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dorg.folio.metadata.inventory.storage.type=okapi"
 }

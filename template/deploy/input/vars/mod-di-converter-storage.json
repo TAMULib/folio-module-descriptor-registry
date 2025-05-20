@@ -5,6 +5,7 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ]
+    "[JAVA_OPTIONS]"
+  ],
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
 }

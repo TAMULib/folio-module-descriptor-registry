@@ -6,7 +6,7 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dsrs.record.matching.fallback-query.enable=true"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dsrs.record.matching.fallback-query.enable=true"
 }

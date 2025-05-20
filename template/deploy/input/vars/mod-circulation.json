@@ -5,6 +5,18 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]",
+    {
+      "name": "SCHEDULED_ANONYMIZATION_NUMBER_OF_LOANS_TO_CHECK",
+      "value": "50000"
+    },
+    {
+      "name": "ENABLE_FLOATING_COLLECTIONS",
+      "value": "true"
+    },
+    {
+      "name": "REPLICATION_FACTOR",
+      "value": "1"
+    }
   ]
 }

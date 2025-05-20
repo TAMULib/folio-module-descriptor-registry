@@ -6,6 +6,12 @@
     "[ENV_FROM_KAFKA_CONNECT]",
     "[ENV_FROM_KONG_CONNECT]",
     {
+      "configMapRef": {
+        "name": "mod-pubsub",
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-pubsub",
         "optional": true
@@ -13,6 +19,6 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ]
 }

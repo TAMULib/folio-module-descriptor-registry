@@ -1,5 +1,5 @@
 {
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx1440m -Dokapi_url=http://kong.kong.svc:8000 -Dsecure_store=Ephemeral -Dsecure_store_props=/etc/folio/edge/edge-ephemeral.properties -Dapi_key_sources=PARAM,HEADER,PATH -Dlog4j2.formatMsgNoLookups=true",
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx1440m -Dokapi_url=http://kong.{global:namespace}.svc:8000 -Dsecure_store=Ephemeral -Dsecure_store_props=/etc/folio/edge/edge-ephemeral.properties -Dapi_key_sources=PARAM,HEADER,PATH -Dlog4j2.formatMsgNoLookups=true",
   "[VOLUMES]": [
     {
       "name": "edge-ephemeral",

@@ -4,18 +4,6 @@
     "[ENV_FROM_DB_CONNECT_SECRET]",
     "[ENV_FROM_GLOBAL]",
     "[ENV_FROM_KAFKA_CONNECT]",
-    {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
     "[ENV_FROM_KONG_CONNECT]",
     {
       "secretRef": {
@@ -25,7 +13,6 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
+    "[JAVA_OPTIONS]"
+  ]
 }

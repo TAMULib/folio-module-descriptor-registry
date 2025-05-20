@@ -80,27 +80,36 @@
     }
   },
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true",
-  "[JAVA_OPTIONS_MAP]": {
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0",
+  "[JAVA_OPTIONS]": {
     "name": "JAVA_OPTIONS",
-    "value": "[JAVA_OPTIONS]"
+    "value": "[JAVA_OPTIONS_VALUE]"
   },
   "[LIVENESS_PROBE]": {
-    "failureThreshold": 3,
+    "failureThreshold": "[LIVENESS_PROBE_FAILURE_THRESHOLD]",
     "httpGet": {
       "path": "/admin/health",
       "port": 8081,
       "scheme": "HTTP"
     },
-    "initialDelaySeconds": 45,
-    "periodSeconds": 60,
-    "successThreshold": 1,
-    "timeoutSeconds": 5
+    "initialDelaySeconds": "[LIVENESS_PROBE_INITIAL_DELAY]",
+    "periodSeconds": "[LIVENESS_PROBE_INITIAL_PERIOD]",
+    "successThreshold": "[LIVENESS_PROBE_SUCCESS_THRESHOLD]",
+    "timeoutSeconds": "[LIVENESS_PROBE_TIMEOUT]"
   },
+  "[LIVENESS_PROBE_FAILURE_THRESHOLD]": 3,
+  "[LIVENESS_PROBE_INITIAL_DELAY]": 45,
+  "[LIVENESS_PROBE_INITIAL_PERIOD]": 60,
+  "[LIVENESS_PROBE_SUCCESS_THRESHOLD]": 1,
+  "[LIVENESS_PROBE_TIMEOUT]": 5,
   "[MEMORY_RESOURCE_REQUEST]": "128Mi",
-  "[MEMORY_RESOURCE_LIMIT]": "2Gi",
+  "[MEMORY_RESOURCE_LIMIT]": "1Gi",
+  "[MOD_USERS_URL]": {
+    "name": "MOD_USERS_URL",
+    "value": "http://mod-users.{global:namespace}.svc"
+  },
   "[NAMESPACE]": "folio-modules",
   "[READINESS_PROBE]": {
     "failureThreshold": 3,

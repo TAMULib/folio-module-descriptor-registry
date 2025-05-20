@@ -12,7 +12,31 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]",
+    {
+      "name": "SYSTEM_USER_PASSWORD",
+      "value": "dcb-system-user"
+    },
+    {
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT"
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": ""
+    }
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
 }

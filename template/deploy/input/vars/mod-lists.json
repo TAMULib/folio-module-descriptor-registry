@@ -14,7 +14,6 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
-  ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dmod-lists.list-export.s3-startup-check.enabled=false"
+    "[JAVA_OPTIONS]"
+  ]
 }

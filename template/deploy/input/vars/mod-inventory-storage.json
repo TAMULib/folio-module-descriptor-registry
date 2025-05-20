@@ -6,10 +6,6 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]",
-    {
-      "name": "REPLICATION_FACTOR",
-      "value": "3"
-    }
+    "[JAVA_OPTIONS]"
   ]
 }

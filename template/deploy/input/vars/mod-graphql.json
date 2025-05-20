@@ -2,15 +2,9 @@
   "[CONTAINER_PORT]": 3001,
   "[ENV_FROM]": [
     "[ENV_FROM_GLOBAL]",
-    "[ENV_FROM_KONG_CONNECT]",
-    {
-      "secretRef": {
-        "name": "mod-graphql",
-        "optional": true
-      }
-    }
+    "[ENV_FROM_KONG_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]"
+    "[JAVA_OPTIONS]"
   ]
 }

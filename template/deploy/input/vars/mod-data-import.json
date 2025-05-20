@@ -6,7 +6,7 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS_MAP]",
+    "[JAVA_OPTIONS]",
     {
       "name": "data.import.storage.type",
       "value": "LOCAL_STORAGE"
@@ -19,5 +19,6 @@
       "name": "file.processing.buffer.chunk.size",
       "value": "10"
     }
-  ]
+  ],
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
 }
