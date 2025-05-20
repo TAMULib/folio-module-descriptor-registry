@@ -5,7 +5,8 @@
     "labels": {
       "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch---{name:}"
     },
-    "name": "{name:}"
+    "name": "{name:}",
+    "namespace": "[NAMESPACE]"
   },
   "spec": {
     "replicas": 1,
@@ -20,7 +21,8 @@
         "labels": {
           "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch---{name:}",
           "app": "{name:}"
-        }
+        },
+        "namespace": "[NAMESPACE]"
       },
       "spec": {
         "containers": [
