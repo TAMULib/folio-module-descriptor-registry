@@ -1,24 +1,12 @@
 {
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": true
-      }
-    },
-    {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    }
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]"
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dsrs.record.matching.fallback-query.enable=true",
-  "[MEMORY_RESOURCE]": "6Gi"
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ],
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dsrs.record.matching.fallback-query.enable=true"
 }

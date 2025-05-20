@@ -1,4 +1,11 @@
 {
+  "[CONTAINER_IMAGE]": "folioci/{name:}:{version:}",
+  "[CONTAINER_IMAGE_PULL_POLICY]": "Always",
+  "[CONTAINER_IMAGE_PULL_SECRETS]": [
+    {
+      "name": "docker"
+    }
+  ],
   "[CONTAINER_PORT]": 8081,
   "[CONTAINER_PORTS]": [
     {
@@ -7,34 +14,73 @@
       "protocol": "TCP"
     }
   ],
-  "[CPU_RESOURCE]": "500m",
-  "[DOCKER_IMAGE]": "folioorg/{name:}:{version:}",
+  "[CPU_RESOURCE_LIMIT]": "500m",
+  "[CPU_RESOURCE_REQUEST]": "1m",
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    }
+    "[ENV_FROM_GLOBAL]"
   ],
+  "[ENV_FROM_DB_CONNECT]": {
+    "configMapRef": {
+      "name": "db-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_DB_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "db-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_GLOBAL]": {
+    "configMapRef": {
+      "name": "folio-modules-global",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KAFKA_CONNECT]": {
+    "configMapRef": {
+      "name": "kafka-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KEYCLOAK_CONNECT]": {
+    "configMapRef": {
+      "name": "keycloak-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KONG_CONNECT]": {
+    "configMapRef": {
+      "name": "kong-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_MINIO_CONNECT]": {
+    "configMapRef": {
+      "name": "minio-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_MINIO_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "minio-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_VAULT_CONNECT]": {
+    "configMapRef": {
+      "name": "vault-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_VAULT_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "vault-connect",
+      "optional": true
+    }
+  },
   "[ENVIRONMENT]": [
-    "[DB_HOST_MAP]",
-    "[DB_PORT_MAP]",
-    "[DB_USERNAME_MAP]",
-    "[DB_PASSWORD_MAP]",
-    "[DB_DATABASE_MAP]",
-    "[DB_QUERYTIMEOUT_MAP]",
-    "[DB_CHARSET_MAP]",
-    "[DB_MAXPOOLSIZE_MAP]",
-    "[JAVA_OPTIONS_MAP]",
-    "[KAFKA_HOST_MAP]",
-    "[KAFKA_PORT_MAP]"
+    "[JAVA_OPTIONS_MAP]"
   ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true",
   "[JAVA_OPTIONS_MAP]": {
@@ -53,7 +99,8 @@
     "successThreshold": 1,
     "timeoutSeconds": 5
   },
-  "[MEMORY_RESOURCE]": "1Gi",
+  "[MEMORY_RESOURCE_REQUEST]": "128Mi",
+  "[MEMORY_RESOURCE_LIMIT]": "2Gi",
   "[NAMESPACE]": "folio-modules",
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
@@ -68,9 +115,15 @@
     "timeoutSeconds": 5
   },
   "[RESOURCES]": {
-    "limits": {
-      "cpu": "[CPU_RESOURCE]",
-      "memory": "[MEMORY_RESOURCE]"
-    }
+    "limits": "[RESOURCES_LIMITS]",
+    "requests": "[RESOURCES_REQUESTS]"
+  },
+  "[RESOURCES_LIMITS]": {
+    "cpu": "[CPU_RESOURCE_LIMIT]",
+    "memory": "[MEMORY_RESOURCE_LIMIT]"
+  },
+  "[RESOURCES_REQUESTS]": {
+    "cpu": "[CPU_RESOURCE_REQUEST]",
+    "memory": "[MEMORY_RESOURCE_REQUEST]"
   }
 }

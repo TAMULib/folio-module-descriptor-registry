@@ -1,5 +1,11 @@
 {
-  "[CPU_RESOURCE]": "1",
-  "[JAVA_OPTIONS]": "-Djwt.signing.key=WrongElectricDonkeyPaperclip -XX:MaxRAMPercentage=66.0 -Dcache.permissions=true -Dlog.level=warn -Dperm.lookup.timeout=10 -Duser.cache.seconds=60 -Duser.cache.purge.seconds=43200 -Dsys.perm.cache.seconds=259200 -Dport=8081 -Dlog4j2.formatMsgNoLookups=true -Dtoken.expiration.seconds=accessToken:86400,refreshToken:604800",
-  "[MEMORY_RESOURCE]": "2Gi"
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ],
+  "[JAVA_OPTIONS]": "-Djwt.signing.key=WrongElectricDonkeyPaperclip -XX:MaxRAMPercentage=66.0 -Dcache.permissions=true -Dlog.level=warn -Dperm.lookup.timeout=10 -Duser.cache.seconds=60 -Duser.cache.purge.seconds=43200 -Dsys.perm.cache.seconds=259200 -Dport=8081 -Dlog4j2.formatMsgNoLookups=true -Dtoken.expiration.seconds=accessToken:86400,refreshToken:604800"
 }

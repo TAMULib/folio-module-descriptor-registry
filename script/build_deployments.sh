@@ -515,9 +515,9 @@ build_depls_load_environment() {
     return
   fi
 
-  build_depls_verify_directory "input path" ${input_path}
-  build_depls_verify_directory "'main' input path" ${input_path_main}
-  build_depls_verify_directory "'specific' input path" ${input_path_specific}
+  build_depls_verify_directory "input path" ${input_path} create
+  build_depls_verify_directory "'main' input path" ${input_path_main} create
+  build_depls_verify_directory "'specific' input path" ${input_path_specific} create
   build_depls_verify_directory "output path" ${output_path} create
   build_depls_verify_directory "'YAML' output path" ${output_path_yaml} create
   build_depls_verify_directory "'JSON' output path" ${output_path_json} create

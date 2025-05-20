@@ -1,5 +1,11 @@
 {
-  "[CPU_RESOURCE]": "4000m",
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx2160m -Dlog4j2.formatMsgNoLookups=true",
-  "[MEMORY_RESOURCE]": "8Gi"
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ],
+  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx2160m -Dlog4j2.formatMsgNoLookups=true"
 }

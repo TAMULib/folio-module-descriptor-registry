@@ -1,5 +1,12 @@
 {
   "[CONTAINER_PORT]": 8080,
-  "[JAVA_OPTIONS]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true",
-  "[MEMORY_RESOURCE]": "4Gi"
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ],
+  "[JAVA_OPTIONS]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true"
 }

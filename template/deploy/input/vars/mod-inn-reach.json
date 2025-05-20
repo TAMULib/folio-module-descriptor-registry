@@ -1,11 +1,9 @@
 {
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": true
-      }
-    },
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
     {
       "configMapRef": {
         "name": "db-connect",
@@ -18,18 +16,16 @@
         "optional": true
       }
     },
-    {
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": true
-      }
-    },
+    "[ENV_FROM_KONG_CONNECT]",
     {
       "secretRef": {
         "name": "mod-inn-reach",
         "optional": true
       }
     }
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
   ],
   "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
 }

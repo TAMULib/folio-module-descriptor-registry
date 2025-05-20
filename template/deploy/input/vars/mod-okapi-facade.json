@@ -1,24 +1,16 @@
 {
-  "[CPU_RESOURCE]": "4000m",
   "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
     {
       "configMapRef": {
         "name": "mgr-connect",
         "optional": true
       }
-    },
-    {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "db-connect",
-        "optional": true
-      }
     }
   ],
-  "[MEMORY_RESOURCE]": "8Gi"
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ]
 }

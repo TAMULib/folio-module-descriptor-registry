@@ -1,46 +1,15 @@
 {
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": true
-      }
-    },
-    {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "db-connect",
-        "optional": true
-      }
-    },
-    {
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": true
-      }
-    },
-    {
-      "configMapRef": {
-        "name": "keycloak-connect",
-        "optional": true
-      }
-    },
-    {
-      "configMapRef": {
-        "name": "vault-connect",
-        "optional": true
-      }
-    },
-    {
-      "secretRef": {
-        "name": "vault-connect",
-        "optional": true
-      }
-    }
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KEYCLOAK_CONNECT]",
+    "[ENV_FROM_KONG_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT_SECRET]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
   ]
 }

@@ -1,12 +1,10 @@
 {
   "[CONTAINER_PORT]": 9801,
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": true
-      }
-    }
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]"
   ],
-  "[MEMORY_RESOURCE]": "2Gi"
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ]
 }

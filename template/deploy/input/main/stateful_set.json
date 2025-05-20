@@ -27,18 +27,14 @@
           {
             "env": "[ENVIRONMENT]",
             "envFrom": "[ENV_FROM]",
-            "image": "[DOCKER_IMAGE]",
-            "imagePullPolicy": "Always",
+            "image": "[CONTAINER_IMAGE]",
+            "imagePullPolicy": "[CONTAINER_IMAGE_PULL_POLICY]",
+            "imagePullSecrets": "[CONTAINER_IMAGE_PULL_SECRETS]",
             "livenessProbe": "[LIVENESS_PROBE]",
             "name": "{name:}",
             "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",
-            "resources": {
-              "limits": {
-                "cpu": "[CPU_RESOURCE]",
-                "memory": "[MEMORY_RESOURCE]"
-              }
-            }
+            "resources": "[RESOURCES]"
           }
         ],
         "volumes": "[VOLUMES]"

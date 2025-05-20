@@ -1,12 +1,8 @@
 {
   "[CONTAINER_PORT]": 3001,
   "[ENV_FROM]": [
-    {
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": true
-      }
-    },
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KONG_CONNECT]",
     {
       "secretRef": {
         "name": "mod-graphql",
@@ -14,5 +10,7 @@
       }
     }
   ],
-  "[MEMORY_RESOURCE]": "2Gi"
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS_MAP]"
+  ]
 }
