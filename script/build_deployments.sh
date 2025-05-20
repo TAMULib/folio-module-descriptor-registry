@@ -232,9 +232,9 @@ build_depls_expand() {
 
     build_depls_expand_file_load_template
 
-    build_depls_load_merge launches "${input_path_vars}" "${json_vars_main}"
+    build_depls_load_merge launches "${input_path_launches}" "${json_vars_main}"
 
-    build_depls_load_merge specific "${input_path_launches}" "${json_vars_launches}"
+    build_depls_load_merge specific "${input_path_vars}" "${json_vars_launches}"
 
     while [[ ${result} -eq 0 ]] ; do
       build_depls_expand_file
@@ -718,8 +718,6 @@ build_depls_load_merge() {
   local with=${3}
 
   if [[ -f ${file} ]] ; then
-    local vars_file=${file}
-
     build_depls_print_debug "Combining loaded template variables data with ${target} variables for ${what} from ${1}"
 
     build_depls_verify_json "'${target} vars' input file" ${file}
