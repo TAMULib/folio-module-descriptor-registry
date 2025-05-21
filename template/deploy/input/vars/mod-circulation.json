@@ -6,6 +6,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "SCHEDULED_ANONYMIZATION_NUMBER_OF_LOANS_TO_CHECK",
       "value": "50000"
@@ -18,5 +20,7 @@
       "name": "REPLICATION_FACTOR",
       "value": "1"
     }
-  ]
+  ],
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }

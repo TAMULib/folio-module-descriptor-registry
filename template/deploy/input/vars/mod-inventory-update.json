@@ -6,6 +6,10 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
-  ]
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
+  ],
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }

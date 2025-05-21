@@ -7,7 +7,11 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dorg.folio.metadata.inventory.storage.type=okapi"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dorg.folio.metadata.inventory.storage.type=okapi -Dlog4j2.formatMsgNoLookups=true",
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }

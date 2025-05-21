@@ -80,9 +80,11 @@
     }
   },
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0",
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true",
   "[JAVA_OPTIONS]": {
     "name": "JAVA_OPTIONS",
     "value": "[JAVA_OPTIONS_VALUE]"
@@ -104,13 +106,20 @@
   "[LIVENESS_PROBE_INITIAL_PERIOD]": 60,
   "[LIVENESS_PROBE_SUCCESS_THRESHOLD]": 1,
   "[LIVENESS_PROBE_TIMEOUT]": 5,
-  "[MEMORY_RESOURCE_REQUEST]": "128Mi",
-  "[MEMORY_RESOURCE_LIMIT]": "1Gi",
+  "[MEMORY_RESOURCE_REQUEST]": "64Mi",
+  "[MEMORY_RESOURCE_LIMIT]": "4Gi",
   "[MOD_USERS_URL]": {
     "name": "MOD_USERS_URL",
     "value": "http://mod-users.{global:namespace}.svc"
   },
-  "[NAMESPACE]": "folio-modules",
+  "[MODULE_NAME]": {
+    "name": "MODULE_NAME",
+    "value": "{name:}"
+  },
+  "[MODULE_VERSION]": {
+    "name": "MODULE_VERSION",
+    "value": "{version:}"
+  },
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
@@ -128,11 +137,11 @@
     "requests": "[RESOURCES_REQUESTS]"
   },
   "[RESOURCES_LIMITS]": {
-    "cpu": "[CPU_RESOURCE_LIMIT]",
-    "memory": "[MEMORY_RESOURCE_LIMIT]"
+    "cpu": "[CPU_RESOURCE_LIMIT]"
   },
   "[RESOURCES_REQUESTS]": {
     "cpu": "[CPU_RESOURCE_REQUEST]",
     "memory": "[MEMORY_RESOURCE_REQUEST]"
-  }
+  },
+  "[WORKLOAD]": "folio_module"
 }

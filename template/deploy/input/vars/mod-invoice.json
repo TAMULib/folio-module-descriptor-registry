@@ -4,6 +4,8 @@
     "[ENV_FROM_KAFKA_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ]
 }

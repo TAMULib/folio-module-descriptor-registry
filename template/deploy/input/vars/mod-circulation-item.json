@@ -7,6 +7,8 @@
     "[ENV_FROM_KONG_CONNECT]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ]
 }

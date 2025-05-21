@@ -8,6 +8,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "CONFIG",
       "value": "{\"okapiUrl\": \"http://kong.{global:namespace}.svc:8000\"}"

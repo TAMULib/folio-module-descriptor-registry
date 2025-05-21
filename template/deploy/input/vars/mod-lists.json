@@ -14,6 +14,8 @@
     }
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ]
 }

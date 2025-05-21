@@ -12,6 +12,8 @@
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
     "[MOD_USERS_URL]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "KAFKA_SYS_USER_TOPIC_PATTERN",
       "value": "(folio\\.)(.*\\.)mgr-tenant-entitlements.system-user"

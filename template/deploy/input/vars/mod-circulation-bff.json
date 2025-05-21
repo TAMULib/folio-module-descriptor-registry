@@ -5,6 +5,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "SYSTEM_USER_USERNAME",
       "value": "mod-circulation-bff"

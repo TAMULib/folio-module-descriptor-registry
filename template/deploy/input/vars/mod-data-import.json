@@ -7,6 +7,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "data.import.storage.type",
       "value": "LOCAL_STORAGE"
@@ -20,5 +22,5 @@
       "value": "10"
     }
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Djava.util.logging.config.file=vertx-default-jul-logging.properties -Dlog4j2.formatMsgNoLookups=true"
 }

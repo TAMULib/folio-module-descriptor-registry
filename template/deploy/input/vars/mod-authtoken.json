@@ -5,7 +5,9 @@
     "[ENV_FROM_GLOBAL]"
   ],
   "[ENVIRONMENT]": [
-    "[JAVA_OPTIONS]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=66.0 -Dcache.permissions=true"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=66.0 -Dcache.permissions=true -Dlog4j2.formatMsgNoLookups=true"
 }

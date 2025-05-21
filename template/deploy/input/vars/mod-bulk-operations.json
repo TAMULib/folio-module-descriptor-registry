@@ -9,6 +9,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "DB_QUERYTIMEOUT",
       "value": "60000"

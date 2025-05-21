@@ -6,6 +6,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "CLEAN_UP_ERROR_LOGS_INTERVAL",
       "value": "30"

@@ -2,11 +2,8 @@
   "apiVersion": "apps/v1",
   "kind": "StatefulSet",
   "metadata": {
-    "labels": {
-      "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
-    },
     "name": "{name:}",
-    "namespace": "[NAMESPACE]"
+    "namespace": "{global:namespace}"
   },
   "spec": {
     "replicas": 1,
@@ -19,10 +16,11 @@
     "template": {
       "metadata": {
         "labels": {
-          "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}",
-          "app": "{name:}"
+          "app": "{name:}",
+          "workload": "[WORKLOAD]",
+          "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
         },
-        "namespace": "[NAMESPACE]"
+        "namespace": "{global:namespace}"
       },
       "spec": {
         "containers": [

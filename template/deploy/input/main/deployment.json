@@ -6,7 +6,7 @@
       "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
     },
     "name": "{name:}",
-    "namespace": "[NAMESPACE]"
+    "namespace": "{global:namespace}"
   },
   "spec": {
     "replicas": 1,
@@ -21,10 +21,11 @@
     "template": {
       "metadata": {
         "labels": {
-          "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}",
-          "app": "{name:}"
+          "app": "{name:}",
+          "workload": "[WORKLOAD]",
+          "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
         },
-        "namespace": "[NAMESPACE]"
+        "namespace": "{global:namespace}"
       },
       "spec": {
         "containers": [

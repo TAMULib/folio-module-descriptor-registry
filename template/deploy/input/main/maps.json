@@ -4,11 +4,11 @@
   "mod-di-converter-storage": "stateful_set",
   "mod-finance-storage": "stateful_set",
   "mod-inventory-storage": "stateful_set",
-  "mod-licenses": "stateful_set",
-  "mod-orders-storage": "stateful_set",
-  "mod-source-record-storage": "stateful_set",
-  "mod-organizations-storage": "stateful_set",
   "mod-invoice-storage": "stateful_set",
+  "mod-licenses": "stateful_set",
+  "mod-lists": "stateful_set",
+  "mod-orders-storage": "stateful_set",
+  "mod-organizations-storage": "stateful_set",
   "mod-patron-blocks": "stateful_set",
-  "mod-lists": "stateful_set"
+  "mod-source-record-storage": "stateful_set"
 }

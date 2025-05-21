@@ -11,7 +11,9 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
-    "[MOD_USERS_URL]"
+    "[MOD_USERS_URL]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ]
 }
 

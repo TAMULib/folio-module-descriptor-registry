@@ -16,7 +16,7 @@
       "value": "8080"
     }
   ],
-  "[JAVA_OPTIONS_VALUE]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:+PrintFlagsFinal",
-  "[LIVENESS_PROBE_INITIAL_DELAY]": 180,
-  "[MEMORY_RESOURCE_LIMIT]": "512Mi"
+  "[JAVA_OPTIONS_VALUE]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true",
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }

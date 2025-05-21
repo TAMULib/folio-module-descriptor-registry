@@ -12,6 +12,8 @@
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
     "[MOD_USERS_URL]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "KAFKA_SECURITY_PROTOCOL",
       "value": "PLAINTEXT"

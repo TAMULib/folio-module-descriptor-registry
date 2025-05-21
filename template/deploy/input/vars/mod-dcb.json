@@ -13,6 +13,8 @@
   ],
   "[ENVIRONMENT]": [
     "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
       "name": "SYSTEM_USER_PASSWORD",
       "value": "dcb-system-user"
@@ -38,5 +40,5 @@
       "value": ""
     }
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081 -Dlog4j2.formatMsgNoLookups=true"
 }
