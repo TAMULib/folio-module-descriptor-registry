@@ -1,29 +1,15 @@
 {
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      }
-    }
-  },
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]"
+  ],
   "[ENVIRONMENT]": [
-    {
-      "name": "JAVA_OPTIONS",
-      "value": "[JAVA_OPTIONS]"
-    },
+    "[JAVA_OPTIONS]",
     {
       "name": "REPLICATION_FACTOR",
-      "value": "3"
+      "value": "1"
     }
-  ],
-  "[MEMORY_RESOURCE]": "3Gi"
+  ]
 }

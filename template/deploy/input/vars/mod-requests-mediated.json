@@ -1,26 +1,30 @@
 {
-  "[ENV_FROM]": {
-    "value": {
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KONG_CONNECT]",
+    {
       "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": false
-      },
+        "name": "mod-requests-mediated",
+        "optional": true
+      }
+    },
+    {
       "secretRef": {
         "name": "mod-requests-mediated",
-        "optional": false
+        "optional": true
       }
     }
-  }
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
+    {
+      "name": "SYSTEM_USER_ENABLED",
+      "value": "true"
+    }
+  ]
 }

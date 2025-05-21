@@ -1,3 +1,12 @@
 {
-  "[MEMORY_RESOURCE]": "3Gi"
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
+  ]
 }

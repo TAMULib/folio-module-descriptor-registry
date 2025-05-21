@@ -2,67 +2,42 @@
   "apiVersion": "apps/v1",
   "kind": "StatefulSet",
   "metadata": {
-    "annotations": {
-      "field.cattle.io/creatorId": "null"
-    },
-    "labels": {
-      "cattle.io/creator": "norman",
-      "workload.user.cattle.io/workloadselector": "statefulSet-folio-scratch-{name:}"
-    },
-    "name": "{name:}"
+    "name": "{name:}",
+    "namespace": "{global:namespace}"
   },
   "spec": {
-    "minReadySeconds": 0,
     "replicas": 1,
-    "revisionHistoryLimit": 10,
     "selector": {
       "matchLabels": {
-        "workload.user.cattle.io/workloadselector": "statefulSet-folio-scratch-{name:}"
+        "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
       }
     },
     "serviceName": "{name:}",
     "template": {
       "metadata": {
         "labels": {
+          "app": "{name:}",
           "workload": "[WORKLOAD]",
-          "workload.user.cattle.io/workloadselector": "statefulSet-folio-scratch-{name:}",
-          "app": "{name:}"
-        }
+          "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+        },
+        "namespace": "{global:namespace}"
       },
       "spec": {
         "containers": [
           {
+            "args": "[CONTAINER_ARGS]",
             "env": "[ENVIRONMENT]",
             "envFrom": "[ENV_FROM]",
-            "image": "[DOCKER_IMAGE]",
-            "imagePullPolicy": "Always",
+            "image": "[CONTAINER_IMAGE]",
+            "imagePullPolicy": "[CONTAINER_IMAGE_PULL_POLICY]",
+            "imagePullSecrets": "[CONTAINER_IMAGE_PULL_SECRETS]",
             "livenessProbe": "[LIVENESS_PROBE]",
             "name": "{name:}",
             "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",
-            "resources": {
-              "limits": {
-                "cpu": "[CPU_RESOURCE]",
-                "memory": "[MEMORY_RESOURCE]"
-              }
-            },
-            "securityContext": {
-              "allowPrivilegeEscalation": false,
-              "privileged": false,
-              "procMount": "Default",
-              "readOnlyRootFilesystem": false,
-              "runAsNonRoot": false
-            },
-            "stdin": true,
-            "terminationMessagePath": "/dev/termination-log",
-            "terminationMessagePolicy": "File",
-            "tty": true
+            "resources": "[RESOURCES]"
           }
         ],
-        "dnsPolicy": "ClusterFirst",
-        "restartPolicy": "Always",
-        "schedulerName": "default-scheduler",
-        "securityContext": {},
         "volumes": "[VOLUMES]"
       }
     },

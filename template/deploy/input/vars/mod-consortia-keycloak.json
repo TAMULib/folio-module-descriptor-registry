@@ -1,44 +1,38 @@
 {
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "keycloak-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "vault-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "vault-connect",
-        "optional": false
-      }
-    }
-  },
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KEYCLOAK_CONNECT]",
+    "[ENV_FROM_KONG_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT_SECRET]"
+  ],
   "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MOD_USERS_URL]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
     {
-      "name": "MOD_USERS_URL",
-      "value": "http://mod-users.folio-modules.svc"
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT"
     },
     {
-      "name": "JAVA_OPTIONS",
-      "value": "[JAVA_OPTIONS]"
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": ""
     }
   ]
 }

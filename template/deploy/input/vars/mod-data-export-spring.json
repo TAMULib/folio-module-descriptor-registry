@@ -1,36 +1,22 @@
 {
-  "[CPU_RESOURCE]": "1",
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "kong-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "minio-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "minio-connect",
-        "optional": false
-      },
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KONG_CONNECT]",
+    "[ENV_FROM_MINIO_CONNECT]",
+    "[ENV_FROM_MINIO_CONNECT_SECRET]",
+    {
       "secretRef": {
         "name": "mod-data-export-spring",
-        "optional": false
+        "optional": true
       }
     }
-  },
-  "[MEMORY_RESOURCE]": "4Gi"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
+  ]
 }

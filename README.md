@@ -60,7 +60,8 @@ Theese JSON files are named based on the `name` of the module, such as `mod-conf
 Each of these JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
 These `launches` JSON files are merged with the specific `vars` JSON files and the loaded `vars.json` file.
 
-The `main` sub-directory contains `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `main` sub-directory contains `base.json`, `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
+The `base.json` file is a JSON object containing the base image used to initialize the final manifest.
 The `deployment.json` file is a JSON object used for all deployments being built.
 The `maps.json` file is a JSON file mapping specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
 The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
@@ -81,7 +82,7 @@ The output path, such as `template/deploy/output/`, contains two main sub-direct
 The `json` sub-directory contains the built JSON files for each individual deployment.
 The `yaml` sub-directory contains the built YAML file and is constructed from the individual deployment files found within the `json` sub-directory.
 
-The variable substition and module processing order are as follows:
+The variable substitution and module processing order are as follows:
   1. `deployment.json`, or other file such as `stateful_set.json` as defined by `maps.json`.
   2. `vars.json`.
   3. `launches` JSON file for each module.
@@ -100,11 +101,13 @@ These are of the form `[NAME]` and must be part of a JSON string.
 The substituted value does not have to be a string and can be any valid JSON type.
 The JSON files in the `launches` sub-directory, JSON files in the `vars` sub-directory, and the `vars.json` JSON file are associated with this substitution type.
 
-The second type utilizes the **Module Discovery Descriptor** keys and values.
+The second type utilizes the **Module Discovery Descriptor** keys and values as well as some other special keys and values.
 This **Module Discovery Descriptor** type is key on a combination of special reserved words and module names.
 This operates only on a string matching level using `sed` and cannot safely handle JSON data.
 This type allows for partial replacements, such as `"folioorg/{name:}:{version:}"`.
 This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, and `version`.
+The special key types are `{global:namespace}`.
+The `{global:namespace}` represents the namespace specified by the `BUILD_DEPLOY_NAMESPACE` environment variable.
 The `module` is either not specified (like `{id:}`) to designate using information from the currently processed module.
 This is useful for situations such as where the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
 This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`, such as in the following:
@@ -124,6 +127,7 @@ This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`,
 | `BUILD_DEPLOY_DISCOVERY`    | The path to the **Module Discovery Descriptor** JSON file.
 | `BUILD_DEPLOY_INPUT_PATH`   | The path to the input template directory.
 | `BUILD_DEPLOY_NAMES`        | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to. This does support names not defined in the **Module Discovery Descriptor** file.
+| `BUILD_DEPLOY_NAMESPACE`    | The Kubernetes namespace to use when building (defaults to `folio-modules`).
 | `BUILD_DEPLOY_OUTPUT_FILE`  | The name of the output file without the file extension (not the full path), such as `fleet`.
 | `BUILD_DEPLOY_OUTPUT_FORCE` | If non-empty, then allow writing over existing output files without failing on error.
 | `BUILD_DEPLOY_OUTPUT_PATH`  | The path to the output directory.

@@ -217,6 +217,7 @@ build_launches_build_launch_container_port_process() {
 
   local -a ports_name=
   local -a ports_proto=
+  local -a ports_proto_lower=
   local -a ports_number=
 
   local -i i=0
@@ -275,7 +276,7 @@ build_launches_build_launch_container_port_process_name() {
 
   if [[ ${result} -ne 0 || ${ports_proto[${i}]} == "" || ${ports_number[${i}]} == "" ]] ; then return ; fi
 
-  ports_name[${i}]="${ports_number[${i}]}_${ports_proto[${i}]}_${i}"
+  ports_name[${i}]="${ports_number[${i}]}-${ports_proto_lower[${i}]}-${i}"
 }
 
 build_launches_build_launch_container_port_process_reduce() {
@@ -306,12 +307,16 @@ build_launches_build_launch_container_port_process_reduce() {
   else
     if [[ ${data} == "" || ${data} == "null" ]] ; then
       ports_proto[${i}]=
+      ports_proto_lower[${i}]=
     elif [[ $(echo ${data} | grep -shoi "tcp") != "" ]] ; then
       ports_proto[${i}]="TCP"
+      ports_proto_lower[${i}]="tcp"
     elif [[ $(echo ${data} | grep -shoi "udp") != "" ]] ; then
       ports_proto[${i}]="UDP"
+      ports_proto_lower[${i}]="udp"
     else
       ports_proto[${i}]=
+      ports_proto_lower[${i}]=
 
       build_launches_print_debug "Unknown protocol ${data} for ${target} at ${i} from loaded field value '${value}' of ${input_file}"
     fi

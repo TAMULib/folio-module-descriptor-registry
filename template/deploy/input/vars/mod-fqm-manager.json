@@ -1,5 +1,16 @@
 {
-  "[CPU_RESOURCE]": "1",
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true -Dmod-fqm-manager.entity-type-cache-timeout-seconds=86400",
-  "[MEMORY_RESOURCE]": "4Gi"
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
+    {
+      "name": "IS_EUREKA",
+      "value": "true"
+    }
+  ]
 }

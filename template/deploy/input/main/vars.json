@@ -1,4 +1,11 @@
 {
+  "[CONTAINER_IMAGE]": "folioci/{name:}:{version:}",
+  "[CONTAINER_IMAGE_PULL_POLICY]": "Always",
+  "[CONTAINER_IMAGE_PULL_SECRETS]": [
+    {
+      "name": "docker"
+    }
+  ],
   "[CONTAINER_PORT]": 8081,
   "[CONTAINER_PORTS]": [
     {
@@ -7,62 +14,134 @@
       "protocol": "TCP"
     }
   ],
-  "[CPU_RESOURCE]": "500m",
-  "[DOCKER_IMAGE]": "folioorg/{name:}:{version:}",
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      }
+  "[CPU_RESOURCE_LIMIT]": "500m",
+  "[CPU_RESOURCE_REQUEST]": "1m",
+  "[ENV_FROM]": [
+    "[ENV_FROM_GLOBAL]"
+  ],
+  "[ENV_FROM_DB_CONNECT]": {
+    "configMapRef": {
+      "name": "db-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_DB_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "db-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_GLOBAL]": {
+    "configMapRef": {
+      "name": "folio-modules-global",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KAFKA_CONNECT]": {
+    "configMapRef": {
+      "name": "kafka-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KEYCLOAK_CONNECT]": {
+    "configMapRef": {
+      "name": "keycloak-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_KONG_CONNECT]": {
+    "configMapRef": {
+      "name": "kong-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_MINIO_CONNECT]": {
+    "configMapRef": {
+      "name": "minio-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_MINIO_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "minio-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_VAULT_CONNECT]": {
+    "configMapRef": {
+      "name": "vault-connect",
+      "optional": true
+    }
+  },
+  "[ENV_FROM_VAULT_CONNECT_SECRET]": {
+    "secretRef": {
+      "name": "vault-connect",
+      "optional": true
     }
   },
   "[ENVIRONMENT]": [
-    "[DB_HOST_MAP]",
-    "[DB_PORT_MAP]",
-    "[DB_USERNAME_MAP]",
-    "[DB_PASSWORD_MAP]",
-    "[DB_DATABASE_MAP]",
-    "[DB_QUERYTIMEOUT_MAP]",
-    "[DB_CHARSET_MAP]",
-    "[DB_MAXPOOLSIZE_MAP]",
-    "[JAVA_OPTIONS_MAP]",
-    "[KAFKA_HOST_MAP]",
-    "[KAFKA_PORT_MAP]"
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]"
   ],
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=66.0 -Dlog4j2.formatMsgNoLookups=true",
-  "[JAVA_OPTIONS_MAP]": {
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true",
+  "[JAVA_OPTIONS]": {
     "name": "JAVA_OPTIONS",
-    "value": "[JAVA_OPTIONS]"
+    "value": "[JAVA_OPTIONS_VALUE]"
   },
   "[LIVENESS_PROBE]": {
-    "failureThreshold": 3,
+    "failureThreshold": "[LIVENESS_PROBE_FAILURE_THRESHOLD]",
     "httpGet": {
       "path": "/admin/health",
-      "port": "8081",
+      "port": 8081,
       "scheme": "HTTP"
     },
-    "initialDelaySeconds": 45,
-    "periodSeconds": 60,
-    "successThreshold": 1,
-    "timeoutSeconds": 5
+    "initialDelaySeconds": "[LIVENESS_PROBE_INITIAL_DELAY]",
+    "periodSeconds": "[LIVENESS_PROBE_INITIAL_PERIOD]",
+    "successThreshold": "[LIVENESS_PROBE_SUCCESS_THRESHOLD]",
+    "timeoutSeconds": "[LIVENESS_PROBE_TIMEOUT]"
   },
-  "[MEMORY_RESOURCE]": "1Gi",
+  "[LIVENESS_PROBE_FAILURE_THRESHOLD]": 3,
+  "[LIVENESS_PROBE_INITIAL_DELAY]": 45,
+  "[LIVENESS_PROBE_INITIAL_PERIOD]": 60,
+  "[LIVENESS_PROBE_SUCCESS_THRESHOLD]": 1,
+  "[LIVENESS_PROBE_TIMEOUT]": 5,
+  "[MEMORY_RESOURCE_REQUEST]": "64Mi",
+  "[MEMORY_RESOURCE_LIMIT]": "4Gi",
+  "[MOD_USERS_URL]": {
+    "name": "MOD_USERS_URL",
+    "value": "http://mod-users.{global:namespace}.svc"
+  },
+  "[MODULE_NAME]": {
+    "name": "MODULE_NAME",
+    "value": "{name:}"
+  },
+  "[MODULE_VERSION]": {
+    "name": "MODULE_VERSION",
+    "value": "{version:}"
+  },
   "[READINESS_PROBE]": {
     "failureThreshold": 3,
     "httpGet": {
       "path": "/admin/health",
-      "port": "8081",
+      "port": 8081,
       "scheme": "HTTP"
     },
     "initialDelaySeconds": 45,
     "periodSeconds": 60,
     "successThreshold": 1,
     "timeoutSeconds": 5
+  },
+  "[RESOURCES]": {
+    "limits": "[RESOURCES_LIMITS]",
+    "requests": "[RESOURCES_REQUESTS]"
+  },
+  "[RESOURCES_LIMITS]": {
+    "cpu": "[CPU_RESOURCE_LIMIT]"
+  },
+  "[RESOURCES_REQUESTS]": {
+    "cpu": "[CPU_RESOURCE_REQUEST]",
+    "memory": "[MEMORY_RESOURCE_REQUEST]"
   },
   "[WORKLOAD]": "folio_module"
 }

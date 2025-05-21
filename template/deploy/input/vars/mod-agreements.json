@@ -1,6 +1,12 @@
 {
   "[CONTAINER_PORT]": 8080,
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]"
+  ],
   "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
     {
       "name": "GRAILS_SERVER_HOST",
       "value": "{name:}"
@@ -8,12 +14,9 @@
     {
       "name": "GRAILS_SERVER_PORT",
       "value": "8080"
-    },
-    {
-      "name": "JAVA_OPTIONS",
-      "value": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true"
     }
   ],
-  "[JAVA_OPTIONS]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true",
-  "[MEMORY_RESOURCE]": "3Gi"
+  "[JAVA_OPTIONS_VALUE]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true",
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }

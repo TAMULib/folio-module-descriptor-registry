@@ -1,23 +1,44 @@
 {
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      },
-      "configMapRef": {
-        "name": "db-connect",
-        "optional": false
-      },
-      "secretRef": {
-        "name": "db-connect",
-        "optional": false
-      },
+  "[ENV_FROM]": [
+    "[ENV_FROM_DB_CONNECT]",
+    "[ENV_FROM_DB_CONNECT_SECRET]",
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    {
       "secretRef": {
         "name": "mod-dcb",
-        "optional": false
+        "optional": true
       }
     }
-  },
-  "[JAVA_OPTIONS]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
+    {
+      "name": "SYSTEM_USER_PASSWORD",
+      "value": "dcb-system-user"
+    },
+    {
+      "name": "KAFKA_SECURITY_PROTOCOL",
+      "value": "PLAINTEXT"
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_KEYSTORE_PASSWORD",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_LOCATION",
+      "value": ""
+    },
+    {
+      "name": "KAFKA_SSL_TRUSTSTORE_PASSWORD",
+      "value": ""
+    }
+  ],
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081 -Dlog4j2.formatMsgNoLookups=true"
 }

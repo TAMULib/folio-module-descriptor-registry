@@ -1,12 +1,26 @@
 {
   "[CONTAINER_PORT]": 9801,
-  "[ENV_FROM]": {
-    "value": {
-      "configMapRef": {
-        "name": "kafka-connect",
-        "optional": false
-      }
+  "[ENV_FROM]": [
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]"
+  ],
+  "[ENVIRONMENT]": [
+    "[JAVA_OPTIONS]",
+    "[MODULE_NAME]",
+    "[MODULE_VERSION]",
+    {
+      "name": "SCHEDULED_ANONYMIZATION_NUMBER_OF_LOANS_TO_CHECK",
+      "value": "50000"
+    },
+    {
+      "name": "ENABLE_FLOATING_COLLECTIONS",
+      "value": "true"
+    },
+    {
+      "name": "REPLICATION_FACTOR",
+      "value": "1"
     }
-  },
-  "[MEMORY_RESOURCE]": "2Gi"
+  ],
+  "[LIVENESS_PROBE]": null,
+  "[READINESS_PROBE]": null
 }
