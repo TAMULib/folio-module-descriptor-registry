@@ -1,0 +1,48 @@
+{
+  "id" : "edge-sip2-3.5.0-SNAPSHOT.184",
+  "name" : "SIP2 Module",
+  "requires" : [ {
+    "id" : "login",
+    "version" : "7.3"
+  }, {
+    "id" : "circulation",
+    "version" : "14.6"
+  }, {
+    "id" : "users",
+    "version" : "16.4"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "feesfines",
+    "version" : "19.1"
+  }, {
+    "id" : "search",
+    "version" : "1.3"
+  } ],
+  "provides" : [ ],
+  "permissionSets" : [ {
+    "permissionName" : "edge-sip.all",
+    "displayName" : "All permission associated with edge-sip2",
+    "description" : "All permissions edge-sip scope",
+    "subPermissions" : [ "circulation.check-in-by-barcode.post", "circulation.check-out-by-barcode.post", "circulation.requests.collection.get", "search.instances.collection.get", "search.instances.ids.collection.get", "circulation.loans.collection.get", "configuration.entries.collection.get", "configuration.entries.item.get", "manualblocks.collection.get", "manualblocks.item.get", "accounts.collection.get", "accounts.item.get", "users.collection.get", "users.item.get", "patron-blocks.automated-patron-blocks.collection.get", "inventory-storage.holdings.item.get", "inventory.instances.item.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/edge-sip2:3.5.0-SNAPSHOT.184",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 268435456,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
