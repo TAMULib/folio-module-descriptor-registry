@@ -40,6 +40,11 @@ main() {
   local discovery_names=
   local field="name"
   local maps_name="maps"
+  local match_global_namespace="{global:namespace}"
+  local match_id="{id:${match}}"
+  local match_location="{location:${match}}"
+  local match_name="{name:${match}}"
+  local match_version="{version:${match}}"
   local input_base="base"
   local input_name="deployment"
   local input_path="template/deploy/input/"
@@ -51,8 +56,6 @@ main() {
   local jq_merge_join=
   local jq_merge_replace=
   local jq_names=
-  local jq_select_by=
-  local jq_select_map=
   local jq_select_names=
   local json_vars=
   local json_vars_launches=
@@ -72,18 +75,22 @@ main() {
   local p_d="DEBUG: "
   local p_e="ERROR: "
 
+  local -A discovery_data_location=
+  local -A discovery_data_id=
+  local -A discovery_data_name=
+  local -A discovery_data_version=
+
   local -i do_combine=1
   local -i do_expand=1
   local -i result=0
-  local -i passes=3
+  local -i passes=4
 
   build_depls_load_environment
-
   build_depls_load_instructions
-
   build_depls_load_json_sources
   build_depls_load_json_discovery
   build_depls_load_json_discovery_names
+  build_depls_load_variables
 
   build_depls_expand
 
@@ -231,6 +238,8 @@ build_depls_expand() {
     output=${output_path_json}${name}.json
     what=
 
+    build_depls_print_debug "Expanding ${name}: ${output}"
+
     build_depls_expand_file_load_template
 
     build_depls_load_merge launches "${input_path_launches}" "${json_vars_main}"
@@ -238,38 +247,19 @@ build_depls_expand() {
     build_depls_load_merge specific "${input_path_vars}" "${json_vars_launches}"
 
     while [[ ${result} -eq 0 ]] ; do
-      build_depls_expand_file
-      build_depls_expand_file_regex
+      build_depls_expand_variables
+      build_depls_expand_replace
 
       let pass++
 
-      if [[ ${pass} -lt ${passes} ]] ; then
-        build_depls_expand_file_load_generated
-      else
-        break
-      fi
-
       if [[ ${result} -ne 0 ]] ; then return ; fi
+      if [[ ${pass} -ge ${passes} ]] ; then break ; fi
     done
+
+    build_depls_expand_write
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
-}
-
-build_depls_expand_file() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  build_depls_print_debug "Expanding ${what} (pass ${pass}) into: ${output}"
-
-  # Prevent jq from printing JSON if ${null} exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output}
-  else
-    echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 1> ${output} 2> ${null}
-  fi
-
-  build_depls_handle_result "Failed to expand ${what} into ${output}"
 }
 
 build_depls_expand_file_load_template() {
@@ -334,16 +324,8 @@ build_depls_expand_file_load_template_maps() {
   local alt_name=
   local maps_path=${input_path_main}${maps_name}.json
 
-  build_depls_load_instructions_select_map ${name}
-
-  # Prevent jq from printing JSON if ${null} exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    alt_name=$(jq -r -M "${jq_select_map}" ${maps_path})
-  else
-    alt_name=$(jq -r -M "${jq_select_map}" ${maps_path} 2> ${null})
-  fi
-
-  build_depls_handle_result "Failed to load and parse maps file: ${maps_path}"
+  build_depls_expand_file_load_template_maps_exact
+  build_depls_expand_file_load_template_maps_pcre
 
   if [[ ${result} -eq 0 && ${alt_name} != "" ]] ; then
     template=${input_path_main}${alt_name}.json
@@ -354,6 +336,123 @@ build_depls_expand_file_load_template_maps() {
       let result=1
     fi
   fi
+}
+
+build_depls_expand_file_load_template_maps_exact() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_select=".exact.\"${name}\" | select(. != \"\" and . != null)"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    alt_name=$(jq -r -M "${jq_select}" ${maps_path})
+  else
+    alt_name=$(jq -r -M "${jq_select}" ${maps_path} 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load and parse exact maps file: ${maps_path}"
+}
+
+build_depls_expand_file_load_template_maps_pcre() {
+
+  # This expect the exact match to be selected first and if it is (via ${alt_name}), then the PCRE is not used.
+  if [[ ${result} -ne 0 || ${alt_name} != "" ]] ; then return ; fi
+
+  local pcre_json=
+  local pcre_query=
+  local pcre_value=
+  local pcre_total=
+
+  local -i i=0
+  local -i matched=0
+
+  build_depls_expand_file_load_template_maps_pcre_load_map
+  build_depls_expand_file_load_template_maps_pcre_load_total
+
+  while [[ ${i} -lt ${pcre_total} ]] ; do
+    build_depls_expand_file_load_template_maps_pcre_load_query
+    build_depls_expand_file_load_template_maps_pcre_load_value
+    build_depls_expand_file_load_template_maps_pcre_match_query
+
+    if [[ ${result} -ne 0 || ${matched} -ne 0 ]] ; then return ; fi
+  done
+}
+
+build_depls_expand_file_load_template_maps_pcre_load_query() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_key_at_index="keys | .[${i}]"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    pcre_query=$(echo "${pcre_json}" | jq -r -M "${jq_key_at_index}")
+  else
+    pcre_query=$(echo "${pcre_json}" | jq -r -M "${jq_key_at_index}" 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load PCRE key index ${i} from maps file: ${maps_path}"
+}
+
+build_depls_expand_file_load_template_maps_pcre_load_total() {
+
+  if [[ ${result} -ne 0 || ${pcre_json} == "" ]] ; then return ; fi
+
+  local jq_length="length"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    let pcre_total=$(echo "${pcre_json}" | jq -r -M "${jq_length}")
+  else
+    let pcre_total=$(echo "${pcre_json}" | jq -r -M "${jq_length}" 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load and parse PCRE total from maps file: ${maps_path}"
+}
+
+build_depls_expand_file_load_template_maps_pcre_load_value() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_value_at_key=".[\"${pcre_query}\"]"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    pcre_value=$(echo "${pcre_json}" | jq -r -M "${jq_value_at_key}")
+  else
+    pcre_value=$(echo "${pcre_json}" | jq -r -M "${jq_value_at_key}" 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load value for PCRE key '${pcre_query}' from maps file: ${maps_path}"
+}
+
+build_depls_expand_file_load_template_maps_pcre_match_query() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ $(echo -n "${name}" | grep -shoP "${pcre_query}") != "" ]] ; then
+    let matched=1
+    alt_name="${pcre_value}"
+  fi
+
+  build_depls_handle_result "Failed to operate PCRE query '${pcre_query}' for '${pcre_value}' from maps file: ${maps_path}"
+}
+
+build_depls_expand_file_load_template_maps_pcre_load_map() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_pcre=".pcre"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    pcre_json=$(jq -M "${jq_pcre}" ${maps_path})
+  else
+    pcre_json=$(jq -M "${jq_pcre}" ${maps_path} 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load PCRE map from JSON: ${maps_path}"
 }
 
 build_depls_expand_file_load_template_specific() {
@@ -369,99 +468,49 @@ build_depls_expand_file_load_template_specific() {
   fi
 }
 
-build_depls_expand_file_load_generated() {
+build_depls_expand_replace() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  what=${output}
-  json=$(< ${what})
+  local use_id=${discovery_data_id["${name}"]}
+  local use_location=${discovery_data_location["${name}"]}
+  local use_name=${discovery_data_name["${name}"]}
+  local use_version=${discovery_data_version["${name}"]}
 
-  build_depls_handle_result "Failed to load ${what}"
-}
-
-build_depls_expand_file_regex() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local n=
-
-  build_depls_expand_file_regex_do
-
-  for n in ${discovery_names} ; do
-    build_depls_expand_file_regex_do ${n}
-
-    if [[ ${result} -ne 0 ]] ; then return ; fi
-  done
-}
-
-build_depls_expand_file_regex_do() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local field=${1}
-  local match=${1}
-  local match_global_namespace="{global:namespace}"
-  local match_id="{id:${match}}"
-  local match_location="{location:${match}}"
-  local match_name="{name:${match}}"
-  local match_version="{version:${match}}"
-  local use=
-  local use_id=
-  local use_location=
-  local use_name=
-  local use_version=
-
-  # Use the module name currently being operated on when the match field value is empty.
-  if [[ ${field} == "" ]] ; then
-    field=${name}
-  fi
-
-  build_depls_expand_file_regex_do_load id
-  use_id=${use}
-
-  build_depls_expand_file_regex_do_load location
-  use_location=${use}
-
-  build_depls_expand_file_regex_do_load name
-  use_name=${use}
-
-  build_depls_expand_file_regex_do_load version
-  use_version=${use}
-
-  build_depls_expand_file_regex_do_sed
-}
-
-build_depls_expand_file_regex_do_load() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local key=${1}
-
-  build_depls_load_instructions_select_by ${field} ${key}
-
-  # Prevent jq from printing JSON if ${null} exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data})
-  else
-    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data} 2> ${null})
-  fi
-
-  build_depls_handle_result "Failed to load Discovery Data for field='${field}' and key='${key}' from ${discovery_file}"
-}
-
-build_depls_expand_file_regex_do_sed() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  sed -i \
+  json=$(echo "${json}" | sed \
     -e "s|${match_id}|${use_id}|g" \
     -e "s|${match_location}|${use_location}|g" \
     -e "s|${match_name}|${use_name}|g" \
     -e "s|${match_version}|${use_version}|g" \
     -e "s|${match_global_namespace}|${namespace}|g" \
-    ${output}
+  )
 
-  build_depls_handle_result "Failed regex replace using sed for field='${field}' on ${output}"
+  build_depls_handle_result "Failed regex replace using sed for field='${field}' for ${output}"
+}
+
+build_depls_expand_variables() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  build_depls_print_debug "Expanding ${what} (pass ${pass}) into: ${output}"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    json=$(echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}")
+  else
+    json=$(echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to expand ${what} into ${output}"
+}
+
+build_depls_expand_write() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo "${json}" > ${output}
+
+  build_depls_handle_result "Failed to write to ${output}"
 }
 
 build_depls_handle_result() {
@@ -624,25 +673,6 @@ build_depls_load_instructions_names() {
   build_depls_handle_result "Failed to load JQ names list from: ${input_path_main}${names_base}.json"
 }
 
-build_depls_load_instructions_select_by() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local key=${2}
-  local name=${1}
-
-  jq_select_by=".discovery[] | select(.name==\"${name}\").${key}"
-}
-
-build_depls_load_instructions_select_map() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local name=${1}
-
-  jq_select_map=".\"${name}\" | select(. != \"\" and . != null)"
-}
-
 build_depls_load_instructions_vars() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -760,6 +790,49 @@ build_depls_load_merge() {
   else
     json_vars=${data}
   fi
+}
+
+build_depls_load_variables() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local name=
+  local use=
+
+  build_depls_print_debug "Processing module discovery data"
+
+  for name in ${discovery_names} ; do
+    build_depls_load_variables_field id
+    discovery_data_id["${name}"]=${use}
+
+    build_depls_load_variables_field location
+    discovery_data_location["${name}"]=${use}
+
+    build_depls_load_variables_field name
+    discovery_data_name["${name}"]=${use}
+
+    build_depls_load_variables_field version
+    discovery_data_version["${name}"]=${use}
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+  done
+}
+
+build_depls_load_variables_field() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local key=${1}
+  local jq_select_by=".discovery[] | select(.name==\"${name}\").${key}"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data})
+  else
+    use=$(jq -r -M "${jq_select_by}" <<< ${discovery_data} 2> ${null})
+  fi
+
+  build_depls_handle_result "Failed to load Discovery Data for field='${field}' and key='${key}' from ${discovery_file}"
 }
 
 build_depls_print_debug() {

@@ -64,6 +64,9 @@ The `main` sub-directory contains `base.json`, `deployment.json`, `maps.json`, `
 The `base.json` file is a JSON object containing the base image used to initialize the final manifest.
 The `deployment.json` file is a JSON object used for all deployments being built.
 The `maps.json` file is a JSON file mapping specific modules to custom alternatives to `deployment.json` for cases where the differences between `deployment.json` would require too many variables or otherwise be too extreme.
+There are two options in `maps.json`, `exact` and `pcre`.
+The `exact` matches the by exact name match and overrides any `pcre` matches.
+The `pcre` matches based on Perl Compatible Regular Expressions (PCRE).
 The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
 Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or similar JSON files.
 The `vars.json` file is a JSON object map containing the names and the values that they each map to.
@@ -110,12 +113,12 @@ The special key types are `{global:namespace}`.
 The `{global:namespace}` represents the namespace specified by the `BUILD_DEPLOY_NAMESPACE` environment variable.
 The `module` is either not specified (like `{id:}`) to designate using information from the currently processed module.
 This is useful for situations such as where the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
-This can be done using `http://mod-users-{version:mod-users}.folio-modules.svc`, such as in the following:
+This can be done using `http://mod-users-{version:mod-users}.{global:namespace}.svc`, such as in the following:
 ```json
   "[ENVIRONMENT]": [
     {
       "name": "MOD_USERS_URL",
-      "value": "http://mod-users-{version:mod-users}.folio-modules.svc"
+      "value": "http://mod-users-{version:mod-users}.{global:namespace}.svc"
     }
   ]
 ```
