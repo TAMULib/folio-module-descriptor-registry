@@ -157,12 +157,56 @@
     "[MOD_USERS_BL_URL]",
     "[SIDECAR_JAVA_OPTIONS]",
     {
+      "name": "KC_URI_VALIDATION_ENABLED",
+      "value": "false"
+    },
+    {
       "name": "MODULE_URL",
       "value": "http://{name:}.{global:namespace}.svc:8080"
     },
     {
       "name": "MODULE_ID",
       "value": "{name:}-{version:}"
+    },
+    {
+      "name": "QUARKUS_HTTP_PORT",
+      "value": "8082"
+    },
+    {
+      "name": "QUARKUS_HTTP_LIMITS_MAX_INITIAL_LINE_LENGTH",
+      "value": "8192"
+    },
+    {
+      "name": "QUARKUS_REST_CLIENT_READ_TIMEOUT",
+      "value": "180000"
+    },
+    {
+      "name": "QUARKUS_REST_CLIENT_CONNECT_TIMEOUT",
+      "value": "180000"
+    },
+    {
+      "name": "QUARKUS_REST_CLIENT_SEND_TIMEOUT",
+      "value": "180000"
+    },
+    {
+      "name": "QUARKUS_HTTP_LIMITS_MAX_BODY_SIZE",
+      "value": "10240K"
+    },
+    {
+      "name": "REQUEST_TIMEOUT",
+      "value": "604800000"
+    },
+    {
+      "name": "ROOT_LOG_LEVEL",
+      "value": "INFO"
+    },
+    {
+      "name": "SC_LOG_LEVEL",
+      "value": "INFO"
+    },
+    {
+      "name": "SIDECAR",
+      "value": "true"
     },
     {
       "name": "SIDECAR_URL",
