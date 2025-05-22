@@ -25,7 +25,7 @@
       "optional": true
     }
   },
-  "[ENV_FROM_DB_CONNECT_SECRET]": {
+  "[ENV_FROM_DB_SECRET]": {
     "secretRef": {
       "name": "db-connect",
       "optional": true
@@ -55,13 +55,19 @@
       "optional": true
     }
   },
+  "[ENV_FROM_MGR_CONNECT]": {
+    "configMapRef": {
+      "name": "mgr-connect",
+      "optional": true
+    }
+  },
   "[ENV_FROM_MINIO_CONNECT]": {
     "configMapRef": {
       "name": "minio-connect",
       "optional": true
     }
   },
-  "[ENV_FROM_MINIO_CONNECT_SECRET]": {
+  "[ENV_FROM_MINIO_SECRET]": {
     "secretRef": {
       "name": "minio-connect",
       "optional": true
@@ -73,7 +79,7 @@
       "optional": true
     }
   },
-  "[ENV_FROM_VAULT_CONNECT_SECRET]": {
+  "[ENV_FROM_VAULT_SECRET]": {
     "secretRef": {
       "name": "vault-connect",
       "optional": true
@@ -108,6 +114,10 @@
   "[LIVENESS_PROBE_TIMEOUT]": 5,
   "[MEMORY_RESOURCE_REQUEST]": "64Mi",
   "[MEMORY_RESOURCE_LIMIT]": "4Gi",
+  "[MOD_USERS_BL_URL]": {
+    "name": "MOD_USERS_BL_URL",
+    "value": "http://mod-users-bl.{global:namespace}.svc"
+  },
   "[MOD_USERS_URL]": {
     "name": "MOD_USERS_URL",
     "value": "http://mod-users.{global:namespace}.svc"
@@ -143,5 +153,48 @@
     "cpu": "[CPU_RESOURCE_REQUEST]",
     "memory": "[MEMORY_RESOURCE_REQUEST]"
   },
+  "[SIDECAR_ENVIRONMENT]": [
+    "[MOD_USERS_BL_URL]",
+    "[SIDECAR_JAVA_OPTIONS]",
+    {
+      "name": "MODULE_URL",
+      "value": "http://{name:}.{global:namespace}.svc:8080"
+    },
+    {
+      "name": "MODULE_ID",
+      "value": "{name:}-{verson:}"
+    },
+    {
+      "name": "SIDECAR_URL",
+      "value": "http://{name:}.{global:namespace}.svc"
+    }
+  ],
+  "[SIDECAR_ENV_FROM]": [
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KEYCLOAK_CONNECT]",
+    "[ENV_FROM_MGR_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT]",
+    "[ENV_FROM_VAULT_SECRET]"
+  ],
+  "[SIDECAR_IMAGE]": "folioci/folio-module-sidecar:latest",
+  "[SIDECAR_IMAGE_PULL_POLICY]": "[CONTAINER_IMAGE_PULL_POLICY]",
+  "[SIDECAR_IMAGE_PULL_SECRETS]": "[CONTAINER_IMAGE_PULL_SECRETS]",
+  "[SIDECAR_JAVA_OPTIONS_VALUE]": "-Dquarkus.http.port=19002 -Dlog4j2.formatMsgNoLookups=true -Dmodule.name={name:} -Dmodule.version={version:} -Dsidecar.name={name:}-sidecar -Dmodule.id={name:}-{version:} -Dmodule.url=http://{name:}.{global:namespace}.svc:8080 -Dsidecar.url=http://{name:}.{global:namespace}.svc",
+  "[SIDECAR_JAVA_OPTIONS]": {
+    "name": "JAVA_OPTIONS",
+    "value": "[SIDECAR_JAVA_OPTIONS_VALUE]"
+  },
+  "[SIDECAR_LIVENESS_PROBE]": "[LIVENESS_PROBE]",
+  "[SIDECAR_PORT]": 19002,
+  "[SIDECAR_PORTS]": [
+    {
+      "containerPort": "[SIDECAR_PORT]",
+      "name": "sidecar",
+      "protocol": "TCP"
+    }
+  ],
+  "[SIDECAR_READINESS_PROBE]": "[READINESS_PROBE]",
+  "[SIDECAR_RESOURCES]": "[RESOURCES]",
   "[WORKLOAD]": "folio_module"
 }
