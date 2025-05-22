@@ -2,6 +2,9 @@
   "apiVersion": "apps/v1",
   "kind": "StatefulSet",
   "metadata": {
+    "labels": {
+      "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+    },
     "name": "{name:}",
     "namespace": "{global:namespace}"
   },
