@@ -162,7 +162,7 @@
     },
     {
       "name": "MODULE_ID",
-      "value": "{name:}-{verson:}"
+      "value": "{name:}-{version:}"
     },
     {
       "name": "SIDECAR_URL",
