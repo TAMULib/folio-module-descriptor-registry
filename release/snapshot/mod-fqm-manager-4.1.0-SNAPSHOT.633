@@ -1,0 +1,457 @@
+{
+  "id" : "mod-fqm-manager-4.1.0-SNAPSHOT.633",
+  "name" : "FQM Manager Module",
+  "requires" : [ {
+    "id" : "item-storage",
+    "version" : "10.0"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "6.0 7.0 8.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "10.0 11.0"
+  }, {
+    "id" : "instance-date-types",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-formats",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.2"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "location-units",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "call-number-types",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-types",
+    "version" : "1.0"
+  }, {
+    "id" : "service-points",
+    "version" : "3.3"
+  }, {
+    "id" : "users",
+    "version" : "16.0"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  }, {
+    "id" : "loan-policy-storage",
+    "version" : "2.3"
+  }, {
+    "id" : "loan-storage",
+    "version" : "7.1"
+  }, {
+    "id" : "organizations-storage.organizations",
+    "version" : "3.3"
+  }, {
+    "id" : "organizations-storage.organization-types",
+    "version" : "1.0"
+  }, {
+    "id" : "orders-storage.po-lines",
+    "version" : "13.0"
+  }, {
+    "id" : "orders-storage.purchase-orders",
+    "version" : "8.0"
+  }, {
+    "id" : "acquisitions-units-storage.units",
+    "version" : "1.1"
+  }, {
+    "id" : "acquisitions-units",
+    "version" : "1.1"
+  }, {
+    "id" : "contributor-types",
+    "version" : "2.0"
+  }, {
+    "id" : "contributor-name-types",
+    "version" : "1.2"
+  }, {
+    "id" : "modes-of-issuance",
+    "version" : "1.1"
+  }, {
+    "id" : "instance-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "statistical-code-types",
+    "version" : "1.0"
+  }, {
+    "id" : "statistical-codes",
+    "version" : "1.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.exchange-rate",
+    "version" : "1.0"
+  }, {
+    "id" : "circulation",
+    "version" : "14.2"
+  }, {
+    "id" : "orders",
+    "version" : "13.0"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.2"
+  }, {
+    "id" : "voucher-storage.vouchers",
+    "version" : "1.2"
+  }, {
+    "id" : "voucher-storage.voucher-lines",
+    "version" : "2.1"
+  }, {
+    "id" : "voucher-storage.voucher-number",
+    "version" : "1.1"
+  }, {
+    "id" : "search",
+    "version" : "1.2"
+  }, {
+    "id" : "voucher",
+    "version" : "2.3"
+  }, {
+    "id" : "invoice",
+    "version" : "7.2"
+  }, {
+    "id" : "finance.ledgers",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.fund-types",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.funds",
+    "version" : "3.0"
+  }, {
+    "id" : "finance.fiscal-years",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.expense-classes",
+    "version" : "3.0"
+  }, {
+    "id" : "batch-group",
+    "version" : "1.1"
+  }, {
+    "id" : "finance.groups",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.budgets",
+    "version" : "2.0"
+  }, {
+    "id" : "finance.transactions",
+    "version" : "6.0"
+  } ],
+  "provides" : [ {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "permissionsRequired" : [ ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}",
+      "permissionsRequired" : [ ]
+    } ]
+  }, {
+    "id" : "entity-types",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/entity-types/{entity-type-id}",
+      "permissionsRequired" : [ "fqm.entityTypes.item.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/entity-types",
+      "permissionsRequired" : [ "fqm.entityTypes.collection.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/entity-types/{entity-type-id}/columns/{column-name}/values",
+      "permissionsRequired" : [ "fqm.entityTypes.item.columnValues.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get", "search.facets.collection.get", "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/entity-types/materialized-views/refresh",
+      "permissionsRequired" : [ "fqm.materializedViews.post" ],
+      "modulePermissions" : [ "configuration.entries.collection.get", "finance.exchange-rate.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/entity-types/custom",
+      "permissionsRequired" : [ "fqm.entityTypes.custom.collection.post" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/entity-types/custom/{entity-type-id}",
+      "permissionsRequired" : [ "fqm.entityTypes.custom.item.get" ]
+    }, {
+      "methods" : [ "PUT" ],
+      "pathPattern" : "/entity-types/custom/{entity-type-id}",
+      "permissionsRequired" : [ "fqm.entityTypes.custom.item.put" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/entity-types/custom/{entity-type-id}",
+      "permissionsRequired" : [ "fqm.entityTypes.custom.item.delete" ]
+    } ]
+  }, {
+    "id" : "fqm-query",
+    "version" : "2.1",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/query",
+      "permissionsRequired" : [ "fqm.query.sync.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/query/{query-id}",
+      "permissionsRequired" : [ "fqm.query.async.results.query.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/query/{query-id}/sortedIds",
+      "permissionsRequired" : [ "fqm.query.async.results.sortedids.get" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/fqm/version",
+      "permissionsRequired" : [ "fqm.version.get" ],
+      "modulePermissions" : [ "perms.users.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/fqm/migrate",
+      "permissionsRequired" : [ "fqm.migrate.post" ],
+      "modulePermissions" : [ "perms.users.get", "permissions.users.item.get", "configuration.entries.collection.get", "inventory-storage.modes-of-issuance.collection.get", "usergroups.collection.get", "inventory-storage.locations.collection.get", "inventory-storage.location-units.libraries.collection.get", "organizations.organizations.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/query/contents",
+      "permissionsRequired" : [ "fqm.query.async.results.post" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get", "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/query/contents/privileged",
+      "permissionsRequired" : [ "fqm.query.privileged.async.results.post" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get", "configuration.entries.collection.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/query",
+      "permissionsRequired" : [ "fqm.query.async.post" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/query/purge",
+      "permissionsRequired" : [ "fqm.query.purge.post" ]
+    }, {
+      "methods" : [ "DELETE" ],
+      "pathPattern" : "/query/{query-id}",
+      "permissionsRequired" : [ "fqm.query.async.delete" ],
+      "modulePermissions" : [ "perms.users.get", "user-tenants.collection.get", "consortia.user-tenants.collection.get", "permissions.users.item.get" ]
+    } ]
+  }, {
+    "id" : "_timer",
+    "version" : "1.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/query/purge",
+      "unit" : "hour",
+      "delay" : "1",
+      "modulePermissions" : [ "fqm.query.purge.post" ]
+    }, {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/entity-types/materialized-views/refresh",
+      "unit" : "hour",
+      "delay" : "24",
+      "modulePermissions" : [ "fqm.materializedViews.post" ]
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "consortia",
+    "version" : "1.0"
+  }, {
+    "id" : "permissions",
+    "version" : "5.7"
+  }, {
+    "id" : "permissions-users",
+    "version" : "1.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "fqm.query.purge.post",
+    "replaces" : [ "fqm.query.purge" ],
+    "displayName" : "FQM - purge old queries",
+    "description" : "Purge old queries",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.collection.get",
+    "displayName" : "FQM - Get entity types collection",
+    "description" : "Get entity types collection",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.item.get",
+    "displayName" : "FQM - Get details of a single entity type",
+    "description" : "Get details of a single entity type",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.item.columnValues.get",
+    "displayName" : "FQM - Get possible values of a column",
+    "description" : "Get possible values of an entity type column",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.custom.collection.post",
+    "displayName" : "FQM - Create custom entity type",
+    "description" : "Create a custom entity type",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.custom.item.get",
+    "displayName" : "FQM - Get custom entity type",
+    "description" : "Get a custom entity type definition",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.custom.item.put",
+    "displayName" : "FQM - Update custom entity type",
+    "description" : "Update a custom entity type definition",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.entityTypes.custom.item.delete",
+    "displayName" : "FQM - Delete custom entity type",
+    "description" : "Delete a custom entity type definition",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.async.post",
+    "displayName" : "FQM - Submit query asynchronously",
+    "description" : "Submit a query asynchronously",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.async.results.get",
+    "displayName" : "FQM - Retrieve results of a submitted query",
+    "description" : "Retrieve results of a submitted query",
+    "subPermissions" : [ "fqm.query.async.results.post", "fqm.query.async.results.sortedids.get", "fqm.query.async.results.query.get" ],
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.async.results.sortedids.get",
+    "displayName" : "FQM - Retrieve results of a submitted query with sorted Ids ",
+    "description" : "Retrieve results of a submitted query with sorted Ids",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.async.results.query.get",
+    "displayName" : "FQM - Retrieve results of a submitted query",
+    "description" : "Retrieve results of a submitted query",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.async.results.post",
+    "displayName" : "FQM - Retrieve results of a submitted query",
+    "description" : "Retrieve results of a submitted query",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.privileged.async.results.post",
+    "displayName" : "FQM - Retrieve contents (privileged)",
+    "description" : "FQM - Retrieve contents (privileged)",
+    "visible" : false
+  }, {
+    "permissionName" : "fqm.query.async.delete",
+    "displayName" : "FQM - Delete a submitted query",
+    "description" : "Delete an asynchronously submitted query",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.sync.get",
+    "displayName" : "FQM - Run query synchronously",
+    "description" : "Run a query synchronously and get results",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.version.get",
+    "displayName" : "FQM - Get version of fqm",
+    "description" : "Get the version of fqm",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.migrate.post",
+    "displayName" : "FQM - Submit FQM Migration",
+    "description" : "Submit FQM Migration and get results",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.materializedViews.post",
+    "displayName" : "FQM - Refresh materialized views",
+    "description" : "Refresh FQM materialized views",
+    "visible" : true
+  }, {
+    "permissionName" : "fqm.query.all",
+    "displayName" : "FQM - All permissions",
+    "description" : "All permissions required for executing queries in the FQM system.",
+    "subPermissions" : [ "fqm.entityTypes.collection.get", "fqm.entityTypes.item.get", "fqm.entityTypes.item.columnValues.get", "fqm.query.async.post", "fqm.query.async.results.get", "fqm.query.async.delete", "fqm.query.sync.get", "fqm.version.get", "fqm.migrate.post" ],
+    "visible" : true
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-fqm-manager:4.1.0-SNAPSHOT.633",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    }, {
+      "name" : "server.port",
+      "value" : "8081"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_HOST_READER",
+      "value" : ""
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_PORT_READER",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "MOD_FQM_MANAGER_QUERY_RETENTION_DURATION",
+      "value" : "3h"
+    }, {
+      "name" : "spring.task.execution.pool.max-size",
+      "value" : "12"
+    }, {
+      "name" : "MAX_QUERY_SIZE",
+      "value" : "1250000"
+    }, {
+      "name" : "mod-fqm-manager.entity-type-cache-timeout-seconds",
+      "value" : "300"
+    }, {
+      "name" : "IS_EUREKA",
+      "value" : "false"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 629145600,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
