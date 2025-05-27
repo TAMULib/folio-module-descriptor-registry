@@ -1,9 +1,9 @@
 {
   "apiVersion": "apps/v1",
-  "kind": "StatefulSet",
+  "kind": "Deployment",
   "metadata": {
     "labels": {
-      "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+      "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
     },
     "name": "{name:}",
     "namespace": "{global:namespace}"
@@ -12,16 +12,18 @@
     "replicas": 1,
     "selector": {
       "matchLabels": {
-        "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+        "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
       }
     },
-    "serviceName": "{name:}",
+    "strategy": {
+      "type": "RollingUpdate"
+    },
     "template": {
       "metadata": {
         "labels": {
           "app": "{name:}",
           "workload": "[WORKLOAD]",
-          "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+          "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
         },
         "namespace": "{global:namespace}"
       },
@@ -38,7 +40,8 @@
             "name": "{name:}",
             "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",
-            "resources": "[RESOURCES]"
+            "resources": "[RESOURCES]",
+            "volumeMounts": "[VOLUME_MOUNTS]"
           },
           {
             "args": "[SIDECAR_ARGS]",
@@ -57,9 +60,6 @@
         ],
         "volumes": "[VOLUMES]"
       }
-    },
-    "updateStrategy": {
-      "type": "RollingUpdate"
     }
   }
 }
