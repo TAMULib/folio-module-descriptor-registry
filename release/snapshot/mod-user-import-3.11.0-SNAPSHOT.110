@@ -1,0 +1,60 @@
+{
+  "id" : "mod-user-import-3.11.0-SNAPSHOT.110",
+  "name" : "User import",
+  "requires" : [ {
+    "id" : "permissions",
+    "version" : "5.0"
+  }, {
+    "id" : "users",
+    "version" : "15.2 16.0"
+  }, {
+    "id" : "request-preference-storage",
+    "version" : "2.0"
+  }, {
+    "id" : "service-points",
+    "version" : "3.2"
+  }, {
+    "id" : "okapi",
+    "version" : "1.9"
+  } ],
+  "provides" : [ {
+    "id" : "user-import",
+    "version" : "2.2",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/user-import",
+      "permissionsRequired" : [ "user-import.post" ],
+      "modulePermissions" : [ "addresstypes.collection.get", "circulation-storage.request-preferences.collection.get", "circulation-storage.request-preferences.item.delete", "circulation-storage.request-preferences.item.post", "circulation-storage.request-preferences.item.put", "departments.collection.get", "departments.item.post", "departments.item.put", "inventory-storage.service-points.collection.get", "perms.users.item.post", "user-settings.custom-fields.collection.get", "user-settings.custom-fields.item.put", "usergroups.collection.get", "users.collection.get", "users.item.get", "users.item.post", "users.item.put" ]
+    } ]
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "user-import.post",
+    "replaces" : [ "user-import.add" ],
+    "displayName" : "Import users",
+    "description" : ""
+  }, {
+    "permissionName" : "user-import.all",
+    "displayName" : "User import - all permissions",
+    "description" : "",
+    "subPermissions" : [ "user-import.post" ],
+    "visible" : true
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-user-import:3.11.0-SNAPSHOT.110",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 357913941,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
