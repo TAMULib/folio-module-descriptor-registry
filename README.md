@@ -23,6 +23,7 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
     - [Build Deployments](#build-deployments)
     - [Build Latest](#build-latest)
     - [Build Launches](#build-launches)
+    - [Build Location](#build-location)
     - [Build Module Discovery](#build-module-discovery)
     - [Build Pages](#build-pages)
     - [Populate Node](#populate-node)
@@ -107,40 +108,45 @@ The JSON files in the `launches` sub-directory, JSON files in the `vars` sub-dir
 The second type utilizes the **Module Discovery Descriptor** keys and values as well as some other special keys and values.
 This **Module Discovery Descriptor** type is key on a combination of special reserved words and module names.
 This operates only on a string matching level using `sed` and cannot safely handle JSON data.
-This type allows for partial replacements, such as `"folioorg/{name:}:{version:}"`.
-This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, and `version`.
+This type allows for partial replacements, such as `"{repository:}/{name:}:{version:}"`.
+This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, `repository`, and `version`.
 The special key types are `{global:namespace}`.
 The `{global:namespace}` represents the namespace specified by the `BUILD_DEPLOY_NAMESPACE` environment variable.
+The `{repository:}` is module specific, but is not part of the **Module Discovery Descriptor** and is instead part of the Repository Location JSON files for each module (if they exist).
+The default repository is used for `{repository:}` when there is no Repository Location JSON file for a particular module.
 The `module` is either not specified (like `{id:}`) to designate using information from the currently processed module.
 This is useful for situations such as where the module named `mod-consortia-keycloak` needs to define `MOD_USERS_URL` with a value of `http://mod-users-19.6.0-SNAPSHOT.350.folio-modules.svc`.
 This can be done using `http://mod-users-{version:mod-users}.{global:namespace}.svc`, such as in the following:
 ```json
-  "[ENVIRONMENT]": [
-    {
-      "name": "MOD_USERS_URL",
-      "value": "http://mod-users-{version:mod-users}.{global:namespace}.svc"
-    }
-  ]
+"[ENVIRONMENT]": [
+  {
+    "name": "MOD_USERS_URL",
+    "value": "http://mod-users-{version:mod-users}.{global:namespace}.svc"
+  }
+]
 ```
 
-| Environment Variable        | Description (see script for further details)
-| --------------------------- | --------------------------------
-| `BUILD_DEPLOY_ACTIONS`      | Allow limiting the actions to either `expand`, `combine`, or `both` (default is `both` when this is an empty string).
-| `BUILD_DEPLOY_DEBUG`        | Enable debug verbosity, any non-empty string enables this.
-| `BUILD_DEPLOY_DISCOVERY`    | The path to the **Module Discovery Descriptor** JSON file.
-| `BUILD_DEPLOY_INPUT_PATH`   | The path to the input template directory.
-| `BUILD_DEPLOY_NAMES`        | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to. This does support names not defined in the **Module Discovery Descriptor** file.
-| `BUILD_DEPLOY_NAMESPACE`    | The Kubernetes namespace to use when building (defaults to `folio-modules`).
-| `BUILD_DEPLOY_OUTPUT_FILE`  | The name of the output file without the file extension (not the full path), such as `fleet`.
-| `BUILD_DEPLOY_OUTPUT_FORCE` | If non-empty, then allow writing over existing output files without failing on error.
-| `BUILD_DEPLOY_OUTPUT_PATH`  | The path to the output directory.
-| `BUILD_DEPLOY_PASSES`       | The number of passes to make when expanding variables.
+| Environment Variable              | Description (see script for further details)
+| --------------------------------- | --------------------------------
+| `BUILD_DEPLOY_ACTIONS`            | Allow limiting the actions to either `expand`, `combine`, or `both` (default is `both` when this is an empty string).
+| `BUILD_DEPLOY_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_DEPLOY_DEFAULT_REPOSITORY` | Designate the default repository to use when none is specified via a Repository Location JSON file (defaults to `folioci`).
+| `BUILD_DEPLOY_DISCOVERY`          | The path to the **Module Discovery Descriptor** JSON file.
+| `BUILD_DEPLOY_FLOWER`             | The Flower release name, such as `quesnelia` or `snapshot` (defaults to `snapshot`).
+| `BUILD_DEPLOY_INPUT_PATH`         | The path to the input template directory.
+| `BUILD_DEPLOY_LOCATION_PATH`      | The directory containing generated Repository Location JSON files (defaults to `location/`).
+| `BUILD_DEPLOY_NAMES`              | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to. This does support names not defined in the **Module Discovery Descriptor** file.
+| `BUILD_DEPLOY_NAMESPACE`          | The Kubernetes namespace to use when building (defaults to `folio-modules`).
+| `BUILD_DEPLOY_OUTPUT_FILE`        | The name of the output file without the file extension (not the full path), such as `fleet`.
+| `BUILD_DEPLOY_OUTPUT_FORCE`       | If non-empty, then allow writing over existing output files without failing on error.
+| `BUILD_DEPLOY_OUTPUT_PATH`        | The path to the output directory.
+| `BUILD_DEPLOY_PASSES`             | The number of passes to make when expanding variables.
 
 View the documentation within the `build_deployments.sh` script for further details on how to operate this script.
 
 Example usage:
 ```shell
-BUILD_DEPLOY_DISCOVERY="module_discovery-1.0.0-SNAPSHOT.2188.json" bash script/build_deployments.sh
+BUILD_DEPLOY_DISCOVERY="module_discovery-1.0.0-SNAPSHOT.2188.json" BUILD_DEPLOY_FLOWER="quesnelia" bash script/build_deployments.sh
 ```
 
 
@@ -200,6 +206,85 @@ View the documentation within the `build_launches.sh` script for further details
 Example usage:
 ```shell
 bash script/build_launches.sh
+```
+
+
+### Build Location
+
+The **Build Location** script utilizes repository templates to generate location templates.
+This script is intended to be used to help automatically detect and assign which repository location to use for each release and respective tag.
+This script expects the `install.json` and similar files, such as `eureka-platform.json`, to be available and ready for use.
+
+The **Build Location** script operates by parsing the input JSON files, such as `install.json`, and extracting the releases and their respective version tags.
+Only releases that begin with `mod-` and `edge-` are processed.
+The Repositories JSON file, such as `repositories.json`, contains a list of all repositories to search in for each release.
+The extracted list of releases is then looped through, making requests to each repository in order to determine which one contains both the release and the tag.
+If the repository is confirmed to contain the release and tag, then a location file is created based on that location.
+
+The process of making a request conditionally requires the following operations:
+  1. If authentication is enabled, perform a `GET` request to anonymously fetch an Authentication Token to use performing the request.
+  2. Perform a `HEAD` request (with Authentication Token if requested) to check the existence of a module.
+  3. If the HTTP `HEAD` request response contains an HTTP response with `200 OK`, then the repository is considered usable.
+  4. If the HTTP `HEAD` request response contains something other than `200 OK`, then the repository is consider not unsable.
+
+The **Build Location** script attempts to reduce abuse to external servers by operating in the following way:
+  1. Use HTTP `HEAD` requests for existence checks.
+  2. Add a small delay between each release being looped over.
+  3. Checking if the location file for a given release and tag already exists and not making another request if it does.
+
+The Repositories JSON file is an array of objects where each object represents a single named repository.
+The following is an example format, showing only a single repository:
+```json
+[
+  {
+    "id": "folioci",
+    "name": "folioci",
+    "auth": {
+      "url": "https://auth.docker.io/",
+      "registry": "registry.docker.io"
+    },
+    "request": {
+      "url": "https://registry-1.docker.io/"
+    }
+  }
+]
+```
+  - The `id` is an identifier for this specific repository.
+  - The `name` is the name used in the location file to represent this repository (such as `folioci` in `https://hub.docker.com/r/folioci/mod-circulation`).
+  - The `auth` is broken up into two parts, a `url` and a `registry`.
+  - The `auth.url` is optional; This is used to perform `GET` requests to obtain an authentication token as an anonymous user.
+  - The `auth.registry` is optional and is only used if `auth.url` is used; provides information needed for requesting the authentication token.
+  - The `request` is broken up into one part, a `url`.
+  - The `request.url` is the URL used to perform the `HEAD` request used to identify the presence of a package and version at the named repository.
+
+The general format structure for a Location JSON file is `{release}-${tag}.json`, where relase might be a module such as `mod-circulation` and the tag might be `24.5.0-SNAPSHOT.1311`.
+The following is an example format for the `mod-circulation-24.5.0-SNAPSHOT.1311.json` Location JSON file:
+```json
+{
+  "id": "mod-circulation-24.5.0-SNAPSHOT.1311",
+  "repository": "folioci"
+}
+```
+  - The `id` is the release and the tag in this format: `{release}-${tag}`.
+  - The `id` is provided for informational purposes and is otherwise not used.
+  - The `repository` contains the named repository, based on the `name` field from the Repositories JSON file.
+
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `BUILD_LOCATION_DEBUG`             | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_LOCATION_DESTINATION`       | The directory to save the generated location JSON files in (defaults to `location/`).
+| `BUILD_LOCATION_DELAY`             | The amount of time in seconds (`1s` = 1 second), minutes (`1m` = 1 minute), hours (`1h` = 1 hour), or days (`1d` = 1 day) (set to `0` to disable sleep, defaults to `0.3s`).
+| `BUILD_LOCATION_FILES`             | The name of space separated JSON files, such as `install.json` and `eureka-platform.json` to GET fetch and store locally for processing.
+| `BUILD_LOCATION_FLOWER`            | The Flower release name, such as `quesnelia` or `snapshot` (defaults to `snapshot`).
+| `BUILD_LOCATION_LIMIT`             | Limit the number of requests made per request URI (Set to `0` to disable, defaults to `100`).
+| `BUILD_LOCATION_REPOSITORIES_NAME` | The name of the repositories JSON file (defaults to `repositories.json`).
+| `BUILD_LOCATION_REPOSITORIES_PATH` | The directory containing the repositories configuration JSON file (defaults to `template/location/`).
+
+View the documentation within the `build_location.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+bash BUILD_LOCATION_LIMIT=100 BUILD_LOCATION_DELAY="0.3s" script/build_location.sh
 ```
 
 

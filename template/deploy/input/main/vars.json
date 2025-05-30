@@ -1,5 +1,5 @@
 {
-  "[CONTAINER_IMAGE]": "folioci/{name:}:{version:}",
+  "[CONTAINER_IMAGE]": "{repository:}/{name:}:{version:}",
   "[CONTAINER_IMAGE_PULL_POLICY]": "Always",
   "[CONTAINER_IMAGE_PULL_SECRETS]": [
     {

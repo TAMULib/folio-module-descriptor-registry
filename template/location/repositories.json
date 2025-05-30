@@ -1,0 +1,24 @@
+[
+  {
+    "id": "folioci",
+    "name": "folioci",
+    "auth": {
+      "url": "https://auth.docker.io/",
+      "registry": "registry.docker.io"
+    },
+    "request": {
+      "url": "https://registry-1.docker.io/"
+    }
+  },
+  {
+    "id": "folioorg",
+    "name": "folioorg",
+    "auth": {
+      "url": "https://auth.docker.io/",
+      "registry": "registry.docker.io"
+    },
+    "request": {
+      "url": "https://registry-1.docker.io/"
+    }
+  }
+]
