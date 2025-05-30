@@ -153,13 +153,25 @@
     "cpu": "[CPU_RESOURCE_REQUEST]",
     "memory": "[MEMORY_RESOURCE_REQUEST]"
   },
+  "[SIDECAR_ENV_FROM]": [
+    "[ENV_FROM_GLOBAL]",
+    "[ENV_FROM_KAFKA_CONNECT]",
+    "[ENV_FROM_KEYCLOAK_CONNECT]",
+    "[ENV_FROM_KONG_CONNECT]",
+    "[ENV_FROM_MGR_CONNECT]",
+    "[ENV_FROM_VAULT_CONNECT]",
+    "[ENV_FROM_VAULT_SECRET]",
+    "[SIDECAR_ENV_FROM_GLOBAL]"
+  ],
+  "[SIDECAR_ENV_FROM_GLOBAL]": {
+    "configMapRef": {
+      "name": "sidecar-global",
+      "optional": true
+    }
+  },
   "[SIDECAR_ENVIRONMENT]": [
     "[MOD_USERS_BL_URL]",
     "[SIDECAR_JAVA_OPTIONS]",
-    {
-      "name": "KC_URI_VALIDATION_ENABLED",
-      "value": "false"
-    },
     {
       "name": "MODULE_URL",
       "value": "http://{name:}.{global:namespace}.svc:8080"
@@ -169,57 +181,9 @@
       "value": "{name:}-{version:}"
     },
     {
-      "name": "QUARKUS_HTTP_PORT",
-      "value": "8082"
-    },
-    {
-      "name": "QUARKUS_HTTP_LIMITS_MAX_INITIAL_LINE_LENGTH",
-      "value": "8192"
-    },
-    {
-      "name": "QUARKUS_REST_CLIENT_READ_TIMEOUT",
-      "value": "180000"
-    },
-    {
-      "name": "QUARKUS_REST_CLIENT_CONNECT_TIMEOUT",
-      "value": "180000"
-    },
-    {
-      "name": "QUARKUS_REST_CLIENT_SEND_TIMEOUT",
-      "value": "180000"
-    },
-    {
-      "name": "QUARKUS_HTTP_LIMITS_MAX_BODY_SIZE",
-      "value": "10240K"
-    },
-    {
-      "name": "REQUEST_TIMEOUT",
-      "value": "604800000"
-    },
-    {
-      "name": "ROOT_LOG_LEVEL",
-      "value": "INFO"
-    },
-    {
-      "name": "SC_LOG_LEVEL",
-      "value": "INFO"
-    },
-    {
-      "name": "SIDECAR",
-      "value": "true"
-    },
-    {
       "name": "SIDECAR_URL",
       "value": "http://{name:}.{global:namespace}.svc"
     }
-  ],
-  "[SIDECAR_ENV_FROM]": [
-    "[ENV_FROM_GLOBAL]",
-    "[ENV_FROM_KAFKA_CONNECT]",
-    "[ENV_FROM_KEYCLOAK_CONNECT]",
-    "[ENV_FROM_MGR_CONNECT]",
-    "[ENV_FROM_VAULT_CONNECT]",
-    "[ENV_FROM_VAULT_SECRET]"
   ],
   "[SIDECAR_IMAGE]": "folioci/folio-module-sidecar:latest",
   "[SIDECAR_IMAGE_PULL_POLICY]": "[CONTAINER_IMAGE_PULL_POLICY]",
