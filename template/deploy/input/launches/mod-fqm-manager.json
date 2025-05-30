@@ -50,7 +50,7 @@
       "value": "5"
     },
     {
-      "name": "QUERY_RETENTION_DURATION",
+      "name": "MOD_FQM_MANAGER_QUERY_RETENTION_DURATION",
       "value": "3h"
     },
     {
