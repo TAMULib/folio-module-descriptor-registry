@@ -35,16 +35,13 @@ main() {
   local combined_file="apps"
   local debug=
   local debug_json=
+  local default_repository="folioci"
   local discovery_data=
   local discovery_file=
   local discovery_names=
   local field="name"
+  local flower="snapshot"
   local maps_name="maps"
-  local match_global_namespace="{global:namespace}"
-  local match_id="{id:${match}}"
-  local match_location="{location:${match}}"
-  local match_name="{name:${match}}"
-  local match_version="{version:${match}}"
   local input_base="base"
   local input_name="deployment"
   local input_path="template/deploy/input/"
@@ -60,6 +57,8 @@ main() {
   local json_vars=
   local json_vars_launches=
   local json_vars_main=
+  local location_flower=
+  local location_path="location/"
   local names=
   local names_base="names"
   local namespace="folio-modules"
@@ -78,7 +77,9 @@ main() {
   local -A discovery_data_location=
   local -A discovery_data_id=
   local -A discovery_data_name=
+  local -A discovery_data_repository=
   local -A discovery_data_version=
+  local -A repositories_auth_url=
 
   local -i do_combine=1
   local -i do_expand=1
@@ -248,7 +249,7 @@ build_depls_expand() {
 
     while [[ ${result} -eq 0 ]] ; do
       build_depls_expand_variables
-      build_depls_expand_replace
+      build_depls_expand_replace_standard
 
       let pass++
 
@@ -468,24 +469,36 @@ build_depls_expand_file_load_template_specific() {
   fi
 }
 
-build_depls_expand_replace() {
+build_depls_expand_replace_standard() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local match_global_namespace="{global:namespace}"
+  local match_id="{id:}"
+  local match_location="{location:}"
+  local match_name="{name:}"
+  local match_repository="{repository:}"
+  local match_version="{version:}"
   local use_id=${discovery_data_id["${name}"]}
   local use_location=${discovery_data_location["${name}"]}
   local use_name=${discovery_data_name["${name}"]}
+  local use_repository=${discovery_data_repository["${name}"]}
   local use_version=${discovery_data_version["${name}"]}
+
+  if [[ ${use_repository} == "" ]] ; then
+    use_repository=${default_repository}
+  fi
 
   json=$(echo "${json}" | sed \
     -e "s|${match_id}|${use_id}|g" \
     -e "s|${match_location}|${use_location}|g" \
     -e "s|${match_name}|${use_name}|g" \
+    -e "s|${match_repository}|${use_repository}|g" \
     -e "s|${match_version}|${use_version}|g" \
     -e "s|${match_global_namespace}|${namespace}|g" \
   )
 
-  build_depls_handle_result "Failed regex replace using sed for field='${field}' for ${output}"
+  build_depls_handle_result "Failed regex replace (empty cases) using sed for field='${field}' for ${output}"
 }
 
 build_depls_expand_variables() {
@@ -625,6 +638,42 @@ build_depls_load_environment() {
       let result=1
       return
     fi
+  fi
+
+  if [[ ${BUILD_DEPLOY_LOCATION_PATH} != "" ]] ; then
+    location_path=$(echo ${BUILD_DEPLOY_LOCATION_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|')
+  fi
+
+  if [[ ${destination} != "" ]] ; then
+    location_path=$(echo ${location_path} | sed -e 's|/*$|/|')
+  fi
+
+  if [[ ${BUILD_DEPLOY_FLOWER} != "" ]] ; then
+    flower=$(echo ${BUILD_DEPLOY_FLOWER} | sed -e 's|/||g')
+  fi
+
+  location_flower="${location_path}${flower}/"
+
+  if [[ -e ${location_flower} ]] ; then
+    if [[ ! -d ${location_flower} ]] ; then
+      echo "${p_e}The locations directory is not and must be a directory: ${location_flower} ."
+
+      let result=1
+
+      return
+    fi
+  fi
+
+  if [[ ${BUILD_DEPLOY_DEFAULT_REPOSITORY} != "" ]] ; then
+    default_repository=${BUILD_DEPLOY_DEFAULT_REPOSITORY}
+  fi
+
+  if [[ $(echo ${default_repository} | grep -sho '[/\:&?]') != "" ]] ; then
+    echo "${p_e}The default repository has unsupported characters ('/', '\', ':', '&', and '?'): ${default_repository} ."
+
+    let result=1
+
+    return
   fi
 }
 
@@ -814,6 +863,9 @@ build_depls_load_variables() {
     build_depls_load_variables_field version
     discovery_data_version["${name}"]=${use}
 
+    build_depls_load_variables_repository
+    discovery_data_repository["${name}"]=${use}
+
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 }
@@ -833,6 +885,29 @@ build_depls_load_variables_field() {
   fi
 
   build_depls_handle_result "Failed to load Discovery Data for field='${field}' and key='${key}' from ${discovery_file}"
+}
+
+build_depls_load_variables_repository() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local file=
+  local jq_repo=".repository"
+  local tag=${discovery_data_version["${name}"]}
+
+  file="${location_flower}${name}-${tag}.json"
+  use=
+
+  if [[ -f ${file} ]] ; then
+    # Prevent jq from printing JSON if ${null} exists when not debugging.
+    if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+      use=$(jq -r -M "${jq_repo}" ${file})
+    else
+      use=$(jq -r -M "${jq_repo}" ${file} 2> ${null})
+    fi
+
+    build_depls_handle_result "Failed to load Repository Location for field='${field}' and key='${key}' for ${discovery_file} from ${file}"
+  fi
 }
 
 build_depls_print_debug() {
