@@ -40,5 +40,5 @@
       "value": ""
     }
   ],
-  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8081 -Dlog4j2.formatMsgNoLookups=true"
+  "[JAVA_OPTIONS_VALUE]": "-XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true -Dserver.port=8080 -Dlog4j2.formatMsgNoLookups=true"
 }

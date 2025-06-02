@@ -1,0 +1,26 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "{name:}",
+    "namespace": "{global:namespace}"
+  },
+  "spec": {
+    "ipFamilies": [
+      "IPv4"
+    ],
+    "ipFamilyPolicy": "SingleStack",
+    "ports": [
+      {
+        "name": "primary-{name:}",
+        "port": "[CONTAINER_PORT_PUBLIC]",
+        "protocol": "TCP",
+        "targetPort": "[CONTAINER_PORT]"
+      }
+    ],
+    "selector": {
+      "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
+    },
+    "type": "ClusterIP"
+  }
+}

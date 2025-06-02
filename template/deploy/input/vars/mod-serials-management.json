@@ -13,5 +13,6 @@
   ],
   "[JAVA_OPTIONS_VALUE]": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:+PrintFlagsFinal -Dlog4j2.formatMsgNoLookups=true",
   "[LIVENESS_PROBE]": null,
+  "[MODULE_URL_VALUE]": "http://{name:}.{global:namespace}.svc:8080",
   "[READINESS_PROBE]": null
 }

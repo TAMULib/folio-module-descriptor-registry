@@ -11,5 +11,6 @@
     "[MODULE_VERSION]"
   ],
   "[LIVENESS_PROBE]": null,
+  "[MODULE_URL_VALUE]": "http://{name:}.{global:namespace}.svc:8080",
   "[READINESS_PROBE]": null
 }
