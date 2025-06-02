@@ -249,7 +249,9 @@ build_depls_expand() {
 
     while [[ ${result} -eq 0 ]] ; do
       build_depls_expand_variables
+
       build_depls_expand_replace_standard
+      build_depls_expand_replace_individual
 
       let pass++
 
@@ -499,6 +501,71 @@ build_depls_expand_replace_standard() {
   )
 
   build_depls_handle_result "Failed regex replace (empty cases) using sed for field='${field}' for ${output}"
+}
+
+build_depls_expand_replace_individual() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local matches=
+
+  build_depls_expand_replace_individual_match id
+  build_depls_expand_replace_individual_replace id
+
+  build_depls_expand_replace_individual_match location
+  build_depls_expand_replace_individual_replace location
+
+  build_depls_expand_replace_individual_match name
+  build_depls_expand_replace_individual_replace name
+
+  build_depls_expand_replace_individual_match repository
+  build_depls_expand_replace_individual_replace repository
+
+  build_depls_expand_replace_individual_match version
+  build_depls_expand_replace_individual_replace version
+}
+
+build_depls_expand_replace_individual_match() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local match=${1}
+
+  matches=$(echo "${json}" | grep -shoP "{${match}:[\w-]+}" | sed -e "s|{${match}:| |g" -e "s|}| |g")
+
+  build_depls_handle_result "Failed extract named replacement matches for field=${field} for ${output}"
+}
+
+build_depls_expand_replace_individual_replace() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local id=${1}
+  local match=
+  local with=
+
+  for match in ${matches} ; do
+
+    if [[ ${id} == "id" ]] ; then
+      with=${discovery_data_id["${match}"]}
+    elif [[ ${id} == "location" ]] ; then
+      with=${discovery_data_location["${match}"]}
+    elif [[ ${id} == "name" ]] ; then
+      with=${discovery_data_name["${match}"]}
+    elif [[ ${id} == "repository" ]] ; then
+      with=${discovery_data_repository["${match}"]}
+    elif [[ ${id} == "version" ]] ; then
+      with=${discovery_data_version["${match}"]}
+    else
+      return
+    fi
+
+    json=$(echo "${json}" | sed -e "s|{${id}:${match}}|${with}|g")
+
+    build_depls_handle_result "Failed regex replace '{${id}:${match}}' using sed for field='${field}' for ${output}"
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+  done
 }
 
 build_depls_expand_variables() {
