@@ -1,11 +1,11 @@
-template/deploy/input/launches
 eureka-platform.json
-install.json
 install-extras.json
+install.json
 location
 npm.json
 okapi-install.json
 results.txt
+template/deploy/input/launches
 template/deploy/output
 work
 workspace/node_modules
