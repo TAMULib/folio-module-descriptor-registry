@@ -110,7 +110,8 @@ This **Module Discovery Descriptor** type is key on a combination of special res
 This operates only on a string matching level using `sed` and cannot safely handle JSON data.
 This type allows for partial replacements, such as `"{repository:}/{name:}:{version:}"`.
 This type is of the form `{key:module}` where `key` is one of `id`, `location`, `name`, `repository`, and `version`.
-The special key types are `{global:namespace}`.
+The special key types are `{global:app}` and `{global:namespace}`.
+The `{global:app}` represents the application name specified by the `BUILD_DEPLOY_SELECTOR` environment variable.
 The `{global:namespace}` represents the namespace specified by the `BUILD_DEPLOY_NAMESPACE` environment variable.
 The `{repository:}` is module specific, but is not part of the **Module Discovery Descriptor** and is instead part of the Repository Location JSON files for each module (if they exist).
 The default repository is used for `{repository:}` when there is no Repository Location JSON file for a particular module.
@@ -129,6 +130,7 @@ This can be done using `http://mod-users-{version:mod-users}.{global:namespace}.
 | Environment Variable              | Description (see script for further details)
 | --------------------------------- | --------------------------------
 | `BUILD_DEPLOY_ACTIONS`            | Allow limiting the actions to either `expand`, `combine`, or `both` (default is `both` when this is an empty string).
+| `BUILD_DEPLOY_APP`                | The name of the application bundle, also use for the name of file without the file extension (not the full path), such as `fleet`.
 | `BUILD_DEPLOY_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
 | `BUILD_DEPLOY_DEFAULT_REPOSITORY` | Designate the default repository to use when none is specified via a Repository Location JSON file (defaults to `folioci`).
 | `BUILD_DEPLOY_DISCOVERY`          | The path to the **Module Discovery Descriptor** JSON file.
@@ -137,7 +139,6 @@ This can be done using `http://mod-users-{version:mod-users}.{global:namespace}.
 | `BUILD_DEPLOY_LOCATION_PATH`      | The directory containing generated Repository Location JSON files (defaults to `location/`).
 | `BUILD_DEPLOY_NAMES`              | If non-empty, then this is a list of names from the **Module Discovery Descriptor** that the build process should be limited to. This does support names not defined in the **Module Discovery Descriptor** file.
 | `BUILD_DEPLOY_NAMESPACE`          | The Kubernetes namespace to use when building (defaults to `folio-modules`).
-| `BUILD_DEPLOY_OUTPUT_FILE`        | The name of the output file without the file extension (not the full path), such as `fleet`.
 | `BUILD_DEPLOY_OUTPUT_FORCE`       | If non-empty, then allow writing over existing output files without failing on error.
 | `BUILD_DEPLOY_OUTPUT_PATH`        | The path to the output directory.
 | `BUILD_DEPLOY_PASSES`             | The number of passes to make when expanding variables.

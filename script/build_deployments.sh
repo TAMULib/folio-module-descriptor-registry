@@ -32,7 +32,7 @@
 #
 
 main() {
-  local combined_file="apps"
+  local app="apps"
   local debug=
   local debug_json=
   local default_repository="folioci"
@@ -111,8 +111,8 @@ build_depls_combine() {
   local deploy=
   local name=
   local service=
-  local temp=${output_path_yaml}${combined_file}.json
-  local yaml=${output_path_yaml}${combined_file}.yaml
+  local temp=${output_path_yaml}${app}.json
+  local yaml=${output_path_yaml}${app}.yaml
 
   build_depls_combine_initialize
 
@@ -553,6 +553,7 @@ build_depls_expand_replace_standard() {
 
   local data=
   local key=${1}
+  local match_global_app="{global:app}"
   local match_global_namespace="{global:namespace}"
   local match_id="{id:}"
   local match_location="{location:}"
@@ -584,6 +585,7 @@ build_depls_expand_replace_standard() {
     -e "s|${match_name}|${use_name}|g" \
     -e "s|${match_repository}|${use_repository}|g" \
     -e "s|${match_version}|${use_version}|g" \
+    -e "s|${match_global_app}|${app}|g" \
     -e "s|${match_global_namespace}|${namespace}|g" \
   )
 
@@ -777,11 +779,11 @@ build_depls_load_environment() {
     output_force="force"
   fi
 
-  if [[ ${BUILD_DEPLOY_OUTPUT_FILE} != "" ]] ; then
-    combined_file=${BUILD_DEPLOY_OUTPUT_FILE}
+  if [[ ${BUILD_DEPLOY_APP} != "" ]] ; then
+    app=${BUILD_DEPLOY_APP}
   fi
 
-  build_depls_verify_name ${combined_file} "combined name"
+  build_depls_verify_name ${app} "app name"
 
   if [[ ${BUILD_DEPLOY_NAMESPACE} != "" ]] ; then
     namespace=${BUILD_DEPLOY_NAMESPACE}
@@ -818,7 +820,7 @@ build_depls_load_environment() {
   build_depls_verify_file "'service' input file" ${input_path_main}${input_service_name}.json
   build_depls_verify_file "'names' input file" ${input_path_main}${names_base}.json create array
   build_depls_verify_file "'vars' input file" ${input_path_main}${vars_name}.json create object
-  build_depls_verify_file "'combined' output file" ${output_path_yaml}${combined_file}.yaml not ${output_force}
+  build_depls_verify_file "'app' output file" ${output_path_yaml}${app}.yaml not ${output_force}
 
   build_depls_verify_json "'deployment' input file" ${input_path_main}${input_deploy_name}.json
   build_depls_verify_json "'service' input file" ${input_path_main}${input_service_name}.json
