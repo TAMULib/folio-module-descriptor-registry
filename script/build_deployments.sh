@@ -43,12 +43,13 @@ main() {
   local flower="snapshot"
   local maps_name="maps"
   local input_base="base"
-  local input_name="deployment"
+  local input_deploy_name="deployment"
   local input_path="template/deploy/input/"
   local input_path_launches="${input_path}launches/"
   local input_path_main="${input_path}main/"
   local input_path_specific="${input_path}specific/"
   local input_path_vars="${input_path}vars/"
+  local input_service_name="service"
   local jq_instruct
   local jq_merge_join=
   local jq_merge_replace=
@@ -68,6 +69,8 @@ main() {
   local output_path="template/deploy/output/"
   local output_path_yaml="${output_path}yaml/"
   local output_path_json="${output_path}json/"
+  local output_path_json_deploy="${output_path}deploy/"
+  local output_path_json_service="${output_path}service/"
   local vars_name="vars"
 
   # Custom prefixes for debug and error.
@@ -105,8 +108,9 @@ build_depls_combine() {
   if [[ ${result} -ne 0 || ${do_combine} -eq 0 || ${names} == "" ]] ; then return ; fi
 
   local base=${input_path_main}${input_base}.json
+  local deploy=
   local name=
-  local specific=
+  local service=
   local temp=${output_path_yaml}${combined_file}.json
   local yaml=${output_path_yaml}${combined_file}.yaml
 
@@ -120,20 +124,30 @@ build_depls_combine() {
       continue
     fi
 
-    specific=${output_path_json}${name}.json
+    deploy=${output_path_json_deploy}${name}.json
+    service=${output_path_json_service}${name}.json
 
-    if [[ ! -f ${specific} ]] ; then
-      build_depls_print_debug "Skipping combining of ${name}, becuase this file does not exist: ${specific}"
+    if [[ ! -f ${deploy} ]] ; then
+      build_depls_print_debug "Skipping combining of ${name}, becuase this deploy file does not exist: ${deploy}"
 
       continue
     fi
 
-    build_depls_print_debug "Combining ${specific} with ${temp}"
+    if [[ ! -f ${service} ]] ; then
+      build_depls_print_debug "Skipping combining of ${name}, becuase this service file does not exist: ${service}"
+
+      continue
+    fi
+
+    build_depls_print_debug "Combining ${deploy} and ${service} with ${temp}"
 
     combined=
 
-    build_depls_combine_append
-    build_depls_combine_write
+    build_depls_combine_append deploy
+    build_depls_combine_write deploy
+
+    build_depls_combine_append service
+    build_depls_combine_write service
 
     if [[ ${result} -ne 0 ]] ; then break ; fi
   done
@@ -148,16 +162,24 @@ build_depls_combine_append() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
   local jq_append='.items += [$item]'
+  local key=${1}
+
+  if [[ ${key} == "deploy" ]] ; then
+    data=${deploy}
+  else
+    data=${service}
+  fi
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    combined=$(jq --argjson item "$(< ${specific})" -M "${jq_append}" ${temp})
+    combined=$(jq --argjson item "$(< ${data})" -M "${jq_append}" ${temp})
   else
-    combined=$(jq --argjson item "$(< ${specific})" -M "${jq_append}" ${temp} 2> ${null})
+    combined=$(jq --argjson item "$(< ${data})" -M "${jq_append}" ${temp} 2> ${null})
   fi
 
-  build_depls_handle_result "Failed to append ${specific} with ${temp}"
+  build_depls_handle_result "Failed to append ${key} with ${temp}"
 }
 
 build_depls_combine_finalize() {
@@ -194,6 +216,8 @@ build_depls_combine_write() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local key=${1}
+
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
     jq -M . <<< ${combined} > ${temp}
@@ -201,7 +225,7 @@ build_depls_combine_write() {
     jq -M . <<< ${combined} > ${temp} 2> ${null}
   fi
 
-  build_depls_handle_result "Failed to write combined ${specific} into ${temp}"
+  build_depls_handle_result "Failed to write combined ${key} into ${temp}"
 }
 
 build_depls_expand() {
@@ -218,9 +242,11 @@ build_depls_expand() {
     return
   fi
 
-  local json=
+  local deploy=
+  local deploy_output=
   local name=
-  local output=
+  local service=
+  local service_output=
   local what=
 
   local -i pass=0
@@ -235,23 +261,28 @@ build_depls_expand() {
 
     let pass=0
 
-    json=
-    output=${output_path_json}${name}.json
+    deploy=
+    deploy_output=${output_path_json_deploy}${name}.json
+    service=
+    service_output=${output_path_json_service}${name}.json
     what=
 
-    build_depls_print_debug "Expanding ${name}: ${output}"
+    build_depls_print_debug "Expanding ${name} Deploy to ${deploy_output} and Service to ${service_output}"
 
     build_depls_expand_file_load_template
 
     build_depls_load_merge launches "${input_path_launches}" "${json_vars_main}"
-
     build_depls_load_merge specific "${input_path_vars}" "${json_vars_launches}"
 
     while [[ ${result} -eq 0 ]] ; do
-      build_depls_expand_variables
+      build_depls_expand_variables deploy
+      build_depls_expand_variables service
 
-      build_depls_expand_replace_standard
-      build_depls_expand_replace_individual
+      build_depls_expand_replace_standard deploy
+      build_depls_expand_replace_standard service
+
+      build_depls_expand_replace_individual deploy
+      build_depls_expand_replace_individual service
 
       let pass++
 
@@ -259,7 +290,8 @@ build_depls_expand() {
       if [[ ${pass} -ge ${passes} ]] ; then break ; fi
     done
 
-    build_depls_expand_write
+    build_depls_expand_write deploy
+    build_depls_expand_write service
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
@@ -269,12 +301,13 @@ build_depls_expand_file_load_template() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local base=
-  local specific=
-  local template=${input_path_main}${input_name}.json
+  local deploy_base=
+  local deploy_template=${input_path_main}${input_deploy_name}.json
+  local service_template=${input_path_main}${input_service_name}.json
 
   build_depls_expand_file_load_template_maps
-  build_depls_expand_file_load_template_base
+  build_depls_expand_file_load_template_base deploy
+  build_depls_expand_file_load_template_base service
   build_depls_expand_file_load_template_specific
   build_depls_expand_file_load_template_combine
 }
@@ -283,40 +316,49 @@ build_depls_expand_file_load_template_base() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  base=$(< ${template})
+  local key=${1}
+  local file=
 
-  build_depls_handle_result "Failed to load ${template}"
+  if [[ ${key} == "deploy" ]] ; then
+    file=${deploy_template}
+    deploy_base=$(< ${file})
+  else
+    file=${service_template}
+    service=$(< ${file})
+  fi
+
+  build_depls_handle_result "Failed to load ${key} ${file}"
 }
 
 build_depls_expand_file_load_template_combine() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ ${base} == "" || ${specific} == "" ]] ; then
-    if [[ ${base} == "" && ${specific} == "" ]] ; then
-      build_depls_print_debug "No data found in for ${name} in either ${input_path_main}${input_name}.json or ${input_path_main}${name}.json"
+  if [[ ${deploy_base} == "" || ${deploy_specific} == "" ]] ; then
+    if [[ ${deploy_base} == "" && ${deploy_specific} == "" ]] ; then
+      build_depls_print_debug "No data found in for ${name} in either ${input_path_main}${input_deploy_name}.json or ${input_path_main}${name}.json"
 
       return
     fi
 
-    if [[ ${base} == "" ]] ; then
-      json=${specific}
+    if [[ ${deploy_base} == "" ]] ; then
+      deploy=${deploy_specific}
       what="${input_path_specific}${name}.json"
     else
-      json=${base}
-      what="${input_path_main}${input_name}.json"
+      deploy=${deploy_base}
+      what="${input_path_main}${input_deploy_name}.json"
     fi
   else
     # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-      json=$(echo "${base} ${specific}" | jq -s -M "${jq_merge_join}")
+      deploy=$(echo "${deploy_base} ${deploy_specific}" | jq -s -M "${jq_merge_join}")
     else
-      json=$(echo "${base} ${specific}" | jq -s -M "${jq_merge_join}" 2> ${null})
+      deploy=$(echo "${deploy_base} ${deploy_specific}" | jq -s -M "${jq_merge_join}" 2> ${null})
     fi
 
     build_depls_handle_result "Failed to merge ${input_path_main}${name}.json and ${input_path_specific}${name}.json files"
 
-    what="${input_path_main}${input_name}.json and ${input_path_specific}${name}.json"
+    what="${input_path_main}${input_deploy_name}.json and ${input_path_specific}${name}.json"
   fi
 }
 
@@ -324,19 +366,33 @@ build_depls_expand_file_load_template_maps() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local alt_name=
+  local alt_deploy_name=
+  local alt_service_name=
   local maps_path=${input_path_main}${maps_name}.json
 
-  build_depls_expand_file_load_template_maps_exact
+  build_depls_expand_file_load_template_maps_exact deploy
+  build_depls_expand_file_load_template_maps_exact service
   build_depls_expand_file_load_template_maps_pcre
 
-  if [[ ${result} -eq 0 && ${alt_name} != "" ]] ; then
-    template=${input_path_main}${alt_name}.json
+  if [[ ${result} -eq 0 ]] ; then
+    if [[ ${alt_deploy_name} != "" ]] ; then
+      deploy_template=${input_path_main}${alt_deploy_name}.json
 
-    if [[ ! -f ${template} ]] ; then
-      echo "${p_e}The specified map file for ${name} is not a valid regular file: ${template} ."
+      if [[ ! -f ${deploy_template} ]] ; then
+        echo "${p_e}The specified deploy map file for ${name} is not a valid regular file: ${deploy_template} ."
 
-      let result=1
+        let result=1
+      fi
+    fi
+
+    if [[ ${alt_service_name} != "" ]] ; then
+      service_template=${input_path_main}${alt_service_name}.json
+
+      if [[ ! -f ${deploy_template} ]] ; then
+        echo "${p_e}The specified service map file for ${name} is not a valid regular file: ${service_template} ."
+
+        let result=1
+      fi
     fi
   fi
 }
@@ -345,26 +401,35 @@ build_depls_expand_file_load_template_maps_exact() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local jq_select=".exact.\"${name}\" | select(. != \"\" and . != null)"
+  local key=${1}
+  local jq_select=".exact.\"${name}\".${key} | select(. != \"\" and . != null)"
+  local value=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    alt_name=$(jq -r -M "${jq_select}" ${maps_path})
+    value=$(jq -r -M "${jq_select}" ${maps_path})
   else
-    alt_name=$(jq -r -M "${jq_select}" ${maps_path} 2> ${null})
+    value=$(jq -r -M "${jq_select}" ${maps_path} 2> ${null})
   fi
 
-  build_depls_handle_result "Failed to load and parse exact maps file: ${maps_path}"
+  build_depls_handle_result "Failed to load and parse exact ${key} maps file: ${maps_path}"
+
+  if [[ ${key} == "deploy" ]] ; then
+    alt_deploy_name=${value}
+  else
+    alt_service_name=${value}
+  fi
 }
 
 build_depls_expand_file_load_template_maps_pcre() {
 
-  # This expect the exact match to be selected first and if it is (via ${alt_name}), then the PCRE is not used.
-  if [[ ${result} -ne 0 || ${alt_name} != "" ]] ; then return ; fi
+  # This expect the exact match to be selected first and if it is (via ${alt_deploy_name}), then the PCRE is not used.
+  if [[ ${result} -ne 0 || ${alt_deploy_name} != "" ]] ; then return ; fi
 
   local pcre_json=
   local pcre_query=
-  local pcre_value=
+  local pcre_value_deploy=
+  local pcre_value_service=
   local pcre_total=
 
   local -i i=0
@@ -375,7 +440,8 @@ build_depls_expand_file_load_template_maps_pcre() {
 
   while [[ ${i} -lt ${pcre_total} ]] ; do
     build_depls_expand_file_load_template_maps_pcre_load_query
-    build_depls_expand_file_load_template_maps_pcre_load_value
+    build_depls_expand_file_load_template_maps_pcre_load_value deploy
+    build_depls_expand_file_load_template_maps_pcre_load_value service
     build_depls_expand_file_load_template_maps_pcre_match_query
 
     if [[ ${result} -ne 0 || ${matched} -ne 0 ]] ; then return ; fi
@@ -418,7 +484,9 @@ build_depls_expand_file_load_template_maps_pcre_load_value() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local jq_value_at_key=".[\"${pcre_query}\"]"
+  local key=${1}
+  local jq_value_at_key=".[\"${pcre_query}\"].${key} | select(. != \"\" and . != null)"
+  local pcre_value=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
@@ -427,7 +495,13 @@ build_depls_expand_file_load_template_maps_pcre_load_value() {
     pcre_value=$(echo "${pcre_json}" | jq -r -M "${jq_value_at_key}" 2> ${null})
   fi
 
-  build_depls_handle_result "Failed to load value for PCRE key '${pcre_query}' from maps file: ${maps_path}"
+  build_depls_handle_result "Failed to load value for PCRE key '${pcre_query}' '${key}' from maps file: ${maps_path}"
+
+  if [[ ${key} == "deploy" ]] ; then
+    pcre_value_deploy=${pcre_value}
+  else
+    pcre_value_service=${pcre_value}
+  fi
 }
 
 build_depls_expand_file_load_template_maps_pcre_match_query() {
@@ -436,10 +510,12 @@ build_depls_expand_file_load_template_maps_pcre_match_query() {
 
   if [[ $(echo -n "${name}" | grep -shoP "${pcre_query}") != "" ]] ; then
     let matched=1
-    alt_name="${pcre_value}"
+
+    alt_deploy_name="${pcre_value_deploy}"
+    alt_service_name="${pcre_value_service}"
   fi
 
-  build_depls_handle_result "Failed to operate PCRE query '${pcre_query}' for '${pcre_value}' from maps file: ${maps_path}"
+  build_depls_handle_result "Failed to operate PCRE query '${pcre_query}' for deploy value '${pcre_value_deploy}' and service value '${pcre_value_service}' from maps file: ${maps_path}"
 }
 
 build_depls_expand_file_load_template_maps_pcre_load_map() {
@@ -465,7 +541,7 @@ build_depls_expand_file_load_template_specific() {
   local specific_path=${input_path_specific}${name}.json
 
   if [[ -f ${specific_path} ]] ; then
-    specific=$(< ${specific_path})
+    deploy_specific=$(< ${specific_path})
 
     build_depls_handle_result "Failed to load ${specific_path}"
   fi
@@ -475,23 +551,34 @@ build_depls_expand_replace_standard() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
+  local key=${1}
   local match_global_namespace="{global:namespace}"
   local match_id="{id:}"
   local match_location="{location:}"
   local match_name="{name:}"
   local match_repository="{repository:}"
   local match_version="{version:}"
+  local output=
   local use_id=${discovery_data_id["${name}"]}
   local use_location=${discovery_data_location["${name}"]}
   local use_name=${discovery_data_name["${name}"]}
   local use_repository=${discovery_data_repository["${name}"]}
   local use_version=${discovery_data_version["${name}"]}
 
+  if [[ ${key} == "deploy" ]] ; then
+    data=${deploy}
+    output=${deploy_output}
+  else
+    data=${service}
+    output=${service_output}
+  fi
+
   if [[ ${use_repository} == "" ]] ; then
     use_repository=${default_repository}
   fi
 
-  json=$(echo "${json}" | sed \
+  data=$(echo "${data}" | sed \
     -e "s|${match_id}|${use_id}|g" \
     -e "s|${match_location}|${use_location}|g" \
     -e "s|${match_name}|${use_name}|g" \
@@ -501,13 +588,30 @@ build_depls_expand_replace_standard() {
   )
 
   build_depls_handle_result "Failed regex replace (empty cases) using sed for field='${field}' for ${output}"
+
+  if [[ ${key} == "deploy" ]] ; then
+    deploy=${data}
+  else
+    service=${data}
+  fi
 }
 
 build_depls_expand_replace_individual() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
+  local key=${1}
   local matches=
+  local output=
+
+  if [[ ${key} == "deploy" ]] ; then
+    data=${deploy}
+    output=${deploy_output}
+  else
+    data=${service}
+    output=${service_output}
+  fi
 
   build_depls_expand_replace_individual_match id
   build_depls_expand_replace_individual_replace id
@@ -523,6 +627,12 @@ build_depls_expand_replace_individual() {
 
   build_depls_expand_replace_individual_match version
   build_depls_expand_replace_individual_replace version
+
+  if [[ ${key} == "deploy" ]] ; then
+    deploy=${data}
+  else
+    service=${data}
+  fi
 }
 
 build_depls_expand_replace_individual_match() {
@@ -531,7 +641,7 @@ build_depls_expand_replace_individual_match() {
 
   local match=${1}
 
-  matches=$(echo "${json}" | grep -shoP "{${match}:[\w-]+}" | sed -e "s|{${match}:| |g" -e "s|}| |g")
+  matches=$(echo "${data}" | grep -shoP "{${match}:[\w-]+}" | sed -e "s|{${match}:| |g" -e "s|}| |g")
 
   build_depls_handle_result "Failed extract named replacement matches for field=${field} for ${output}"
 }
@@ -560,7 +670,7 @@ build_depls_expand_replace_individual_replace() {
       return
     fi
 
-    json=$(echo "${json}" | sed -e "s|{${id}:${match}}|${with}|g")
+    data=$(echo "${data}" | sed -e "s|{${id}:${match}}|${with}|g")
 
     build_depls_handle_result "Failed regex replace '{${id}:${match}}' using sed for field='${field}' for ${output}"
 
@@ -572,25 +682,55 @@ build_depls_expand_variables() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
+  local key=${1}
+  local output=
+
+  if [[ ${key} == "deploy" ]] ; then
+    data=${deploy}
+    output=${deploy_output}
+  else
+    data=${service}
+    output=${service_output}
+  fi
+
   build_depls_print_debug "Expanding ${what} (pass ${pass}) into: ${output}"
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    json=$(echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}")
+    data=$(echo ${data} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}")
   else
-    json=$(echo ${json} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 2> ${null})
+    data=$(echo ${data} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 2> ${null})
   fi
 
   build_depls_handle_result "Failed to expand ${what} into ${output}"
+
+  if [[ ${key} == "deploy" ]] ; then
+    deploy=${data}
+  else
+    service=${data}
+  fi
 }
 
 build_depls_expand_write() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  echo "${json}" > ${output}
+  local key=${1}
+  local destination=
+  local data=
 
-  build_depls_handle_result "Failed to write to ${output}"
+  if [[ ${key} == "deploy" ]] ; then
+    data=${deploy}
+    destination=${deploy_output}
+  else
+    data=${service}
+    destination=${service_output}
+  fi
+
+  echo "${data}" > ${destination}
+
+  build_depls_handle_result "Failed to write ${key} to ${destination}"
 }
 
 build_depls_handle_result() {
@@ -629,6 +769,8 @@ build_depls_load_environment() {
     output_path=$(echo -n ${BUILD_DEPLOY_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
     output_path_yaml="${output_path}yaml/"
     output_path_json="${output_path}json/"
+    output_path_json_deploy="${output_path}deploy/"
+    output_path_json_service="${output_path}service/"
   fi
 
   if [[ ${BUILD_DEPLOY_OUTPUT_FORCE} != "" ]] ; then
@@ -669,13 +811,17 @@ build_depls_load_environment() {
   build_depls_verify_directory "output path" ${output_path} create
   build_depls_verify_directory "'YAML' output path" ${output_path_yaml} create
   build_depls_verify_directory "'JSON' output path" ${output_path_json} create
+  build_depls_verify_directory "'deploy JSON' output path" ${output_path_json_deploy} create
+  build_depls_verify_directory "'service JSON' output path" ${output_path_json_service} create
 
-  build_depls_verify_file "'base' input file" ${input_path_main}${input_name}.json
+  build_depls_verify_file "'deployment' input file" ${input_path_main}${input_deploy_name}.json
+  build_depls_verify_file "'service' input file" ${input_path_main}${input_service_name}.json
   build_depls_verify_file "'names' input file" ${input_path_main}${names_base}.json create array
   build_depls_verify_file "'vars' input file" ${input_path_main}${vars_name}.json create object
   build_depls_verify_file "'combined' output file" ${output_path_yaml}${combined_file}.yaml not ${output_force}
 
-  build_depls_verify_json "'base' input file" ${input_path_main}${input_name}.json
+  build_depls_verify_json "'deployment' input file" ${input_path_main}${input_deploy_name}.json
+  build_depls_verify_json "'service' input file" ${input_path_main}${input_service_name}.json
   build_depls_verify_json "'names' input file" ${input_path_main}${names_base}.json
   build_depls_verify_json "'vars' input file" ${input_path_main}${vars_name}.json
 
@@ -840,8 +986,11 @@ build_depls_load_json_sources_files() {
     build_depls_verify_name ${name} "input file name"
 
     if [[ ${do_expand} -eq 1 ]] ; then
-      build_depls_verify_file ${name} ${output_path_json}${name}.json not ${output_force}
-      build_depls_verify_json ${name} ${output_path_json}${name}.json
+      build_depls_verify_file ${name} ${output_path_json_deploy}${name}.json not ${output_force}
+      build_depls_verify_json ${name} ${output_path_json_deploy}${name}.json
+
+      build_depls_verify_file ${name} ${output_path_json_service}${name}.json not ${output_force}
+      build_depls_verify_json ${name} ${output_path_json_service}${name}.json
     fi
 
     if [[ ${result} -ne 0 ]] ; then return ; fi

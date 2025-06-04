@@ -22,5 +22,6 @@
     }
   ],
   "[LIVENESS_PROBE]": null,
+  "[MODULE_URL_VALUE]": "http://{name:}.{global:namespace}.svc:9801",
   "[READINESS_PROBE]": null
 }

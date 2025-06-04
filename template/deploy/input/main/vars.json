@@ -7,6 +7,7 @@
     }
   ],
   "[CONTAINER_PORT]": 8081,
+  "[CONTAINER_PORT_PUBLIC]": 8081,
   "[CONTAINER_PORTS]": [
     {
       "containerPort": "[CONTAINER_PORT]",
@@ -99,7 +100,7 @@
     "failureThreshold": "[LIVENESS_PROBE_FAILURE_THRESHOLD]",
     "httpGet": {
       "path": "/admin/health",
-      "port": 8081,
+      "port": "[CONTAINER_PORT]",
       "scheme": "HTTP"
     },
     "initialDelaySeconds": "[LIVENESS_PROBE_INITIAL_DELAY]",
@@ -107,8 +108,8 @@
     "successThreshold": "[LIVENESS_PROBE_SUCCESS_THRESHOLD]",
     "timeoutSeconds": "[LIVENESS_PROBE_TIMEOUT]"
   },
-  "[LIVENESS_PROBE_FAILURE_THRESHOLD]": 3,
-  "[LIVENESS_PROBE_INITIAL_DELAY]": 45,
+  "[LIVENESS_PROBE_FAILURE_THRESHOLD]": 7,
+  "[LIVENESS_PROBE_INITIAL_DELAY]": 200,
   "[LIVENESS_PROBE_INITIAL_PERIOD]": 60,
   "[LIVENESS_PROBE_SUCCESS_THRESHOLD]": 1,
   "[LIVENESS_PROBE_TIMEOUT]": 5,
@@ -122,26 +123,41 @@
     "name": "MOD_USERS_URL",
     "value": "http://mod-users.{global:namespace}.svc"
   },
+  "[MODULE_ID]": {
+    "name": "MODULE_ID",
+    "value": "{name:}-{version:}"
+  },
   "[MODULE_NAME]": {
     "name": "MODULE_NAME",
     "value": "{name:}"
   },
+  "[MODULE_URL]": {
+    "name": "MODULE_URL",
+    "value": "[MODULE_URL_VALUE]"
+  },
+  "[MODULE_URL_VALUE]": "http://{name:}.{global:namespace}.svc:8081",
   "[MODULE_VERSION]": {
     "name": "MODULE_VERSION",
     "value": "{version:}"
   },
   "[READINESS_PROBE]": {
-    "failureThreshold": 3,
+    "failureThreshold": "[READINESS_PROBE_FAILURE_THRESHOLD]",
     "httpGet": {
       "path": "/admin/health",
-      "port": 8081,
+      "port": "[CONTAINER_PORT]",
       "scheme": "HTTP"
     },
-    "initialDelaySeconds": 45,
-    "periodSeconds": 60,
-    "successThreshold": 1,
-    "timeoutSeconds": 5
+    "initialDelaySeconds": "[READINESS_PROBE_INITIAL_DELAY]",
+    "periodSeconds": "[READINESS_PROBE_INITIAL_PERIOD]",
+    "successThreshold": "[READINESS_PROBE_SUCCESS_THRESHOLD]",
+    "timeoutSeconds": "[READINESS_PROBE_TIMEOUT]"
   },
+  "[READINESS_PROBE_FAILURE_THRESHOLD]": 7,
+  "[READINESS_PROBE_INITIAL_DELAY]": 200,
+  "[READINESS_PROBE_INITIAL_PERIOD]": 60,
+  "[READINESS_PROBE_SUCCESS_THRESHOLD]": 1,
+  "[READINESS_PROBE_TIMEOUT]": 5,
+
   "[RESOURCES]": {
     "limits": "[RESOURCES_LIMITS]",
     "requests": "[RESOURCES_REQUESTS]"
@@ -171,29 +187,39 @@
   },
   "[SIDECAR_ENVIRONMENT]": [
     "[MOD_USERS_BL_URL]",
+    "[MODULE_ID]",
+    "[MODULE_NAME]",
+    "[MODULE_URL]",
+    "[MODULE_VERSION]",
     "[SIDECAR_JAVA_OPTIONS]",
-    {
-      "name": "MODULE_URL",
-      "value": "http://{name:}.{global:namespace}.svc:8080"
-    },
-    {
-      "name": "MODULE_ID",
-      "value": "{name:}-{version:}"
-    },
-    {
-      "name": "SIDECAR_URL",
-      "value": "http://{name:}.{global:namespace}.svc"
-    }
+    "[SIDECAR_NAME]",
+    "[SIDECAR_URL]"
   ],
   "[SIDECAR_IMAGE]": "folioci/folio-module-sidecar:latest",
   "[SIDECAR_IMAGE_PULL_POLICY]": "[CONTAINER_IMAGE_PULL_POLICY]",
   "[SIDECAR_IMAGE_PULL_SECRETS]": "[CONTAINER_IMAGE_PULL_SECRETS]",
-  "[SIDECAR_JAVA_OPTIONS_VALUE]": "-Dquarkus.http.port=19002 -Dlog4j2.formatMsgNoLookups=true -Dmodule.name={name:} -Dmodule.version={version:} -Dsidecar.name={name:}-sidecar -Dmodule.id={name:}-{version:} -Dmodule.url=http://{name:}.{global:namespace}.svc:8080 -Dsidecar.url=http://{name:}.{global:namespace}.svc",
+  "[SIDECAR_JAVA_OPTIONS_VALUE]": "-Dlog4j2.formatMsgNoLookups=true",
   "[SIDECAR_JAVA_OPTIONS]": {
     "name": "JAVA_OPTIONS",
     "value": "[SIDECAR_JAVA_OPTIONS_VALUE]"
   },
-  "[SIDECAR_LIVENESS_PROBE]": "[LIVENESS_PROBE]",
+  "[SIDECAR_LIVENESS_PROBE]": {
+    "failureThreshold": "[LIVENESS_PROBE_FAILURE_THRESHOLD]",
+    "httpGet": {
+      "path": "/admin/health",
+      "port": "[SIDECAR_PORT]",
+      "scheme": "HTTP"
+    },
+    "initialDelaySeconds": "[LIVENESS_PROBE_INITIAL_DELAY]",
+    "periodSeconds": "[LIVENESS_PROBE_INITIAL_PERIOD]",
+    "successThreshold": "[LIVENESS_PROBE_SUCCESS_THRESHOLD]",
+    "timeoutSeconds": "[LIVENESS_PROBE_TIMEOUT]"
+  },
+  "[SIDECAR_NAME]": {
+    "name": "SIDECAR_NAME",
+    "value": "[SIDECAR_NAME_VALUE]"
+  },
+  "[SIDECAR_NAME_VALUE]": "{name:}-sidecar",
   "[SIDECAR_PORT]": 19002,
   "[SIDECAR_PORTS]": [
     {
@@ -202,7 +228,22 @@
       "protocol": "TCP"
     }
   ],
-  "[SIDECAR_READINESS_PROBE]": "[READINESS_PROBE]",
+  "[SIDECAR_READINESS_PROBE]": {
+    "failureThreshold": 3,
+    "httpGet": {
+      "path": "/admin/health",
+      "port": "[SIDECAR_PORT]",
+      "scheme": "HTTP"
+    },
+    "initialDelaySeconds": 45,
+    "periodSeconds": 60,
+    "successThreshold": 1,
+    "timeoutSeconds": 5
+  },
   "[SIDECAR_RESOURCES]": "[RESOURCES]",
+  "[SIDECAR_URL]": {
+    "name": "SIDECAR_URL",
+    "value": "http://{name:}.{global:namespace}.svc"
+  },
   "[WORKLOAD]": "folio_module"
 }

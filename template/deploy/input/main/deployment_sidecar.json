@@ -50,10 +50,8 @@
             "image": "[SIDECAR_IMAGE]",
             "imagePullPolicy": "[SIDECAR_IMAGE_PULL_POLICY]",
             "imagePullSecrets": "[SIDECAR_IMAGE_PULL_SECRETS]",
-            "livenessProbe": "[SIDECAR_LIVENESS_PROBE]",
-            "name": "{name:}-sidecar",
+            "name": "[SIDECAR_NAME_VALUE]",
             "ports": "[SIDECAR_PORTS]",
-            "readinessProbe": "[SIDECAR_READINESS_PROBE]",
             "resources": "[SIDECAR_RESOURCES]",
             "volumeMounts": "[SIDECAR_VOLUME_MOUNTS]"
           }
