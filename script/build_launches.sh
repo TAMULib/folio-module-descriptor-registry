@@ -19,6 +19,7 @@
 #
 
 main() {
+  local IFS= # Protect IFS from security issue before anything is done.
   local debug=
   local debug_json=
   local null="/dev/null"
