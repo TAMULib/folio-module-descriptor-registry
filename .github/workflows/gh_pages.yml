@@ -61,9 +61,11 @@ jobs:
 
       - id: create_dirs
         name: Clean and Create Working Directories
+        env:
+          OUTPUT_INSTANCE: ${{steps.initialize_instance.outputs.instance}}
         run: |
-          rm -Rf ${{steps.initialize_instance.outputs.instance}}/{populate,scripts,work}
-          mkdir -p ${{steps.initialize_instance.outputs.instance}}/{populate,scripts,work}
+          rm -Rf "${OUTPUT_INSTANCE}"/{populate,scripts,work}
+          mkdir -p "${OUTPUT_INSTANCE}"/{populate,scripts,work}
 
       - id: checkout_registry
         name: Checkout Registry
@@ -84,11 +86,11 @@ jobs:
 
       - name: Generate Directory Listings
         working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
-        run: |
-          BUILD_PAGES_DEBUG="${{ inputs.debug_mode }}" \
-          BUILD_PAGES_WORK="../work" \
-          BUILD_PAGES_TEMPLATE_PATH="../scripts/template/page" \
-            bash ../scripts/script/build_pages.sh release/
+        env:
+          BUILD_PAGES_DEBUG: ${{ inputs.debug_mode }}
+          BUILD_PAGES_WORK: ../work
+          BUILD_PAGES_TEMPLATE_PATH: ../scripts/template/page
+        run: bash ../scripts/script/build_pages.sh release/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -98,9 +100,11 @@ jobs:
       - id: clean_up
         name: Clean Up
         working-directory: ${{steps.initialize_instance.outputs.instance}}
+        env:
+          OUTPUT_INSTANCE: ${{steps.initialize_instance.outputs.instance}}
         run: |
           cd ..
-          rm -Rf ${{steps.initialize_instance.outputs.instance}}
+          rm -Rf "${OUTPUT_INSTANCE}"
 
   deploy_github_pages:
     name: Deploy Github Pages
