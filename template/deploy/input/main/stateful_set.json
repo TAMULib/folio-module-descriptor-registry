@@ -3,7 +3,12 @@
   "kind": "StatefulSet",
   "metadata": {
     "labels": {
-      "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+      "app": "{global:app}",
+      "app.kubernetes.io/name": "{name:}",
+      "app.kubernetes.io/instance": "{id:}",
+      "app.kubernetes.io/part-of": "FOLIO",
+      "app.kubernetes.io/version": "{version:}",
+      "environment": "scratch"
     },
     "name": "{name:}",
     "namespace": "{global:namespace}"
@@ -12,16 +17,24 @@
     "replicas": 1,
     "selector": {
       "matchLabels": {
-        "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+        "app": "{global:app}",
+        "app.kubernetes.io/name": "{name:}",
+        "app.kubernetes.io/instance": "{id:}",
+        "app.kubernetes.io/part-of": "FOLIO",
+        "app.kubernetes.io/version": "{version:}",
+        "environment": "scratch"
       }
     },
     "serviceName": "{name:}",
     "template": {
       "metadata": {
         "labels": {
-          "app": "{name:}",
-          "workload": "[WORKLOAD]",
-          "workload.user.cattle.io/workloadselector": "apps.statefulSet-folio-scratch-{name:}"
+          "app": "{global:app}",
+          "app.kubernetes.io/name": "{name:}",
+          "app.kubernetes.io/instance": "{id:}",
+          "app.kubernetes.io/part-of": "FOLIO",
+          "app.kubernetes.io/version": "{version:}",
+          "environment": "scratch"
         },
         "namespace": "{global:namespace}"
       },
@@ -34,7 +47,6 @@
             "image": "[CONTAINER_IMAGE]",
             "imagePullPolicy": "[CONTAINER_IMAGE_PULL_POLICY]",
             "imagePullSecrets": "[CONTAINER_IMAGE_PULL_SECRETS]",
-            "livenessProbe": "[LIVENESS_PROBE]",
             "name": "{name:}",
             "ports": "[CONTAINER_PORTS]",
             "readinessProbe": "[READINESS_PROBE]",

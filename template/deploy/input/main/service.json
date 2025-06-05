@@ -2,6 +2,14 @@
   "apiVersion": "v1",
   "kind": "Service",
   "metadata": {
+    "labels": {
+      "app": "{global:app}",
+      "app.kubernetes.io/name": "{name:}",
+      "app.kubernetes.io/instance": "{id:}",
+      "app.kubernetes.io/part-of": "FOLIO",
+      "app.kubernetes.io/version": "{version:}",
+      "environment": "scratch"
+    },
     "name": "{name:}",
     "namespace": "{global:namespace}"
   },
@@ -19,7 +27,12 @@
       }
     ],
     "selector": {
-      "workload.user.cattle.io/workloadselector": "apps.deployment-folio-scratch-{name:}"
+      "app": "{global:app}",
+      "app.kubernetes.io/name": "{name:}",
+      "app.kubernetes.io/instance": "{id:}",
+      "app.kubernetes.io/part-of": "FOLIO",
+      "app.kubernetes.io/version": "{version:}",
+      "environment": "scratch"
     },
     "type": "ClusterIP"
   }
