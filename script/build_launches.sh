@@ -338,7 +338,7 @@ build_launches_build_path() {
 
   if [[ ${result} -ne 0 || ${launch_json} == "{}" || ${launch_json} == "" ]] ; then return ; fi
 
-  local release=$(echo -n ${input_file} | sed -E 's|.*/+([^/]+)$|\1|' | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
+  local release=$(echo -n ${input_file} | sed -E 's|.*/+([^/]+)$|\1|' | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
 
   build_launches_handle_result "Failed to build release path from path: ${input_file}"
 

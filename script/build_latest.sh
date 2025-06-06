@@ -137,7 +137,7 @@ build_latest_operate() {
         continue
       fi
 
-      release=$(echo -n ${i} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
+      release=$(echo -n ${i} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
 
       if [[ ! -f ${path}${i} ]] ; then
         if [[ ${skip_not_found} -ne 0 ]] ; then
