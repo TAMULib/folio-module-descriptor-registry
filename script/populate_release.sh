@@ -35,7 +35,7 @@
 #
 
 main() {
-  local IFS= # Protect IFS from security issue before anything is done.
+  local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_curl=
   local debug_json=
