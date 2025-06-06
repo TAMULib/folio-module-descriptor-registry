@@ -29,6 +29,7 @@
 #
 
 main() {
+  local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local base="/folio-module-descriptor-registry/"
   local debug=
   local debug_json=

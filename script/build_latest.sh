@@ -17,6 +17,7 @@
 #
 
 main() {
+  local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_json=
   local files="install.json eureka-platform.json npm.json"

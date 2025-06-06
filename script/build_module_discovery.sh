@@ -18,6 +18,7 @@
 #
 
 main() {
+  local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_json=
   local field="name"
