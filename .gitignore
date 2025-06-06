@@ -5,5 +5,4 @@ npm.json
 okapi-install.json
 results.txt
 work
-workspace/node_modules
-workspace/yarn.lock
+workspace
