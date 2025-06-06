@@ -163,7 +163,7 @@ pop_rel_load_environment() {
   fi
 
   if [[ ${POPULATE_RELEASE_REPOSITORY} != "" ]] ; then
-    repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e -e 's|/*$|/|g')
   fi
 
   # May be empty, so use "-v" test rather than != "".
@@ -180,7 +180,7 @@ pop_rel_load_source() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${tag}/${file}"
+  source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${tag}/${file}"
 }
 
 pop_rel_print_curl_debug() {
@@ -237,7 +237,7 @@ pop_rel_process_files_releases_curl() {
     return
   fi
 
-  source="$(echo ${repository} | sed -e 's|//*|/|g' -e 's|/*$|/|')${part}${tag}/${file}"
+  source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${tag}/${file}"
 
   for i in ${releases} ; do
 
