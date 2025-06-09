@@ -66,6 +66,10 @@ build_launches_build() {
 
   build_launches_print_debug "Processing Directory ${release_path} for suffix ${suffix}"
 
+  # Designate pipe to operate in the foreground to preserve local variable scopes.
+  # If this is not done, then the ${result} variable value (and all other variables) is lost during each loop pass.
+  shopt -s lastpipe
+
   find ${release_path} -mindepth 1 -maxdepth 1 -name "*${suffix}" ! -name '.*' \( -type l -o -type f \) -printf "%p\n" | sort -u | while read -d $'\n' input_file ; do
 
     echo "Operating on file: ${input_file} ."
@@ -76,6 +80,8 @@ build_launches_build() {
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   echo
   echo "Done: Launch JSON files are built."
@@ -390,6 +396,7 @@ build_launches_load_environment() {
         echo "${p_e}The following path is not a valid directory: ${input_path} ."
 
         let result=1
+        return
       fi
     fi
   fi
@@ -398,13 +405,14 @@ build_launches_load_environment() {
 
   if [[ ${BUILD_LAUNCHES_OUTPUT_PATH} != "" ]] ; then
     output_path=$(echo -n ${BUILD_LAUNCHES_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  fi
 
-    if [[ -e ${output_path} ]] ; then
-      if [[ ! -d ${output_path} ]] ; then
-        echo "${p_e}The following path is not a valid directory: ${output_path} ."
+  if [[ -e ${output_path} ]] ; then
+    if [[ ! -d ${output_path} ]] ; then
+      echo "${p_e}The following path is not a valid directory: ${output_path} ."
 
-        let result=1
-      fi
+      let result=1
+      return
     fi
   fi
 
@@ -418,8 +426,17 @@ build_launches_load_environment() {
         echo "${p_e}The following path is not a valid directory: ${release_path} ."
 
         let result=1
+        return
       fi
     fi
+  fi
+
+  if [[ ! -d ${output_path_launch} ]] ; then
+    mkdir -p ${output_path_launch}
+
+    build_launches_handle_result "Failed to create required output path launch directory: ${output_path_launch} ."
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
   fi
 
   if [[ ${BUILD_LAUNCHES_VERSION} != "" ]] ; then
