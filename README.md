@@ -20,6 +20,7 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
 
 ## Navigation
   - [Scripts](#scripts)
+    - [Build Application Descriptor](#build-application-descriptor)
     - [Build Deployments](#build-deployments)
     - [Build Latest](#build-latest)
     - [Build Launches](#build-launches)
@@ -45,6 +46,33 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
 ## Scripts
 
 This repository provides additional scripts that may help facilitate the generation of the Module Descriptors and related Continuous Integration and Continuous Delivery (CI/CD) operations.
+
+
+### Build Application Descriptor
+
+The **Build Application Descriptor** script provides a way to build an **Application Descriptor** for when there is none available.
+This is primarily needed for when needing to build a **Module Discovery Descriptor** when not using a Eureka environment.
+This utilizes an `install.json` file in order to construct the **Application Descriptor**.
+
+This is neither intended to nor designed to build a complete Eureka **Application Descriptor**.
+Only the minimal properties needed to constuct a **Module Discovery Descriptor** are built.
+
+| Environment Variable               | Description (see script for further details)
+| ---------------------------------- | --------------------------------
+| `BUILD_APP_DESCRIPTOR_DEBUG`       | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_APP_DESCRIPTOR_FILES`       | The name of space separated JSON files used to construct the **Application Descriptor**, such as `install.json`.
+| `BUILD_APP_DESCRIPTOR_FORCE`       | If non-empty, then allow writing over existing output file without failing on error.
+| `BUILD_APP_DESCRIPTOR_NAME`        | The name of the **Application Descriptor**, used for the file name, the `id` field, and `name` field.
+| `BUILD_APP_DESCRIPTOR_OUTPUT_NAME` | The name to use for the output file without the file extension.
+| `BUILD_APP_DESCRIPTOR_OUTPUT_PATH` | The path to the output directory.
+| `BUILD_APP_DESCRIPTOR_VERSION`     | The version of the **Application Descriptor** used for the `id` and `version` fields.
+
+View the documentation within the `build_application_descriptor.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+BUILD_APP_DESCRIPTOR_OUTPUT_PATH="output/" BUILD_APP_DESCRIPTOR_NAME="my_application" BUILD_APP_DESCRIPTOR_VERSION="1.0.0" bash script/build_application_descriptor.sh
+```
 
 
 ### Build Deployments
