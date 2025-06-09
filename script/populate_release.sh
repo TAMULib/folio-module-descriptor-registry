@@ -221,15 +221,18 @@ pop_rel_process_files() {
 
     if [[ ${result} -ne 0 ]] ; then break ; fi
   done
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo
+  echo "Done: Release is populated."
 }
 
 pop_rel_process_files_releases_curl() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local i=
   local release=
-  local version=
 
   if [[ ${releases} == "" ]] ; then
     echo "Done: No releases to fetch from."
@@ -239,16 +242,16 @@ pop_rel_process_files_releases_curl() {
 
   source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${tag}/${file}"
 
-  for i in ${releases} ; do
+  for release in ${releases} ; do
 
     # Skip any files without the dash in the name used to provide a version.
-    if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then
+    if [[ $(echo ${release} | grep -sho '-') == "" ]] ; then
       continue
     fi
 
-    if [[ -f ${destination}${flower}/${i} ]] ; then
+    if [[ -f ${destination}${flower}/${release} ]] ; then
       if [[ ${debug} != "" ]] ; then
-        echo "${p_d}Skipping existing Module Descriptor: ${destination}${flower}/${i} ."
+        echo "${p_d}Skipping existing Module Descriptor: ${destination}${flower}/${release} ."
         echo
       fi
 
@@ -256,17 +259,17 @@ pop_rel_process_files_releases_curl() {
     fi
 
     if [[ ${debug} != "" ]] ; then
-      echo "${p_d}Curl requesting Module Descriptor ${i} from: ${registry}${i} ."
+      echo "${p_d}Curl requesting Module Descriptor ${release} from: ${registry}${release} ."
       echo
     else
-      echo "Curl requesting Module Descriptor: ${i}."
+      echo "Curl requesting Module Descriptor: ${release}."
     fi
 
-    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}"
+    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}"
 
-    curl -w '\n' ${curl_fail} ${debug} ${registry}${i} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${i}
+    curl -w '\n' ${curl_fail} ${debug} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}
 
-    pop_rel_handle_result "Curl request failed for: ${registry}${i} to ${destination}${flower}/${i}"
+    pop_rel_handle_result "Curl request failed for: ${registry}${release} to ${destination}${flower}/${release}"
 
     if [[ ${result} -ne 0 && ${fail_mode} == "report" ]] ; then
       # A 404 results in a 22 status code returned.

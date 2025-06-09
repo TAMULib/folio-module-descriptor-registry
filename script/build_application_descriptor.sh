@@ -87,6 +87,7 @@ build_app_desc_build() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  echo
   echo "Done: Application Descriptor JSON built: ${output_path_json} ."
 }
 
@@ -165,9 +166,9 @@ build_app_desc_build_write() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    echo "${json}" | jq . > ${output_path_json}
+    jq . > ${output_path_json} <<< ${json}
   else
-    echo "${json}" | jq . > ${output_path_json} 2> ${null}
+    jq . > ${output_path_json} <<< ${json} 2> ${null}
   fi
 
   build_app_desc_handle_result "Failed to write to the output JSON file: ${output_path_json}"

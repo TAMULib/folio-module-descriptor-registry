@@ -234,7 +234,7 @@ View the documentation within the `build_launches.sh` script for further details
 
 Example usage:
 ```shell
-bash script/build_launches.sh
+bash BUILD_LAUNCHES_INPUT_PATH="template/launch/input/" script/build_launches.sh
 ```
 
 

@@ -6,6 +6,7 @@
 #   - bash
 #   - grep
 #   - jq
+#   - sed
 #
 #  Parameters:
 #    1) The input JSON file used as the source (specify overrides BUILD_MOD_DISCOVERY_INPUT).
@@ -38,8 +39,7 @@ main() {
   build_mod_disc_load_environment ${*}
 
   build_mod_disc_verify_json "input file" ${file_input}
-
-  build_mod_disc_verify_output
+  build_mod_disc_verify_output "output file" ${file_output}
 
   build_mod_disc_build
 
@@ -50,61 +50,116 @@ build_mod_disc_build() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local -i total=$(jq '.modules | length' ${file_input})
-
+  local field_name=
   local id=
+  local json="{"
   local location=
   local name=
   local value=
   local version=
 
   local -i i=0
+  local -i total=0
+
+  build_mod_disc_build_total
 
   if [[ ${total} -eq 0 && ${debug} != "" ]] ; then
     echo "${p_d}No modules found in the input file: ${file_input} ."
+  else
+    echo "Operating on ${total} items in input file: ${file_input}"
   fi
 
-  echo "{" > ${file_output}
-  echo "  \"discovery\": [" >> ${file_output}
+  echo
+
+  json="${json} \"discovery\": ["
+
+  build_mod_disc_handle_result ${fail_message}
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   while [[ ${i} -lt ${total} ]] ; do
-    id=$(build_mod_disc_get_value_at ${i} id)
-    name=$(build_mod_disc_get_value_at ${i} name)
-    version=$(build_mod_disc_get_value_at ${i} version)
+    build_mod_disc_get_value_at ${i} id
+    id=${value}
+
+    build_mod_disc_get_value_at ${i} name
+    name=${value}
+
+    build_mod_disc_get_value_at ${i} version
+    version=${value}
+
+    build_mod_disc_print_debug "Processing id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
-    echo "    {" >> ${file_output}
-    echo -n "      \"location\": \"${url_prefix}" >> ${file_output}
-    build_mod_disc_build_field | sed -e 's|\.|-|g' >> ${file_output}
-    echo "${url_suffix}\"," >> ${file_output}
-    echo "      \"id\": \"${id}\"," >> ${file_output}
-    echo "      \"name\": \"${name}\"," >> ${file_output}
-    echo "      \"version\": \"${version}\"" >> ${file_output}
-    echo -n "    }" >> ${file_output}
+    if [[ ${field} == "id" ]] ; then
+      field_name="${id}"
+    elif [[ ${field} == "name" ]] ; then
+      field_name="${name}"
+    elif [[ ${field} == "version" ]] ; then
+      field_name="${version}"
+    fi
+
+    field_name=$(echo "${field_name}" | sed -e 's|\.|-|g')
+
+    json="${json} {"
+    json="${json} \"location\": \"${url_prefix}${field_name}${url_suffix}\","
+    json="${json} \"id\": \"${id}\","
+    json="${json} \"name\": \"${name}\","
+    json="${json} \"version\": \"${version}\""
+    json="${json} }"
 
     let i++
 
     if [[ ${i} -lt ${total} ]] ; then
-       echo "," >> ${file_output}
-    else
-      echo >> ${file_output}
+      json="${json},"
     fi
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 
-  echo "  ]" >> ${file_output}
-  echo "}" >> ${file_output}
+  json="${json} ] }"
+
+  build_mod_disc_build_write
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo
+  echo "Done: Module Discovery JSON built: ${file_output} ."
 }
 
-build_mod_disc_build_field() {
+build_mod_disc_build_total() {
 
-  if [[ ${field} == "id" ]] ; then
-    echo -n "${id}"
-  elif [[ ${field} == "name" ]] ; then
-    echo -n "${name}"
-  elif [[ ${field} == "version" ]] ; then
-    echo -n "${version}"
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_total=".modules | length"
+  local data=
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    data=$(jq -r -M "${jq_total}" ${file_input})
+  else
+    data=$(jq -r -M "${jq_total}" ${file_input} 2> ${null})
   fi
+
+  build_mod_disc_handle_result "Failed to load modules array length from JSON: ${file_input}"
+
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
+    let total=${data}
+  fi
+}
+
+build_mod_disc_build_write() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq -r -M . > ${file_output} <<< ${json}
+  else
+    jq -r -M . > ${file_output} <<< ${json} 2> ${null}
+  fi
+
+  build_mod_disc_handle_result "Failed to write to the output JSON file: ${file_output}"
 }
 
 build_mod_disc_get_value_at() {
@@ -113,14 +168,16 @@ build_mod_disc_get_value_at() {
 
   local index=${1}
   local key=${2}
+  local jq_key=".modules[${index}].${key}"
 
-  value=$(jq ".modules[${index}].${key}" ${file_input})
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    value=$(jq -r -M "${jq_key}" ${file_input})
+  else
+    value=$(jq -r -M "${jq_key}" ${file_input} 2> ${null})
+  fi
 
-  let result=${?}
-
-  if [[ ${result} -ne 0 ]] ; then return ${result} ; fi
-
-  echo -n "${value}" | sed -e 's|"||g'
+  build_mod_disc_handle_result "Failed to load key '${key}' at index '${index}' from JSON: ${file_input}"
 }
 
 build_mod_disc_handle_result() {
@@ -178,6 +235,14 @@ build_mod_disc_load_environment() {
   fi
 }
 
+build_mod_disc_print_debug() {
+
+  if [[ ${debug} == "" ]] ; then return ; fi
+
+  echo "${p_d}${1} ."
+  echo
+}
+
 build_mod_disc_verify_json() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -188,6 +253,7 @@ build_mod_disc_verify_json() {
   if [[ ${file} == "" || ! -f ${file} ]] ; then
     let result=1
   else
+    # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
       jq < ${file}
     else
@@ -207,11 +273,23 @@ build_mod_disc_verify_output() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ -e ${file_output} && ${file_force} -eq 0 ]] ; then
-    echo "${p_e}The output file '${file_output} already exists."
-    echo
+  local file=${2}
+  local name=${1}
 
-    let result=1
+  if [[ -e ${file} ]] ; then
+    if [[ -f ${file} ]] ; then
+      if [[ ${file_force} -eq 0 ]] ; then
+        echo "${p_e}The ${name} '${file}' already exists."
+        echo
+
+        let result=1
+      fi
+    else
+      echo "${p_e}The ${name} '${file}' exists but is not a regular file."
+      echo
+
+      let result=1
+    fi
   fi
 }
 

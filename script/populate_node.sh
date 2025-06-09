@@ -204,6 +204,11 @@ pop_node_process_projects() {
 
   # Always pop the directory stack to return to the starting directory.
   popd
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo
+  echo "Done: Nodes are populated."
 }
 
 pop_node_process_projects_build_descriptor() {
@@ -299,9 +304,9 @@ pop_node_process_projects_update_npm_json() {
     # Work around JQ's problems with using the input as the output.
     local json=$(< ${npm_dir}${npm_file})
 
-    pop_node_print_debug "echo ${json} | jq \". |= . + [{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" > ${npm_dir}${npm_file}"
+    pop_node_print_debug "jq \". |= . + [{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" <<< ${json} > ${npm_dir}${npm_file}"
 
-    echo ${json} | jq ". |= . + [{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" > ${npm_dir}${npm_file}
+    jq ". |= . + [{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" <<< ${json} > ${npm_dir}${npm_file}
   fi
 
   pop_node_handle_result "Failed to add the version (${version}) for the project ${project} (simple: ${project_simple}) to: ${npm_dir}${npm_file}"
