@@ -234,7 +234,7 @@ View the documentation within the `build_launches.sh` script for further details
 
 Example usage:
 ```shell
-bash script/build_launches.sh
+bash BUILD_LAUNCHES_INPUT_PATH="template/launch/input/" script/build_launches.sh
 ```
 
 
@@ -435,14 +435,14 @@ The flower release name in relation to its release date designation (which maps 
 | `POPULATE_RELEASE_FLOWER`          | The Flower release name, such as `quesnelia` or `snapshot`.
 | `POPULATE_RELEASE_REGISTRY`        | The URL to GET the module descriptor from for some specific module version.
 | `POPULATE_RELEASE_REPOSITORY`      | The raw GitHub repository URL to fetch from (but without the URL parts after the repository name).
-| `POPULATE_RELEASE_REPOSITORY_PART` | The part of the GitHub repository URL specifying the tag, branch, or hash (but without either the specific tag/branch name or the file path).
+| `POPULATE_RELEASE_REPOSITORY_PART` | The part of the GitHub repository URL specifying the `tags`, `heads` for a branch (default), or an empty string for a commit hash (but without either the specific tag/branch name or the file path).
 | `POPULATE_RELEASE_TAG`             | The GitHub release tag, such as `R1-2024-csp-9`.
 
 View the documentation within the `populate_release.sh` script for further details on how to operate this script.
 
 Example usage:
 ```shell
-POPULATE_RELEASE_FLOWER="quesnelia" POPULATE_RELEASE_TAG="R1-2024-csp-9" bash script/populate_release.sh
+POPULATE_RELEASE_FLOWER="quesnelia" POPULATE_RELEASE_TAG="R1-2024-csp-9" POPULATE_RELEASE_REPOSITORY_PART="tags" bash script/populate_release.sh
 ```
 
 _Make sure to manually delete any already downloaded JSON files to avoid accidentally including the wrong dependencies for some flower release when executing this script for multiple flower releases._

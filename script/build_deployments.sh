@@ -157,6 +157,11 @@ build_depls_combine() {
 
   # Always delete temporary JSON file.
   rm -f ${temp}
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo
+  echo "Done: Deployment JSON files are built."
 }
 
 build_depls_combine_append() {
@@ -352,9 +357,9 @@ build_depls_expand_file_load_template_combine() {
   else
     # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-      deploy=$(echo "${deploy_base} ${deploy_specific}" | jq -s -M "${jq_merge_join}")
+      deploy=$(jq -s -M "${jq_merge_join}" <<< "${deploy_base} ${deploy_specific}")
     else
-      deploy=$(echo "${deploy_base} ${deploy_specific}" | jq -s -M "${jq_merge_join}" 2> ${null})
+      deploy=$(jq -s -M "${jq_merge_join}" <<< "${deploy_base} ${deploy_specific}" 2> ${null})
     fi
 
     build_depls_handle_result "Failed to merge ${input_path_main}${name}.json and ${input_path_specific}${name}.json files"
@@ -457,9 +462,9 @@ build_depls_expand_file_load_template_maps_pcre_load_query() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    pcre_query=$(echo "${pcre_json}" | jq -r -M "${jq_key_at_index}")
+    pcre_query=$(jq -r -M "${jq_key_at_index}" <<< ${pcre_json})
   else
-    pcre_query=$(echo "${pcre_json}" | jq -r -M "${jq_key_at_index}" 2> ${null})
+    pcre_query=$(jq -r -M "${jq_key_at_index}" <<< ${pcre_json} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load PCRE key index ${i} from maps file: ${maps_path}"
@@ -470,19 +475,19 @@ build_depls_expand_file_load_template_maps_pcre_load_total() {
   if [[ ${result} -ne 0 || ${pcre_json} == "" ]] ; then return ; fi
 
   local jq_length="length"
-  local result=
+  local data=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    result=$(echo "${pcre_json}" | jq -r -M "${jq_length}")
+    data=$(jq -r -M "${jq_length}" <<< ${pcre_json})
   else
-    result=$(echo "${pcre_json}" | jq -r -M "${jq_length}" 2> ${null})
+    data=$(jq -r -M "${jq_length}" <<< ${pcre_json} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load and parse PCRE total from maps file: ${maps_path}"
 
-  if [[ ${result} != "" && ${result} != "null" ]] ; then
-    let pcre_total=${result}
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
+    let pcre_total=${data}
   else
     let pcre_total=0
   fi
@@ -498,9 +503,9 @@ build_depls_expand_file_load_template_maps_pcre_load_value() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    pcre_value=$(echo "${pcre_json}" | jq -r -M "${jq_value_at_key}")
+    pcre_value=$(jq -r -M "${jq_value_at_key}" <<< ${pcre_json})
   else
-    pcre_value=$(echo "${pcre_json}" | jq -r -M "${jq_value_at_key}" 2> ${null})
+    pcre_value=$(jq -r -M "${jq_value_at_key}" <<< ${pcre_json} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load value for PCRE key '${pcre_query}' '${key}' from maps file: ${maps_path}"
@@ -521,6 +526,8 @@ build_depls_expand_file_load_template_maps_pcre_match_query() {
 
     alt_deploy_name="${pcre_value_deploy}"
     alt_service_name="${pcre_value_service}"
+  else
+    let matched=0
   fi
 
   build_depls_handle_result "Failed to operate PCRE query '${pcre_query}' for deploy value '${pcre_value_deploy}' and service value '${pcre_value_service}' from maps file: ${maps_path}"
@@ -708,9 +715,9 @@ build_depls_expand_variables() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    data=$(echo ${data} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}")
+    data=$(jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" <<< ${data})
   else
-    data=$(echo ${data} | jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" 2> ${null})
+    data=$(jq --argjson vars "${json_vars}" --argjson names "${jq_names}" "${jq_instruct}" <<< ${data} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to expand ${what} into ${output}"
@@ -1024,9 +1031,9 @@ build_depls_load_json_discovery_names() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    discovery_names=$(echo ${discovery_data} | jq -r -M "${jq_select_names}")
+    discovery_names=$(jq -r -M "${jq_select_names}" <<< ${discovery_data})
   else
-    discovery_names=$(echo ${discovery_data} | jq -r -M "${jq_select_names}" 2> ${null})
+    discovery_names=$(jq -r -M "${jq_select_names}" <<< ${discovery_data} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load Discovery Module names from \$BUILD_DEPLOY_DISCOVERY: ${file}"
@@ -1048,9 +1055,9 @@ build_depls_load_merge() {
 
     # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-      data=$(echo "${with} $(< ${file})" | jq -M -s "${jq_merge_replace}")
+      data=$(jq -M -s "${jq_merge_replace}" <<< "${with} $(< ${file})")
     else
-      data=$(echo "${with} $(< ${file})" | jq -M -s "${jq_merge_replace}" 2> ${null})
+      data=$(jq -M -s "${jq_merge_replace}" <<< "${with} $(< ${file})" 2> ${null})
     fi
 
     build_depls_handle_result "Failed to combine loaded template variables data with ${target} variables from ${file}"
@@ -1233,9 +1240,9 @@ build_depls_verify_json() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    echo ${code} | jq -M .
+    jq -M . <<< ${code}
   else
-    echo ${code} | jq -M . >> ${null} 2>&1
+    jq -M . <<< ${code} >> ${null} 2>&1
   fi
 
   build_depls_handle_result "JSON Verification failed for ${name} file: ${file}"
@@ -1248,8 +1255,8 @@ build_depls_verify_name() {
   local name=${1}
   local describe=${2}
 
-  if [[ $(echo ${name} | grep -sho '[/\]') != "" ]] ; then
-    echo "${p_e}The ${describe} '${name}' may not contain forward or backward slashes."
+  if [[ $(echo -n ${name} | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The ${describe} must not contain '/', '\', ''', or '\"' characters: ${name} ."
 
     let result=1
   fi

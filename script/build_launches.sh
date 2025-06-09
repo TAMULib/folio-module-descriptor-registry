@@ -66,9 +66,13 @@ build_launches_build() {
 
   build_launches_print_debug "Processing Directory ${release_path} for suffix ${suffix}"
 
+  # Designate pipe to operate in the foreground to preserve local variable scopes.
+  # If this is not done, then the ${result} variable value (and all other variables) is lost during each loop pass.
+  shopt -s lastpipe
+
   find ${release_path} -mindepth 1 -maxdepth 1 -name "*${suffix}" ! -name '.*' \( -type l -o -type f \) -printf "%p\n" | sort -u | while read -d $'\n' input_file ; do
 
-    build_launches_print_debug "Processing file ${input_file}"
+    echo "Operating on file: ${input_file} ."
 
     build_launches_build_launch
     build_launches_build_path
@@ -76,6 +80,8 @@ build_launches_build() {
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   echo
   echo "Done: Launch JSON files are built."
@@ -96,6 +102,8 @@ build_launches_build_launch() {
     map=${instruction_map[${i}]}
     type=${instruction_type[${i}]}
     value=${instruction_value[${i}]}
+
+    build_launches_print_debug "Processing map=${map}, type=${type}, value=${value} at index ${i} of ${instruction_length}"
 
     if [[ ${type} == "field" ]] ; then
       build_launches_build_launch_field
@@ -245,19 +253,19 @@ build_launches_build_launch_container_port_process_count() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local jq_length="length"
-  local result=
+  local data=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    result=$(echo ${field_value} | jq -M -r "${jq_length}")
+    data=$(jq -M -r "${jq_length}" <<< ${field_value})
   else
-    result=$(echo ${field_value} | jq -M -r "${jq_length}" 2> ${null})
+    data=$(jq -M -r "${jq_length}" <<< ${field_value} 2> ${null})
   fi
 
   build_launches_handle_result "Failed to extract total ports from loaded field value '${value}' of ${input_file}"
 
-  if [[ ${result} != "" && ${result} != "null" ]] ; then
-    let total=${result}
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
+    let total=${data}
   else
     let total=0
   fi
@@ -272,9 +280,9 @@ build_launches_build_launch_container_port_process_join() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    map_value=$(echo ${map_value} | jq -M "${jq_append}")
+    map_value=$(jq -M "${jq_append}" <<< ${map_value})
   else
-    map_value=$(echo ${map_value} | jq -M "${jq_append}" 2> ${null})
+    map_value=$(jq -M "${jq_append}" <<< ${map_value} 2> ${null})
   fi
 
   build_launches_handle_result "Failed to combine port data from loaded field value '${value}' of ${input_file}"
@@ -299,9 +307,9 @@ build_launches_build_launch_container_port_process_reduce() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    data=$(echo ${field_value} | jq -M -r "${jq_port}" | sed -E "s|${sed_match}||" | grep -shoiP "${grep_match}")
+    data=$(jq -M -r "${jq_port}" <<< ${field_value} | sed -E "s|${sed_match}||" | grep -shoiP "${grep_match}")
   else
-    data=$(echo ${field_value} | jq -M -r "${jq_port}" 2> ${null} | sed -E "s|${sed_match}||" | grep -shoiP "${grep_match}")
+    data=$(jq -M -r "${jq_port}" <<< ${field_value} 2> ${null} | sed -E "s|${sed_match}||" | grep -shoiP "${grep_match}")
   fi
 
   build_launches_handle_result "Failed to extract port ${target} at ${i} from loaded field value '${value}' of ${input_file}"
@@ -338,7 +346,7 @@ build_launches_build_path() {
 
   if [[ ${result} -ne 0 || ${launch_json} == "{}" || ${launch_json} == "" ]] ; then return ; fi
 
-  local release=$(echo -n ${input_file} | sed -E 's|.*/+([^/]+)$|\1|' | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
+  local release=$(echo -n ${input_file} | sed -E 's|.*/+([^/]+)$|\1|' | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
 
   build_launches_handle_result "Failed to build release path from path: ${input_file}"
 
@@ -348,6 +356,8 @@ build_launches_build_path() {
 build_launches_build_write() {
 
   if [[ ${result} -ne 0 || ${output_file} == "" ]] ; then return ; fi
+
+  build_launches_print_debug "Writing to: ${output_file}"
 
   echo "${launch_json}" > ${output_file}
 
@@ -386,6 +396,7 @@ build_launches_load_environment() {
         echo "${p_e}The following path is not a valid directory: ${input_path} ."
 
         let result=1
+        return
       fi
     fi
   fi
@@ -394,13 +405,14 @@ build_launches_load_environment() {
 
   if [[ ${BUILD_LAUNCHES_OUTPUT_PATH} != "" ]] ; then
     output_path=$(echo -n ${BUILD_LAUNCHES_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  fi
 
-    if [[ -e ${output_path} ]] ; then
-      if [[ ! -d ${output_path} ]] ; then
-        echo "${p_e}The following path is not a valid directory: ${output_path} ."
+  if [[ -e ${output_path} ]] ; then
+    if [[ ! -d ${output_path} ]] ; then
+      echo "${p_e}The following path is not a valid directory: ${output_path} ."
 
-        let result=1
-      fi
+      let result=1
+      return
     fi
   fi
 
@@ -414,8 +426,17 @@ build_launches_load_environment() {
         echo "${p_e}The following path is not a valid directory: ${release_path} ."
 
         let result=1
+        return
       fi
     fi
+  fi
+
+  if [[ ! -d ${output_path_launch} ]] ; then
+    mkdir -p ${output_path_launch}
+
+    build_launches_handle_result "Failed to create required output path launch directory: ${output_path_launch} ."
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
   fi
 
   if [[ ${BUILD_LAUNCHES_VERSION} != "" ]] ; then
@@ -461,9 +482,9 @@ build_launches_load_instructions_array_item() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    value=$(echo ${instruction_json} | jq -r -M "${jq_key}")
+    value=$(jq -r -M "${jq_key}" <<< ${instruction_json})
   else
-    value=$(echo ${instruction_json} | jq -r -M "${jq_key}" 2> ${null})
+    value=$(jq -r -M "${jq_key}" <<< ${instruction_json} 2> ${null})
   fi
 
   build_launches_handle_result "Failed to load key '${key}' at index ${i} from instruction map"
@@ -495,14 +516,22 @@ build_launches_load_instructions_length() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
+
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    let instruction_length=$(echo ${instruction_json} | jq -r -M "${jq_length}")
+    data=$(jq -r -M "${jq_length}" <<< ${instruction_json})
   else
-    let instruction_length=$(echo ${instruction_json} | jq -r -M "${jq_length}" 2> ${null})
+    data=$(jq -r -M "${jq_length}" <<< ${instruction_json} 2> ${null})
   fi
 
   build_launches_handle_result "Failed to load instruction map length"
+
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
+    let instruction_length=${data}
+  else
+    let instruction_length=0
+  fi
 }
 
 build_launches_print_debug() {

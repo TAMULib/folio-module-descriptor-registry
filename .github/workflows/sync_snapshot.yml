@@ -68,8 +68,8 @@ jobs:
       - id: create_dirs
         name: Clean and Create Working Directories
         run: |
-          rm -Rf ${{steps.initialize_instance.outputs.instance}}/{populate,scripts}
-          mkdir -p ${{steps.initialize_instance.outputs.instance}}/{populate,scripts}
+          rm -Rf ${{ steps.initialize_instance.outputs.instance }}/{populate,scripts}
+          mkdir -p ${{ steps.initialize_instance.outputs.instance }}/{populate,scripts}
 
       - id: assure_stripes
         name: Assure Stripes
@@ -82,14 +82,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.registry_branch || 'snapshot' }}
-          path: ${{steps.initialize_instance.outputs.instance}}/populate
+          path: ${{ steps.initialize_instance.outputs.instance }}/populate
 
       - id: checkout_scripts
         name: Checkout Scripts
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.script_branch || 'master' }}
-          path: ${{steps.initialize_instance.outputs.instance}}/scripts
+          path: ${{ steps.initialize_instance.outputs.instance }}/scripts
           sparse-checkout: |
             script/build_latest.sh
             script/populate_node.sh
@@ -99,14 +99,14 @@ jobs:
 
       - id: populate_release
         name: Populate Release
-        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        working-directory: ${{ steps.initialize_instance.outputs.instance }}/populate
         run: |
           POPULATE_RELEASE_DEBUG="${{ inputs.debug_mode }}" \
             bash ../scripts/script/populate_release.sh
 
       - id: populate_node
         name: Populate Node
-        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        working-directory: ${{ steps.initialize_instance.outputs.instance }}/populate
         run: |
           POPULATE_NODE_DEBUG="${{ inputs.debug_mode }}" \
           POPULATE_NODE_DESTINATION="${{ steps.initialize_instance.outputs.top_dir }}${{steps.initialize_instance.outputs.instance}}/populate/release/snapshot/" \
@@ -117,7 +117,7 @@ jobs:
 
       - id: build_latest
         name: Build Latest Version Links
-        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        working-directory: ${{ steps.initialize_instance.outputs.instance }}/populate
         run: |
           BUILD_LATEST_DEBUG="${{ inputs.debug_mode }}" \
           BUILD_LATEST_SKIP_NOT_FOUND="y" \
@@ -125,7 +125,7 @@ jobs:
 
       - id: synchronize_snapshot
         name: Synchronize Snapshot
-        working-directory: ${{steps.initialize_instance.outputs.instance}}/populate
+        working-directory: ${{ steps.initialize_instance.outputs.instance }}/populate
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -136,10 +136,10 @@ jobs:
 
       - id: clean_up
         name: Clean Up
-        working-directory: ${{steps.initialize_instance.outputs.instance}}
+        working-directory: ${{ steps.initialize_instance.outputs.instance }}
         run: |
           cd ..
-          rm -Rf ${{steps.initialize_instance.outputs.instance}}
+          rm -Rf ${{ steps.initialize_instance.outputs.instance }}
 
   build_github_pages_workflow:
     name: Build Github Pages Workflow

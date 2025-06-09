@@ -38,6 +38,7 @@ main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_curl=
+  local debug_curl_silent="-s"
   local debug_json=
   local delay="0.3s"
   local destination="location/"
@@ -98,9 +99,11 @@ build_location_load_environment() {
 
     if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
       debug_curl="-v"
+      debug_curl_silent=
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
       debug=
       debug_curl="-v"
+      debug_curl_silent=
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
       debug_json="y"
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
@@ -111,6 +114,7 @@ build_location_load_environment() {
     else
       if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
         debug_curl="-v"
+        debug_curl_silent=
       fi
 
       if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
@@ -156,8 +160,8 @@ build_location_load_environment() {
   if [[ ${BUILD_LOCATION_REPOSITORIES_NAME} != "" ]] ; then
     repositories_file=${BUILD_LOCATION_REPOSITORIES_NAME}
 
-    if [[ $(echo ${repositories_file} | grep -sho "[/\]") != "" ]] ; then
-      echo "${p_e}The repositories name must not have slashes: ${repositories_file} ."
+    if [[ $(echo -n ${repositories_file} | grep -sho "[/\\\"\']") != "" ]] ; then
+      echo "${p_e}The repositories name must not contain '/', '\', ''', or '\"' characters: ${repositories_file} ."
 
       let result=1
 
@@ -324,9 +328,9 @@ build_location_load_repositories_extract_domain() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_registry}")
+    value=$(jq -r -M "${jq_registry}" <<< ${repositories_manifest})
   else
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_registry}" 2> ${null})
+    value=$(jq -r -M "${jq_registry}" <<< ${repositories_manifest} 2> ${null})
   fi
 
   build_location_handle_result "Failed to extract domain from '${key}' for the ${repo} repositories manifest (at index ${i}) from: ${repositories_json}"
@@ -349,9 +353,9 @@ build_location_load_repositories_extract_url() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_registry}" | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    value=$(jq -r -M "${jq_registry}" <<< ${repositories_manifest} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
   else
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_registry}" | sed -e 's|//*|/|g' -e 's|/*$|/|g' 2> ${null})
+    value=$(jq -r -M "${jq_registry}" <<< ${repositories_manifest} 2> ${null} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
   fi
 
   build_location_handle_result "Failed to extract URL from '${key}' for the ${repo} repositories manifest (at index ${i}) from: ${repositories_json}"
@@ -374,9 +378,9 @@ build_location_load_repositories_extract_literal() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_name}")
+    value=$(jq -r -M "${jq_name}" <<< ${repositories_manifest})
   else
-    value=$(echo "${repositories_manifest}" | jq -r -M "${jq_name}" 2> ${null})
+    value=$(jq -r -M "${jq_name}" <<< ${repositories_manifest} 2> ${null})
   fi
 
   build_location_handle_result "Failed to extract repositories manifest '${literal}' at index ${i} from: ${repositories_json}"
@@ -411,16 +415,23 @@ build_location_load_repositories_load_length() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local data=
   local jq_length="length"
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    let repo_length=$(echo "${repositories_manifest}" | jq -r -M "${jq_length}")
+    data=$(jq -r -M "${jq_length}" <<< ${repositories_manifest})
   else
-    let repo_length=$(echo "${repositories_manifest}" | jq -r -M "${jq_length}" 2> ${null})
+    data=$(jq -r -M "${jq_length}" <<< ${repositories_manifest} 2> ${null})
   fi
 
   build_location_handle_result "Failed to load repositories manifest length from: ${repositories_json}"
+
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
+    let repo_length=${data}
+  else
+    let repo_length=0
+  fi
 }
 
 build_location_load_repositories_load_names() {
@@ -431,9 +442,9 @@ build_location_load_repositories_load_names() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    repositories=$(echo "${repositories_manifest}" | jq -r -M "${jq_names}")
+    repositories=$(jq -r -M "${jq_names}" <<< ${repositories_manifest})
   else
-    repositories=$(echo "${repositories_manifest}" | jq -r -M "${jq_names}" 2> ${null})
+    repositories=$(jq -r -M "${jq_names}" <<< ${repositories_manifest} 2> ${null})
   fi
 
   build_location_handle_result "Failed to load repositories manifest names from: ${repositories_json}"
@@ -561,6 +572,11 @@ build_location_operate() {
 
     build_location_print_debug "A total of ${count} requests have been made to the request URL: ${request_url}"
   done
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  echo
+  echo "Done: Location JSON files are built."
 }
 
 build_location_operate_login() {
@@ -578,9 +594,9 @@ build_location_operate_login() {
 
   login_url="${auth_url}token?scope=repository:${repo}/${release}:pull${auth_registry}"
 
-  build_location_print_debug "Executing Login: curl ${debug_curl} '${login_url}'"
+  build_location_print_debug "Executing Login: curl ${debug_curl_silent} ${debug_curl} '${login_url}'"
 
-  response=$(curl ${debug_curl} "${login_url}")
+  response=$(curl ${debug_curl_silent} ${debug_curl} "${login_url}")
 
   build_location_handle_result "Curl request failed for repository '${repo}' and release '${release}' for: ${login_url}"
 
@@ -595,9 +611,9 @@ build_location_operate_login_token() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    token=$(echo ${response} | jq -r -M "${jq_select_token}")
+    token=$(jq -r -M "${jq_select_token}" <<< ${response})
   else
-    token=$(echo ${response} | jq -r -M "${jq_select_token}" 2> ${null})
+    token=$(jq -r -M "${jq_select_token}" <<< ${response} 2> ${null})
   fi
 
   build_location_handle_result "Failed to load token from response by ${login_url}"
@@ -623,9 +639,9 @@ build_location_operate_request() {
     auth_header_redact="Authorization: Bearer (REDACTED)"
   fi
 
-  build_location_print_debug "Executing Load Manifest: curl ${debug_curl} -I -H '${auth_header_redact}' '${full_url}'"
+  build_location_print_debug "Executing Load Manifest: curl ${debug_curl_silent} ${debug_curl} -I -H '${auth_header_redact}' '${full_url}'"
 
-  request_manifest=$(curl ${debug_curl} -I -H "${auth_header_value}" ${full_url})
+  request_manifest=$(curl ${debug_curl_silent} ${debug_curl} -I -H "${auth_header_value}" ${full_url})
 
   build_location_handle_result "Curl request failed for repository '${repo}', release '${release}', and tag '${tag}' for: ${full_url}"
 
@@ -646,9 +662,9 @@ build_location_operate_write() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    echo "${release_manifest}" | jq -M . 1> ${destination_json}
+    jq -M . 1> ${destination_json} <<< ${release_manifest}
   else
-    echo "${release_manifest}" | jq -M . 1> ${destination_json} 2> ${null}
+    jq -M . 1> ${destination_json} <<< ${release_manifest} 2> ${null}
   fi
 
   build_location_handle_result "Failed to write Location Manifest to: ${destination_json}"
@@ -666,7 +682,7 @@ build_location_parse_release() {
     message=" from JSON: ${file}"
   fi
 
-  release=$(echo -n ${release_with_version} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||" -e 's|"||g')
+  release=$(echo -n ${release_with_version} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
 
   build_location_handle_result "Failed to parse release name from '${release_with_version}'${message}"
 }
