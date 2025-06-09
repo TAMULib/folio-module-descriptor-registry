@@ -114,7 +114,6 @@ build_app_desc_build_file() {
   echo
 
   while [[ ${i} -lt ${total} ]] ; do
-
     build_app_desc_get_load
     build_app_desc_get_name
     build_app_desc_get_version
