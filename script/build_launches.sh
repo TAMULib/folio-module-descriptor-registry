@@ -258,7 +258,7 @@ build_launches_build_launch_container_port_process_count() {
 
   build_launches_handle_result "Failed to extract total ports from loaded field value '${value}' of ${input_file}"
 
-  if [[ ${data} != "" && ${data} != "null" ]] ; then
+  if [[ ${result} -eq 0 && ${data} != "" && ${data} != "null" ]] ; then
     let total=${data}
   else
     let total=0
