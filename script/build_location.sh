@@ -38,6 +38,7 @@ main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_curl=
+  local debug_curl_silent="-s"
   local debug_json=
   local delay="0.3s"
   local destination="location/"
@@ -98,9 +99,11 @@ build_location_load_environment() {
 
     if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
       debug_curl="-v"
+      debug_curl_silent=
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
       debug=
       debug_curl="-v"
+      debug_curl_silent=
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
       debug_json="y"
     elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
@@ -111,6 +114,7 @@ build_location_load_environment() {
     else
       if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
         debug_curl="-v"
+        debug_curl_silent=
       fi
 
       if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
@@ -590,9 +594,9 @@ build_location_operate_login() {
 
   login_url="${auth_url}token?scope=repository:${repo}/${release}:pull${auth_registry}"
 
-  build_location_print_debug "Executing Login: curl ${debug_curl} '${login_url}'"
+  build_location_print_debug "Executing Login: curl ${debug_curl_silent} ${debug_curl} '${login_url}'"
 
-  response=$(curl ${debug_curl} "${login_url}")
+  response=$(curl ${debug_curl_silent} ${debug_curl} "${login_url}")
 
   build_location_handle_result "Curl request failed for repository '${repo}' and release '${release}' for: ${login_url}"
 
@@ -635,9 +639,9 @@ build_location_operate_request() {
     auth_header_redact="Authorization: Bearer (REDACTED)"
   fi
 
-  build_location_print_debug "Executing Load Manifest: curl ${debug_curl} -I -H '${auth_header_redact}' '${full_url}'"
+  build_location_print_debug "Executing Load Manifest: curl ${debug_curl_silent} ${debug_curl} -I -H '${auth_header_redact}' '${full_url}'"
 
-  request_manifest=$(curl ${debug_curl} -I -H "${auth_header_value}" ${full_url})
+  request_manifest=$(curl ${debug_curl_silent} ${debug_curl} -I -H "${auth_header_value}" ${full_url})
 
   build_location_handle_result "Curl request failed for repository '${repo}', release '${release}', and tag '${tag}' for: ${full_url}"
 

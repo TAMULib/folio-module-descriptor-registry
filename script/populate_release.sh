@@ -38,6 +38,7 @@ main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_curl=
+  local debug_curl_silent="-s"
   local debug_json=
   local destination="release/"
   local curl_fail="--fail"
@@ -94,9 +95,11 @@ pop_rel_load_environment() {
 
     if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
       debug_curl="y"
+      debug_curl_silent=
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
       debug=
       debug_curl="y"
+      debug_curl_silent=
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
       debug_json="y"
     elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
@@ -107,6 +110,7 @@ pop_rel_load_environment() {
     else
       if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
         debug_curl="y"
+        debug_curl_silent=
       fi
 
       if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
@@ -265,9 +269,9 @@ pop_rel_process_files_releases_curl() {
       echo "Curl requesting Module Descriptor: ${release}."
     fi
 
-    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}"
+    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}"
 
-    curl -w '\n' ${curl_fail} ${debug} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}
+    curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}
 
     pop_rel_handle_result "Curl request failed for: ${registry}${release} to ${destination}${flower}/${release}"
 
