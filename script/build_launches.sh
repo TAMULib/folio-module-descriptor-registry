@@ -247,19 +247,19 @@ build_launches_build_launch_container_port_process_count() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local jq_length="length"
-  local result=
+  local data=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    result=$(jq -M -r "${jq_length}" <<< ${field_value})
+    data=$(jq -M -r "${jq_length}" <<< ${field_value})
   else
-    result=$(jq -M -r "${jq_length}" <<< ${field_value} 2> ${null})
+    data=$(jq -M -r "${jq_length}" <<< ${field_value} 2> ${null})
   fi
 
   build_launches_handle_result "Failed to extract total ports from loaded field value '${value}' of ${input_file}"
 
-  if [[ ${result} != "" && ${result} != "null" ]] ; then
-    let total=${result}
+  if [[ ${data} != "" && ${data} != "null" ]] ; then
+    let total=${data}
   else
     let total=0
   fi

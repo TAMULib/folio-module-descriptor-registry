@@ -475,19 +475,19 @@ build_depls_expand_file_load_template_maps_pcre_load_total() {
   if [[ ${result} -ne 0 || ${pcre_json} == "" ]] ; then return ; fi
 
   local jq_length="length"
-  local result=
+  local data=
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    result=$(jq -r -M "${jq_length}" <<< ${pcre_json})
+    data=$(jq -r -M "${jq_length}" <<< ${pcre_json})
   else
-    result=$(jq -r -M "${jq_length}" <<< ${pcre_json} 2> ${null})
+    data=$(jq -r -M "${jq_length}" <<< ${pcre_json} 2> ${null})
   fi
 
   build_depls_handle_result "Failed to load and parse PCRE total from maps file: ${maps_path}"
 
-  if [[ ${result} != "" && ${result} != "null" ]] ; then
-    let pcre_total=${result}
+  if [[ ${data} != "" && ${data} != "null" ]] ; then
+    let pcre_total=${data}
   else
     let pcre_total=0
   fi
