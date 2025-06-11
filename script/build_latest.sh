@@ -176,7 +176,7 @@ build_latest_operate_releases_prepare() {
     releases=$(jq -r -M '.[].id' ${file} 2> ${null})
   fi
 
-  pop_rel_handle_result "Failed to load release IDs from JSON: ${file}"
+  build_latest_handle_result "Failed to load release IDs from JSON: ${file}"
 }
 
 build_latest_print_debug() {
