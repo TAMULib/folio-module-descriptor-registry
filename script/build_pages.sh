@@ -3,8 +3,8 @@
 # Build a simple index listing of the descriptors using minimal HTML and script-based templating.
 #
 # This requires the following user-space programs:
-#   - bash
 #   - basename
+#   - bash
 #   - cp
 #   - date
 #   - find
