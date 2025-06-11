@@ -23,7 +23,7 @@ on:
         description: 'Branch name to checkout scripts from.'
         required: true
         type: string
-        default: 'master'
+        default: 'main'
 
   workflow_dispatch:
     inputs:
@@ -36,7 +36,7 @@ on:
         description: 'Branch name to checkout scripts from.'
         required: true
         type: string
-        default: 'master'
+        default: 'main'
       debug_mode:
         description: 'Debug mode flags.'
         required: false
@@ -88,7 +88,7 @@ jobs:
         name: Checkout Scripts
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.script_branch || 'master' }}
+          ref: ${{ inputs.script_branch || 'main' }}
           path: ${{ steps.initialize_instance.outputs.instance }}/scripts
           sparse-checkout: |
             script/build_latest.sh
@@ -149,4 +149,4 @@ jobs:
     with:
       debug_mode: ${{ inputs.debug_mode }}
       registry_branch: ${{ inputs.registry_branch || 'snapshot' }}
-      script_branch: ${{ inputs.script_branch || 'master' }}
+      script_branch: ${{ inputs.script_branch || 'main' }}

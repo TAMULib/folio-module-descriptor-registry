@@ -508,7 +508,7 @@ These input variables are available both as input variables for event triggers a
 | ----------------- | --------- | -----------
 | `debug_mode`      | string    | Enables debugging when non-empty. Special options (space separated): `curl`, `git`, `json`, `verify`, `yarn`, `curl_only`, `git_only`, `json_only`, `verify_only`, and `yarn_only`.
 | `registry_branch` | string    | The name of the branch containing the registry descriptor files, such as `snapshot`.
-| `script_branch`   | string    | The name of the branch containing the scripts, such as `master`.
+| `script_branch`   | string    | The name of the branch containing the scripts, such as `main`.
 
 
 ### Build GitHub Pages Workflow
@@ -543,11 +543,11 @@ The primary focus is on provide module descriptors, but there may be some cross-
 ### Repository Branch Design
 
 There are three primary types of branches in use, called trunks.
-These three trunks, `master`, `snapshot`, and `fleet`, operate from different fundamental concepts.
+These three trunks, `main`, `snapshot`, and `fleet`, operate from different fundamental concepts.
 
-The first trunk, `master`, is the most common trunk design.
+The first trunk, `main`, is the most common trunk design.
 This houses scripts, workflows, documentation, and any other programmatic tool.
-Branches based on the `master` trunk are the traditional coding branches and is expected to be the primary fork and merge branch.
+Branches based on the `main` trunk are the traditional coding branches and is expected to be the primary fork and merge branch.
 There will be no release related content within this trunk beyond the scripts and tools used to operate on a release.
 Note that this "release" is not a release of the repository but instead is referring to FOLIO module, applications, or flower releases.
 

@@ -22,7 +22,7 @@ on:
         description: 'Branch name to checkout scripts from.'
         required: true
         type: string
-        default: 'master'
+        default: 'main'
 
   workflow_dispatch:
     inputs:
@@ -35,7 +35,7 @@ on:
         description: 'Branch name to checkout scripts from.'
         required: true
         type: string
-        default: 'master'
+        default: 'main'
       debug_mode:
         description: 'Debug mode flags.'
         required: false
