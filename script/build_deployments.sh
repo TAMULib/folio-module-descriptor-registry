@@ -451,6 +451,8 @@ build_depls_expand_file_load_template_maps_pcre() {
     build_depls_expand_file_load_template_maps_pcre_match_query
 
     if [[ ${result} -ne 0 || ${matched} -ne 0 ]] ; then return ; fi
+
+    let i++
   done
 }
 
