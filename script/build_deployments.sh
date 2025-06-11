@@ -530,7 +530,14 @@ build_depls_expand_file_load_template_maps_pcre_match_query() {
     let matched=0
   fi
 
-  build_depls_handle_result "Failed to operate PCRE query '${pcre_query}' for deploy value '${pcre_value_deploy}' and service value '${pcre_value_service}' from maps file: ${maps_path}"
+  if [[ ${?} -eq 2 ]] ; then
+    echo "${p_e}Failed to operate PCRE query '${pcre_query}' for deploy value '${pcre_value_deploy}' and service value '${pcre_value_service}' from maps file: ${maps_path} (system code ${result})."
+    echo
+
+    let result=1
+  else
+    let result=0
+  fi
 }
 
 build_depls_expand_file_load_template_maps_pcre_load_map() {
