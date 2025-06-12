@@ -4,6 +4,7 @@
 #
 # This requires the following user-space programs:
 #   - bash
+#   - cd
 #   - grep
 #   - git
 #

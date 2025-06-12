@@ -6,7 +6,7 @@
 # This should only be used for packages not in an existing install.json file or similar.
 #
 # The Node/NPM/Yarn registry provides a way to fetch projects as dependencies but does not provide a way to fetch as a project.
-# This, therefore, fetches as dependencies, then changes into the dependency directories and builds the module descriptor using stripes-cli.
+# This, therefore, fetches as dependencies, then changes into the dependency directories and builds the module descriptor.
 # Using GitHub to clone the repository does not work as intended because GitHub does not provide the custom detailed build version, such as 2.0.10990000000060.
 # Simply downloading the GitHub repository and changing the version number may result in discrepancies as well.
 #
@@ -16,10 +16,10 @@
 #
 # This requires the following user-space programs:
 #   - bash
+#   - cd
 #   - grep
 #   - jq
 #   - sed
-#   - stripes-cli
 #   - yarn
 #
 # See the repository `README.md` for the listing of the environment variables.
