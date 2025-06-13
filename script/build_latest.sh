@@ -6,6 +6,7 @@
 #   - bash
 #   - grep
 #   - jq
+#   - mkdir
 #   - sed
 #
 # See the repository `README.md` for the listing of the environment variables and parameters.

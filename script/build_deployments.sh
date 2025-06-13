@@ -6,6 +6,7 @@
 #   - bash
 #   - grep
 #   - jq
+#   - mkdir
 #   - sed
 #   - yq
 #

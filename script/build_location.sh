@@ -7,6 +7,7 @@
 #   - curl
 #   - grep
 #   - jq
+#   - mkdir
 #   - sed
 #   - sleep (This is not required if BUILD_LOCATION_DELAY is set to "0".)
 #

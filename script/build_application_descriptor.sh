@@ -15,6 +15,7 @@
 #   - date (optional, used if available)
 #   - grep
 #   - jq
+#   - mkdir
 #   - sed
 #
 # See the repository `README.md` for the listing of the environment variables and parameters.
@@ -335,7 +336,34 @@ build_app_desc_verify_files() {
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 
+  build_app_desc_verify_directory "output path" ${output_path} create
   build_app_desc_verify_output "output file" ${output_path_json}
+}
+
+build_app_desc_verify_directory() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local name=${1}
+  local path=${2}
+  local option=${3}
+
+  # Optionally attempt create the directory if it does not exist.
+  if [[ ${option} == "create" ]] ; then
+    if [[ ! -e ${path} ]] ; then
+      mkdir -p ${debug} ${path}
+
+      build_app_desc_handle_result "Failed to create the ${name} directory: ${path}"
+
+      if [[ ${result} -ne 0 ]] ; then return ; fi
+    fi
+  fi
+
+  if [[ ! -d ${path} ]] ; then
+    echo "${p_e}The ${name} is not a valid directory: ${path} ."
+
+    let result=1
+  fi
 }
 
 build_app_desc_verify_json() {
