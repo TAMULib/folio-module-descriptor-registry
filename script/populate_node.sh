@@ -19,6 +19,7 @@
 #   - cd
 #   - grep
 #   - jq
+#   - mkdir
 #   - sed
 #   - yarn
 #
