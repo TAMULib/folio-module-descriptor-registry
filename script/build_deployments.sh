@@ -115,6 +115,9 @@ build_depls_combine() {
   local temp=${output_path_yaml}${app}.json
   local yaml=${output_path_yaml}${app}.yaml
 
+  echo "Combining expanded data into ${yaml} ."
+  echo
+
   build_depls_combine_initialize
 
   for name in ${names} ; do
@@ -237,6 +240,9 @@ build_depls_combine_write() {
 build_depls_expand() {
 
   if [[ ${result} -ne 0 || ${do_expand} -eq 0 ]] ; then return ; fi
+
+  echo "Expanding variables."
+  echo
 
   if [[ ${names} == "" ]] ; then
     if [[ ${only_these} == "" ]] ; then
@@ -1090,9 +1096,13 @@ build_depls_load_variables() {
   local name=
   local use=
 
-  build_depls_print_debug "Processing module discovery data"
+  echo "Processing module discovery data."
+  echo
 
   for name in ${discovery_names} ; do
+
+    build_depls_print_debug "Loading ${name} discovery data"
+
     build_depls_load_variables_field id
     discovery_data_id["${name}"]=${use}
 
