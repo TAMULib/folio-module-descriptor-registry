@@ -286,7 +286,7 @@ The following is an example format, showing only a single repository:
   - The `request` is broken up into one part, a `url`.
   - The `request.url` is the URL used to perform the `HEAD` request used to identify the presence of a package and version at the named repository.
 
-The general format structure for a Location JSON file is `{release}-${tag}.json`, where relase might be a module such as `mod-circulation` and the tag might be `24.5.0-SNAPSHOT.1311`.
+The general format structure for a Location JSON file is `${release}-${tag}.json`, where relase might be a module such as `mod-circulation` and the tag might be `24.5.0-SNAPSHOT.1311`.
 The following is an example format for the `mod-circulation-24.5.0-SNAPSHOT.1311.json` Location JSON file:
 ```json
 {
@@ -294,7 +294,7 @@ The following is an example format for the `mod-circulation-24.5.0-SNAPSHOT.1311
   "repository": "folioci"
 }
 ```
-  - The `id` is the release and the tag in this format: `{release}-${tag}`.
+  - The `id` is the release and the tag in this format: `${release}-${tag}`.
   - The `id` is provided for informational purposes and is otherwise not used.
   - The `repository` contains the named repository, based on the `name` field from the Repositories JSON file.
 
