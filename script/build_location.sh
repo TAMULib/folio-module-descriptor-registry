@@ -499,6 +499,8 @@ build_location_operate() {
 
   local -i count=0
   local -i found=0
+  local -i total_found=0
+  local -i total_skipped=0
 
   # Initialize the counts.
   for repo in ${repositories} ; do
@@ -523,10 +525,12 @@ build_location_operate() {
     if [[ -f ${destination_json} ]] ; then
       build_location_print_debug "Skipping already existing location manifest for release '${release}' and tag '${tag}'"
 
+      let total_skipped++
       continue
     fi
 
-    build_location_print_debug "Operating '${i}' with name '${release}' and tag '${tag}'"
+    echo "Operating '${i}' with name '${release}' and tag '${tag}'."
+    echo
 
     for repo in ${repositories_active} ; do
       name=${repositories_name["${repo}"]}
@@ -569,13 +573,20 @@ build_location_operate() {
   for repo in ${requests_distinct} ; do
     request_url=${repositories_request_url["${repo}"]}
     let count=${counts["${request_url}"]}
+    let total_found=${total_found}+${count}
 
     build_location_print_debug "A total of ${count} requests have been made to the request URL: ${request_url}"
   done
 
+  build_location_print_debug "A total of ${total_skipped} requests have been skipped"
+
+  if [[ ${debug} == "" ]] ; then
+    echo "A total of ${total_found} requests have been made and ${total_skipped} releases have been skipped."
+    echo
+  fi
+
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  echo
   echo "Done: Location JSON files are built."
 }
 
