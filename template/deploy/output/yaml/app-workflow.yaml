@@ -6,10 +6,10 @@ items:
     metadata:
       labels:
         app: app-poppy
-        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.97
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
-        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.97
         environment: scratch
       name: mod-workflow
       namespace: folio-test
@@ -18,10 +18,10 @@ items:
       selector:
         matchLabels:
           app: app-poppy
-          app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+          app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.97
           app.kubernetes.io/name: mod-workflow
           app.kubernetes.io/part-of: FOLIO
-          app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+          app.kubernetes.io/version: 1.2.0-SNAPSHOT.97
           environment: scratch
       strategy:
         type: RollingUpdate
@@ -29,10 +29,10 @@ items:
         metadata:
           labels:
             app: app-poppy
-            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.97
             app.kubernetes.io/name: mod-workflow
             app.kubernetes.io/part-of: FOLIO
-            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.97
             environment: scratch
           namespace: folio-test
         spec:
@@ -43,7 +43,7 @@ items:
                 - name: MODULE_NAME
                   value: mod-workflow
                 - name: MODULE_VERSION
-                  value: 1.2.0-SNAPSHOT.98
+                  value: 1.2.0-SNAPSHOT.97
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -51,7 +51,7 @@ items:
                 - configMapRef:
                     name: mod-workflow
                     optional: true
-              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.97
               imagePullPolicy: Always
               imagePullSecrets:
                 - name: docker
@@ -81,10 +81,10 @@ items:
     metadata:
       labels:
         app: app-poppy
-        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.97
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
-        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.97
         environment: scratch
       name: mod-workflow
       namespace: folio-test
@@ -99,9 +99,9 @@ items:
           targetPort: 8081
       selector:
         app: app-poppy
-        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.97
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
-        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.97
         environment: scratch
       type: ClusterIP
