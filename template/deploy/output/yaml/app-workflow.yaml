@@ -5,7 +5,7 @@ items:
     kind: Deployment
     metadata:
       labels:
-        app: app-poppy
+        app: app-workflow
         app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
@@ -17,7 +17,7 @@ items:
       replicas: 1
       selector:
         matchLabels:
-          app: app-poppy
+          app: app-workflow
           app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
           app.kubernetes.io/name: mod-workflow
           app.kubernetes.io/part-of: FOLIO
@@ -28,7 +28,7 @@ items:
       template:
         metadata:
           labels:
-            app: app-poppy
+            app: app-workflow
             app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
             app.kubernetes.io/name: mod-workflow
             app.kubernetes.io/part-of: FOLIO
@@ -43,7 +43,7 @@ items:
                 - name: MODULE_NAME
                   value: mod-workflow
                 - name: MODULE_VERSION
-                  value: 1.2.0-SNAPSHOT.97
+                  value: 1.2.0-SNAPSHOT.98
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -51,7 +51,7 @@ items:
                 - configMapRef:
                     name: mod-workflow
                     optional: true
-              image: folioci/mod-workflow:1.2.0-SNAPSHOT.97
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
               imagePullPolicy: Always
               imagePullSecrets:
                 - name: docker
@@ -80,7 +80,7 @@ items:
     kind: Service
     metadata:
       labels:
-        app: app-poppy
+        app: app-workflow
         app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
@@ -98,10 +98,8 @@ items:
           protocol: TCP
           targetPort: 8081
       selector:
-        app: app-poppy
-        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app: app-workflow
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
-        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       type: ClusterIP
