@@ -65,6 +65,7 @@ Only the minimal properties needed to constuct a **Module Discovery Descriptor**
 | `BUILD_APP_DESCRIPTOR_NAME`        | The name of the **Application Descriptor**, used for the file name, the `id` field, and `name` field.
 | `BUILD_APP_DESCRIPTOR_OUTPUT_NAME` | The name to use for the output file without the file extension.
 | `BUILD_APP_DESCRIPTOR_OUTPUT_PATH` | The path to the output directory.
+| `BUILD_APP_DESCRIPTOR_RESTRICT_TO` | Restrict to a set of space seperated name patterns, such as `edge- mod-`.
 | `BUILD_APP_DESCRIPTOR_VERSION`     | The version of the **Application Descriptor** used for the `id` and `version` fields.
 
 View the documentation within the `build_application_descriptor.sh` script for further details on how to operate this script.

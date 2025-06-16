@@ -35,6 +35,8 @@ main() {
   local output_path=
   local output_path_json=
   local output_path_name=
+  local restrict_to="edge- mod-"
+  local restrict_to_regex=
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -99,12 +101,14 @@ build_app_desc_build_file() {
   local key="id"
   local id=
   local name=
+  local reduced_json=
   local value=
   local version=
 
   local -i i=0
   local -i total=0
 
+  build_app_desc_build_reduce
   build_app_desc_build_total
 
   if [[ ${total} -eq 0 && ${debug} != "" ]] ; then
@@ -140,6 +144,30 @@ build_app_desc_build_file() {
   done
 }
 
+build_app_desc_build_reduce() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_restrict="sort | .[] | select(.id | test(\"${restrict_to_regex}\"))"
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    if [[ ${restrict_to_regex} == "" ]] ; then
+      reduced_json=$(jq -r -M . ${file})
+    else
+      reduced_json=$(jq -r -M "${jq_restrict}" ${file} | jq -s -M '.')
+    fi
+  else
+    if [[ ${restrict_to_regex} == "" ]] ; then
+      reduced_json=$(jq -r -M . ${file} 2> ${null})
+    else
+      reduced_json=$(jq -r -M "${jq_restrict}" ${file} 2> ${null} | jq -s -M '.' 2> ${null})
+    fi
+  fi
+
+  build_app_desc_handle_result "Failed to reduce using '${restrict_to}' for JSON: ${file}"
+}
+
 build_app_desc_build_total() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -149,9 +177,9 @@ build_app_desc_build_total() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    data=$(jq -r -M "${jq_total}" ${file})
+    data=$(jq -r -M "${jq_total}" <<< ${reduced_json})
   else
-    data=$(jq -r -M "${jq_total}" ${file} 2> ${null})
+    data=$(jq -r -M "${jq_total}" <<< ${reduced_json} 2> ${null})
   fi
 
   build_app_desc_handle_result "Failed to load array length from JSON: ${file}"
@@ -187,9 +215,9 @@ build_app_desc_get_load() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    value=$(jq -r -M "${jq_key}" ${file})
+    value=$(jq -r -M "${jq_key}" <<< ${reduced_json})
   else
-    value=$(jq -r -M "${jq_key}" ${file} 2> ${null})
+    value=$(jq -r -M "${jq_key}" <<< ${reduced_json} 2> ${null})
   fi
 
   build_app_desc_handle_result "Failed to load key '${key}' at index '${i}' from JSON: ${file}"
@@ -237,6 +265,9 @@ build_app_desc_handle_result() {
 }
 
 build_app_desc_load_environment() {
+  local file=
+  local i=
+  local simplified=
 
   if [[ ${BUILD_APP_DESCRIPTOR_DEBUG} != "" ]] ; then
     debug="-v"
@@ -314,6 +345,26 @@ build_app_desc_load_environment() {
   fi
 
   output_path_json="${output_path}${output_path_name}.json"
+
+  if [[ ${BUILD_APP_DESCRIPTOR_RESTRICT_TO} != "" ]] ; then
+    restrict_to=${BUILD_APP_DESCRIPTOR_RESTRICT_TO}
+  fi
+
+  if [[ ${restrict_to} != "" ]] ; then
+    restrict_to_regex=
+
+    for i in ${restrict_to} ; do
+      simplified=$(echo ${i} | grep -shoP "[\w-]*")
+
+      if [[ ${simplified} != "" ]] ; then
+        if [[ ${restrict_to_regex} == "" ]] ; then
+          restrict_to_regex="^${simplified}"
+        else
+          restrict_to_regex="${restrict_to_regex}|^${simplified}"
+        fi
+      fi
+    done
+  fi
 }
 
 build_app_desc_print_debug() {
