@@ -51,11 +51,11 @@ This repository provides additional scripts that may help facilitate the generat
 ### Build Application Descriptor
 
 The **Build Application Descriptor** script provides a way to build an **Application Descriptor** for when there is none available.
-This is primarily needed for when needing to build a **Module Discovery Descriptor** when not using a Eureka environment.
+This is primarily needed for when needing to build a **Module Discovery Descriptor** when not using an Eureka environment.
 This utilizes an `install.json` file in order to construct the **Application Descriptor**.
 
 This is neither intended to nor designed to build a complete Eureka **Application Descriptor**.
-Only the minimal properties needed to constuct a **Module Discovery Descriptor** are built.
+Only the minimal properties needed to construct a **Module Discovery Descriptor** are built.
 
 | Environment Variable               | Description (see script for further details)
 | ---------------------------------- | --------------------------------
@@ -86,8 +86,8 @@ These template files are intended and expected to be altered as needed.
 The input path, such as `template/deploy/input/`, contains multiple sub-directories: `launches`, `main`, `specific`, and `vars`.
 
 The `launches` sub-directory contains variable substitution JSON files generated using a script like `build_launches.sh` based on the `launchDescriptor` provided by each module descriptor.
-Theese JSON files are named based on the `name` of the module, such as `mod-configuration.json`.
-Each of these JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
+These JSON files are named based on the `name` of the module, such as `mod-configuration.json`.
+Each of these JSON files contain a JSON object just like the `vars.json` from the `main` sub-directory.
 These `launches` JSON files are merged with the specific `vars` JSON files and the loaded `vars.json` file.
 
 The `main` sub-directory contains `base.json`, `deployment.json`, `maps.json`, `names.json`, `vars.json`, and others defined via `maps.json`.
@@ -97,7 +97,7 @@ The `maps.json` file is a JSON file mapping specific modules to custom alternati
 There are two options in `maps.json`, `exact` and `pcre`.
 The `exact` matches the by exact name match and overrides any `pcre` matches.
 The `pcre` matches based on Perl Compatible Regular Expressions (PCRE).
-The `names.json` file is a JSON array of names to expand of the form `[SOME_NAME]`.
+The `names.json` file is a JSON array of names to expand in the form `[SOME_NAME]`.
 Any name defined in `names.json` but not in `vars.json` will have the key and value pair entirely removed when found in the `deployment.json` or similar JSON files.
 The `vars.json` file is a JSON object map containing the names and the values that they each map to.
 The values in `vars.json` may themselves be complex structures such as arrays or objects.
@@ -107,7 +107,7 @@ Each of these specific JSON files contain a JSON object just like the `deploymen
 The specific JSON file is merged with the loaded `deployment.json` file for each deployment described in the **Module Discovery Descriptor**.
 
 The `vars` sub-directory contains an optional set of variable substitution JSON files that are named based on the `name` of the module, such as `mod-configuration.json`.
-Each of these specific JSON files contains a JSON object just like the `vars.json` from the `main` sub-directory.
+Each of these specific JSON files contain a JSON object just like the `vars.json` from the `main` sub-directory.
 The specific `vars` JSON file is merged with the `vars.json` file for each deployment described in the **Module Discovery Descriptor**.
 
 The output path, such as `template/deploy/output/`, contains two main sub-directories: `json` and `yaml`.
@@ -159,7 +159,7 @@ This can be done using `http://mod-users-{version:mod-users}.{global:namespace}.
 | Environment Variable              | Description (see script for further details)
 | --------------------------------- | --------------------------------
 | `BUILD_DEPLOY_ACTIONS`            | Allow limiting the actions to either `expand`, `combine`, or `both` (default is `both` when this is an empty string).
-| `BUILD_DEPLOY_APP`                | The name of the application bundle, also use for the name of file without the file extension (not the full path), such as `fleet`.
+| `BUILD_DEPLOY_APP`                | The name of the application bundle, also used for the name of file without the file extension (not the full path), such as `fleet`.
 | `BUILD_DEPLOY_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
 | `BUILD_DEPLOY_DEFAULT_REPOSITORY` | Designate the default repository to use when none is specified via a Repository Location JSON file (defaults to `folioci`).
 | `BUILD_DEPLOY_DISCOVERY`          | The path to the **Module Discovery Descriptor** JSON file.
@@ -216,8 +216,8 @@ This file is a JSON array of mapping objects with three named keys: `map`, `type
 The `map` is the mapping name used by variable substitution, such as `[ENVIRONMENT]`.
 The `type` is one of the following supported types:
   1. `field`: This type designates that the field from the _Launch Descriptor_ is to be directly used.
-  2. `container_port`: This type designates that a container port structure from the _Launch Descriptor_ needs to be interpeted and re-mapped as a container port type for the deployment manifest (multiple ports are supported).
-The `value` is different depending on the type but in general directly represents a `jq` query designating which field to select from the _Launch Descriptor_ of the module.
+  2. `container_port`: This type designates that a container port structure from the _Launch Descriptor_ needs to be interpreted and re-mapped as a container port type for the deployment manifest (multiple ports are supported).
+The `value` is different depending on the type but, in general, directly represents a `jq` query designating which field to select from the _Launch Descriptor_ of the module.
 The `value` for the `field` type is a direct mapping.
 The `value` for the `container_port` expects the structure of the form `{ "123/tcp": [ { "HostPort" : "%p" } ] }`.
 The `"123/tcp"` is extracted and split into a port number and protocol name.
@@ -229,7 +229,7 @@ For each named object in the `container_port` structure, a name is generated fro
 | `BUILD_LAUNCHES_INPUT_PATH`   | The path containing the input files, such as the `instructions.json` file.
 | `BUILD_LAUNCHES_OUTPUT_PATH`  | The path to write the generated `launch` files in, such as `template/deploy/input/` (this has `input/` because these files are used as input for the **Build Deployments** script).
 | `BUILD_LAUNCHES_RELEASE_PATH` | The path containing the release files, such as the `release/snapshot/`.
-| `BUILD_LAUNCHES_VERSION`      | The version to use as the suffix to match when selecting the releases files, such as `latest` or `5.1.0-SNAPSHOT.272`.
+| `BUILD_LAUNCHES_VERSION`      | The version to use as the suffix to match when selecting the release files, such as `latest` or `5.1.0-SNAPSHOT.272`.
 
 View the documentation within the `build_launches.sh` script for further details on how to operate this script.
 
@@ -255,7 +255,7 @@ The process of making a request conditionally requires the following operations:
   1. If authentication is enabled, perform a `GET` request to anonymously fetch an Authentication Token to use performing the request.
   2. Perform a `HEAD` request (with Authentication Token if requested) to check the existence of a module.
   3. If the HTTP `HEAD` request response contains an HTTP response with `200 OK`, then the repository is considered usable.
-  4. If the HTTP `HEAD` request response contains something other than `200 OK`, then the repository is consider not unsable.
+  4. If the HTTP `HEAD` request response contains something other than `200 OK`, then the repository is considered not usable.
 
 The **Build Location** script attempts to reduce abuse to external servers by operating in the following way:
   1. Use HTTP `HEAD` requests for existence checks.
@@ -287,7 +287,7 @@ The following is an example format, showing only a single repository:
   - The `request` is broken up into one part, a `url`.
   - The `request.url` is the URL used to perform the `HEAD` request used to identify the presence of a package and version at the named repository.
 
-The general format structure for a Location JSON file is `${release}-${tag}.json`, where relase might be a module such as `mod-circulation` and the tag might be `24.5.0-SNAPSHOT.1311`.
+The general format structure for a Location JSON file is `${release}-${tag}.json`, where release might be a module such as `mod-circulation` and the tag might be `24.5.0-SNAPSHOT.1311`.
 The following is an example format for the `mod-circulation-24.5.0-SNAPSHOT.1311.json` Location JSON file:
 ```json
 {
@@ -470,7 +470,7 @@ POPULATE_RELEASE_REPOSITORY_PART="" POPULATE_RELEASE_FLOWER="aggies" POPULATE_RE
 
 ### Synchronize Snapshot
 
-The **Synchronize Snapshot** script identifies whether or no changes are detected and preforms the necessary `git` operations to push those changes to an upstream repository.
+The **Synchronize Snapshot** script identifies whether or no changes are detected and performs the necessary `git` operations to push those changes to an upstream repository.
 
 | Environment Variable    | Description (see script for further details)
 | ----------------------- | --------------------------------
@@ -538,7 +538,7 @@ The **Synchronize Snapshot Workflow** is run using a cron job like timer every d
 This repository is designed around the idea of avoiding re-creating existing CI/CD to a certain extent.
 The use of Bash scripting language over programming languages is done to keep the design simple and to focus on using existing tools.
 This repository is intended to automate part of the manual processes a user might have to perform when building and maintaining a FOLIO registry.
-The primary focus is on provide module descriptors, but there may be some cross-over functionality regarding application descriptors and other related CI/CD tasks.
+The primary focus is to provide module descriptors, but there may be some cross-over functionality regarding application descriptors and other related CI/CD tasks.
 
 
 ### Repository Branch Design
@@ -550,7 +550,7 @@ The first trunk, `main`, is the most common trunk design.
 This houses scripts, workflows, documentation, and any other programmatic tool.
 Branches based on the `main` trunk are the traditional coding branches and is expected to be the primary fork and merge branch.
 There will be no release related content within this trunk beyond the scripts and tools used to operate on a release.
-Note that this "release" is not a release of the repository but instead is referring to FOLIO module, applications, or flower releases.
+Note that this "release" is not a release of the repository but is instead referring to FOLIO modules, applications, or flower releases.
 
 The second trunk, `snapshot`, is a package release trunk design.
 This houses only descriptor files and other release related content.
@@ -565,13 +565,13 @@ These files can be accessed by **Fleet** using either the GitHub Webhooks or the
 
 ### GitHub Workflows Design
 
-The GitHub Workflows are designed to be dynamically toggled using a small number input variables.
+The GitHub Workflows are designed to be dynamically toggled using a small number of input variables.
 These Workflows provide input variables for selecting the individual branches to be selected.
 
 
 ### Self-Hosted Design
 
-The GitHub Workflows are design to be operated within a self-hosted environment.
+The GitHub Workflows are designed to be operated within a self-hosted environment.
 This potentially gives the Workflow access to systems inside the self-hosted environment, such as Rancher and Kubernetes.
 
 A self-hosted system within Rancher might maintain state because a clean system might not be spun up and down for every single Workflow execution.
