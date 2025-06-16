@@ -5,7 +5,7 @@ items:
     kind: Deployment
     metadata:
       labels:
-        app: app-workflow
+        app: app-poppy
         app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
@@ -17,7 +17,7 @@ items:
       replicas: 1
       selector:
         matchLabels:
-          app: app-workflow
+          app: app-poppy
           app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
           app.kubernetes.io/name: mod-workflow
           app.kubernetes.io/part-of: FOLIO
@@ -28,7 +28,7 @@ items:
       template:
         metadata:
           labels:
-            app: app-workflow
+            app: app-poppy
             app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
             app.kubernetes.io/name: mod-workflow
             app.kubernetes.io/part-of: FOLIO
@@ -80,7 +80,7 @@ items:
     kind: Service
     metadata:
       labels:
-        app: app-workflow
+        app: app-poppy
         app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
@@ -98,7 +98,7 @@ items:
           protocol: TCP
           targetPort: 8081
       selector:
-        app: app-workflow
+        app: app-poppy
         app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
