@@ -92,9 +92,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-0
-          port: 800
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 800
       selector:
         app: app-workflow-0
         app.kubernetes.io/name: mod-workflow
@@ -192,9 +192,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-1
-          port: 801
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 801
       selector:
         app: app-workflow-1
         app.kubernetes.io/name: mod-workflow
@@ -292,9 +292,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-2
-          port: 802
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 802
       selector:
         app: app-workflow-2
         app.kubernetes.io/name: mod-workflow
@@ -392,9 +392,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-3
-          port: 803
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 803
       selector:
         app: app-workflow-3
         app.kubernetes.io/name: mod-workflow
@@ -492,9 +492,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-4
-          port: 804
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 804
       selector:
         app: app-workflow-4
         app.kubernetes.io/name: mod-workflow
@@ -592,9 +592,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-5
-          port: 805
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 805
       selector:
         app: app-workflow-5
         app.kubernetes.io/name: mod-workflow
@@ -692,9 +692,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-6
-          port: 806
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 806
       selector:
         app: app-workflow-6
         app.kubernetes.io/name: mod-workflow
@@ -792,9 +792,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-7
-          port: 807
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 807
       selector:
         app: app-workflow-7
         app.kubernetes.io/name: mod-workflow
@@ -892,9 +892,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-8
-          port: 808
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 808
       selector:
         app: app-workflow-8
         app.kubernetes.io/name: mod-workflow
@@ -992,9 +992,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-9
-          port: 809
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 809
       selector:
         app: app-workflow-9
         app.kubernetes.io/name: mod-workflow
@@ -1092,9 +1092,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-10
-          port: 8010
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8010
       selector:
         app: app-workflow-10
         app.kubernetes.io/name: mod-workflow
@@ -1192,9 +1192,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-11
-          port: 8011
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8011
       selector:
         app: app-workflow-11
         app.kubernetes.io/name: mod-workflow
@@ -1292,9 +1292,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-12
-          port: 8012
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8012
       selector:
         app: app-workflow-12
         app.kubernetes.io/name: mod-workflow
@@ -1392,9 +1392,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-13
-          port: 8013
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8013
       selector:
         app: app-workflow-13
         app.kubernetes.io/name: mod-workflow
@@ -1492,9 +1492,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-14
-          port: 8014
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8014
       selector:
         app: app-workflow-14
         app.kubernetes.io/name: mod-workflow
@@ -1592,9 +1592,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-15
-          port: 8015
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8015
       selector:
         app: app-workflow-15
         app.kubernetes.io/name: mod-workflow
@@ -1692,9 +1692,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-16
-          port: 8016
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8016
       selector:
         app: app-workflow-16
         app.kubernetes.io/name: mod-workflow
@@ -1792,9 +1792,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-17
-          port: 8017
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8017
       selector:
         app: app-workflow-17
         app.kubernetes.io/name: mod-workflow
@@ -1892,9 +1892,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-18
-          port: 8018
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8018
       selector:
         app: app-workflow-18
         app.kubernetes.io/name: mod-workflow
@@ -1992,9 +1992,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-19
-          port: 8019
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8019
       selector:
         app: app-workflow-19
         app.kubernetes.io/name: mod-workflow
@@ -2092,9 +2092,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-20
-          port: 8020
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8020
       selector:
         app: app-workflow-20
         app.kubernetes.io/name: mod-workflow
@@ -2192,9 +2192,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-21
-          port: 8021
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8021
       selector:
         app: app-workflow-21
         app.kubernetes.io/name: mod-workflow
@@ -2292,9 +2292,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-22
-          port: 8022
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8022
       selector:
         app: app-workflow-22
         app.kubernetes.io/name: mod-workflow
@@ -2392,9 +2392,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-23
-          port: 8023
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8023
       selector:
         app: app-workflow-23
         app.kubernetes.io/name: mod-workflow
@@ -2492,9 +2492,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-24
-          port: 8024
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8024
       selector:
         app: app-workflow-24
         app.kubernetes.io/name: mod-workflow
@@ -2592,9 +2592,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-25
-          port: 8025
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8025
       selector:
         app: app-workflow-25
         app.kubernetes.io/name: mod-workflow
@@ -2692,9 +2692,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-26
-          port: 8026
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8026
       selector:
         app: app-workflow-26
         app.kubernetes.io/name: mod-workflow
@@ -2792,9 +2792,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-27
-          port: 8027
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8027
       selector:
         app: app-workflow-27
         app.kubernetes.io/name: mod-workflow
@@ -2892,9 +2892,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-28
-          port: 8028
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8028
       selector:
         app: app-workflow-28
         app.kubernetes.io/name: mod-workflow
@@ -2992,9 +2992,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-29
-          port: 8029
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8029
       selector:
         app: app-workflow-29
         app.kubernetes.io/name: mod-workflow
@@ -3092,9 +3092,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-30
-          port: 8030
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8030
       selector:
         app: app-workflow-30
         app.kubernetes.io/name: mod-workflow
@@ -3192,9 +3192,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-31
-          port: 8031
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8031
       selector:
         app: app-workflow-31
         app.kubernetes.io/name: mod-workflow
@@ -3292,9 +3292,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-32
-          port: 8032
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8032
       selector:
         app: app-workflow-32
         app.kubernetes.io/name: mod-workflow
@@ -3392,9 +3392,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-33
-          port: 8033
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8033
       selector:
         app: app-workflow-33
         app.kubernetes.io/name: mod-workflow
@@ -3492,9 +3492,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-34
-          port: 8034
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8034
       selector:
         app: app-workflow-34
         app.kubernetes.io/name: mod-workflow
@@ -3592,9 +3592,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-35
-          port: 8035
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8035
       selector:
         app: app-workflow-35
         app.kubernetes.io/name: mod-workflow
@@ -3692,9 +3692,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-36
-          port: 8036
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8036
       selector:
         app: app-workflow-36
         app.kubernetes.io/name: mod-workflow
@@ -3792,9 +3792,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-37
-          port: 8037
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8037
       selector:
         app: app-workflow-37
         app.kubernetes.io/name: mod-workflow
@@ -3892,9 +3892,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-38
-          port: 8038
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8038
       selector:
         app: app-workflow-38
         app.kubernetes.io/name: mod-workflow
@@ -3992,9 +3992,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-39
-          port: 8039
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8039
       selector:
         app: app-workflow-39
         app.kubernetes.io/name: mod-workflow
@@ -4092,9 +4092,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-40
-          port: 8040
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8040
       selector:
         app: app-workflow-40
         app.kubernetes.io/name: mod-workflow
@@ -4192,9 +4192,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-41
-          port: 8041
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8041
       selector:
         app: app-workflow-41
         app.kubernetes.io/name: mod-workflow
@@ -4292,9 +4292,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-42
-          port: 8042
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8042
       selector:
         app: app-workflow-42
         app.kubernetes.io/name: mod-workflow
@@ -4392,9 +4392,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-43
-          port: 8043
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8043
       selector:
         app: app-workflow-43
         app.kubernetes.io/name: mod-workflow
@@ -4492,9 +4492,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-44
-          port: 8044
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8044
       selector:
         app: app-workflow-44
         app.kubernetes.io/name: mod-workflow
@@ -4592,9 +4592,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-45
-          port: 8045
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8045
       selector:
         app: app-workflow-45
         app.kubernetes.io/name: mod-workflow
@@ -4692,9 +4692,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-46
-          port: 8046
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8046
       selector:
         app: app-workflow-46
         app.kubernetes.io/name: mod-workflow
@@ -4792,9 +4792,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-47
-          port: 8047
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8047
       selector:
         app: app-workflow-47
         app.kubernetes.io/name: mod-workflow
@@ -4892,9 +4892,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-48
-          port: 8048
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8048
       selector:
         app: app-workflow-48
         app.kubernetes.io/name: mod-workflow
@@ -4992,9 +4992,9 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-49
-          port: 8049
+          port: 8081
           protocol: TCP
-          targetPort: 8081
+          targetPort: 8049
       selector:
         app: app-workflow-49
         app.kubernetes.io/name: mod-workflow
