@@ -70,7 +70,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -169,7 +169,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -268,7 +268,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -367,7 +367,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -466,7 +466,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -565,7 +565,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -664,7 +664,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -763,7 +763,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -862,7 +862,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -961,7 +961,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1060,7 +1060,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1159,7 +1159,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1258,7 +1258,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1357,7 +1357,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1456,7 +1456,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1555,7 +1555,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1654,7 +1654,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1753,7 +1753,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1852,7 +1852,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -1951,7 +1951,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2050,7 +2050,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2149,7 +2149,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2248,7 +2248,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2347,7 +2347,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2446,7 +2446,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2545,7 +2545,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2644,7 +2644,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2743,7 +2743,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2842,7 +2842,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -2941,7 +2941,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3040,7 +3040,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3139,7 +3139,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3238,7 +3238,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3337,7 +3337,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3436,7 +3436,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3535,7 +3535,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3634,7 +3634,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3733,7 +3733,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3832,7 +3832,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -3931,7 +3931,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4030,7 +4030,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4129,7 +4129,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4228,7 +4228,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4327,7 +4327,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4426,7 +4426,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4525,7 +4525,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4624,7 +4624,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4723,7 +4723,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4822,7 +4822,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -4921,7 +4921,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5020,7 +5020,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5119,7 +5119,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5218,7 +5218,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5317,7 +5317,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5416,7 +5416,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5515,7 +5515,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5614,7 +5614,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5713,7 +5713,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5812,7 +5812,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -5911,7 +5911,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6010,7 +6010,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6109,7 +6109,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6208,7 +6208,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6307,7 +6307,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6406,7 +6406,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6505,7 +6505,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6604,7 +6604,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6703,7 +6703,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6802,7 +6802,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -6901,7 +6901,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7000,7 +7000,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7099,7 +7099,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7198,7 +7198,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7297,7 +7297,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7396,7 +7396,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7495,7 +7495,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7594,7 +7594,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7693,7 +7693,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7792,7 +7792,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7891,7 +7891,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -7990,7 +7990,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8089,7 +8089,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8188,7 +8188,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8287,7 +8287,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8386,7 +8386,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8485,7 +8485,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8584,7 +8584,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8683,7 +8683,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8782,7 +8782,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8881,7 +8881,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -8980,7 +8980,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9079,7 +9079,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9178,7 +9178,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9277,7 +9277,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9376,7 +9376,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9475,7 +9475,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9574,7 +9574,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9673,7 +9673,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9772,7 +9772,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
@@ -9871,7 +9871,7 @@ items:
                 timeoutSeconds: 5
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 200m
                 requests:
                   cpu: 10m
                   memory: 64Mi
