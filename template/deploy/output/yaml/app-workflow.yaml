@@ -43,7 +43,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "800"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -57,7 +57,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 800
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -94,7 +94,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-0
-          port: 8081
+          port: 800
           protocol: TCP
           targetPort: 800
       selector:
@@ -145,7 +145,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "801"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -159,7 +159,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 801
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -196,7 +196,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-1
-          port: 8081
+          port: 801
           protocol: TCP
           targetPort: 801
       selector:
@@ -247,7 +247,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "802"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -261,7 +261,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 802
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -298,7 +298,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-2
-          port: 8081
+          port: 802
           protocol: TCP
           targetPort: 802
       selector:
@@ -349,7 +349,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "803"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -363,7 +363,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 803
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -400,7 +400,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-3
-          port: 8081
+          port: 803
           protocol: TCP
           targetPort: 803
       selector:
@@ -451,7 +451,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "804"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -465,7 +465,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 804
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -502,7 +502,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-4
-          port: 8081
+          port: 804
           protocol: TCP
           targetPort: 804
       selector:
@@ -553,7 +553,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "805"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -567,7 +567,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 805
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -604,7 +604,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-5
-          port: 8081
+          port: 805
           protocol: TCP
           targetPort: 805
       selector:
@@ -655,7 +655,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "806"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -669,7 +669,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 806
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -706,7 +706,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-6
-          port: 8081
+          port: 806
           protocol: TCP
           targetPort: 806
       selector:
@@ -757,7 +757,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "807"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -771,7 +771,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 807
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -808,7 +808,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-7
-          port: 8081
+          port: 807
           protocol: TCP
           targetPort: 807
       selector:
@@ -859,7 +859,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "808"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -873,7 +873,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 808
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -910,7 +910,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-8
-          port: 8081
+          port: 808
           protocol: TCP
           targetPort: 808
       selector:
@@ -961,7 +961,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "809"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -975,7 +975,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 809
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1012,7 +1012,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-9
-          port: 8081
+          port: 809
           protocol: TCP
           targetPort: 809
       selector:
@@ -1063,7 +1063,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8010"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1077,7 +1077,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8010
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1114,7 +1114,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-10
-          port: 8081
+          port: 8010
           protocol: TCP
           targetPort: 8010
       selector:
@@ -1165,7 +1165,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8011"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1179,7 +1179,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8011
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1216,7 +1216,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-11
-          port: 8081
+          port: 8011
           protocol: TCP
           targetPort: 8011
       selector:
@@ -1267,7 +1267,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8012"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1281,7 +1281,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8012
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1318,7 +1318,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-12
-          port: 8081
+          port: 8012
           protocol: TCP
           targetPort: 8012
       selector:
@@ -1369,7 +1369,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8013"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1383,7 +1383,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8013
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1420,7 +1420,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-13
-          port: 8081
+          port: 8013
           protocol: TCP
           targetPort: 8013
       selector:
@@ -1471,7 +1471,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8014"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1485,7 +1485,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8014
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1522,7 +1522,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-14
-          port: 8081
+          port: 8014
           protocol: TCP
           targetPort: 8014
       selector:
@@ -1573,7 +1573,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8015"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1587,7 +1587,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8015
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1624,7 +1624,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-15
-          port: 8081
+          port: 8015
           protocol: TCP
           targetPort: 8015
       selector:
@@ -1675,7 +1675,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8016"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1689,7 +1689,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8016
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1726,7 +1726,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-16
-          port: 8081
+          port: 8016
           protocol: TCP
           targetPort: 8016
       selector:
@@ -1777,7 +1777,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8017"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1791,7 +1791,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8017
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1828,7 +1828,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-17
-          port: 8081
+          port: 8017
           protocol: TCP
           targetPort: 8017
       selector:
@@ -1879,7 +1879,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8018"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1893,7 +1893,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8018
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -1930,7 +1930,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-18
-          port: 8081
+          port: 8018
           protocol: TCP
           targetPort: 8018
       selector:
@@ -1981,7 +1981,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8019"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -1995,7 +1995,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8019
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2032,7 +2032,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-19
-          port: 8081
+          port: 8019
           protocol: TCP
           targetPort: 8019
       selector:
@@ -2083,7 +2083,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8020"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -2097,7 +2097,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8020
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2134,7 +2134,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-20
-          port: 8081
+          port: 8020
           protocol: TCP
           targetPort: 8020
       selector:
@@ -2185,7 +2185,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8021"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -2199,7 +2199,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8021
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2236,7 +2236,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-21
-          port: 8081
+          port: 8021
           protocol: TCP
           targetPort: 8021
       selector:
@@ -2287,7 +2287,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8022"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -2301,7 +2301,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8022
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2338,7 +2338,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-22
-          port: 8081
+          port: 8022
           protocol: TCP
           targetPort: 8022
       selector:
@@ -2389,7 +2389,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8023"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -2403,7 +2403,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8023
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2440,7 +2440,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-23
-          port: 8081
+          port: 8023
           protocol: TCP
           targetPort: 8023
       selector:
@@ -2491,7 +2491,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "8024"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -2505,7 +2505,7 @@ items:
                 - name: docker
               name: mod-workflow
               ports:
-                - containerPort: 8081
+                - containerPort: 8024
                   name: primary
                   protocol: TCP
               readinessProbe:
@@ -2542,7 +2542,7 @@ items:
       ipFamilyPolicy: SingleStack
       ports:
         - name: primary-mod-workflow-24
-          port: 8081
+          port: 8024
           protocol: TCP
           targetPort: 8024
       selector:
