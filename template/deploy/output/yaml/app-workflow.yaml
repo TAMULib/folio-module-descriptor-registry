@@ -43,7 +43,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: 800
+                  value: "800"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -145,7 +145,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: 801
+                  value: "801"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -247,7 +247,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: 802
+                  value: "802"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -349,7 +349,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: 803
+                  value: "803"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -451,7 +451,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: 804
+                  value: "804"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
