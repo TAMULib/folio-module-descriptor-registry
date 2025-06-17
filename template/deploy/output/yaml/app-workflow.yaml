@@ -12,7 +12,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-0
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -32,7 +32,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -87,7 +87,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-0
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -114,7 +114,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-1
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -134,7 +134,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -189,7 +189,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-1
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -216,7 +216,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-2
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -236,7 +236,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -291,7 +291,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-2
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -318,7 +318,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-3
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -338,7 +338,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -393,7 +393,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-3
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -420,7 +420,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-4
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -440,7 +440,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -495,7 +495,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-4
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -522,7 +522,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-5
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -542,7 +542,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -597,7 +597,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-5
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -624,7 +624,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-6
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -644,7 +644,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -699,7 +699,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-6
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -726,7 +726,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-7
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -746,7 +746,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -801,7 +801,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-7
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -828,7 +828,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-8
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -848,7 +848,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -903,7 +903,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-8
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -930,7 +930,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-9
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -950,7 +950,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1005,7 +1005,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-9
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1032,7 +1032,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-10
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1052,7 +1052,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1107,7 +1107,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-10
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1134,7 +1134,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-11
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1154,7 +1154,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1209,7 +1209,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-11
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1236,7 +1236,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-12
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1256,7 +1256,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1311,7 +1311,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-12
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1338,7 +1338,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-13
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1358,7 +1358,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1413,7 +1413,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-13
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1440,7 +1440,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-14
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1460,7 +1460,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1515,7 +1515,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-14
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1542,7 +1542,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-15
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1562,7 +1562,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1617,7 +1617,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-15
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1644,7 +1644,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-16
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1664,7 +1664,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1719,7 +1719,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-16
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1746,7 +1746,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-17
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1766,7 +1766,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1821,7 +1821,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-17
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1848,7 +1848,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-18
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1868,7 +1868,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -1923,7 +1923,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-18
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -1950,7 +1950,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-19
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -1970,7 +1970,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2025,7 +2025,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-19
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2052,7 +2052,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-20
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2072,7 +2072,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2127,7 +2127,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-20
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2154,7 +2154,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-21
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2174,7 +2174,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2229,7 +2229,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-21
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2256,7 +2256,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-22
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2276,7 +2276,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2331,7 +2331,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-22
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2358,7 +2358,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-23
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2378,7 +2378,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2433,7 +2433,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-23
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2460,7 +2460,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-24
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2480,7 +2480,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2535,7 +2535,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-24
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2562,7 +2562,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-25
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2582,7 +2582,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2637,7 +2637,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-25
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2664,7 +2664,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-26
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2684,7 +2684,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2739,7 +2739,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-26
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2766,7 +2766,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-27
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2786,7 +2786,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2841,7 +2841,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-27
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2868,7 +2868,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-28
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2888,7 +2888,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -2943,7 +2943,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-28
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -2970,7 +2970,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-29
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -2990,7 +2990,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3045,7 +3045,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-29
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3072,7 +3072,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-30
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3092,7 +3092,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3147,7 +3147,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-30
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3174,7 +3174,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-31
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3194,7 +3194,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3249,7 +3249,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-31
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3276,7 +3276,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-32
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3296,7 +3296,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3351,7 +3351,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-32
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3378,7 +3378,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-33
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3398,7 +3398,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3453,7 +3453,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-33
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3480,7 +3480,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-34
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3500,7 +3500,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3555,7 +3555,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-34
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3582,7 +3582,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-35
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3602,7 +3602,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3657,7 +3657,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-35
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3684,7 +3684,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-36
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3704,7 +3704,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3759,7 +3759,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-36
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3786,7 +3786,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-37
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3806,7 +3806,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3861,7 +3861,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-37
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3888,7 +3888,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-38
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -3908,7 +3908,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -3963,7 +3963,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-38
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -3990,7 +3990,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-39
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4010,7 +4010,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4065,7 +4065,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-39
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4092,7 +4092,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-40
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4112,7 +4112,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4167,7 +4167,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-40
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4194,7 +4194,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-41
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4214,7 +4214,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4269,7 +4269,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-41
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4296,7 +4296,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-42
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4316,7 +4316,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4371,7 +4371,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-42
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4398,7 +4398,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-43
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4418,7 +4418,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4473,7 +4473,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-43
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4500,7 +4500,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-44
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4520,7 +4520,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4575,7 +4575,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-44
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4602,7 +4602,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-45
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4622,7 +4622,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4677,7 +4677,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-45
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4704,7 +4704,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-46
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4724,7 +4724,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4779,7 +4779,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-46
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4806,7 +4806,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-47
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4826,7 +4826,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4881,7 +4881,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-47
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -4908,7 +4908,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-48
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -4928,7 +4928,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -4983,7 +4983,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-48
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5010,7 +5010,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-49
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5030,7 +5030,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5085,7 +5085,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-49
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5112,7 +5112,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-50
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5132,7 +5132,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5187,7 +5187,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-50
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5214,7 +5214,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-51
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5234,7 +5234,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5289,7 +5289,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-51
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5316,7 +5316,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-52
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5336,7 +5336,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5391,7 +5391,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-52
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5418,7 +5418,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-53
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5438,7 +5438,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5493,7 +5493,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-53
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5520,7 +5520,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-54
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5540,7 +5540,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5595,7 +5595,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-54
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5622,7 +5622,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-55
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5642,7 +5642,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5697,7 +5697,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-55
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5724,7 +5724,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-56
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5744,7 +5744,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5799,7 +5799,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-56
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5826,7 +5826,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-57
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5846,7 +5846,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -5901,7 +5901,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-57
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -5928,7 +5928,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-58
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -5948,7 +5948,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6003,7 +6003,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-58
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6030,7 +6030,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-59
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6050,7 +6050,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6105,7 +6105,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-59
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6132,7 +6132,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-60
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6152,7 +6152,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6207,7 +6207,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-60
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6234,7 +6234,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-61
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6254,7 +6254,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6309,7 +6309,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-61
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6336,7 +6336,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-62
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6356,7 +6356,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6411,7 +6411,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-62
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6438,7 +6438,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-63
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6458,7 +6458,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6513,7 +6513,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-63
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6540,7 +6540,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-64
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6560,7 +6560,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6615,7 +6615,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-64
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6642,7 +6642,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-65
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6662,7 +6662,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6717,7 +6717,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-65
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6744,7 +6744,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-66
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6764,7 +6764,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6819,7 +6819,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-66
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6846,7 +6846,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-67
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6866,7 +6866,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -6921,7 +6921,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-67
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -6948,7 +6948,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-68
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -6968,7 +6968,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7023,7 +7023,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-68
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7050,7 +7050,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-69
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7070,7 +7070,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7125,7 +7125,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-69
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7152,7 +7152,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-70
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7172,7 +7172,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7227,7 +7227,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-70
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7254,7 +7254,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-71
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7274,7 +7274,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7329,7 +7329,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-71
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7356,7 +7356,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-72
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7376,7 +7376,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7431,7 +7431,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-72
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7458,7 +7458,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-73
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7478,7 +7478,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7533,7 +7533,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-73
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7560,7 +7560,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-74
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7580,7 +7580,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7635,7 +7635,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-74
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7662,7 +7662,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-75
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7682,7 +7682,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7737,7 +7737,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-75
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7764,7 +7764,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-76
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7784,7 +7784,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7839,7 +7839,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-76
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7866,7 +7866,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-77
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7886,7 +7886,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -7941,7 +7941,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-77
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -7968,7 +7968,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-78
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -7988,7 +7988,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -8043,7 +8043,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-78
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
@@ -8070,7 +8070,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-79
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       replicas: 1
       selector:
@@ -8090,7 +8090,7 @@ items:
             app.kubernetes.io/part-of: FOLIO
             app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
             environment: scratch
-          namespace: folio-modules
+          namespace: folio-test
         spec:
           containers:
             - env:
@@ -8145,7 +8145,7 @@ items:
         app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
         environment: scratch
       name: mod-workflow-79
-      namespace: folio-modules
+      namespace: folio-test
     spec:
       ipFamilies:
         - IPv4
