@@ -58,16 +58,6 @@ items:
                 - containerPort: 800
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 800
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -157,16 +147,6 @@ items:
                 - containerPort: 801
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 801
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -256,16 +236,6 @@ items:
                 - containerPort: 802
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 802
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -355,16 +325,6 @@ items:
                 - containerPort: 803
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 803
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -454,16 +414,6 @@ items:
                 - containerPort: 804
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 804
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -553,16 +503,6 @@ items:
                 - containerPort: 805
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 805
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -652,16 +592,6 @@ items:
                 - containerPort: 806
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 806
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -751,16 +681,6 @@ items:
                 - containerPort: 807
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 807
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -850,16 +770,6 @@ items:
                 - containerPort: 808
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 808
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -949,16 +859,6 @@ items:
                 - containerPort: 809
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 809
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -1048,16 +948,6 @@ items:
                 - containerPort: 8010
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 8010
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -1147,16 +1037,6 @@ items:
                 - containerPort: 8011
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 8011
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
@@ -1246,16 +1126,6 @@ items:
                 - containerPort: 8012
                   name: primary
                   protocol: TCP
-              readinessProbe:
-                failureThreshold: 10
-                httpGet:
-                  path: /admin/health
-                  port: 8012
-                  scheme: HTTP
-                initialDelaySeconds: 200
-                periodSeconds: 60
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 limits:
                   cpu: 500m
