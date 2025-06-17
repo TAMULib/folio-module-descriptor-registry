@@ -96,7 +96,7 @@ items:
         - name: primary-mod-workflow-0
           port: 800
           protocol: TCP
-          targetPort: 800
+          targetPort: 9000
       selector:
         app: app-workflow-0
         app.kubernetes.io/name: mod-workflow
@@ -198,7 +198,7 @@ items:
         - name: primary-mod-workflow-1
           port: 801
           protocol: TCP
-          targetPort: 801
+          targetPort: 9000
       selector:
         app: app-workflow-1
         app.kubernetes.io/name: mod-workflow
@@ -300,7 +300,7 @@ items:
         - name: primary-mod-workflow-2
           port: 802
           protocol: TCP
-          targetPort: 802
+          targetPort: 9000
       selector:
         app: app-workflow-2
         app.kubernetes.io/name: mod-workflow
@@ -402,7 +402,7 @@ items:
         - name: primary-mod-workflow-3
           port: 803
           protocol: TCP
-          targetPort: 803
+          targetPort: 9000
       selector:
         app: app-workflow-3
         app.kubernetes.io/name: mod-workflow
@@ -504,7 +504,7 @@ items:
         - name: primary-mod-workflow-4
           port: 804
           protocol: TCP
-          targetPort: 804
+          targetPort: 9000
       selector:
         app: app-workflow-4
         app.kubernetes.io/name: mod-workflow
@@ -606,7 +606,7 @@ items:
         - name: primary-mod-workflow-5
           port: 805
           protocol: TCP
-          targetPort: 805
+          targetPort: 9000
       selector:
         app: app-workflow-5
         app.kubernetes.io/name: mod-workflow
@@ -708,7 +708,7 @@ items:
         - name: primary-mod-workflow-6
           port: 806
           protocol: TCP
-          targetPort: 806
+          targetPort: 9000
       selector:
         app: app-workflow-6
         app.kubernetes.io/name: mod-workflow
@@ -810,7 +810,7 @@ items:
         - name: primary-mod-workflow-7
           port: 807
           protocol: TCP
-          targetPort: 807
+          targetPort: 9000
       selector:
         app: app-workflow-7
         app.kubernetes.io/name: mod-workflow
@@ -912,7 +912,7 @@ items:
         - name: primary-mod-workflow-8
           port: 808
           protocol: TCP
-          targetPort: 808
+          targetPort: 9000
       selector:
         app: app-workflow-8
         app.kubernetes.io/name: mod-workflow
@@ -1014,7 +1014,7 @@ items:
         - name: primary-mod-workflow-9
           port: 809
           protocol: TCP
-          targetPort: 809
+          targetPort: 9000
       selector:
         app: app-workflow-9
         app.kubernetes.io/name: mod-workflow
@@ -1116,7 +1116,7 @@ items:
         - name: primary-mod-workflow-10
           port: 8010
           protocol: TCP
-          targetPort: 8010
+          targetPort: 9000
       selector:
         app: app-workflow-10
         app.kubernetes.io/name: mod-workflow
@@ -1218,7 +1218,7 @@ items:
         - name: primary-mod-workflow-11
           port: 8011
           protocol: TCP
-          targetPort: 8011
+          targetPort: 9000
       selector:
         app: app-workflow-11
         app.kubernetes.io/name: mod-workflow
@@ -1320,7 +1320,7 @@ items:
         - name: primary-mod-workflow-12
           port: 8012
           protocol: TCP
-          targetPort: 8012
+          targetPort: 9000
       selector:
         app: app-workflow-12
         app.kubernetes.io/name: mod-workflow
@@ -1422,7 +1422,7 @@ items:
         - name: primary-mod-workflow-13
           port: 8013
           protocol: TCP
-          targetPort: 8013
+          targetPort: 9000
       selector:
         app: app-workflow-13
         app.kubernetes.io/name: mod-workflow
@@ -1524,7 +1524,7 @@ items:
         - name: primary-mod-workflow-14
           port: 8014
           protocol: TCP
-          targetPort: 8014
+          targetPort: 9000
       selector:
         app: app-workflow-14
         app.kubernetes.io/name: mod-workflow
@@ -1626,7 +1626,7 @@ items:
         - name: primary-mod-workflow-15
           port: 8015
           protocol: TCP
-          targetPort: 8015
+          targetPort: 9000
       selector:
         app: app-workflow-15
         app.kubernetes.io/name: mod-workflow
@@ -1728,7 +1728,7 @@ items:
         - name: primary-mod-workflow-16
           port: 8016
           protocol: TCP
-          targetPort: 8016
+          targetPort: 9000
       selector:
         app: app-workflow-16
         app.kubernetes.io/name: mod-workflow
@@ -1830,7 +1830,7 @@ items:
         - name: primary-mod-workflow-17
           port: 8017
           protocol: TCP
-          targetPort: 8017
+          targetPort: 9000
       selector:
         app: app-workflow-17
         app.kubernetes.io/name: mod-workflow
@@ -1932,7 +1932,7 @@ items:
         - name: primary-mod-workflow-18
           port: 8018
           protocol: TCP
-          targetPort: 8018
+          targetPort: 9000
       selector:
         app: app-workflow-18
         app.kubernetes.io/name: mod-workflow
@@ -2034,7 +2034,7 @@ items:
         - name: primary-mod-workflow-19
           port: 8019
           protocol: TCP
-          targetPort: 8019
+          targetPort: 9000
       selector:
         app: app-workflow-19
         app.kubernetes.io/name: mod-workflow
@@ -2136,7 +2136,7 @@ items:
         - name: primary-mod-workflow-20
           port: 8020
           protocol: TCP
-          targetPort: 8020
+          targetPort: 9000
       selector:
         app: app-workflow-20
         app.kubernetes.io/name: mod-workflow
@@ -2238,7 +2238,7 @@ items:
         - name: primary-mod-workflow-21
           port: 8021
           protocol: TCP
-          targetPort: 8021
+          targetPort: 9000
       selector:
         app: app-workflow-21
         app.kubernetes.io/name: mod-workflow
@@ -2340,7 +2340,7 @@ items:
         - name: primary-mod-workflow-22
           port: 8022
           protocol: TCP
-          targetPort: 8022
+          targetPort: 9000
       selector:
         app: app-workflow-22
         app.kubernetes.io/name: mod-workflow
@@ -2442,7 +2442,7 @@ items:
         - name: primary-mod-workflow-23
           port: 8023
           protocol: TCP
-          targetPort: 8023
+          targetPort: 9000
       selector:
         app: app-workflow-23
         app.kubernetes.io/name: mod-workflow
@@ -2544,7 +2544,7 @@ items:
         - name: primary-mod-workflow-24
           port: 8024
           protocol: TCP
-          targetPort: 8024
+          targetPort: 9000
       selector:
         app: app-workflow-24
         app.kubernetes.io/name: mod-workflow
