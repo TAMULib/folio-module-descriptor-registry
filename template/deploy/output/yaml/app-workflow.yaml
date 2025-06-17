@@ -43,7 +43,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "800"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -86,7 +86,7 @@ items:
         - name: primary-mod-workflow-0
           port: 800
           protocol: TCP
-          targetPort: 800
+          targetPort: 8080
       selector:
         app: app-workflow-0
         app.kubernetes.io/name: mod-workflow
@@ -135,7 +135,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "801"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -178,7 +178,7 @@ items:
         - name: primary-mod-workflow-1
           port: 801
           protocol: TCP
-          targetPort: 801
+          targetPort: 8080
       selector:
         app: app-workflow-1
         app.kubernetes.io/name: mod-workflow
@@ -227,7 +227,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "802"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -270,7 +270,7 @@ items:
         - name: primary-mod-workflow-2
           port: 802
           protocol: TCP
-          targetPort: 802
+          targetPort: 8080
       selector:
         app: app-workflow-2
         app.kubernetes.io/name: mod-workflow
@@ -319,7 +319,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "803"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -362,7 +362,7 @@ items:
         - name: primary-mod-workflow-3
           port: 803
           protocol: TCP
-          targetPort: 803
+          targetPort: 8080
       selector:
         app: app-workflow-3
         app.kubernetes.io/name: mod-workflow
@@ -411,7 +411,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "804"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -454,7 +454,7 @@ items:
         - name: primary-mod-workflow-4
           port: 804
           protocol: TCP
-          targetPort: 804
+          targetPort: 8080
       selector:
         app: app-workflow-4
         app.kubernetes.io/name: mod-workflow
@@ -503,7 +503,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "805"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -546,7 +546,7 @@ items:
         - name: primary-mod-workflow-5
           port: 805
           protocol: TCP
-          targetPort: 805
+          targetPort: 8080
       selector:
         app: app-workflow-5
         app.kubernetes.io/name: mod-workflow
@@ -595,7 +595,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "806"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -638,7 +638,7 @@ items:
         - name: primary-mod-workflow-6
           port: 806
           protocol: TCP
-          targetPort: 806
+          targetPort: 8080
       selector:
         app: app-workflow-6
         app.kubernetes.io/name: mod-workflow
@@ -687,7 +687,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "807"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -730,7 +730,7 @@ items:
         - name: primary-mod-workflow-7
           port: 807
           protocol: TCP
-          targetPort: 807
+          targetPort: 8080
       selector:
         app: app-workflow-7
         app.kubernetes.io/name: mod-workflow
@@ -779,7 +779,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "808"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -822,7 +822,7 @@ items:
         - name: primary-mod-workflow-8
           port: 808
           protocol: TCP
-          targetPort: 808
+          targetPort: 8080
       selector:
         app: app-workflow-8
         app.kubernetes.io/name: mod-workflow
@@ -871,7 +871,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "809"
+                  value: "8081"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -914,7 +914,7 @@ items:
         - name: primary-mod-workflow-9
           port: 809
           protocol: TCP
-          targetPort: 809
+          targetPort: 8080
       selector:
         app: app-workflow-9
         app.kubernetes.io/name: mod-workflow
