@@ -62,7 +62,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -151,7 +151,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -240,7 +240,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -329,7 +329,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -418,7 +418,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -507,7 +507,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -596,7 +596,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -685,7 +685,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -774,7 +774,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -863,7 +863,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -952,7 +952,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -1041,7 +1041,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
@@ -1130,7 +1130,7 @@ items:
                 limits:
                   cpu: 500m
                 requests:
-                  cpu: 1m
+                  cpu: 100m
                   memory: 64Mi
   - apiVersion: v1
     kind: Service
