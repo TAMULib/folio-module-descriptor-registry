@@ -43,7 +43,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "800"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -86,7 +86,7 @@ items:
         - name: primary-mod-workflow-0
           port: 800
           protocol: TCP
-          targetPort: 8080
+          targetPort: 800
       selector:
         app: app-workflow-0
         app.kubernetes.io/name: mod-workflow
@@ -135,7 +135,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "801"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -178,7 +178,7 @@ items:
         - name: primary-mod-workflow-1
           port: 801
           protocol: TCP
-          targetPort: 8080
+          targetPort: 801
       selector:
         app: app-workflow-1
         app.kubernetes.io/name: mod-workflow
@@ -227,7 +227,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "802"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -270,7 +270,7 @@ items:
         - name: primary-mod-workflow-2
           port: 802
           protocol: TCP
-          targetPort: 8080
+          targetPort: 802
       selector:
         app: app-workflow-2
         app.kubernetes.io/name: mod-workflow
@@ -319,7 +319,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "803"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -362,7 +362,7 @@ items:
         - name: primary-mod-workflow-3
           port: 803
           protocol: TCP
-          targetPort: 8080
+          targetPort: 803
       selector:
         app: app-workflow-3
         app.kubernetes.io/name: mod-workflow
@@ -411,7 +411,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "804"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -454,7 +454,7 @@ items:
         - name: primary-mod-workflow-4
           port: 804
           protocol: TCP
-          targetPort: 8080
+          targetPort: 804
       selector:
         app: app-workflow-4
         app.kubernetes.io/name: mod-workflow
@@ -503,7 +503,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "805"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -546,7 +546,7 @@ items:
         - name: primary-mod-workflow-5
           port: 805
           protocol: TCP
-          targetPort: 8080
+          targetPort: 805
       selector:
         app: app-workflow-5
         app.kubernetes.io/name: mod-workflow
@@ -595,7 +595,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "806"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -638,7 +638,7 @@ items:
         - name: primary-mod-workflow-6
           port: 806
           protocol: TCP
-          targetPort: 8080
+          targetPort: 806
       selector:
         app: app-workflow-6
         app.kubernetes.io/name: mod-workflow
@@ -687,7 +687,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "807"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -730,7 +730,7 @@ items:
         - name: primary-mod-workflow-7
           port: 807
           protocol: TCP
-          targetPort: 8080
+          targetPort: 807
       selector:
         app: app-workflow-7
         app.kubernetes.io/name: mod-workflow
@@ -779,7 +779,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "808"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -822,7 +822,7 @@ items:
         - name: primary-mod-workflow-8
           port: 808
           protocol: TCP
-          targetPort: 8080
+          targetPort: 808
       selector:
         app: app-workflow-8
         app.kubernetes.io/name: mod-workflow
@@ -871,7 +871,7 @@ items:
                 - name: MODULE_VERSION
                   value: 1.2.0-SNAPSHOT.98
                 - name: SERVER_PORT
-                  value: "8081"
+                  value: "809"
               envFrom:
                 - configMapRef:
                     name: folio-modules-global
@@ -914,9 +914,469 @@ items:
         - name: primary-mod-workflow-9
           port: 809
           protocol: TCP
-          targetPort: 8080
+          targetPort: 809
       selector:
         app: app-workflow-9
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        environment: scratch
+      type: ClusterIP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: app-workflow-10
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-10
+      namespace: folio-modules
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: app-workflow-10
+          app.kubernetes.io/name: mod-workflow
+          app.kubernetes.io/part-of: FOLIO
+          environment: scratch
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: app-workflow-10
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/name: mod-workflow
+            app.kubernetes.io/part-of: FOLIO
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            environment: scratch
+          namespace: folio-modules
+        spec:
+          containers:
+            - env:
+                - name: JAVA_OPTIONS
+                  value: -XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true
+                - name: MODULE_NAME
+                  value: mod-workflow
+                - name: MODULE_VERSION
+                  value: 1.2.0-SNAPSHOT.98
+                - name: SERVER_PORT
+                  value: "8010"
+              envFrom:
+                - configMapRef:
+                    name: folio-modules-global
+                    optional: true
+                - configMapRef:
+                    name: mod-workflow
+                    optional: true
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              imagePullPolicy: Always
+              imagePullSecrets:
+                - name: docker
+              name: mod-workflow
+              ports:
+                - containerPort: 8010
+                  name: primary
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 1m
+                  memory: 64Mi
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: app-workflow-10
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-10
+      namespace: folio-modules
+    spec:
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: primary-mod-workflow-10
+          port: 8010
+          protocol: TCP
+          targetPort: 8010
+      selector:
+        app: app-workflow-10
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        environment: scratch
+      type: ClusterIP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: app-workflow-11
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-11
+      namespace: folio-modules
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: app-workflow-11
+          app.kubernetes.io/name: mod-workflow
+          app.kubernetes.io/part-of: FOLIO
+          environment: scratch
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: app-workflow-11
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/name: mod-workflow
+            app.kubernetes.io/part-of: FOLIO
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            environment: scratch
+          namespace: folio-modules
+        spec:
+          containers:
+            - env:
+                - name: JAVA_OPTIONS
+                  value: -XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true
+                - name: MODULE_NAME
+                  value: mod-workflow
+                - name: MODULE_VERSION
+                  value: 1.2.0-SNAPSHOT.98
+                - name: SERVER_PORT
+                  value: "8011"
+              envFrom:
+                - configMapRef:
+                    name: folio-modules-global
+                    optional: true
+                - configMapRef:
+                    name: mod-workflow
+                    optional: true
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              imagePullPolicy: Always
+              imagePullSecrets:
+                - name: docker
+              name: mod-workflow
+              ports:
+                - containerPort: 8011
+                  name: primary
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 1m
+                  memory: 64Mi
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: app-workflow-11
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-11
+      namespace: folio-modules
+    spec:
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: primary-mod-workflow-11
+          port: 8011
+          protocol: TCP
+          targetPort: 8011
+      selector:
+        app: app-workflow-11
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        environment: scratch
+      type: ClusterIP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: app-workflow-12
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-12
+      namespace: folio-modules
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: app-workflow-12
+          app.kubernetes.io/name: mod-workflow
+          app.kubernetes.io/part-of: FOLIO
+          environment: scratch
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: app-workflow-12
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/name: mod-workflow
+            app.kubernetes.io/part-of: FOLIO
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            environment: scratch
+          namespace: folio-modules
+        spec:
+          containers:
+            - env:
+                - name: JAVA_OPTIONS
+                  value: -XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true
+                - name: MODULE_NAME
+                  value: mod-workflow
+                - name: MODULE_VERSION
+                  value: 1.2.0-SNAPSHOT.98
+                - name: SERVER_PORT
+                  value: "8012"
+              envFrom:
+                - configMapRef:
+                    name: folio-modules-global
+                    optional: true
+                - configMapRef:
+                    name: mod-workflow
+                    optional: true
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              imagePullPolicy: Always
+              imagePullSecrets:
+                - name: docker
+              name: mod-workflow
+              ports:
+                - containerPort: 8012
+                  name: primary
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 1m
+                  memory: 64Mi
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: app-workflow-12
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-12
+      namespace: folio-modules
+    spec:
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: primary-mod-workflow-12
+          port: 8012
+          protocol: TCP
+          targetPort: 8012
+      selector:
+        app: app-workflow-12
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        environment: scratch
+      type: ClusterIP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: app-workflow-13
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-13
+      namespace: folio-modules
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: app-workflow-13
+          app.kubernetes.io/name: mod-workflow
+          app.kubernetes.io/part-of: FOLIO
+          environment: scratch
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: app-workflow-13
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/name: mod-workflow
+            app.kubernetes.io/part-of: FOLIO
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            environment: scratch
+          namespace: folio-modules
+        spec:
+          containers:
+            - env:
+                - name: JAVA_OPTIONS
+                  value: -XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true
+                - name: MODULE_NAME
+                  value: mod-workflow
+                - name: MODULE_VERSION
+                  value: 1.2.0-SNAPSHOT.98
+                - name: SERVER_PORT
+                  value: "8013"
+              envFrom:
+                - configMapRef:
+                    name: folio-modules-global
+                    optional: true
+                - configMapRef:
+                    name: mod-workflow
+                    optional: true
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              imagePullPolicy: Always
+              imagePullSecrets:
+                - name: docker
+              name: mod-workflow
+              ports:
+                - containerPort: 8013
+                  name: primary
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 1m
+                  memory: 64Mi
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: app-workflow-13
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-13
+      namespace: folio-modules
+    spec:
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: primary-mod-workflow-13
+          port: 8013
+          protocol: TCP
+          targetPort: 8013
+      selector:
+        app: app-workflow-13
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        environment: scratch
+      type: ClusterIP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: app-workflow-14
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-14
+      namespace: folio-modules
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: app-workflow-14
+          app.kubernetes.io/name: mod-workflow
+          app.kubernetes.io/part-of: FOLIO
+          environment: scratch
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: app-workflow-14
+            app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+            app.kubernetes.io/name: mod-workflow
+            app.kubernetes.io/part-of: FOLIO
+            app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+            environment: scratch
+          namespace: folio-modules
+        spec:
+          containers:
+            - env:
+                - name: JAVA_OPTIONS
+                  value: -XX:MaxRAMPercentage=80.0 -Dlog4j2.formatMsgNoLookups=true
+                - name: MODULE_NAME
+                  value: mod-workflow
+                - name: MODULE_VERSION
+                  value: 1.2.0-SNAPSHOT.98
+                - name: SERVER_PORT
+                  value: "8014"
+              envFrom:
+                - configMapRef:
+                    name: folio-modules-global
+                    optional: true
+                - configMapRef:
+                    name: mod-workflow
+                    optional: true
+              image: folioci/mod-workflow:1.2.0-SNAPSHOT.98
+              imagePullPolicy: Always
+              imagePullSecrets:
+                - name: docker
+              name: mod-workflow
+              ports:
+                - containerPort: 8014
+                  name: primary
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 1m
+                  memory: 64Mi
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: app-workflow-14
+        app.kubernetes.io/instance: mod-workflow-1.2.0-SNAPSHOT.98
+        app.kubernetes.io/name: mod-workflow
+        app.kubernetes.io/part-of: FOLIO
+        app.kubernetes.io/version: 1.2.0-SNAPSHOT.98
+        environment: scratch
+      name: mod-workflow-14
+      namespace: folio-modules
+    spec:
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: primary-mod-workflow-14
+          port: 8014
+          protocol: TCP
+          targetPort: 8014
+      selector:
+        app: app-workflow-14
         app.kubernetes.io/name: mod-workflow
         app.kubernetes.io/part-of: FOLIO
         environment: scratch
