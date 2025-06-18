@@ -16,7 +16,7 @@
     }
   ],
   "[CPU_RESOURCE_LIMIT]": "500m",
-  "[CPU_RESOURCE_REQUEST]": "1m",
+  "[CPU_RESOURCE_REQUEST]": "200m",
   "[ENV_FROM]": [
     "[ENV_FROM_GLOBAL]"
   ],
