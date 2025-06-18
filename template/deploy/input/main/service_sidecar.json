@@ -35,9 +35,7 @@
     "selector": {
       "app": "{global:app}",
       "app.kubernetes.io/name": "{name:}",
-      "app.kubernetes.io/instance": "{id:}",
       "app.kubernetes.io/part-of": "FOLIO",
-      "app.kubernetes.io/version": "{version:}",
       "environment": "scratch"
     },
     "type": "ClusterIP"
