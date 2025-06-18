@@ -10,8 +10,7 @@
       "app.kubernetes.io/version": "{version:}",
       "environment": "scratch"
     },
-    "name": "{name:}",
-    "namespace": "{global:namespace}"
+    "name": "{name:}"
   },
   "spec": {
     "ipFamilies": [
