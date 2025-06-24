@@ -346,7 +346,7 @@ build_app_desc_load_environment() {
 
   output_path_json="${output_path}${output_path_name}.json"
 
-  if [[ ${BUILD_APP_DESCRIPTOR_RESTRICT_TO} != "" ]] ; then
+  if [[ -v BUILD_APP_DESCRIPTOR_RESTRICT_TO ]] ; then
     restrict_to=${BUILD_APP_DESCRIPTOR_RESTRICT_TO}
   fi
 

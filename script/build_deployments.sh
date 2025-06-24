@@ -52,7 +52,7 @@ main() {
   local input_path_specific="${input_path}specific/"
   local input_path_vars="${input_path}vars/"
   local input_service_name="service"
-  local jq_instruct
+  local jq_instruct=
   local jq_merge_join=
   local jq_merge_replace=
   local jq_names=
@@ -91,7 +91,7 @@ main() {
   local -i result=0
   local -i passes=4
 
-  build_depls_load_environment
+  build_depls_load_environment ${*}
   build_depls_load_instructions
   build_depls_load_json_sources
   build_depls_load_json_discovery
@@ -443,10 +443,10 @@ build_depls_expand_file_load_template_maps_pcre() {
   local pcre_query=
   local pcre_value_deploy=
   local pcre_value_service=
-  local pcre_total=
 
   local -i i=0
   local -i matched=0
+  local -i pcre_total=0
 
   build_depls_expand_file_load_template_maps_pcre_load_map
   build_depls_expand_file_load_template_maps_pcre_load_total
@@ -776,6 +776,7 @@ build_depls_handle_result() {
 }
 
 build_depls_load_environment() {
+
   if [[ ${BUILD_DEPLOY_DEBUG} != "" ]] ; then
     debug="-v"
 

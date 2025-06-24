@@ -1,0 +1,11 @@
+{
+  "exact": {
+    "mod-camunda": { "method": "jq", "type": "spring" },
+    "mod-workflow": { "method": "jq", "type": "spring" }
+  },
+  "pcre": {
+    "edge-*": { "method": "jq", "type": "any" },
+    "folio_*": { "method": "yarn" },
+    "mod-*": { "method": "jq", "type": "any" }
+  }
+}

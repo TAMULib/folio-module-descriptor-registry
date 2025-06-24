@@ -63,7 +63,7 @@ main() {
 
   destination=${npm_dir}release/snapshot/
 
-  pop_node_load_environment
+  pop_node_load_environment ${*}
 
   pop_node_verify_files
 

@@ -59,7 +59,7 @@ main() {
 
   local -i result=0
 
-  pop_rel_load_environment
+  pop_rel_load_environment ${*}
 
   if [[ ${POPULATE_RELEASE_FILE_REUSE} != "" ]] ; then
     if [[ ! -f ${file} ]] ; then

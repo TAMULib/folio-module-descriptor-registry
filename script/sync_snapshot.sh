@@ -32,7 +32,7 @@ main() {
 
   local -i result=0
 
-  sync_snap_load_environment
+  sync_snap_load_environment ${*}
 
   sync_snap_determine
 

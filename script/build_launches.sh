@@ -46,7 +46,7 @@ main() {
 
   local -i result=0
 
-  build_launches_load_environment
+  build_launches_load_environment ${*}
   build_launches_load_instructions
 
   build_launches_build
@@ -375,6 +375,7 @@ build_launches_handle_result() {
 }
 
 build_launches_load_environment() {
+
   if [[ ${BUILD_LAUNCHES_DEBUG} != "" ]] ; then
     debug="-v"
 

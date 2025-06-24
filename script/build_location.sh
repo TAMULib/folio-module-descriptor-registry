@@ -66,7 +66,7 @@ main() {
   local -i limit=100
   local -i result=0
 
-  build_location_load_environment
+  build_location_load_environment ${*}
 
   build_location_verify_json "repositories file" ${repositories_json}
   build_location_verify_files
