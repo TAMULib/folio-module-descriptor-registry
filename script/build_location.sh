@@ -310,9 +310,9 @@ build_location_load_repositories() {
     build_location_load_repositories_extract_domain "auth.registry"
     repositories_auth_registry["${repo}"]="${value}"
 
-    build_location_load_repositories_verify_url "auth.url" "${repositories_auth_url["${repo}"]}"
-    build_location_load_repositories_verify_url "request.url" "${repositories_request_url["${repo}"]}"
-    build_location_load_repositories_verify_domain "auth.domain" "${repositories_auth_registry["${repo}"]}"
+    build_location_load_repositories_verify_url "auth.url" "${repositories_auth_url[${repo}]}"
+    build_location_load_repositories_verify_url "request.url" "${repositories_request_url[${repo}]}"
+    build_location_load_repositories_verify_domain "auth.domain" "${repositories_auth_registry[${repo}]}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 

@@ -303,10 +303,10 @@ build_mod_desc_build_operate_jq_build() {
   build_mod_desc_load_json "${kind} descriptor template" ${file}
 
   while [[ ${i} -lt ${maps_total} ]] ; do
-    build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" "${maps_keys_jq["${type}"]}" "-r"
+    build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" "${maps_keys_jq[${type}]}" "-r"
     key=${value}
 
-    build_mod_desc_load_json_for ".\"${key}\"" "Template Value for '${type}' at ${i}" "${maps_data_jq["${type}"]}" "-r"
+    build_mod_desc_load_json_for ".\"${key}\"" "Template Value for '${type}' at ${i}" "${maps_data_jq[${type}]}" "-r"
     with=${value}
 
     build_mod_desc_build_operate_jq_build_sed
@@ -685,10 +685,10 @@ build_mod_desc_load_templates() {
     build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
     maps_data_jq["${name}"]=${value}
 
-    build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq["${name}"]}"
+    build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq[${name}]}"
     maps_keys_jq["${name}"]=${value}
 
-    build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq["${name}"]}"
+    build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[${name}]}"
     maps_size_jq["${name}"]=${total}
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -699,10 +699,10 @@ build_mod_desc_load_templates() {
   build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
   maps_data_jq["all"]=${value}
 
-  build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq["all"]}"
+  build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq[all]}"
   maps_keys_jq["all"]=${value}
 
-  build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq["all"]}"
+  build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[all]}"
   maps_size_jq["all"]=${total}
 }
 
