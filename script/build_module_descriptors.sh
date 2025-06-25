@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Build module descriptors, synthetically.
+# Build module and deployment descriptors, either synthetically or normally.
 #
 # This attempts to directly build the module descriptor using the ModuleDescriptor-template.json, without calling the normal build process.
 # This is done to avoid the resource and time cost of calling something like "mvn clean package -DskipTests".
@@ -10,6 +10,7 @@
 # This requires the following user-space programs:
 #   - bash
 #   - file
+#   - find
 #   - grep
 #   - jq
 #   - mkdir
@@ -24,34 +25,27 @@
 # The BUILD_MOD_DESCRIPTORS_DEBUG may be specifically set to "yarn_only" to only include running yarn in verbose mode, disabling all other debugging (does not pass -v).
 #
 
-# TODO:
-# https://github.com/search?q=org%3Afolio-org%20ModuleDescriptor-template.json&type=code
-# https://github.com/folio-org/mod-inventory-storage/blob/36177285d3197407d773c0712c8209ebc39d3a4b/descriptors/ModuleDescriptor-template.json#
-# https://github.com/folio-org/Net-Z3950-FOLIO/blob/master/descriptors/ModuleDescriptor-template.json
-# https://github.com/folio-org/mod-workflow/blob/e30398c15ac8cda846a17d20b6f2279002bbfa3f/service/descriptors/ModuleDescriptor-template.json
-# https://github.com/folio-org/folio-helm-v2/blob/1bcbb2fbf5d0db45de395f0e5267eb316ea0e6c9/scripts/modify-values.py
-# https://github.com/folio-org/ui-workflow
-# https://github.com/folio-org/edge-fqm/blob/dd5cba11f35f9742e0fa7052ac146b4d29854cc5/descriptors/ModuleDescriptor-template.json
-# https://github.com/folio-org/mod-login/blob/14a9628fc7afb378a998b8968a349d285329bf13/descriptors/ModuleDescriptor-template.json
-# https://github.com/folio-org/mod-pubsub/blob/master/descriptors/ModuleDescriptor-template.json
-# Handle UI as well via stripe-cli or appropriate yarn build.
-#   yarn run build-mod-descriptor
-
 main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local debug=
   local debug_json=
   local debug_yarn=
+  local deploy_descriptor="DeploymentDescriptor-template.json"
   local file=
   local files="install.json"
-  local input_path="template/descriptor/module/"
+  local flower="snapshot"
+  local input_path="template/descriptor/"
   local input_path_jq=
   local input_path_map=
   local json=
   local map_names=
+  local module_descriptor="ModuleDescriptor-template.json"
   local null="/dev/null"
   local omit="okapi"
-  local output_path="descriptors/" # TODO: add flower release name.
+  local output_path="descriptors/"
+  local output_path_deploy=
+  local output_path_flower=
+  local output_path_module=
   local restrict_to="edge- folio_ mod-"
   local restrict_to_regex=
 
@@ -60,7 +54,10 @@ main() {
   local p_e="ERROR: "
 
   local -A maps_data_jq=
+  local -A maps_keys_jq=
+  local -A maps_size_jq=
 
+  local -i map_names_length=0
   local -i result=0
 
   build_mod_desc_load_environment ${*}
@@ -72,16 +69,23 @@ main() {
     if [[ ${result} -ne 0 ]] ; then break ; fi
   done
 
+  if [[ ${result} -eq 0 ]] ; then
+    echo
+    echo "Done: Module and Deployment Descriptor JSON files are built ."
+  fi
+
   return ${result}
 }
 
 build_mod_desc_build() {
 
-  if [[ ${debug} == "" ]] ; then return ; fi
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local deploy_desc=
   local id=
   local json=
   local method=
+  local module_desc=
   local name=
   local reduced_json=
   local type=
@@ -111,17 +115,29 @@ build_mod_desc_build() {
     build_mod_desc_build_get_name
     build_mod_desc_build_get_version
     build_mod_desc_build_omit
+    build_mod_desc_build_skip_unknown
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
-    if [[ ${skip} -eq 1 ]] ; then continue ; fi
 
-    build_mod_desc_print_debug "Processing id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+    if [[ ${skip} -eq 1 ]] ; then
+      let i++;
+      continue
+    fi
 
-    build_mod_desc_load_json "map" ${input_path_map}
+    deploy_desc=${output_path_deploy}${name}
+    module_desc=${output_path_module}${name}
 
-    build_mod_desc_build_get_method_and_type ".exact.\"${name}\"" ${json}
-    build_mod_desc_build_get_pcre
-    build_mod_desc_build_operate
+    if [[ -f ${deploy_desc} && -f ${module_desc} ]] ; then
+      build_mod_desc_print_debug "Descriptors found, skipping id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+    else
+      build_mod_desc_print_debug "Processing id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+
+      build_mod_desc_load_json "map" ${input_path_map}
+
+      build_mod_desc_build_get_method_and_type ".exact.\"${name}\"" ${json}
+      build_mod_desc_build_get_pcre
+      build_mod_desc_build_operate
+    fi
 
     let i++
   done
@@ -244,8 +260,15 @@ build_mod_desc_build_operate() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local source_module="descriptors/${module_descriptor}"
+  local source_deploy="descriptors/${deploy_descriptor}"
+
   if [[ ${method} == "jq" ]] ; then
-    build_mod_desc_build_operate_jq
+    build_mod_desc_build_operate_jq_find module ${source_module} ${module_descriptor}
+    build_mod_desc_build_operate_jq_find deploy ${source_deploy} ${deploy_descriptor}
+
+    build_mod_desc_build_operate_jq_build module ${source_module} ${module_descriptor}
+    build_mod_desc_build_operate_jq_build deploy ${source_deploy} ${deploy_descriptor}
   elif [[ ${method} == "yarn" ]] ; then
     build_mod_desc_build_operate_yarn_build
     build_mod_desc_build_operate_yarn_copy
@@ -254,11 +277,113 @@ build_mod_desc_build_operate() {
   fi
 }
 
-build_mod_desc_build_operate_jq() {
+build_mod_desc_build_operate_jq_build() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  echo "TODO"
+  local destination=
+  local file=${2}
+  local name=${3}
+  local key=
+  local kind=${1}
+  local with=
+
+  local -i i=0
+  local -i maps_total=${maps_size_jq["${type}"]}
+
+  if [[ ${kind} == "module" ]] ; then
+    destination=${module_desc}
+  else
+    destination=${deploy_desc}
+  fi
+
+  # Skip already created descriptors.
+  if [[ -f ${module_desc} ]] ; then return ; fi
+
+  build_mod_desc_load_json "${kind} descriptor template" ${file}
+
+  while [[ ${i} -lt ${maps_total} ]] ; do
+    build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" ${maps_keys_jq["${type}"]} "-r"
+    key=${value}
+
+    build_mod_desc_load_json_for ".\"${key}\"" "Template Value for '${type}' at ${i}" ${maps_data_jq["${type}"]} "-r"
+    with=${value}
+
+    build_mod_desc_build_operate_jq_build_sed
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+  done
+
+  build_mod_desc_build_operate_jq_build_write
+}
+
+build_mod_desc_build_operate_jq_build_sed() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local data=
+
+  data=$(sed -e "s|${key}|${with}|g" <<< ${json})
+
+  build_mod_desc_handle_result "Failed to replace '${key}' with '${with}' using sed for: ${name}"
+
+  if [[ ${result} -eq 0 ]] ; then
+    json=${data}
+  fi
+}
+
+build_mod_desc_build_operate_jq_build_write() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq -M . <<< ${json} > ${destination}
+  else
+    jq -M . <<< ${json} > ${destination} 2> ${null}
+  fi
+
+  build_mod_desc_handle_result "Failed to write ${name} ${kind} descriptor to: ${destination}"
+}
+
+build_mod_desc_build_operate_jq_find() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local data=
+  local file=${2}
+  local name=${3}
+  local kind=${1}
+
+  if [[ ! -e ${file} && ! -f ${file} ]] ; then
+    echo "${p_e}The following path is not a valid file: ${file} ."
+
+    let result=1
+    return
+  fi
+
+  build_mod_desc_build_operate_jq_find_search
+  build_mod_desc_build_operate_jq_find_assign
+}
+
+build_mod_desc_build_operate_jq_find_assign() {
+
+  if [[ ${result} -ne 0 || ${data} == "" || ! -f ${data} ]] ; then return ; fi
+
+  if [[ ${kind} == "module" ]] ; then
+    source_module=${data}
+  else
+    source_deploy=${data}
+  fi
+}
+
+build_mod_desc_build_operate_jq_find_search() {
+
+  if [[ ${result} -ne 0 || -f ${file} ]] ; then return ; fi
+
+  data=$(find -name ${name} -print -quit)
+
+  build_mod_desc_handle_result "Failed to find the ${kind} descriptor file: ${name}"
 }
 
 build_mod_desc_build_operate_yarn_build() {
@@ -274,8 +399,11 @@ build_mod_desc_build_operate_yarn_copy() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  #cp ${debug} module-descriptor.json
-  echo "TODO: copy module-descriptor.json to destination path"
+  local source="module-descriptor.json"
+
+  cp ${debug} ${source} ${output_path_flower}
+
+  build_mod_desc_handle_result "Failed to copy '${source}' to: ${output_path_flower}"
 }
 
 build_mod_desc_build_reduce() {
@@ -300,6 +428,17 @@ build_mod_desc_build_reduce() {
   fi
 
   build_mod_desc_handle_result "Failed to reduce using '${restrict_to}' for JSON: ${file}"
+}
+
+build_mod_desc_build_skip_unknown() {
+
+  if [[ ${result} -ne 0 || ${skip} -ne 0 || ${type} == "" ]] ; then return ; fi
+
+  if [[ ${maps_data_jq["${type}"]} == "" ]] ; then
+    build_mod_desc_print_debug "Skipping unknown type='${type}' for id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+
+    let skip=1
+  fi
 }
 
 build_mod_desc_handle_result() {
@@ -389,6 +528,10 @@ build_mod_desc_load_environment() {
     omit=${BUILD_MOD_DESCRIPTORS_OMIT}
   fi
 
+  if [[ ${BUILD_MOD_DESCRIPTORS_FLOWER} != "" ]] ; then
+    flower=$(echo ${BUILD_MOD_DESCRIPTORS_FLOWER} | sed -e 's|/||g')
+  fi
+
   # May be empty, so use "-v" test rather than != "".
   if [[ -v BUILD_MOD_DESCRIPTORS_OUTPUT_PATH ]] ; then
     if [[ ${BUILD_MOD_DESCRIPTORS_OUTPUT_PATH} == "" ]] ; then
@@ -397,6 +540,18 @@ build_mod_desc_load_environment() {
       output_path=$(echo -n ${BUILD_MOD_DESCRIPTORS_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
     fi
   fi
+
+  if [[ ${flower} != "" ]] ; then
+    output_path_flower="${output_path}${flower}/"
+  else
+    output_path_flower="${output_path}"
+  fi
+
+  output_path_deploy="${output_path_flower}deploy/"
+  output_path_module="${output_path_flower}module/"
+
+  build_mod_desc_verify_directory "output deploy path" ${output_path_deploy} create
+  build_mod_desc_verify_directory "output module path" ${output_path_module} create
 }
 
 build_mod_desc_load_json() {
@@ -479,8 +634,9 @@ build_mod_desc_load_json_verify_files() {
 
 build_mod_desc_load_templates() {
 
-  if [[ ${debug} == "" ]] ; then return ; fi
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local jq_merge="reduce .[] as $f ({}; . * $f)"
   local name=
   local names=
   local value=
@@ -498,7 +654,7 @@ build_mod_desc_load_templates() {
 
   while [[ ${i} -lt ${total} ]] ; do
 
-    build_mod_desc_load_json_for "[${i}]" ${input_path_jq} ${names} "-r"
+    build_mod_desc_load_json_for ".[${i}]" ${input_path_jq} ${names} "-r"
     name=${value}
 
     build_mod_desc_load_json_for ".\"${name}\"" ${input_path_jq} ${json} "-r"
@@ -508,22 +664,46 @@ build_mod_desc_load_templates() {
 
     let i++
   done
-}
 
-build_mod_desc_load_templates_jq_get() {
+  build_mod_desc_load_json_for "keys" ${input_path_jq} ${json}
+  map_names=${value}
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  build_mod_desc_load_json_total "length" ${input_path_jq} ${json}
+  map_names_length=${total}
 
-  local jq_keys="keys"
+  let i=0
+  while [[ ${i} -lt ${map_names_length} ]] ; do
+    build_mod_desc_load_json_for ".[${i}]" ${input_path_jq} ${json}
+    name=${value}
 
-  # Prevent jq from printing JSON if ${null} exists when not debugging.
-  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    names=$(jq -M "${jq_keys}" <<< ${json})
-  else
-    names=$(jq -M "${jq_keys}" <<< ${json} 2> ${null})
-  fi
+    # Ignore the reserved key.
+    if [[ ${name} == "all" ]] ; then
+      let i++
+      continue;
+    fi
 
-  build_mod_desc_handle_result "Failed to load JQ map names from ${input_path_jq}"
+    build_mod_desc_load_json_for ${jq_merge} ${input_path_jq} ${json}
+    maps_data_jq[${name}]=${value}
+
+    build_mod_desc_load_json_for "keys" ${input_path_jq} ${maps_data_jq[${name}]}
+    maps_keys_jq[${name}]=${value}
+
+    build_mod_desc_load_json_total "length" ${input_path_jq} ${maps_keys_jq[${name}]}
+    maps_size_jq[${name}]=${total}
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    let i++
+  done
+
+  build_mod_desc_load_json_for ${jq_merge} ${input_path_jq} ${json}
+  maps_data_jq["all"]=${value}
+
+  build_mod_desc_load_json_for "keys" ${input_path_jq} ${maps_data_jq["all"]}
+  maps_keys_jq["all"]=${value}
+
+  build_mod_desc_load_json_total "length" ${input_path_jq} ${maps_keys_jq["all"]}
+  maps_size_jq["all"]=${total}
 }
 
 build_mod_desc_print_debug() {
@@ -532,6 +712,32 @@ build_mod_desc_print_debug() {
 
   echo "${p_d}${1} ."
   echo
+}
+
+build_mod_desc_verify_directory() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local name=${1}
+  local path=${2}
+  local option=${3}
+
+  # Optionally attempt create the directory if it does not exist.
+  if [[ ${option} == "create" ]] ; then
+    if [[ ! -e ${path} ]] ; then
+      mkdir -p ${debug} ${path}
+
+      build_mod_desc_handle_result "Failed to create the ${name} directory: ${path}"
+
+      if [[ ${result} -ne 0 ]] ; then return ; fi
+    fi
+  fi
+
+  if [[ ! -d ${path} ]] ; then
+    echo "${p_e}The ${name} is not a valid directory: ${path} ."
+
+    let result=1
+  fi
 }
 
 build_mod_desc_verify_json() {
