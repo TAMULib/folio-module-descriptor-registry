@@ -96,7 +96,7 @@ build_mod_desc_build() {
   local -i skip=0
 
   build_mod_desc_build_reduce
-  build_mod_desc_load_json_total "length" ${file} ${reduced_json}
+  build_mod_desc_load_json_total "length" "${file}" "${reduced_json}"
 
   if [[ ${total} -eq 0 && ${debug} != "" ]] ; then
     echo "${p_d}No modules found in the input file: ${file} ."
@@ -107,7 +107,7 @@ build_mod_desc_build() {
   echo
 
   while [[ ${i} -lt ${total} ]] ; do
-    build_mod_desc_load_json_for "[${i}].name" ${file} ${names} "-r"
+    build_mod_desc_load_json_for "[${i}].name" "${file}" "${names}" "-r"
     id="${value}"
     method=
     type=
@@ -134,7 +134,7 @@ build_mod_desc_build() {
 
       build_mod_desc_load_json "map" ${input_path_map}
 
-      build_mod_desc_build_get_method_and_type ".exact.\"${name}\"" ${json}
+      build_mod_desc_build_get_method_and_type ".exact.\"${name}\"" "${json}"
       build_mod_desc_build_get_pcre
       build_mod_desc_build_operate
     fi
@@ -150,10 +150,10 @@ build_mod_desc_build_get_method_and_type() {
   local json=${2}
   local match=${1}
 
-  build_mod_desc_load_json_for "${match}.method" ${input_path_map} ${json}
+  build_mod_desc_load_json_for "${match}.method" "${input_path_map}" "${json}"
   method=${value}
 
-  build_mod_desc_load_json_for "${match}.type" ${input_path_map} ${json}
+  build_mod_desc_load_json_for "${match}.type" "${input_path_map}" "${json}"
   type=${value}
 }
 
@@ -169,13 +169,13 @@ build_mod_desc_build_get_pcre() {
   local -i matched=0
   local -i total=0
 
-  build_mod_desc_load_json_for "pcre | keys" ${input_path_map} ${json}
+  build_mod_desc_load_json_for "pcre | keys" "${input_path_map}" "${json}"
   pcre_json=${value}
 
-  build_mod_desc_load_json_total "length" ${input_path_map} ${pcre_json}
+  build_mod_desc_load_json_total "length" "${input_path_map}" "${pcre_json}"
 
   while [[ ${i} -lt ${total} ]] ; do
-    build_mod_desc_load_json_for ".[${i}]" ${input_path_map} ${pcre_json} "-r"
+    build_mod_desc_load_json_for ".[${i}]" "${input_path_map}" "${pcre_json}" "-r"
     pcre_query=${value}
 
     build_mod_desc_build_get_pcre_match_query
@@ -264,11 +264,11 @@ build_mod_desc_build_operate() {
   local source_deploy="descriptors/${deploy_descriptor}"
 
   if [[ ${method} == "jq" ]] ; then
-    build_mod_desc_build_operate_jq_find module ${source_module} ${module_descriptor}
-    build_mod_desc_build_operate_jq_find deploy ${source_deploy} ${deploy_descriptor}
+    build_mod_desc_build_operate_jq_find module "${source_module}" "${module_descriptor}"
+    build_mod_desc_build_operate_jq_find deploy "${source_deploy}" "${deploy_descriptor}"
 
-    build_mod_desc_build_operate_jq_build module ${source_module} ${module_descriptor}
-    build_mod_desc_build_operate_jq_build deploy ${source_deploy} ${deploy_descriptor}
+    build_mod_desc_build_operate_jq_build module "${source_module}" "${module_descriptor}"
+    build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${deploy_descriptor}"
   elif [[ ${method} == "yarn" ]] ; then
     build_mod_desc_build_operate_yarn_build
     build_mod_desc_build_operate_yarn_copy
@@ -303,10 +303,10 @@ build_mod_desc_build_operate_jq_build() {
   build_mod_desc_load_json "${kind} descriptor template" ${file}
 
   while [[ ${i} -lt ${maps_total} ]] ; do
-    build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" ${maps_keys_jq["${type}"]} "-r"
+    build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" "${maps_keys_jq["${type}"]}" "-r"
     key=${value}
 
-    build_mod_desc_load_json_for ".\"${key}\"" "Template Value for '${type}' at ${i}" ${maps_data_jq["${type}"]} "-r"
+    build_mod_desc_load_json_for ".\"${key}\"" "Template Value for '${type}' at ${i}" "${maps_data_jq["${type}"]}" "-r"
     with=${value}
 
     build_mod_desc_build_operate_jq_build_sed
@@ -550,8 +550,8 @@ build_mod_desc_load_environment() {
   output_path_deploy="${output_path_flower}deploy/"
   output_path_module="${output_path_flower}module/"
 
-  build_mod_desc_verify_directory "output deploy path" ${output_path_deploy} create
-  build_mod_desc_verify_directory "output module path" ${output_path_module} create
+  build_mod_desc_verify_directory "output deploy path" "${output_path_deploy}" create
+  build_mod_desc_verify_directory "output module path" "${output_path_module}" create
 }
 
 build_mod_desc_load_json() {
@@ -623,20 +623,20 @@ build_mod_desc_load_json_verify_files() {
   local file=
 
   for file in ${files} ; do
-    build_mod_desc_verify_json "input file" ${file}
+    build_mod_desc_verify_json "input file" "${file}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 
-  build_mod_desc_verify_json "jq setting file" ${input_path_jq}
-  build_mod_desc_verify_json "map setting file" ${input_path_map}
+  build_mod_desc_verify_json "jq setting file" "${input_path_jq}"
+  build_mod_desc_verify_json "map setting file" "${input_path_map}"
 }
 
 build_mod_desc_load_templates() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local jq_merge="reduce .[] as $f ({}; . * $f)"
+  local jq_merge='reduce .[] as $f ({}; . * $f)'
   local name=
   local names=
   local value=
@@ -646,18 +646,18 @@ build_mod_desc_load_templates() {
 
   build_mod_desc_load_json_verify_files
 
-  build_mod_desc_load_json "JQ map" ${input_path_jq}
-  build_mod_desc_load_json_for "keys" ${input_path_jq} ${json}
+  build_mod_desc_load_json "JQ map" "${input_path_jq}"
+  build_mod_desc_load_json_for "keys" "${input_path_jq}" "${json}"
   names=${value}
 
-  build_mod_desc_load_json_total "length" ${input_path_jq} ${names}
+  build_mod_desc_load_json_total "length" "${input_path_jq}" "${names}"
 
   while [[ ${i} -lt ${total} ]] ; do
 
-    build_mod_desc_load_json_for ".[${i}]" ${input_path_jq} ${names} "-r"
+    build_mod_desc_load_json_for ".[${i}]" "${input_path_jq}" "${names}" "-r"
     name=${value}
 
-    build_mod_desc_load_json_for ".\"${name}\"" ${input_path_jq} ${json} "-r"
+    build_mod_desc_load_json_for ".\"${name}\"" "${input_path_jq}" "${json}" "-r"
     maps_data_jq["${name}"]=${value}
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -665,15 +665,15 @@ build_mod_desc_load_templates() {
     let i++
   done
 
-  build_mod_desc_load_json_for "keys" ${input_path_jq} ${json}
+  build_mod_desc_load_json_for "keys" "${input_path_jq}" "${json}"
   map_names=${value}
 
-  build_mod_desc_load_json_total "length" ${input_path_jq} ${json}
+  build_mod_desc_load_json_total "length" "${input_path_jq}" "${json}"
   map_names_length=${total}
 
   let i=0
   while [[ ${i} -lt ${map_names_length} ]] ; do
-    build_mod_desc_load_json_for ".[${i}]" ${input_path_jq} ${json}
+    build_mod_desc_load_json_for ".[${i}]" "${input_path_jq}" "${map_names}"
     name=${value}
 
     # Ignore the reserved key.
@@ -682,27 +682,27 @@ build_mod_desc_load_templates() {
       continue;
     fi
 
-    build_mod_desc_load_json_for ${jq_merge} ${input_path_jq} ${json}
-    maps_data_jq[${name}]=${value}
+    build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
+    maps_data_jq["${name}"]=${value}
 
-    build_mod_desc_load_json_for "keys" ${input_path_jq} ${maps_data_jq[${name}]}
-    maps_keys_jq[${name}]=${value}
+    build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq["${name}"]}"
+    maps_keys_jq["${name}"]=${value}
 
-    build_mod_desc_load_json_total "length" ${input_path_jq} ${maps_keys_jq[${name}]}
-    maps_size_jq[${name}]=${total}
+    build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq["${name}"]}"
+    maps_size_jq["${name}"]=${total}
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
     let i++
   done
 
-  build_mod_desc_load_json_for ${jq_merge} ${input_path_jq} ${json}
+  build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
   maps_data_jq["all"]=${value}
 
-  build_mod_desc_load_json_for "keys" ${input_path_jq} ${maps_data_jq["all"]}
+  build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq["all"]}"
   maps_keys_jq["all"]=${value}
 
-  build_mod_desc_load_json_total "length" ${input_path_jq} ${maps_keys_jq["all"]}
+  build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq["all"]}"
   maps_size_jq["all"]=${total}
 }
 

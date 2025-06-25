@@ -839,25 +839,25 @@ build_depls_load_environment() {
     return
   fi
 
-  build_depls_verify_directory "input path" ${input_path} create
-  build_depls_verify_directory "'main' input path" ${input_path_main} create
-  build_depls_verify_directory "'specific' input path" ${input_path_specific} create
-  build_depls_verify_directory "output path" ${output_path} create
-  build_depls_verify_directory "'YAML' output path" ${output_path_yaml} create
-  build_depls_verify_directory "'JSON' output path" ${output_path_json} create
-  build_depls_verify_directory "'deploy JSON' output path" ${output_path_json_deploy} create
-  build_depls_verify_directory "'service JSON' output path" ${output_path_json_service} create
+  build_depls_verify_directory "input path" "${input_path}" create
+  build_depls_verify_directory "'main' input path" "${input_path_main}" create
+  build_depls_verify_directory "'specific' input path" "${input_path_specific}" create
+  build_depls_verify_directory "output path" "${output_path}" create
+  build_depls_verify_directory "'YAML' output path" "${output_path_yaml}" create
+  build_depls_verify_directory "'JSON' output path" "${output_path_json}" create
+  build_depls_verify_directory "'deploy JSON' output path" "${output_path_json_deploy}" create
+  build_depls_verify_directory "'service JSON' output path" "${output_path_json_service}" create
 
-  build_depls_verify_file "'deployment' input file" ${input_path_main}${input_deploy_name}.json
-  build_depls_verify_file "'service' input file" ${input_path_main}${input_service_name}.json
-  build_depls_verify_file "'names' input file" ${input_path_main}${names_base}.json create array
-  build_depls_verify_file "'vars' input file" ${input_path_main}${vars_name}.json create object
-  build_depls_verify_file "'app' output file" ${output_path_yaml}${app}.yaml not ${output_force}
+  build_depls_verify_file "'deployment' input file" "${input_path_main}${input_deploy_name}.json"
+  build_depls_verify_file "'service' input file" "${input_path_main}${input_service_name}.json"
+  build_depls_verify_file "'names' input file" "${input_path_main}${names_base}.json" create array
+  build_depls_verify_file "'vars' input file" "${input_path_main}${vars_name}.json" create object
+  build_depls_verify_file "'app' output file" "${output_path_yaml}${app}.yaml" not "${output_force}"
 
-  build_depls_verify_json "'deployment' input file" ${input_path_main}${input_deploy_name}.json
-  build_depls_verify_json "'service' input file" ${input_path_main}${input_service_name}.json
-  build_depls_verify_json "'names' input file" ${input_path_main}${names_base}.json
-  build_depls_verify_json "'vars' input file" ${input_path_main}${vars_name}.json
+  build_depls_verify_json "'deployment' input file" "${input_path_main}${input_deploy_name}.json"
+  build_depls_verify_json "'service' input file" "${input_path_main}${input_service_name}.json"
+  build_depls_verify_json "'names' input file" "${input_path_main}${names_base}.json"
+  build_depls_verify_json "'vars' input file" "${input_path_main}${vars_name}.json"
 
   if [[ ${BUILD_DEPLOY_DISCOVERY} != "" ]] ; then
     discovery_file=${BUILD_DEPLOY_DISCOVERY}
@@ -1017,14 +1017,14 @@ build_depls_load_json_sources_files() {
       continue
     fi
 
-    build_depls_verify_name ${name} "input file name"
+    build_depls_verify_name "${name}" "input file name"
 
     if [[ ${do_expand} -eq 1 ]] ; then
-      build_depls_verify_file ${name} ${output_path_json_deploy}${name}.json not ${output_force}
-      build_depls_verify_json ${name} ${output_path_json_deploy}${name}.json
+      build_depls_verify_file "${name}" "${output_path_json_deploy}${name}.json" not "${output_force}"
+      build_depls_verify_json "${name}" "${output_path_json_deploy}${name}.json"
 
-      build_depls_verify_file ${name} ${output_path_json_service}${name}.json not ${output_force}
-      build_depls_verify_json ${name} ${output_path_json_service}${name}.json
+      build_depls_verify_file "${name}" "${output_path_json_service}${name}.json" not "${output_force}"
+      build_depls_verify_json "${name}" "${output_path_json_service}${name}.json"
     fi
 
     if [[ ${result} -ne 0 ]] ; then return ; fi

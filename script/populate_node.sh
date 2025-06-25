@@ -228,7 +228,7 @@ pop_node_process_projects_copy_descriptor() {
   local name=folio_${project}
   local release="${destination}folio_${project_simple}-${version}"
 
-  cp ${debug} module-descriptor.json ${release}
+  cp ${debug} module-descriptor.json "${release}"
 
   pop_node_handle_result "Failed to copy the module descriptor for the ${project} (simple: ${project_simple}) to: ${release}"
 }
@@ -345,7 +345,7 @@ pop_node_verify_files_destination() {
     return
   fi
 
-  mkdir ${debug} -p ${destination}
+  mkdir ${debug} -p "${destination}"
 
   pop_node_handle_result "Failed to create destination directory: ${destination}"
 }
@@ -365,7 +365,7 @@ pop_node_verify_files_npm_file() {
   fi
 
   # Re-create the NPM file on each run of this script.
-  rm ${debug} -f ${npm_dir}${npm_file}
+  rm ${debug} -f "${npm_dir}${npm_file}"
 
   pop_node_handle_result "Failed to create NPM JSON file: ${npm_dir}${npm_file}"
 }
@@ -383,7 +383,7 @@ pop_node_verify_files_workspace() {
       let result=1
     fi
   elif [[ ! -d ${workspace} ]] ; then
-    mkdir ${debug} -p ${workspace}
+    mkdir ${debug} -p "${workspace}"
 
     pop_node_handle_result "Failed to create workspace directory: ${workspace}"
   fi
@@ -400,7 +400,7 @@ pop_node_verify_files_workspace_file() {
       let result=1
     fi
   else
-    echo ${workspace_json} > ${workspace_file}
+    echo ${workspace_json} > "${workspace_file}"
 
     pop_node_handle_result "Failed to create workspace file: ${workspace_file}"
   fi

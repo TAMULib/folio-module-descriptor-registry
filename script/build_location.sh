@@ -68,7 +68,7 @@ main() {
 
   build_location_load_environment ${*}
 
-  build_location_verify_json "repositories file" ${repositories_json}
+  build_location_verify_json "repositories file" "${repositories_json}"
   build_location_verify_files
 
   build_location_load_repositories
@@ -211,7 +211,7 @@ build_location_load_environment() {
       return
     fi
   else
-    mkdir ${debug} -p ${destination_flower}
+    mkdir ${debug} -p "${destination_flower}"
 
     build_location_handle_result "Failed to create destination directory path: ${destination_flower}"
   fi
@@ -237,7 +237,7 @@ build_location_load_releases() {
       # Skip any files without the dash in the name used to provide a version.
       if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then continue ; fi
 
-      build_location_parse_release ${i} ${file}
+      build_location_parse_release "${i}" "${file}"
 
       build_location_load_releases_parse_tag
 
@@ -310,9 +310,9 @@ build_location_load_repositories() {
     build_location_load_repositories_extract_domain "auth.registry"
     repositories_auth_registry["${repo}"]="${value}"
 
-    build_location_load_repositories_verify_url "auth.url" ${repositories_auth_url["${repo}"]}
-    build_location_load_repositories_verify_url "request.url" ${repositories_request_url["${repo}"]}
-    build_location_load_repositories_verify_domain "auth.domain" ${repositories_auth_registry["${repo}"]}
+    build_location_load_repositories_verify_url "auth.url" "${repositories_auth_url["${repo}"]}"
+    build_location_load_repositories_verify_url "request.url" "${repositories_request_url["${repo}"]}"
+    build_location_load_repositories_verify_domain "auth.domain" "${repositories_auth_registry["${repo}"]}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 

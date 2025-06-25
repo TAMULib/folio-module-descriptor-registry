@@ -53,7 +53,7 @@ main() {
   fi
 
   if [[ ${SYNC_SNAPSHOT_RESULT} != "" ]] ; then
-    echo -n ${updated} > ${SYNC_SNAPSHOT_RESULT}
+    echo -n ${updated} > "${SYNC_SNAPSHOT_RESULT}"
   fi
 
   return ${result}
@@ -65,7 +65,7 @@ sync_snap_commit() {
 
   sync_snap_print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
 
-  git commit -m "${message}" ${signoff} ${debug}
+  git commit -m "${message}" "${signoff}" ${debug}
 
   sync_snap_handle_result_git "committing"
 }
@@ -138,7 +138,7 @@ sync_snap_load_environment() {
   fi
 
   if [[ ${path} != "" ]] ; then
-    cd ${path}
+    cd "${path}"
 
     sync_snap_handle_result "Failed to change to path: ${path}"
   fi

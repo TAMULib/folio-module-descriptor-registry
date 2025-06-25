@@ -272,7 +272,7 @@ pop_rel_process_files_releases_curl() {
 
     pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}"
 
-    curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}
+    curl -w '\n' ${curl_fail} "${debug_curl_silent}" "${debug_curl}" "${registry}${release}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o "${destination}${flower}/${release}"
 
     pop_rel_handle_result "Curl request failed for: ${registry}${release} to ${destination}${flower}/${release}"
 
@@ -305,7 +305,7 @@ pop_rel_process_files_releases_prepare() {
   fi
 
   if [[ ! -d ${destination}${flower}/ ]] ; then
-    mkdir ${debug} -p ${destination}${flower}/
+    mkdir ${debug} -p "${destination}${flower}/"
 
     pop_rel_handle_result "Create directory failed for destination: ${destination}${flower}/"
   fi
@@ -342,7 +342,7 @@ pop_rel_process_sources_prepare() {
   fi
 
   if [[ -e ${file} ]] ; then
-    rm ${debug} -f ${file}
+    rm ${debug} -f "${file}"
 
     pop_rel_handle_result "Create file failed for install file: ${file}"
   fi

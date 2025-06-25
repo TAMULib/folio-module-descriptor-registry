@@ -382,13 +382,13 @@ build_app_desc_verify_files() {
   local file=
 
   for file in ${files} ; do
-    build_app_desc_verify_json "input file" ${file}
+    build_app_desc_verify_json "input file" "${file}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 
-  build_app_desc_verify_directory "output path" ${output_path} create
-  build_app_desc_verify_output "output file" ${output_path_json}
+  build_app_desc_verify_directory "output path" "${output_path}" create
+  build_app_desc_verify_output "output file" "${output_path_json}"
 }
 
 build_app_desc_verify_directory() {

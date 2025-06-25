@@ -170,7 +170,7 @@ build_page_load_environment() {
   template_item_data=$(< ${template_path}${template_item})
 
   if [[ ! -d ${work} ]] ; then
-    mkdir ${debug} -p ${work}
+    mkdir ${debug} -p "${work}"
 
     build_page_handle_result "Failed to create work directory: ${work}"
   fi
@@ -267,7 +267,7 @@ build_page_operate_index_setup() {
     indexes="There are no releases available to index."
   fi
 
-  cp ${debug} ${template_path}${template_base} ${work}/index.html
+  cp ${debug} "${template_path}${template_base}" "${work}/index.html"
 
   build_page_handle_result "Failed to copy ${template_path}${template_item} to ${work}/index.html"
 }
@@ -319,7 +319,7 @@ build_page_operate_sources_index_setup() {
 
   local index=${work}${source}/index.html
 
-  cp ${debug} ${template_path}${template_base} ${index}
+  cp ${debug} "${template_path}${template_base}" "${index}"
 
   build_page_handle_result "Failed to copy ${template_path}${template_item} to ${index}"
 }
@@ -392,7 +392,7 @@ build_page_operate_sources_process_files_index_item() {
   local item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g" -e "s|\<_REPLACE_LINK_TYPE_\>|type="application/json"|g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>|download="${file}.json"|g")
 
   # Expand the variable, but re-introduce the snippet on each run to allow replacements for each item.
-  sed -i -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${item}\n&|g" ${work}${source}/index.html
+  sed -i -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${item}\n&|g" "${work}${source}/index.html"
 
   build_page_handle_result "Failed to expand item '${file}' template variables in ${work}${source}/index.html"
 }

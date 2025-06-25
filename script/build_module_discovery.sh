@@ -38,8 +38,8 @@ main() {
 
   build_mod_disc_load_environment ${*}
 
-  build_mod_disc_verify_json "input file" ${file_input}
-  build_mod_disc_verify_output "output file" ${file_output}
+  build_mod_disc_verify_json "input file" "${file_input}"
+  build_mod_disc_verify_output "output file" "${file_output}"
 
   build_mod_disc_build
 
@@ -73,7 +73,7 @@ build_mod_disc_build() {
 
   json="${json} \"discovery\": ["
 
-  build_mod_disc_handle_result ${fail_message}
+  build_mod_disc_handle_result "${fail_message}"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
