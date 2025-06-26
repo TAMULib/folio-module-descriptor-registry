@@ -899,6 +899,13 @@ build_depls_load_environment() {
     flower=$(echo ${BUILD_DEPLOY_FLOWER} | sed -e 's|/||g')
   fi
 
+  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
+  fi
+
   location_flower="${location_path}${flower}/"
 
   if [[ -e ${location_flower} ]] ; then

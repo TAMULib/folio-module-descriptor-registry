@@ -11,6 +11,7 @@
 #   - bash
 #   - file
 #   - find
+#   - git
 #   - grep
 #   - jq
 #   - mkdir
@@ -27,9 +28,12 @@
 
 main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
+  local checkout_path="checkout/"
   local debug=
   local debug_json=
   local debug_yarn=
+  local default_branch=
+  local default_repository="https://github.com/folio-org/"
   local deploy_descriptor="DeploymentDescriptor-template.json"
   local file=
   local files="install.json"
@@ -48,6 +52,7 @@ main() {
   local output_path_module=
   local restrict_to="edge- folio_ mod-"
   local restrict_to_regex=
+  local yarn_cache="cache/yarn/" # TODO: add env var configuration.
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -81,13 +86,19 @@ build_mod_desc_build() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local deploy_desc=
+  local branch=
+  local destination_deploy=
+  local destination_module=
   local id=
+  local into_path=
   local json=
   local method=
-  local module_desc=
-  local name=
+  local module=
+  local module_raw=
+  local module_type=
+  local original_path="${PWD}/"
   local reduced_json=
+  local repository=
   local type=
   local value=
 
@@ -107,13 +118,19 @@ build_mod_desc_build() {
   echo
 
   while [[ ${i} -lt ${total} ]] ; do
-    build_mod_desc_load_json_for "[${i}].name" "${file}" "${names}" "-r"
-    id="${value}"
     method=
+    repository=
     type=
 
-    build_mod_desc_build_get_name
+    let skip=0
+
+    build_mod_desc_build_get_id
+    build_mod_desc_build_get_module
     build_mod_desc_build_get_version
+
+    # Alter ID based on possibly modified module name and version.
+    id="${module}-${version}"
+
     build_mod_desc_build_omit
     build_mod_desc_build_skip_unknown
 
@@ -124,37 +141,124 @@ build_mod_desc_build() {
       continue
     fi
 
-    deploy_desc=${output_path_deploy}${name}
-    module_desc=${output_path_module}${name}
+    destination_deploy="${output_path_deploy}${id}.json"
+    destination_module="${output_path_module}${id}.json"
 
-    if [[ -f ${deploy_desc} && -f ${module_desc} ]] ; then
-      build_mod_desc_print_debug "Descriptors found, skipping id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+    branch="${default_branch}"
+    into_path="${checkout_path}${module}/"
+
+    if [[ -f ${destination_deploy} && -f ${destination_module} ]] ; then
+      build_mod_desc_print_debug "Descriptors found, skipping id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
     else
-      build_mod_desc_print_debug "Processing id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+      build_mod_desc_print_debug "Processing id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
 
-      build_mod_desc_load_json "map" ${input_path_map}
+      build_mod_desc_load_json "map" "${input_path_map}"
 
-      build_mod_desc_build_get_method_and_type ".exact.\"${name}\"" "${json}"
+      build_mod_desc_build_get_settings ".exact.\"${module_raw}\"" "${json}"
       build_mod_desc_build_get_pcre
+
+      build_mod_desc_build_clone
       build_mod_desc_build_operate
+      build_mod_desc_build_cleanup
     fi
 
     let i++
   done
 }
 
-build_mod_desc_build_get_method_and_type() {
+build_mod_desc_build_clone() {
+
+  if [[ ${result} -ne 0 || -d ${into_path} ]] ; then return ; fi
+
+  if [[ ${branch} == "" ]] ; then
+    git clone ${debug} --depth 1 --no-tags "${repository}" "${into_path}"
+  else
+    git clone ${debug} -b "${branch}" --depth 1 --no-tags "${repository}" "${into_path}"
+  fi
+
+  build_mod_desc_handle_result "Failed to clone repository ${module} using branch '${branch}' into path '${into_path}' for repository: ${repository}"
+
+  # Add a new line to make the logs easier to read when removing verbosely.
+  if [[ ${result} -eq 0 && ${debug} != "" ]] ; then
+    echo
+  fi
+}
+
+build_mod_desc_build_get_settings() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local json=${2}
   local match=${1}
+  local repo_type=
 
-  build_mod_desc_load_json_for "${match}.method" "${input_path_map}" "${json}"
-  method=${value}
+  build_mod_desc_load_json_for "${match}.repository.branch" "${input_path_map}" "${json}" "-r" yes
 
-  build_mod_desc_load_json_for "${match}.type" "${input_path_map}" "${json}"
-  type=${value}
+  if [[ ${value} != "null" ]] ; then
+    branch=${value}
+  fi
+
+  build_mod_desc_load_json_for "${match}.method" "${input_path_map}" "${json}" "-r"
+
+  if [[ ${value} != "" ]] ; then
+    method=${value}
+  fi
+
+  build_mod_desc_load_json_for "${match}.repository.type" "${input_path_map}" "${json}" "-r"
+
+  if [[ ${value} != "" ]] ; then
+    repo_type=${value}
+  fi
+
+  build_mod_desc_load_json_for "${match}.repository.url" "${input_path_map}" "${json}" "-r"
+
+  if [[ ${value} == "" ]] ; then
+    repository=${default_repository}${module}
+  else
+    if [[ ${repo_type} == "partial" ]] ; then
+      repository=${value}${module}
+    elif [[ ${repo_type} == "full" || ${repo_type} == "" ]] ; then
+      repository=${value}
+    fi
+  fi
+
+  build_mod_desc_load_json_for "${match}.type" "${input_path_map}" "${json}" "-r"
+
+  if [[ ${value} != "" ]] ; then
+    type=${value}
+
+    if [[ ${maps_data_jq["${type}"]} == "" ]] ; then
+      echo "${p_e}Unknown JQ type of '${type}' for: ${input_path_jq} ."
+      echo
+
+      let result=1
+      return
+    fi
+  fi
+}
+
+build_mod_desc_build_cleanup() {
+
+  if [[ ${result} -ne 0 || ${into_path} == "" || ${into_path} == "/" || ${into_path} == "." || ${into_path} == "./" ]] ; then return ; fi
+  if [[ ${into_path} == ".." || ${into_path} == "../" || ${PWD} != ${original_path} ]] ; then return ; fi
+
+  if [[ -d ${into_path} ]] ; then
+    rm ${debug} -Rf "${into_path}"
+
+    # Ignore remove failures.
+    let result=${?}
+
+    # Add a new line to make the logs easier to read when removing verbosely.
+    if [[ ${debug} != "" ]] ; then
+      echo
+    fi
+
+    if [[ ${result} -ne 0 ]] ; then
+      build_mod_desc_print_debug "Failed to recursively remove directory for ${module} (system code ${result}): ${into_path}"
+
+      let result=0
+    fi
+  fi
 }
 
 build_mod_desc_build_get_pcre() {
@@ -169,7 +273,7 @@ build_mod_desc_build_get_pcre() {
   local -i matched=0
   local -i total=0
 
-  build_mod_desc_load_json_for "pcre | keys" "${input_path_map}" "${json}"
+  build_mod_desc_load_json_for ".pcre | keys" "${input_path_map}" "${json}"
   pcre_json=${value}
 
   build_mod_desc_load_json_total "length" "${input_path_map}" "${pcre_json}"
@@ -190,37 +294,66 @@ build_mod_desc_build_get_pcre_match_query() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ $(echo -n "${name}" | grep -shoP "${pcre_query}") != "" ]] ; then
+  if [[ $(echo -n "${module_raw}" | grep -shoP "${pcre_query}") != "" ]] ; then
     let matched=1
 
-    build_mod_desc_build_get_method_and_type ".pcre.\"${pcre_query}\"" ${json}
+    build_mod_desc_build_get_settings ".pcre.\"${pcre_query}\"" "${json}"
   else
     let matched=0
   fi
-
-  if [[ ${?} -eq 2 ]] ; then
-    echo "${p_e}Failed to operate PCRE query '${pcre_query}' from maps file: ${input_path_map} (system code ${result})."
-    echo
-
-    let result=1
-  else
-    let result=0
-  fi
 }
 
-build_mod_desc_build_get_name() {
+build_mod_desc_build_get_id() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  name=$(echo -n ${value} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+  local key=".[${i}].id"
 
-  build_mod_desc_handle_result "Failed to extract name from key '${key}' at index ${i} from JSON: ${file}"
+  build_mod_desc_load_json_for "${key}" "${file}" "${reduced_json}" "-r"
+  id="${value}"
 
-  if [[ ${result} -eq 0 && ${name} == "" ]] ; then
-    echo "${p_e}Empty name from key '${key}' at index ${i} from JSON: ${file} ."
+  if [[ ${result} -eq 0 && ${id} == "" ]] ; then
+    echo "${p_e}Empty id for key='${key}' at index ${i} from JSON: ${file} ."
     echo
 
     let result=1
+    return
+  fi
+}
+
+build_mod_desc_build_get_module() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ ${id} == "" ]] ; then
+    echo "${p_e}Empty id at index ${i} from JSON: ${file} ."
+    echo
+
+    let result=1
+    return
+  fi
+
+  module=
+  module_type=
+  module_raw=$(echo -n "${id}" | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+
+  build_mod_desc_handle_result "Failed to extract module name from key '${key}' at index ${i} from JSON: ${file}"
+
+  if [[ ${result} -eq 0 ]] ; then
+    if [[ $(grep -sho "^folio_" <<< ${module_raw}) == "" ]] ; then
+      module=${module_raw}
+      module_type="normal"
+    else
+      module=$(sed -e "s|^folio_|ui-|" <<< ${module_raw})
+      module_type="ui"
+    fi
+
+    if [[ ${module_raw} == "" ]] ; then
+      echo "${p_e}Empty module name from key '${id}' at index ${i} from JSON: ${file} ."
+      echo
+
+      let result=1
+    fi
   fi
 }
 
@@ -228,7 +361,7 @@ build_mod_desc_build_get_version() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  version=$(echo -n "${value}" | sed -e "s|^${name}-||g")
+  version=$(echo -n "${id}" | sed -e "s|^${module_raw}-||g")
 
   build_mod_desc_handle_result "Failed to extract version from key '${key}' at index ${i} from JSON: ${file}"
 
@@ -244,11 +377,9 @@ build_mod_desc_build_omit() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  let skip=0
-
   for value in ${omit} ; do
-    if [[ ${value} == ${omit} ]] ; then
-      build_mod_desc_print_debug "Skipping id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+    if [[ ${value} == ${module} ]] ; then
+      build_mod_desc_print_debug "Skipping id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
 
       let skip=1
       break
@@ -260,18 +391,23 @@ build_mod_desc_build_operate() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local source_module="descriptors/${module_descriptor}"
-  local source_deploy="descriptors/${deploy_descriptor}"
+  local source_module="${into_path}descriptors/${module_descriptor}"
+  local source_deploy="${into_path}descriptors/${deploy_descriptor}"
 
   if [[ ${method} == "jq" ]] ; then
-    build_mod_desc_build_operate_jq_find module "${source_module}" "${module_descriptor}"
-    build_mod_desc_build_operate_jq_find deploy "${source_deploy}" "${deploy_descriptor}"
+    build_mod_desc_build_operate_jq_find module "${source_module}" "${module_descriptor}" "${destination_module}"
+    build_mod_desc_build_operate_jq_find deploy "${source_deploy}" "${deploy_descriptor}" "${destination_deploy}"
 
-    build_mod_desc_build_operate_jq_build module "${source_module}" "${module_descriptor}"
-    build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${deploy_descriptor}"
+    build_mod_desc_build_operate_jq_build module "${source_module}" "${destination_module}"
+    build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${destination_deploy}" yes
   elif [[ ${method} == "yarn" ]] ; then
+    build_mod_desc_build_operate_yarn_change_into
+    build_mod_desc_build_operate_yarn_install
     build_mod_desc_build_operate_yarn_build
     build_mod_desc_build_operate_yarn_copy
+
+    # Always change back to the original path regardless of the error state.
+    cd ${original_path}
   else
     build_mod_desc_print_debug "Skipping id=${id} at index ${i} because method='${method}' is unknown"
   fi
@@ -281,26 +417,25 @@ build_mod_desc_build_operate_jq_build() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local destination=
-  local file=${2}
-  local name=${3}
+  local destination=${3}
   local key=
   local kind=${1}
+  local optional=${4}
+  local source=${2}
   local with=
 
   local -i i=0
-  local -i maps_total=${maps_size_jq["${type}"]}
-
-  if [[ ${kind} == "module" ]] ; then
-    destination=${module_desc}
-  else
-    destination=${deploy_desc}
-  fi
+  local -i maps_total=${maps_size_jq[${type}]}
 
   # Skip already created descriptors.
-  if [[ -f ${module_desc} ]] ; then return ; fi
+  if [[ -f ${destination} ]] ; then return ; fi
 
-  build_mod_desc_load_json "${kind} descriptor template" ${file}
+  if [[ ${optional} != "" && ! -e ${source} ]] ; then
+    build_mod_desc_print_debug "Skipping missing ${kind} descriptor due to being optional: ${source}"
+    return
+  fi
+
+  build_mod_desc_load_json "${kind} descriptor template" "${source}"
 
   while [[ ${i} -lt ${maps_total} ]] ; do
     build_mod_desc_load_json_for ".[${i}]" "Template Key for '${type}' at ${i}" "${maps_keys_jq[${type}]}" "-r"
@@ -312,6 +447,8 @@ build_mod_desc_build_operate_jq_build() {
     build_mod_desc_build_operate_jq_build_sed
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    let i++
   done
 
   build_mod_desc_build_operate_jq_build_write
@@ -319,13 +456,29 @@ build_mod_desc_build_operate_jq_build() {
 
 build_mod_desc_build_operate_jq_build_sed() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${key} == "" ]] ; then return ; fi
 
   local data=
+  local value=
 
-  data=$(sed -e "s|${key}|${with}|g" <<< ${json})
+  if [[ ${with} == "description" ]] ; then
+    # There is no value in the install.json for description, so always evaluate to an empty string.
+    value=
+  elif [[ ${with} == "id" ]] ; then
+    value=${id}
+  elif [[ ${with} == "module" ]] ; then
+    value=${module}
+  elif [[ ${with} == "version" ]] ; then
+    value=${version}
+  else
+    build_mod_desc_print_debug "Unknown type identifier while processing ${module} with key='${key}': ${with}"
 
-  build_mod_desc_handle_result "Failed to replace '${key}' with '${with}' using sed for: ${name}"
+    return
+  fi
+
+  data=$(sed -e "s|${key}|${value}|g" <<< ${json})
+
+  build_mod_desc_handle_result "Failed to replace '${key}' with ${with} '${value}' using sed for: ${module}"
 
   if [[ ${result} -eq 0 ]] ; then
     json=${data}
@@ -343,22 +496,22 @@ build_mod_desc_build_operate_jq_build_write() {
     jq -M . <<< ${json} > ${destination} 2> ${null}
   fi
 
-  build_mod_desc_handle_result "Failed to write ${name} ${kind} descriptor to: ${destination}"
+  build_mod_desc_handle_result "Failed to write ${module} ${kind} descriptor to: ${destination}"
 }
 
 build_mod_desc_build_operate_jq_find() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local data=
-  local file=${2}
-  local name=${3}
+  local destination=${4}
+  local expect_at=${2}
+  local find_file=${3}
+  local found_at=
   local kind=${1}
 
-  if [[ ! -e ${file} && ! -f ${file} ]] ; then
-    echo "${p_e}The following path is not a valid file: ${file} ."
+  if [[ -e ${expect_at} && ! -f ${expect_at} ]] ; then
+    build_mod_desc_print_debug "The ${kind} descriptor for ${module} is not a valid JSON file: ${expect_at}"
 
-    let result=1
     return
   fi
 
@@ -368,22 +521,22 @@ build_mod_desc_build_operate_jq_find() {
 
 build_mod_desc_build_operate_jq_find_assign() {
 
-  if [[ ${result} -ne 0 || ${data} == "" || ! -f ${data} ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${found_at} == "" || ! -f ${found_at} ]] ; then return ; fi
 
   if [[ ${kind} == "module" ]] ; then
-    source_module=${data}
+    source_module=${found_at}
   else
-    source_deploy=${data}
+    source_deploy=${found_at}
   fi
 }
 
 build_mod_desc_build_operate_jq_find_search() {
 
-  if [[ ${result} -ne 0 || -f ${file} ]] ; then return ; fi
+  if [[ ${result} -ne 0 || -f ${expect_at} ]] ; then return ; fi
 
-  data=$(find -name ${name} -print -quit)
+  found_at=$(find ${into_path} -name ${find_file} -print -quit)
 
-  build_mod_desc_handle_result "Failed to find the ${kind} descriptor file: ${name}"
+  build_mod_desc_handle_result "Failed to find the ${kind} descriptor file for ${module}: ${find_file}"
 }
 
 build_mod_desc_build_operate_yarn_build() {
@@ -395,15 +548,34 @@ build_mod_desc_build_operate_yarn_build() {
   build_mod_desc_handle_result "Failed to execute yarn run build-mod-descriptor for: ${id}"
 }
 
+build_mod_desc_build_operate_yarn_change_into() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  cd ${into_path}
+
+  build_mod_desc_handle_result "Failed to change to directory for ${module}: ${into_path}"
+}
+
 build_mod_desc_build_operate_yarn_copy() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local destination="${original_path}${id}.json"
   local source="module-descriptor.json"
 
-  cp ${debug} ${source} ${output_path_flower}
+  cp ${debug} "${source}" "${destination}"
 
-  build_mod_desc_handle_result "Failed to copy '${source}' to: ${output_path_flower}"
+  build_mod_desc_handle_result "Failed to copy '${source}' to: ${destination}"
+}
+
+build_mod_desc_build_operate_yarn_install() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  YARN_CACHE_FOLDER="${original_path}${yarn_cache}" yarn ${debug_yarn} install
+
+  build_mod_desc_handle_result "Failed to execute yarn install for: ${id}"
 }
 
 build_mod_desc_build_reduce() {
@@ -434,8 +606,10 @@ build_mod_desc_build_skip_unknown() {
 
   if [[ ${result} -ne 0 || ${skip} -ne 0 || ${type} == "" ]] ; then return ; fi
 
-  if [[ ${maps_data_jq["${type}"]} == "" ]] ; then
-    build_mod_desc_print_debug "Skipping unknown type='${type}' for id=${id}, name=${name}, version=${version} at index ${i} of ${total}"
+  echo "checking for type $type is: ${maps_data_jq[${type}]}".
+
+  if [[ ${maps_data_jq[${type}]} == "" ]] ; then
+    build_mod_desc_print_debug "Skipping unknown type='${type}' for id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
 
     let skip=1
   fi
@@ -481,6 +655,22 @@ build_mod_desc_load_environment() {
         debug_yarn="--verbose"
       fi
     fi
+  fi
+
+  # May be empty, so use "-v" test rather than != "".
+  if [[ -v BUILD_MOD_DEFAULT_BRANCH ]] ; then
+    default_branch=${BUILD_MOD_DEFAULT_BRANCH}
+  fi
+
+  if [[ $(echo -n "${default_branch}" | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The default branch must not contain '/', '\', ''', or '\"' characters: ${default_branch} ."
+
+    let result=1
+    return
+  fi
+
+  if [[ ${BUILD_MOD_DEFAULT_REPOSITORY} != "" ]] ; then
+    default_repository=$(echo -n ${BUILD_MOD_DEFAULT_REPOSITORY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
   fi
 
   if [[ $(echo ${BUILD_MOD_DESCRIPTORS_FILES} | sed -e 's|\s||g') != "" ]] ; then
@@ -532,6 +722,13 @@ build_mod_desc_load_environment() {
     flower=$(echo ${BUILD_MOD_DESCRIPTORS_FLOWER} | sed -e 's|/||g')
   fi
 
+  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
+  fi
+
   # May be empty, so use "-v" test rather than != "".
   if [[ -v BUILD_MOD_DESCRIPTORS_OUTPUT_PATH ]] ; then
     if [[ ${BUILD_MOD_DESCRIPTORS_OUTPUT_PATH} == "" ]] ; then
@@ -552,6 +749,17 @@ build_mod_desc_load_environment() {
 
   build_mod_desc_verify_directory "output deploy path" "${output_path_deploy}" create
   build_mod_desc_verify_directory "output module path" "${output_path_module}" create
+
+  # May be empty, so use "-v" test rather than != "".
+  if [[ -v BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH ]] ; then
+    if [[ ${BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH} == "" ]] ; then
+      checkout_path=
+    else
+      checkout_path=$(echo -n ${BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    fi
+  fi
+
+  build_mod_desc_verify_directory "check out path" "${checkout_path}" create
 }
 
 build_mod_desc_load_json() {
@@ -575,10 +783,11 @@ build_mod_desc_load_json_for() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local args=${4}
   local jq_select_by=${1}
   local json=${3}
+  local keep_null=${5}
   local name=${2}
-  local args=${4}
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
@@ -587,7 +796,12 @@ build_mod_desc_load_json_for() {
     value=$(jq ${args} -M "${jq_select_by}" <<< ${json} 2> ${null})
   fi
 
-  build_mod_desc_handle_result "Failed to load JSON with select='${jq_select_by}' and args='${args}' for ${name}"
+  build_mod_desc_handle_result "Failed to load JSON with select='${jq_select_by}', args='${args}', and keep_null='${keep_null}' for ${name}"
+
+  # JQ returns the literal "null" for not found, replace with empty string.
+  if [[ ${keep_null} == "" && ${value} == "null" ]] ; then
+    value=
+  fi
 }
 
 build_mod_desc_load_json_total() {
@@ -637,8 +851,8 @@ build_mod_desc_load_templates() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local jq_merge='reduce .[] as $f ({}; . * $f)'
-  local name=
   local names=
+  local type=
   local value=
 
   local -i i=0
@@ -655,10 +869,10 @@ build_mod_desc_load_templates() {
   while [[ ${i} -lt ${total} ]] ; do
 
     build_mod_desc_load_json_for ".[${i}]" "${input_path_jq}" "${names}" "-r"
-    name=${value}
+    type=${value}
 
-    build_mod_desc_load_json_for ".\"${name}\"" "${input_path_jq}" "${json}" "-r"
-    maps_data_jq["${name}"]=${value}
+    build_mod_desc_load_json_for ".\"${type}\"" "${input_path_jq}" "${json}" "-r"
+    maps_data_jq["${type}"]=${value}
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -674,22 +888,22 @@ build_mod_desc_load_templates() {
   let i=0
   while [[ ${i} -lt ${map_names_length} ]] ; do
     build_mod_desc_load_json_for ".[${i}]" "${input_path_jq}" "${map_names}"
-    name=${value}
+    type=${value}
 
     # Ignore the reserved key.
-    if [[ ${name} == "all" ]] ; then
+    if [[ ${type} == "all" ]] ; then
       let i++
       continue;
     fi
 
     build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
-    maps_data_jq["${name}"]=${value}
+    maps_data_jq[${type}]=${value}
 
-    build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq[${name}]}"
-    maps_keys_jq["${name}"]=${value}
+    build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq[${type}]}"
+    maps_keys_jq[${type}]=${value}
 
-    build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[${name}]}"
-    maps_size_jq["${name}"]=${total}
+    build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[${type}]}"
+    maps_size_jq[${type}]=${total}
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -697,13 +911,13 @@ build_mod_desc_load_templates() {
   done
 
   build_mod_desc_load_json_for "${jq_merge}" "${input_path_jq}" "${json}"
-  maps_data_jq["all"]=${value}
+  maps_data_jq[all]=${value}
 
   build_mod_desc_load_json_for "keys" "${input_path_jq}" "${maps_data_jq[all]}"
-  maps_keys_jq["all"]=${value}
+  maps_keys_jq[all]=${value}
 
   build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[all]}"
-  maps_size_jq["all"]=${total}
+  maps_size_jq[all]=${total}
 }
 
 build_mod_desc_print_debug() {

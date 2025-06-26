@@ -200,6 +200,13 @@ build_location_load_environment() {
     flower=$(echo ${BUILD_LOCATION_FLOWER} | sed -e 's|/||g')
   fi
 
+  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
+  fi
+
   destination_flower="${destination}${flower}/"
 
   if [[ -e ${destination_flower} ]] ; then

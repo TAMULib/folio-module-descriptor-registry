@@ -167,6 +167,13 @@ pop_rel_load_environment() {
     flower=$(echo ${POPULATE_RELEASE_FLOWER} | sed -e 's|/||g')
   fi
 
+  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
+  fi
+
   if [[ ${POPULATE_RELEASE_REPOSITORY} != "" ]] ; then
     repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e -e 's|/*$|/|g')
   fi

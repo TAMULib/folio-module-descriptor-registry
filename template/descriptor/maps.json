@@ -4,8 +4,8 @@
     "mod-workflow": { "method": "jq", "type": "spring" }
   },
   "pcre": {
-    "edge-*": { "method": "jq", "type": "any" },
+    "edge-*": { "method": "jq", "type": "all" },
     "folio_*": { "method": "yarn" },
-    "mod-*": { "method": "jq", "type": "any" }
+    "mod-*": { "method": "jq", "type": "all" }
   }
 }
