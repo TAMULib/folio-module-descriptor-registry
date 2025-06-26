@@ -561,7 +561,7 @@ build_mod_desc_build_operate_yarn_copy() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local destination="${original_path}${id}.json"
+  local destination="${original_path}${output_path_module}${id}.json"
   local source="module-descriptor.json"
 
   cp ${debug} "${source}" "${destination}"
