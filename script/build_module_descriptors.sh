@@ -147,7 +147,16 @@ build_mod_desc_build() {
     branch="${default_branch}"
     into_path="${checkout_path}${module}/"
 
-    if [[ -f ${destination_deploy} && -f ${destination_module} ]] ; then
+    let skip=0
+    if [[ -f ${destination_module} ]] ; then
+      if [[ -f ${destination_deploy} || $(grep -sho "^folio_" <<< ${module_raw}) != "" ]] ; then
+        let skip=1
+      else
+        build_mod_desc_print_debug "Module Descriptor found, but deployment descriptor was not for: ${id}"
+      fi
+    fi
+
+    if [[ ${skip} -eq 1 ]] ; then
       build_mod_desc_print_debug "Descriptors found, skipping id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
     else
       build_mod_desc_print_debug "Processing id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
@@ -240,7 +249,7 @@ build_mod_desc_build_get_settings() {
 build_mod_desc_build_cleanup() {
 
   if [[ ${result} -ne 0 || ${into_path} == "" || ${into_path} == "/" || ${into_path} == "." || ${into_path} == "./" ]] ; then return ; fi
-  if [[ ${into_path} == ".." || ${into_path} == "../" || ${PWD} != ${original_path} ]] ; then return ; fi
+  if [[ ${into_path} == ".." || ${into_path} == "../" || "${PWD}/" != ${original_path} ]] ; then return ; fi
 
   if [[ -d ${into_path} ]] ; then
     rm ${debug} -Rf "${into_path}"
@@ -567,6 +576,11 @@ build_mod_desc_build_operate_yarn_copy() {
   cp ${debug} "${source}" "${destination}"
 
   build_mod_desc_handle_result "Failed to copy '${source}' to: ${destination}"
+
+  # Add a new line to make the logs easier to read when removing verbosely.
+  if [[ ${result} -eq 0 && ${debug} != "" ]] ; then
+    echo
+  fi
 }
 
 build_mod_desc_build_operate_yarn_install() {
