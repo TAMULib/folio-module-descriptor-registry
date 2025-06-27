@@ -3,6 +3,24 @@
     "mod-camunda": { "method": "jq", "type": "spring" },
     "mod-workflow": { "method": "jq", "type": "spring" }
   },
+  "override": {
+    "omit": {
+      "exact": {
+        "okapi": { "type": "always" }
+      },
+      "pcre": {
+      }
+    },
+    "rename": {
+      "exact": {
+        "ui-stripes-authority-components": { "to": "stripes-authority-components" },
+        "ui-stripes-core": { "to": "stripes-core" },
+        "ui-stripes-smart-components": { "to": "stripes-smart-components" }
+      },
+      "pcre": {
+      }
+    }
+  },
   "pcre": {
     "edge-*": { "method": "jq", "type": "all" },
     "folio_*": { "method": "yarn" },

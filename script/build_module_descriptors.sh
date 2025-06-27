@@ -42,10 +42,10 @@ main() {
   local input_path_jq=
   local input_path_map=
   local json=
+  local map_json=
   local map_names=
   local module_descriptor="ModuleDescriptor-template.json"
   local null="/dev/null"
-  local omit="okapi"
   local output_path="descriptors/"
   local output_path_deploy=
   local output_path_flower=
@@ -63,6 +63,7 @@ main() {
   local -A maps_size_jq=
 
   local -i map_names_length=0
+  local -i pcre_matched=0
   local -i result=0
 
   build_mod_desc_load_environment ${*}
@@ -97,6 +98,8 @@ build_mod_desc_build() {
   local module_raw=
   local module_type=
   local original_path="${PWD}/"
+  local pcre_key=".pcre"
+  local pcre_value=
   local reduced_json=
   local repository=
   local type=
@@ -131,6 +134,7 @@ build_mod_desc_build() {
     # Alter ID based on possibly modified module name and version.
     id="${module}-${version}"
 
+    build_mod_desc_build_rename
     build_mod_desc_build_omit
     build_mod_desc_build_skip_unknown
 
@@ -161,10 +165,18 @@ build_mod_desc_build() {
     else
       build_mod_desc_print_debug "Processing id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
 
-      build_mod_desc_load_json "map" "${input_path_map}"
+      build_mod_desc_build_get_map_data ".exact.\"${module_raw}\"" "${map_json}"
 
-      build_mod_desc_build_get_settings ".exact.\"${module_raw}\"" "${json}"
-      build_mod_desc_build_get_pcre
+      if [[ ${method} == "" ]] ; then
+        build_mod_desc_build_get_map_pcre "${pcre_key}" "${map_json}"
+        build_mod_desc_build_get_map_pcre_match_module "${pcre_key}" "${map_json}"
+
+        if [[ ${pcre_matched} -eq 1 ]] ; then
+          method=${value}
+
+          let pcre_matched=0
+        fi
+      fi
 
       build_mod_desc_build_clone
       build_mod_desc_build_operate
@@ -193,7 +205,49 @@ build_mod_desc_build_clone() {
   fi
 }
 
-build_mod_desc_build_get_settings() {
+build_mod_desc_build_cleanup() {
+
+  if [[ ${result} -ne 0 || ${into_path} == "" || ${into_path} == "/" || ${into_path} == "." || ${into_path} == "./" ]] ; then return ; fi
+  if [[ ${into_path} == ".." || ${into_path} == "../" || "${PWD}/" != ${original_path} ]] ; then return ; fi
+
+  if [[ -d ${into_path} ]] ; then
+    rm ${debug} -Rf "${into_path}"
+
+    # Ignore remove failures.
+    let result=${?}
+
+    # Add a new line to make the logs easier to read when removing verbosely.
+    if [[ ${debug} != "" ]] ; then
+      echo
+    fi
+
+    if [[ ${result} -ne 0 ]] ; then
+      build_mod_desc_print_debug "Failed to recursively remove directory for ${module} (system code ${result}): ${into_path}"
+
+      let result=0
+    fi
+  fi
+}
+
+build_mod_desc_build_get_id() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local key=".[${i}].id"
+
+  build_mod_desc_load_json_for "${key}" "${file}" "${reduced_json}" "-r"
+  id="${value}"
+
+  if [[ ${result} -eq 0 && ${id} == "" ]] ; then
+    echo "${p_e}Empty id for key='${key}' at index ${i} from JSON: ${file} ."
+    echo
+
+    let result=1
+    return
+  fi
+}
+
+build_mod_desc_build_get_map_data() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -246,88 +300,59 @@ build_mod_desc_build_get_settings() {
   fi
 }
 
-build_mod_desc_build_cleanup() {
+build_mod_desc_build_get_map_pcre() {
 
-  if [[ ${result} -ne 0 || ${into_path} == "" || ${into_path} == "/" || ${into_path} == "." || ${into_path} == "./" ]] ; then return ; fi
-  if [[ ${into_path} == ".." || ${into_path} == "../" || "${PWD}/" != ${original_path} ]] ; then return ; fi
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ -d ${into_path} ]] ; then
-    rm ${debug} -Rf "${into_path}"
-
-    # Ignore remove failures.
-    let result=${?}
-
-    # Add a new line to make the logs easier to read when removing verbosely.
-    if [[ ${debug} != "" ]] ; then
-      echo
-    fi
-
-    if [[ ${result} -ne 0 ]] ; then
-      build_mod_desc_print_debug "Failed to recursively remove directory for ${module} (system code ${result}): ${into_path}"
-
-      let result=0
-    fi
-  fi
-}
-
-build_mod_desc_build_get_pcre() {
-
-  if [[ ${result} -ne 0 || ( ${method} != "" && ${method} != "null" ) ]] ; then return ; fi
-
+  local json=${3}
   local pcre_json=
-  local pcre_name=
-  local pcre_query=
+  local section=${1}
 
   local -i i=0
-  local -i matched=0
   local -i total=0
 
-  build_mod_desc_load_json_for ".pcre | keys" "${input_path_map}" "${json}"
+  pcre_value=
+
+  let pcre_matched=0
+
+  build_mod_desc_load_json_for "${section} | keys" "${input_path_map}" "${json}"
   pcre_json=${value}
 
   build_mod_desc_load_json_total "length" "${input_path_map}" "${pcre_json}"
 
   while [[ ${i} -lt ${total} ]] ; do
     build_mod_desc_load_json_for ".[${i}]" "${input_path_map}" "${pcre_json}" "-r"
-    pcre_query=${value}
+    pcre_value=${value}
 
-    build_mod_desc_build_get_pcre_match_query
+    if [[ ${pcre_value} != "" && $(echo -n "${module_raw}" | grep -shoP "${pcre_value}") != "" ]] ; then
+      let pcre_matched=1
+    fi
 
-    if [[ ${result} -ne 0 || ${matched} -ne 0 ]] ; then return ; fi
+    if [[ ${result} -ne 0 || ${pcre_matched} -eq 1 ]] ; then return ; fi
 
     let i++
   done
 }
 
-build_mod_desc_build_get_pcre_match_query() {
+build_mod_desc_build_get_map_pcre_match_module() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${pcre_matched} -ne 1 ]] ; then return ; fi
 
-  if [[ $(echo -n "${module_raw}" | grep -shoP "${pcre_query}") != "" ]] ; then
-    let matched=1
+  local json=${2}
+  local section=${1}
 
-    build_mod_desc_build_get_settings ".pcre.\"${pcre_query}\"" "${json}"
-  else
-    let matched=0
-  fi
+  build_mod_desc_build_get_map_data "${section}.\"${pcre_value}\"" "${json}"
 }
 
-build_mod_desc_build_get_id() {
+build_mod_desc_build_get_map_pcre_match_value() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${pcre_matched} -ne 1 ]] ; then return ; fi
 
-  local key=".[${i}].id"
+  local json=${3}
+  local section=${1}
+  local subsection=${2}
 
-  build_mod_desc_load_json_for "${key}" "${file}" "${reduced_json}" "-r"
-  id="${value}"
-
-  if [[ ${result} -eq 0 && ${id} == "" ]] ; then
-    echo "${p_e}Empty id for key='${key}' at index ${i} from JSON: ${file} ."
-    echo
-
-    let result=1
-    return
-  fi
+  build_mod_desc_load_json_for "${section}.\"${pcre_value}\"${subsection}" "${input_path_map}" "${json}" "-r"
 }
 
 build_mod_desc_build_get_module() {
@@ -386,14 +411,29 @@ build_mod_desc_build_omit() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  for value in ${omit} ; do
-    if [[ ${value} == ${module} ]] ; then
-      build_mod_desc_print_debug "Skipping id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
+  local key=".override.omit.pcre"
+  local omit=
+  local subsection=".type"
 
-      let skip=1
-      break
+  build_mod_desc_load_json_for ".override.omit.exact.\"${module}\"${subsection}" "${input_path_map}" "${map_json}" "-r"
+  omit=${value}
+
+  if [[ ${omit} == "" ]] ; then
+    build_mod_desc_build_get_map_pcre "${key}" "${map_json}"
+    build_mod_desc_build_get_map_pcre_match_value "${key}" "${subsection}" "${map_json}"
+
+    if [[ ${pcre_matched} -eq 1 ]] ; then
+      omit=${value}
+
+      let pcre_matched=0
     fi
-  done
+  fi
+
+  if [[ ${omit} == "always" ]] ; then
+    build_mod_desc_print_debug "Skipping id=${id}, module=${module}, version=${version} at index ${i} of ${total}"
+
+    let skip=1
+  fi
 }
 
 build_mod_desc_build_operate() {
@@ -411,7 +451,7 @@ build_mod_desc_build_operate() {
     build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${destination_deploy}" yes
   elif [[ ${method} == "yarn" ]] ; then
     build_mod_desc_build_operate_yarn_change_into
-    build_mod_desc_build_operate_yarn_install
+    #build_mod_desc_build_operate_yarn_install
     build_mod_desc_build_operate_yarn_build
     build_mod_desc_build_operate_yarn_copy
 
@@ -616,6 +656,33 @@ build_mod_desc_build_reduce() {
   build_mod_desc_handle_result "Failed to reduce using '${restrict_to}' for JSON: ${file}"
 }
 
+build_mod_desc_build_rename() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local key=".override.rename.pcre"
+  local to=
+  local subsection=".to"
+
+  build_mod_desc_load_json_for ".override.rename.exact.\"${module}\"${subsection}" "${input_path_map}" "${map_json}" "-r"
+  to=${value}
+
+  if [[ ${omit} == "" ]] ; then
+    build_mod_desc_build_get_map_pcre "${key}" "${map_json}"
+    build_mod_desc_build_get_map_pcre_match_value "${key}" "${subsection}" "${map_json}"
+
+    if [[ ${pcre_matched} -eq 1 ]] ; then
+      to=${value}
+
+      let pcre_matched=0
+    fi
+  fi
+
+  if [[ ${to} != "" ]] ; then
+    module=${to}
+  fi
+}
+
 build_mod_desc_build_skip_unknown() {
 
   if [[ ${result} -ne 0 || ${skip} -ne 0 || ${type} == "" ]] ; then return ; fi
@@ -725,11 +792,6 @@ build_mod_desc_load_environment() {
         fi
       fi
     done
-  fi
-
-  # May be empty, so use "-v" test rather than != "".
-  if [[ -v BUILD_MOD_DESCRIPTORS_OMIT ]] ; then
-    omit=${BUILD_MOD_DESCRIPTORS_OMIT}
   fi
 
   if [[ ${BUILD_MOD_DESCRIPTORS_FLOWER} != "" ]] ; then
@@ -932,6 +994,9 @@ build_mod_desc_load_templates() {
 
   build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[all]}"
   maps_size_jq[all]=${total}
+
+  build_mod_desc_load_json "map" "${input_path_map}"
+  map_json=${json}
 }
 
 build_mod_desc_print_debug() {
@@ -953,7 +1018,7 @@ build_mod_desc_verify_directory() {
   # Optionally attempt create the directory if it does not exist.
   if [[ ${option} == "create" ]] ; then
     if [[ ! -e ${path} ]] ; then
-      mkdir -p ${debug} ${path}
+      mkdir -p ${debug} "${path}"
 
       build_mod_desc_handle_result "Failed to create the ${name} directory: ${path}"
 
