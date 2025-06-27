@@ -52,7 +52,6 @@ main() {
   local output_path_module=
   local restrict_to="edge- folio_ mod-"
   local restrict_to_regex=
-  local yarn_cache="cache/yarn/" # TODO: add env var configuration.
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -451,7 +450,6 @@ build_mod_desc_build_operate() {
     build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${destination_deploy}" yes
   elif [[ ${method} == "yarn" ]] ; then
     build_mod_desc_build_operate_yarn_change_into
-    #build_mod_desc_build_operate_yarn_install
     build_mod_desc_build_operate_yarn_build
     build_mod_desc_build_operate_yarn_copy
 
@@ -621,15 +619,6 @@ build_mod_desc_build_operate_yarn_copy() {
   if [[ ${result} -eq 0 && ${debug} != "" ]] ; then
     echo
   fi
-}
-
-build_mod_desc_build_operate_yarn_install() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  YARN_CACHE_FOLDER="${original_path}${yarn_cache}" yarn ${debug_yarn} install
-
-  build_mod_desc_handle_result "Failed to execute yarn install for: ${id}"
 }
 
 build_mod_desc_build_reduce() {
