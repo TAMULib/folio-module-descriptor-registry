@@ -4,6 +4,14 @@
     "mod-workflow": { "method": "jq", "type": "spring" }
   },
   "override": {
+    "descriptor": {
+      "exact": {
+        "edge-connexion": { "discovery": "skip", "module": "use" }
+      },
+      "pcre": {
+        "^folio_": { "discovery": "skip", "module": "use" }
+      }
+    },
     "omit": {
       "exact": {
         "mod-z3950": { "type": "always" },
@@ -14,9 +22,9 @@
     },
     "rename": {
       "exact": {
-        "ui-stripes-authority-components": { "to": "stripes-authority-components" },
-        "ui-stripes-core": { "to": "stripes-core" },
-        "ui-stripes-smart-components": { "to": "stripes-smart-components" }
+        "folio_stripes-authority-components": { "to": "stripes-authority-components" },
+        "folio_stripes-core": { "to": "stripes-core" },
+        "folio_stripes-smart-components": { "to": "stripes-smart-components" }
       },
       "pcre": {
       }
