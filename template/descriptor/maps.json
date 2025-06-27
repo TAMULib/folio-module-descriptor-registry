@@ -6,6 +6,7 @@
   "override": {
     "omit": {
       "exact": {
+        "mod-z3950": { "type": "always" },
         "okapi": { "type": "always" }
       },
       "pcre": {
