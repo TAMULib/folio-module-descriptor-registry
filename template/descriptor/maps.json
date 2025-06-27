@@ -1,15 +1,24 @@
 {
-  "exact": {
-    "mod-camunda": { "method": "jq", "type": "spring" },
-    "mod-workflow": { "method": "jq", "type": "spring" }
+  "operate": {
+    "exact": {
+      "mod-camunda": { "method": "jq", "type": "spring" },
+      "mod-graphql": { "method": "jq", "type": "none" },
+      "mod-workflow": { "method": "jq", "type": "spring" }
+    },
+    "pcre": {
+      "edge-*": { "method": "jq", "type": "all" },
+      "folio_*": { "method": "yarn" },
+      "mod-*": { "method": "jq", "type": "all" }
+    }
   },
   "override": {
     "descriptor": {
       "exact": {
-        "edge-connexion": { "discovery": "skip", "module": "use" }
+        "edge-connexion": { "use_discovery": "skip" },
+        "mod-graphql": { "discovery_name": "ExternalDeploymentDescriptor.json", "module_name": "ModuleDescriptor.json" }
       },
       "pcre": {
-        "^folio_": { "discovery": "skip", "module": "use" }
+        "^folio_": { "use_discovery": "skip" }
       }
     },
     "omit": {
@@ -29,10 +38,5 @@
       "pcre": {
       }
     }
-  },
-  "pcre": {
-    "edge-*": { "method": "jq", "type": "all" },
-    "folio_*": { "method": "yarn" },
-    "mod-*": { "method": "jq", "type": "all" }
   }
 }

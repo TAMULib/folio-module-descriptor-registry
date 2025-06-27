@@ -100,6 +100,8 @@ build_mod_desc_build() {
   local pcre_value=
   local reduced_json=
   local repository=
+  local specific_deploy_descriptor=
+  local specific_module_descriptor=
   local type=
   local value=
 
@@ -124,6 +126,8 @@ build_mod_desc_build() {
     module=
     module_raw=
     repository=
+    specific_deploy_descriptor=${deploy_descriptor}
+    specific_module_descriptor=${module_descriptor}
     type=
     version=
 
@@ -138,9 +142,10 @@ build_mod_desc_build() {
     destination_deploy="${output_path_deploy}${id}.json"
     destination_module="${output_path_module}${id}.json"
 
+    build_mod_desc_build_get_descriptor
     build_mod_desc_build_get_rename
     build_mod_desc_build_get_omit
-    build_mod_desc_build_get_map_data
+    build_mod_desc_build_get_operate
 
     build_mod_desc_build_skip_descriptor
     build_mod_desc_build_skip_unknown
@@ -214,6 +219,23 @@ build_mod_desc_build_cleanup() {
   fi
 }
 
+build_mod_desc_build_get_descriptor() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  build_mod_desc_build_get_override_for "descriptor" ".discovery_name"
+
+  if [[ ${value} != "" ]] ; then
+    specific_deploy_descriptor=${value}
+  fi
+
+  build_mod_desc_build_get_override_for "descriptor" ".module_name"
+
+  if [[ ${value} != "" ]] ; then
+    specific_module_descriptor=${value}
+  fi
+}
+
 build_mod_desc_build_get_id() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -232,7 +254,7 @@ build_mod_desc_build_get_id() {
   fi
 }
 
-build_mod_desc_build_get_map_data_for() {
+build_mod_desc_build_get_operate_for() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -274,14 +296,6 @@ build_mod_desc_build_get_map_data_for() {
 
   if [[ ${value} != "" ]] ; then
     type=${value}
-
-    if [[ ${maps_data_jq["${type}"]} == "" ]] ; then
-      echo "${p_e}Unknown JQ type of '${type}' for: ${input_path_jq} ."
-      echo
-
-      let result=1
-      return
-    fi
   fi
 }
 
@@ -326,7 +340,7 @@ build_mod_desc_build_get_map_pcre_match_module() {
   local json=${2}
   local key=${1}
 
-  build_mod_desc_build_get_map_data_for "${key}.\"${pcre_value}\"" "${json}"
+  build_mod_desc_build_get_operate_for "${key}.\"${pcre_value}\"" "${json}"
 }
 
 build_mod_desc_build_get_map_pcre_match_value() {
@@ -338,20 +352,6 @@ build_mod_desc_build_get_map_pcre_match_value() {
   local subkey=${2}
 
   build_mod_desc_load_json_for "${key}.\"${pcre_value}\"${subkey}" "${input_path_map}" "${json}" "-r"
-}
-
-build_mod_desc_build_get_map_data() {
-
-  local pcre_key=".pcre"
-
-  local -i pcre_matched=0
-
-  build_mod_desc_build_get_map_data_for ".exact.\"${module_raw}\"" "${map_json}"
-
-  if [[ ${method} == "" ]] ; then
-    build_mod_desc_build_get_map_pcre "${pcre_key}" "${map_json}"
-    build_mod_desc_build_get_map_pcre_match_module "${pcre_key}" "${map_json}"
-  fi
 }
 
 build_mod_desc_build_get_module() {
@@ -400,6 +400,21 @@ build_mod_desc_build_get_omit() {
     skip_reason="omitted by override"
 
     let skip=1
+  fi
+}
+
+build_mod_desc_build_get_operate() {
+
+  local operate_key=".operate"
+  local pcre_key="${operate_key}.pcre"
+
+  local -i pcre_matched=0
+
+  build_mod_desc_build_get_operate_for "${operate_key}.exact.\"${module_raw}\"" "${map_json}"
+
+  if [[ ${method} == "" ]] ; then
+    build_mod_desc_build_get_map_pcre "${pcre_key}" "${map_json}"
+    build_mod_desc_build_get_map_pcre_match_module "${pcre_key}" "${map_json}"
   fi
 }
 
@@ -460,12 +475,12 @@ build_mod_desc_build_operate() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local source_module="${into_path}descriptors/${module_descriptor}"
-  local source_deploy="${into_path}descriptors/${deploy_descriptor}"
+  local source_module="${into_path}descriptors/${specific_module_descriptor}"
+  local source_deploy="${into_path}descriptors/${specific_deploy_descriptor}"
 
   if [[ ${method} == "jq" ]] ; then
-    build_mod_desc_build_operate_jq_find module "${source_module}" "${module_descriptor}" "${destination_module}"
-    build_mod_desc_build_operate_jq_find deploy "${source_deploy}" "${deploy_descriptor}" "${destination_deploy}"
+    build_mod_desc_build_operate_jq_find module "${source_module}" "${specific_module_descriptor}" "${destination_module}"
+    build_mod_desc_build_operate_jq_find deploy "${source_deploy}" "${specific_deploy_descriptor}" "${destination_deploy}"
 
     build_mod_desc_build_operate_jq_build module "${source_module}" "${destination_module}"
     build_mod_desc_build_operate_jq_build deploy "${source_deploy}" "${destination_deploy}" yes
@@ -671,10 +686,10 @@ build_mod_desc_build_skip_descriptor() {
   local deploy_value=
   local module_value=
 
-  build_mod_desc_build_get_override_for "descriptor" ".discovery"
+  build_mod_desc_build_get_override_for "descriptor" ".use_discovery"
   deploy_value=${value}
 
-  build_mod_desc_build_get_override_for "descriptor" ".module"
+  build_mod_desc_build_get_override_for "descriptor" ".use_module"
   module_value=${value}
 
   if [[ -f ${destination_deploy} || ${deploy_value} == "skip" ]] ; then
@@ -690,7 +705,7 @@ build_mod_desc_build_skip_unknown() {
 
   if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
 
-  if [[ ${type} != "" && ${maps_data_jq[${type}]} == "" ]] ; then
+  if [[ ${type} != "" && ${type} != "none" && ${maps_data_jq[${type}]} == "" ]] ; then
     skip_reason="unknown type of '${type}'"
 
     let skip=1
@@ -970,8 +985,8 @@ build_mod_desc_load_templates() {
     build_mod_desc_load_json_for ".[${i}]" "${input_path_jq}" "${map_names}"
     type=${value}
 
-    # Ignore the reserved key.
-    if [[ ${type} == "all" ]] ; then
+    # Ignore the reserved keys.
+    if [[ ${type} == "all" || ${type} == "none" ]] ; then
       let i++
       continue;
     fi
@@ -998,6 +1013,11 @@ build_mod_desc_load_templates() {
 
   build_mod_desc_load_json_total "length" "${input_path_jq}" "${maps_keys_jq[all]}"
   maps_size_jq[all]=${total}
+
+  let total=0
+  maps_data_jq[none]=
+  maps_keys_jq[none]=
+  maps_size_jq[none]=${total}
 
   build_mod_desc_load_json "map" "${input_path_map}"
   map_json=${json}
