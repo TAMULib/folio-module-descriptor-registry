@@ -48,7 +48,7 @@ main() {
   local debug_json=
   local debug_yarn="-s"
   local destination=
-  local npm_dir=$(echo ${PWD} | sed -e 's|/*$|/|')
+  local npm_dir=$(sed -e 's|/*$|/|' <<< ${PWD})
   local npm_file="npm.json"
   local null="/dev/null"
   local projects="@folio/authorization-policies @folio/authorization-roles"
@@ -61,7 +61,7 @@ main() {
   local -i result=0
   local -i skip_bad=0
 
-  destination=${npm_dir}release/snapshot/
+  destination="${npm_dir}release/snapshot/"
 
   pop_node_load_environment ${*}
 
@@ -89,42 +89,42 @@ pop_node_load_environment() {
     debug_json=
     debug_yarn="-s"
 
-    if [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "^\s*yarn\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*yarn\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug_yarn="--verbose"
-    elif [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "^\s*yarn_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*yarn_only\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
       debug_yarn="--verbose"
-    elif [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(echo ${POPULATE_NODE_DEBUG} | grep -sho "\<yarn\>") != "" ]] ; then
+      if [[ $(grep -sho "\<yarn\>" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
         debug_yarn="--verbose"
       fi
     fi
   fi
 
-  if [[ $(echo -n ${POPULATE_NODE_DESTINATION} | sed -e 's|\s||g') != "" ]] ; then
-    destination=$(echo -n ${POPULATE_NODE_DESTINATION} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  if [[ $(sed -e 's|\s||g' <<< ${POPULATE_NODE_DESTINATION}) != "" ]] ; then
+    destination=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${POPULATE_NODE_DESTINATION})
   fi
 
-  if [[ $(echo -n ${POPULATE_NODE_NPM_DIR} | sed -e 's|\s||g') != "" ]] ; then
-    npm_dir=$(echo -n ${POPULATE_NODE_NPM_DIR} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+  if [[ $(sed -e 's|\s||g' <<< ${POPULATE_NODE_NPM_DIR}) != "" ]] ; then
+    npm_dir=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${POPULATE_NODE_NPM_DIR})
   fi
 
   if [[ ${POPULATE_NODE_NPM_FILE} != "" ]] ; then
-    npm_file=$(echo -n ${POPULATE_NODE_NPM_FILE} | sed -e 's|//*|/|g' -e 's|/*$||g')
+    npm_file=$(sed -e 's|//*|/|g' -e 's|/*$||g' <<< ${POPULATE_NODE_NPM_FILE})
   fi
 
-  if [[ $(echo -n ${POPULATE_NODE_PROJECTS} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${POPULATE_NODE_PROJECTS}) != "" ]] ; then
     projects=
 
     for project in ${POPULATE_NODE_PROJECTS} ; do
@@ -132,18 +132,18 @@ pop_node_load_environment() {
     done
   fi
 
-  if [[ $(echo -n ${POPULATE_NODE_SKIP_BAD} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${POPULATE_NODE_SKIP_BAD}) != "" ]] ; then
     let skip_bad=1
   fi
 
   if [[ ${POPULATE_NODE_WORKSPACE} != "" ]] ; then
-    workspace=$(echo -n ${POPULATE_NODE_WORKSPACE} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    workspace=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${POPULATE_NODE_WORKSPACE})
 
     # If the workspace path is relative, make it absolute.
-    if [[ $(echo ${workspace} | grep -sho '^/') == "" ]] ; then
+    if [[ $(grep -sho '^/' <<< ${workspace}) == "" ]] ; then
       workspace="${PWD}/${workspace}"
-    elif [[ $(echo ${workspace} | grep -sho '^\./') != "" ]] ; then
-      workspace=$(echo -n ${workspace} | sed -e "s|^\./|${PWD}/|")
+    elif [[ $(grep -sho '^\./' <<< ${workspace}) != "" ]] ; then
+      workspace=$(sed -e "s|^\./|${PWD}/|" <<< ${workspace})
     fi
   fi
 }
@@ -172,7 +172,7 @@ pop_node_process_projects() {
 
   for project in ${projects} ; do
 
-    project_simple=$(echo -n ${project} | sed -e 's|^.*/||')
+    project_simple=$(sed -e 's|^.*/||' <<< ${project})
     version=
 
     echo
@@ -225,7 +225,7 @@ pop_node_process_projects_copy_descriptor() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local name=folio_${project}
+  local name="folio_${project}"
   local release="${destination}folio_${project_simple}-${version}"
 
   cp ${debug} module-descriptor.json "${release}"
@@ -300,14 +300,14 @@ pop_node_process_projects_update_npm_json() {
   if [[ ! -f ${npm_dir}${npm_file} ]] ; then
     pop_node_print_debug "echo \"[{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" > ${npm_dir}${npm_file}"
 
-    echo "[{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" > ${npm_dir}${npm_file}
+    echo "[{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" > "${npm_dir}${npm_file}"
   else
     # Work around JQ's problems with using the input as the output.
     local json=$(< ${npm_dir}${npm_file})
 
     pop_node_print_debug "jq \". |= . + [{ \\\"id\\\": \\\"folio_${project_simple}-${version}\\\", \\\"action\\\": \\\"enable\\\" }]\" <<< ${json} > ${npm_dir}${npm_file}"
 
-    jq ". |= . + [{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" <<< ${json} > ${npm_dir}${npm_file}
+    jq ". |= . + [{ \"id\": \"folio_${project_simple}-${version}\", \"action\": \"enable\" }]" <<< ${json} > "${npm_dir}${npm_file}"
   fi
 
   pop_node_handle_result "Failed to add the version (${version}) for the project ${project} (simple: ${project_simple}) to: ${npm_dir}${npm_file}"
@@ -321,9 +321,7 @@ pop_node_verify_files() {
   local workspace_json="{ \"name\": \"workspace\", \"private\": true, \"version\": \"1.0.0\", \"workspaces\": [ \"*\" ], \"dependencies\": { } }"
 
   pop_node_verify_files_workspace
-
   pop_node_verify_files_workspace_file
-
   pop_node_verify_files_workspace_file_json
 
   pop_node_verify_files_npm_file
@@ -400,7 +398,7 @@ pop_node_verify_files_workspace_file() {
       let result=1
     fi
   else
-    echo ${workspace_json} > "${workspace_file}"
+    echo "${workspace_json}" > "${workspace_file}"
 
     pop_node_handle_result "Failed to create workspace file: ${workspace_file}"
   fi
@@ -412,9 +410,9 @@ pop_node_verify_files_workspace_file_json() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    jq . ${workspace_file}
+    jq . "${workspace_file}"
   else
-    jq . ${workspace_file} >> ${null}
+    jq . "${workspace_file}" >> ${null}
   fi
 
   pop_node_handle_result "Invalid workspace JSON file: ${workspace_file}"

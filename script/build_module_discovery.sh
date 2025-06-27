@@ -99,7 +99,7 @@ build_mod_disc_build() {
       field_name="${version}"
     fi
 
-    field_name=$(echo "${field_name}" | sed -e 's|\.|-|g')
+    field_name=$(sed -e 's|\.|-|g' <<< ${field_name})
 
     json="${json} {"
     json="${json} \"location\": \"${url_prefix}${field_name}${url_suffix}\","
@@ -154,9 +154,9 @@ build_mod_disc_build_write() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    jq -r -M . > ${file_output} <<< ${json}
+    jq -r -M . > "${file_output}" <<< ${json}
   else
-    jq -r -M . > ${file_output} <<< ${json} 2> ${null}
+    jq -r -M . > "${file_output}" <<< ${json} 2> ${null}
   fi
 
   build_mod_disc_handle_result "Failed to write to the output JSON file: ${file_output}"
@@ -194,14 +194,14 @@ build_mod_disc_load_environment() {
   if [[ ${BUILD_MOD_DISCOVERY_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_MOD_DISCOVERY_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_MOD_DISCOVERY_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_MOD_DISCOVERY_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(echo ${BUILD_MOD_DISCOVERY_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+    elif [[ $(grep -sho "\<json\>" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug_json="y"
     fi
   fi
@@ -255,9 +255,9 @@ build_mod_disc_verify_json() {
   else
     # Prevent jq from printing JSON if ${null} exists when not debugging.
     if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-      jq < ${file}
+      jq < "${file}"
     else
-      jq < ${file} >> ${null} 2>&1
+      jq < "${file}" >> ${null} 2>&1
     fi
 
     let result=${?}

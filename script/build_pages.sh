@@ -81,21 +81,21 @@ build_page_load_environment() {
   if [[ ${BUILD_PAGES_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*verify\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*verify\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug_verify="y"
-    elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(echo ${BUILD_PAGES_DEBUG} | grep -sho "\<verify\>") != "" ]] ; then
+      if [[ $(grep -sho "\<verify\>" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
         debug_verify="y"
       fi
     fi
@@ -103,10 +103,10 @@ build_page_load_environment() {
 
   # May be empty, so use "-v" test rather than != "".
   if [[ -v BUILD_PAGES_BASE ]] ; then
-    if [[ $(echo ${BUILD_PAGES_BASE} | sed -e "s|\s||g") == "" ]] ; then
+    if [[ $(sed -e "s|\s||g" <<< ${BUILD_PAGES_BASE}) == "" ]] ; then
       base=
     else
-      base=$(echo ${BUILD_PAGES_BASE} | sed -e 's|/*$|/|g')
+      base=$(sed -e 's|/*$|/|g' <<< ${BUILD_PAGES_BASE})
     fi
   fi
 
@@ -115,19 +115,19 @@ build_page_load_environment() {
   fi
 
   if [[ ${BUILD_PAGES_TEMPLATE_BACK} != "" ]] ; then
-    template_back=$(echo ${BUILD_PAGES_TEMPLATE_BACK} | sed -e 's|//*|/|g' -e 's|/*$||g')
+    template_back=$(sed -e 's|//*|/|g' -e 's|/*$||g' <<< ${BUILD_PAGES_TEMPLATE_BACK})
   fi
 
   if [[ ${BUILD_PAGES_TEMPLATE_BASE} != "" ]] ; then
-    template_base=$(echo ${BUILD_PAGES_TEMPLATE_BASE} | sed -e 's|//*|/|g' -e 's|/*$||g')
+    template_base=$(sed -e 's|//*|/|g' -e 's|/*$||g' <<< ${BUILD_PAGES_TEMPLATE_BASE})
   fi
 
   if [[ ${BUILD_PAGES_TEMPLATE_ITEM} != "" ]] ; then
-    template_item=$(echo ${BUILD_PAGES_TEMPLATE_ITEM} | sed -e 's|//*|/|g' -e 's|/*$||g')
+    template_item=$(sed -e 's|//*|/|g' -e 's|/*$||g' <<< ${BUILD_PAGES_TEMPLATE_ITEM})
   fi
 
   if [[ ${BUILD_PAGES_TEMPLATE_PATH} != "" ]] ; then
-    template_path=$(echo ${BUILD_PAGES_TEMPLATE_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    template_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_PAGES_TEMPLATE_PATH})
   fi
 
   if [[ ! -d ${template_path} ]] ; then
@@ -155,7 +155,7 @@ build_page_load_environment() {
   fi
 
   if [[ ${BUILD_PAGES_WORK} != "" ]] ; then
-    work=$(echo ${BUILD_PAGES_WORK} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    work=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_PAGES_WORK})
   fi
 
   if [[ -e ${work} && ! -d ${work} ]] ; then
@@ -166,8 +166,8 @@ build_page_load_environment() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  template_back_data=$(< ${template_path}${template_back})
-  template_item_data=$(< ${template_path}${template_item})
+  template_back_data=$(< "${template_path}${template_back}")
+  template_item_data=$(< "${template_path}${template_item}")
 
   if [[ ! -d ${work} ]] ; then
     mkdir ${debug} -p "${work}"
@@ -182,7 +182,7 @@ build_page_load_environment() {
       let i=${i}+1
       parameter=${!i}
 
-      file=$(echo ${parameter} | sed -e 's|//*|/|' -e 's|/*$|/|')
+      file=$(sed -e 's|//*|/|' -e 's|/*$|/|' <<< ${parameter})
 
       if [[ ! -d ${file} ]] ; then
         echo "${p_e}The following path is not a valid descriptor source directory: ${file} ."
@@ -201,15 +201,13 @@ build_page_operate() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local index=${work}/index.html
+  local index="${work}/index.html"
   local indexes=
 
   build_page_operate_sources
 
   build_page_operate_index_setup
-
   build_page_operate_index_expand "${index}" "${title_main}"
-
   build_page_operate_index_finalize "${index}" "${indexes}"
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -227,8 +225,8 @@ build_page_operate_index_expand() {
   local back=
 
   if [[ ${3} == "back" ]] ; then
-    if [[ $(echo ${template_back_data} | sed -e "s|\s||g") != "" ]] ; then
-      back=$(echo ${template_back_data} | sed -e "s|\<_REPLACE_LINK_\>||g" -e "s|\<_REPLACE_SECTION_TITLE_\>|${title_main}|g")
+    if [[ $(sed -e "s|\s||g" <<< ${template_back_data}) != "" ]] ; then
+      back=$(sed -e "s|\<_REPLACE_LINK_\>||g" -e "s|\<_REPLACE_SECTION_TITLE_\>|${title_main}|g" <<< ${template_back_data})
     fi
   fi
 
@@ -239,7 +237,7 @@ build_page_operate_index_expand() {
     -e "s|\<_REPLACE_SECTION_TITLE_\>|${title}|g" \
     -e "s|\<_REPLACE_SECTION_DATE_\>|${now}|g" \
     -e "s|\s*\<_REPLACE_EOL_\>\s*|\n|g" \
-    ${index}
+    "${index}"
 
   build_page_handle_result "Failed to expand common template variables in ${index}"
 }
@@ -254,7 +252,7 @@ build_page_operate_index_finalize() {
   sed -i \
     -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${snippet}|g" \
     -e "s|\s*\<_REPLACE_EOL_\>\s*|\n|g" \
-    ${index}
+    "${index}"
 
   build_page_handle_result "Failed to expand final template variables in ${index}"
 }
@@ -263,7 +261,7 @@ build_page_operate_index_setup() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ $(echo ${indexes} | sed -e "s|\s||g") == "" ]] ; then
+  if [[ $(sed -e "s|\s||g" <<< ${indexes}) == "" ]] ; then
     indexes="There are no releases available to index."
   fi
 
@@ -285,13 +283,13 @@ build_page_operate_sources() {
     echo
     echo "Operating on source: ${i} ."
 
-    find ${i} -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' j ; do
+    find "${i}" -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' j ; do
       source=$(basename ${j})
 
       echo
       echo "Operating on source ${i} work source sub-directory: ${source} ."
 
-      mkdir ${debug} -p ${work}${source}
+      mkdir ${debug} -p "${work}${source}"
 
       build_page_handle_result "Failed to create work source sub-directory: ${work}${source}"
 
@@ -299,7 +297,6 @@ build_page_operate_sources() {
       if [[ $(ls ${j}/) == "" ]] ; then continue ; fi
 
       build_page_operate_sources_process_index_template_item
-
       build_page_operate_sources_index_setup
 
       build_page_operate_index_expand "${work}${source}/index.html" "Listing of ${source} Release" back
@@ -317,7 +314,7 @@ build_page_operate_sources_index_setup() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local index=${work}${source}/index.html
+  local index="${work}${source}/index.html"
 
   cp ${debug} "${template_path}${template_base}" "${index}"
 
@@ -332,10 +329,10 @@ build_page_operate_sources_process_files() {
   local files=
   local k=
 
-  find ${j} -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' k ; do
+  find "${j}" -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' k ; do
     file=$(basename ${k})
 
-    if [[ $(echo -n ${file} | grep -sho "^\.") != "" ]] ; then
+    if [[ $(grep -sho "^\." <<< ${file}) != "" ]] ; then
       build_page_print_debug_verify "Skipping work source sub-directory ${source} hidden file: ${file}"
 
       continue
@@ -354,9 +351,7 @@ build_page_operate_sources_process_files() {
     fi
 
     build_page_operate_sources_process_files_verify_file
-
     build_page_operate_sources_process_files_copy_file
-
     build_page_operate_sources_process_files_index_item
 
     # Reset error for each loop pass, the problems represents the final error state.
@@ -380,7 +375,7 @@ build_page_operate_sources_process_files_copy_file() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  cp ${debug} ${k} ${work}${source}/${file}
+  cp ${debug} "${k}" "${work}${source}/${file}"
 
   build_page_handle_result "Failed to copy ${k} to ${work}${source}/${file}"
 }
@@ -389,7 +384,7 @@ build_page_operate_sources_process_files_index_item() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g" -e "s|\<_REPLACE_LINK_TYPE_\>|type="application/json"|g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>|download="${file}.json"|g")
+  local item=$(sed -e "s|\<_REPLACE_LINK_\>|${source}/${file}|g" -e "s|\<_REPLACE_LINK_NAME_\>|${file}|g" -e "s|\<_REPLACE_LINK_TYPE_\>|type="application/json"|g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>|download="${file}.json"|g" <<< ${template_item_data})
 
   # Expand the variable, but re-introduce the snippet on each run to allow replacements for each item.
   sed -i -e "s|\<_REPLACE_SECTION_SNIPPET_\>|${item}\n&|g" "${work}${source}/index.html"
@@ -403,9 +398,9 @@ build_page_operate_sources_process_files_verify_file() {
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
   if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
-    jq . ${k}
+    jq . "${k}"
   else
-    jq . ${k} >> ${null}
+    jq . "${k}" >> ${null}
   fi
 
   let result=${?}
@@ -425,7 +420,7 @@ build_page_operate_sources_process_index_template_item() {
 
   local item=
 
-  item=$(echo ${template_item_data} | sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g" -e "s|\<_REPLACE_LINK_TYPE_\>||g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>||g")
+  item=$(sed -e "s|\<_REPLACE_LINK_\>|${source}/|g" -e "s|\<_REPLACE_LINK_NAME_\>|${source}|g" -e "s|\<_REPLACE_LINK_TYPE_\>||g" -e "s|\<_REPLACE_LINK_DOWNLOAD_\>||g" <<< ${template_item_data})
 
   indexes="${indexes}${item}_REPLACE_EOL_ "
 }

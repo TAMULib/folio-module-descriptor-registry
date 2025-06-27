@@ -49,12 +49,12 @@ enable_mod_load_environment() {
   if [[ ${REGISTER_MOD_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${REGISTER_MOD_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json_only\s*$" <<< ${REGISTER_MOD_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${REGISTER_MOD_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${REGISTER_MOD_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${REGISTER_MOD_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${REGISTER_MOD_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi

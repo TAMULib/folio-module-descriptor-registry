@@ -53,7 +53,7 @@ main() {
   fi
 
   if [[ ${SYNC_SNAPSHOT_RESULT} != "" ]] ; then
-    echo -n ${updated} > "${SYNC_SNAPSHOT_RESULT}"
+    echo -n "${updated}" > "${SYNC_SNAPSHOT_RESULT}"
   fi
 
   return ${result}
@@ -65,7 +65,7 @@ sync_snap_commit() {
 
   sync_snap_print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
 
-  git commit -m "${message}" "${signoff}" ${debug}
+  git commit ${debug} -m "${message}" "${signoff}"
 
   sync_snap_handle_result_git "committing"
 }
@@ -83,7 +83,7 @@ sync_snap_determine() {
 
     sync_snap_print_git_debug "Adding" "git add -A ${debug}"
 
-    git add -A ${debug}
+    git add ${debug} -A
 
     sync_snap_handle_result_git "adding"
   fi

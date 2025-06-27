@@ -94,27 +94,27 @@ pop_rel_load_environment() {
     debug_curl=
     debug_json=
 
-    if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*curl\s*$" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
       debug_curl="y"
       debug_curl_silent=
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*curl_only\s*$" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
       debug=
       debug_curl="y"
       debug_curl_silent=
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json\s*$" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
+      if [[ $(grep -sho "\<curl\>" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
         debug_curl="y"
         debug_curl_silent=
       fi
 
-      if [[ $(echo ${POPULATE_RELEASE_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${POPULATE_RELEASE_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi
@@ -140,14 +140,14 @@ pop_rel_load_environment() {
   fi
 
   if [[ ${POPULATE_RELEASE_DESTINATION} != "" ]] ; then
-    destination=$(echo ${POPULATE_RELEASE_DESTINATION} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    destination=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${POPULATE_RELEASE_DESTINATION})
   fi
 
-  if [[ $(echo ${POPULATE_RELEASE_FILES} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' << ${POPULATE_RELEASE_FILES}) != "" ]] ; then
     files=
 
     for i in ${POPULATE_RELEASE_FILES} ; do
-      file=$(echo ${POPULATE_RELEASE_FILES} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(sed -e 's|//*|/|g' -e 's|/*$||' <<< ${POPULATE_RELEASE_FILES})
 
       pop_rel_print_debug "Using File: ${file}"
 
@@ -156,18 +156,18 @@ pop_rel_load_environment() {
   fi
 
   if [[ ${POPULATE_RELEASE_REGISTRY} != "" ]] ; then
-    registry=$(echo ${POPULATE_RELEASE_REGISTRY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    registry=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${POPULATE_RELEASE_REGISTRY})
   fi
 
   if [[ ${POPULATE_RELEASE_TAG} != "" ]] ; then
-    tag=$(echo ${POPULATE_RELEASE_TAG} | sed -e 's|/||g')
+    tag=$(sed -e 's|/||g' <<< ${POPULATE_RELEASE_TAG})
   fi
 
   if [[ ${POPULATE_RELEASE_FLOWER} != "" ]] ; then
-    flower=$(echo ${POPULATE_RELEASE_FLOWER} | sed -e 's|/||g')
+    flower=$(sed -e 's|/||g' <<< ${POPULATE_RELEASE_FLOWER})
   fi
 
-  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${flower}) != "" ]] ; then
     echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
 
     let result=1
@@ -175,7 +175,7 @@ pop_rel_load_environment() {
   fi
 
   if [[ ${POPULATE_RELEASE_REPOSITORY} != "" ]] ; then
-    repository=$(echo ${POPULATE_RELEASE_REPOSITORY} | sed -e -e 's|/*$|/|g')
+    repository=$(sed -e -e 's|/*$|/|g' <<< ${POPULATE_RELEASE_REPOSITORY})
   fi
 
   # May be empty, so use "-v" test rather than != "".
@@ -184,7 +184,7 @@ pop_rel_load_environment() {
   fi
 
   if [[ ${part} != "" ]] ; then
-    part="refs/$(echo ${part} | sed -e 's|//*|/|g' -e 's|/*$|/|g')"
+    part="refs/$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${part})"
   fi
 }
 
@@ -192,7 +192,7 @@ pop_rel_load_source() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${tag}/${file}"
+  source="$(sed -e 's|/*$|/|' <<< ${repository})${part}${tag}/${file}"
 }
 
 pop_rel_print_curl_debug() {
@@ -228,7 +228,6 @@ pop_rel_process_files() {
     pop_rel_load_source
 
     pop_rel_process_files_releases_prepare
-
     pop_rel_process_files_releases_curl
 
     if [[ ${result} -ne 0 ]] ; then break ; fi
@@ -252,12 +251,12 @@ pop_rel_process_files_releases_curl() {
     return
   fi
 
-  source="$(echo ${repository} | sed -e 's|/*$|/|')${part}${tag}/${file}"
+  source="$(sed -e 's|/*$|/|' <<< ${repository})${part}${tag}/${file}"
 
   for release in ${releases} ; do
 
     # Skip any files without the dash in the name used to provide a version.
-    if [[ $(echo ${release} | grep -sho '-') == "" ]] ; then
+    if [[ $(grep -sho '-' <<< ${release}) == "" ]] ; then
       continue
     fi
 
@@ -277,9 +276,9 @@ pop_rel_process_files_releases_curl() {
       echo "Curl requesting Module Descriptor: ${release}."
     fi
 
-    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} ${registry}${release} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${destination}${flower}/${release}"
+    pop_rel_print_curl_debug "Executing Descriptor" "curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} '${registry}${release}' -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o '${destination}${flower}/${release}'"
 
-    curl -w '\n' ${curl_fail} "${debug_curl_silent}" "${debug_curl}" "${registry}${release}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o "${destination}${flower}/${release}"
+    curl -w '\n' ${curl_fail} ${debug_curl_silent} ${debug_curl} "${registry}${release}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o "${destination}${flower}/${release}"
 
     pop_rel_handle_result "Curl request failed for: ${registry}${release} to ${destination}${flower}/${release}"
 
@@ -332,7 +331,6 @@ pop_rel_process_sources() {
     pop_rel_load_source
 
     pop_rel_process_sources_prepare
-
     pop_rel_process_sources_curl
 
     if [[ ${result} -ne 0 ]] ; then break ; fi
@@ -359,9 +357,9 @@ pop_rel_process_sources_curl() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  pop_rel_print_curl_debug "Executing Package" "curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}"
+  pop_rel_print_curl_debug "Executing Package" "curl -w '\n' ${curl_fail} ${debug} '${source}' -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o '${file}'"
 
-  curl -w '\n' ${curl_fail} ${debug} ${source} -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o ${file}
+  curl -w '\n' ${curl_fail} ${debug} "${source}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'cache-control: no-cache' -o "${file}"
 
   pop_rel_handle_result "Curl request failed for: ${source}"
 }
