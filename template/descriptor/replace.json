@@ -1,0 +1,20 @@
+{
+  "basic": {
+    "${artifactId}": "module",
+    "${description}": "description",
+    "${name}": "module",
+    "${version}": "version"
+  },
+  "spring": {
+    "@project.artifactId@": "module",
+    "@project.description@": "description",
+    "@project.name@": "module",
+    "@project.version@": "version"
+  },
+  "spring_simple": {
+    "@artifactId@": "module",
+    "@description@": "description",
+    "@name@": "module",
+    "@version@": "version"
+  }
+}

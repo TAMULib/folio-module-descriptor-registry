@@ -1,0 +1,42 @@
+{
+  "operate": {
+    "exact": {
+      "mod-camunda": { "method": "jq", "type": "spring" },
+      "mod-graphql": { "method": "jq", "type": "none" },
+      "mod-workflow": { "method": "jq", "type": "spring" }
+    },
+    "pcre": {
+      "edge-*": { "method": "jq", "type": "all" },
+      "folio_*": { "method": "yarn" },
+      "mod-*": { "method": "jq", "type": "all" }
+    }
+  },
+  "override": {
+    "descriptor": {
+      "exact": {
+        "edge-connexion": { "use_discovery": "skip" },
+        "mod-graphql": { "discovery_name": "ExternalDeploymentDescriptor.json", "module_name": "ModuleDescriptor.json" }
+      },
+      "pcre": {
+        "^folio_": { "use_discovery": "skip" }
+      }
+    },
+    "omit": {
+      "exact": {
+        "mod-z3950": { "type": "always" },
+        "okapi": { "type": "always" }
+      },
+      "pcre": {
+      }
+    },
+    "rename": {
+      "exact": {
+        "folio_stripes-authority-components": { "to": "stripes-authority-components" },
+        "folio_stripes-core": { "to": "stripes-core" },
+        "folio_stripes-smart-components": { "to": "stripes-smart-components" }
+      },
+      "pcre": {
+      }
+    }
+  }
+}

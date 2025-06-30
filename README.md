@@ -25,6 +25,7 @@ The [FOLIO Application Generator](folio-org/folio-application-generator) should 
     - [Build Latest](#build-latest)
     - [Build Launches](#build-launches)
     - [Build Location](#build-location)
+    - [Build Module Descriptors](#build-module-descriptors)
     - [Build Module Discovery](#build-module-discovery)
     - [Build Pages](#build-pages)
     - [Populate Node](#populate-node)
@@ -315,6 +316,117 @@ View the documentation within the `build_location.sh` script for further details
 Example usage:
 ```shell
 bash BUILD_LOCATION_LIMIT=100 BUILD_LOCATION_DELAY="0.3s" script/build_location.sh
+```
+
+
+### Build Module Descriptors
+
+The **Build Module Descriptors** script provides a way to build multiple **Deployment Descriptors** and **Module Descriptors** files.
+The purpose of this script is to act as a temporary helper tool for constructing the descriptors using only an `install.json` file for use in a legacy [OKAPI](https://github.com/folio-org/okapi/) environment.
+This approach has limitations, but these limitations are of little concern given that [OKAPI](https://github.com/folio-org/okapi/) is now considered a legacy application.
+
+The descriptors are first searched for at the `descriptors/` sub-directory in the root of the module sources.
+Should the descriptors not be found in the standard `descriptors/` sub-directory, then the first match found during a file search is used.
+These sources are checked out by this script and are automatically removed at the end of a successful operation.
+
+The non-UI modules are built using `sed` replacements to avoid the expensive process of building the descriptors through the normal mechanisms, such as `mvn package`
+The UI modules are built using `yarn run build-mod-descriptor`.
+
+There are two mapping structures used by several of the settings:
+  1. `exact`
+  2. `pcre`.
+
+The `exact` key object is used for matching the exact module name and has precedence over the `pcre` key object.
+The `pcre` key object is used for matching the module name using Perl Compatible Regular Expressions (PCRE).
+
+There are two JSON files in the `template/descriptor/` directory used by this script:
+  1. `replace.json`
+  2. `setting.json`
+
+The `replace.json` file provides a named set of objects.
+Each object contains a set of strings to match and replace in the appropriate descriptor template.
+There also exists the following special reserved names:
+  1. `all`: All strings are to be matched and replaced.
+  2. `none`: No strings are substituted (useful for pre-created descriptors).
+
+The `setting.json` file provides configuration settings for controlling how to build the descriptors.
+There are two main top-level keyed objects:
+  1. `operate`
+  2. `override`
+
+The `setting.json` `operate` key is used to map how to perform the building based based on the module name.
+This utilizes the `exact` and `pcre` mapping structure.
+The following keys within each `exact` and `pcre` mapping object are supported:
+  1. `method`
+  2. `type`
+
+The `operate` `method` provides two major ways to perform the building of the descriptor:
+  1. `jq`
+  2. `yarn`
+
+The `operate` `method` `jq` is intended to be used for non-UI modules.
+This method searches for `DeploymentDescriptor-template.json` and `ModuleDescriptor-template.json` and uses `jq` to construct the appropriate descriptor.
+The names of the template files may be changed using the `override` `descriptor` map.
+
+The `operate` `method` `yarn` is intended to be used for UI modules.
+This method executes the `yarn run build-mod-descriptor` command to build the descriptor.
+This does not perform the `yarn install` command to save on time and resources.
+
+The `operate` `type` provides the name of the find and replace map.
+The values are defined in the `replace.json` file or use one of the reserved names.
+
+The `setting.json` `override` key is used to override the standard behavior to handle special situations and supports the following keys:
+  1. `descriptor`
+  2. `omit`
+  3. `rename`
+
+The `override` `descriptor` is used to change the behavior of which descriptors to build or change the name of the source descriptors.
+This utilizes the `exact` and `pcre` mapping structure.
+The following keys within each `exact` and `pcre` mapping object are supported:
+  1. `discovery_name`
+  2. `module_name`
+  3. `use_discovery`
+  4. `use_module`
+
+Both the `discovery_name` and `module_name` for the `override` `descriptor` provide an alternative name to the default `DeploymentDescriptor-template.json` or `ModuleDescriptor-template.json`.
+
+Both the `use_discovery` and `use_module` for the `override` `descriptor` provide a way to `skip` building the deployment or module descriptor for a matching module.
+Any value other than `skip` will result in the normal building of the descriptor.
+
+The `override` `omit` is used to entirely skip a module.
+This utilizes the `exact` and `pcre` mapping structure.
+The following keys within each `exact` and `pcre` mapping object are supported:
+  1. `type`
+
+The `override` `omit` `type` is used to specify how to determine if the module is to be entirely skipped (omitted).
+The only value for `type` that is supported is `always`.
+
+The `override` `rename` is used to rename a module as it is described in the `install.json` to another form.
+This is particularly needed for UI modules whose names do not begin with `ui-`.
+This utilizes the `exact` and `pcre` mapping structure.
+The following keys within each `exact` and `pcre` mapping object are supported:
+  1. `to`
+
+The `override` `rename` `to` provides the new name of the module.
+This overridden name is not used for the purposes of the `exact` and `pcre` matching (which both utilize the original module name as described in the `install.json` file).
+
+| Environment Variable                       | Description (see script for further details)
+| ------------------------------------------ | --------------------------------
+| `BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH`      | The path to clone the repositories.
+| `BUILD_MOD_DESCRIPTORS_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
+| `BUILD_MOD_DESCRIPTORS_DEFAULT_BRANCH`     | Specify the default branch to checkout (usually either `main` or `master`).
+| `BUILD_MOD_DESCRIPTORS_DEFAULT_REPOSITORY` | The default repository URL prefix (usually a GitHub URL).
+| `BUILD_MOD_DESCRIPTORS_FILES`              | The input files to process (usually only `install.json`).
+| `BUILD_MOD_DESCRIPTORS_FLOWER`             | The Flower release name, such as `quesnelia` or `snapshot`.
+| `BUILD_MOD_DESCRIPTORS_INPUT_PATH`         | The directory containing the templates and settings.
+| `BUILD_MOD_DESCRIPTORS_OUTPUT_PATH`        | The output directory to save all build descriptors.
+| `BUILD_MOD_DESCRIPTORS_RESTRICT_TO`        | A list of module prefixes from the `install.json` files to limit the processing to.
+
+View the documentation within the `build_module_descriptors.sh` script for further details on how to operate this script.
+
+Example usage:
+```shell
+BUILD_MOD_DESCRIPTORS_FLOWER="quesnelia" BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH="../checkout/" BUILD_MOD_DESCRIPTORS_INPUT_PATH="../input/" BUILD_MOD_DESCRIPTORS_OUTPUT_PATH="../output/" bash script/build_module_descriptors.sh
 ```
 
 
