@@ -105,6 +105,7 @@ build_mod_desc_build() {
   local type=
   local value=
 
+  local -i exists=0
   local -i i=0
   local -i total=0
   local -i skip=0
@@ -131,6 +132,7 @@ build_mod_desc_build() {
     type=
     version=
 
+    let exists=0
     let skip=0
 
     build_mod_desc_build_get_id
@@ -179,7 +181,14 @@ build_mod_desc_build() {
 
 build_mod_desc_build_clone() {
 
-  if [[ ${result} -ne 0 || -d ${into_path} ]] ; then return ; fi
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ -d ${into_path} ]] ; then
+    build_mod_desc_print_debug "Skipping clone of module ${module}, already exists at path: ${into_path}"
+
+    let exists=1
+    return
+  fi
 
   if [[ ${branch} == "" ]] ; then
     git clone ${debug} --depth 1 --no-tags "${repository}" "${into_path}"
@@ -198,24 +207,21 @@ build_mod_desc_build_clone() {
 build_mod_desc_build_cleanup() {
 
   if [[ ${result} -ne 0 || ${into_path} == "" || ${into_path} == "/" || ${into_path} == "." || ${into_path} == "./" ]] ; then return ; fi
-  if [[ ${into_path} == ".." || ${into_path} == "../" || "${PWD}/" != ${original_path} ]] ; then return ; fi
+  if [[ ${into_path} == ".." || ${into_path} == "../" || "${PWD}/" != ${original_path} || ! -d ${into_path} || ${exists} -eq 1 ]] ; then return ; fi
 
-  if [[ -d ${into_path} ]] ; then
-    rm ${debug} -Rf "${into_path}"
+  rm ${debug} -Rf "${into_path}"
 
-    # Ignore remove failures.
-    let result=${?}
+  let result=${?}
 
-    # Add a new line to make the logs easier to read when removing verbosely.
-    if [[ ${debug} != "" ]] ; then
-      echo
-    fi
+  # Add a new line to make the logs easier to read when removing verbosely.
+  if [[ ${debug} != "" ]] ; then
+    echo
+  fi
 
-    if [[ ${result} -ne 0 ]] ; then
-      build_mod_desc_print_debug "Failed to recursively remove directory for ${module} (system code ${result}): ${into_path}"
+  if [[ ${result} -ne 0 ]] ; then
+    build_mod_desc_print_debug "Failed to recursively remove directory for ${module} (system code ${result}): ${into_path}"
 
-      let result=0
-    fi
+    let result=0
   fi
 }
 
