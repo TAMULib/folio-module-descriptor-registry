@@ -739,24 +739,24 @@ build_mod_desc_load_environment() {
     debug_json=
     debug_yarn="-s"
 
-    if [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "^\s*yarn\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*yarn\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug_yarn="--verbose"
-    elif [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "^\s*yarn_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*yarn_only\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
       debug_yarn="--verbose"
-    elif [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(echo ${BUILD_MOD_DESCRIPTORS_DEBUG} | grep -sho "\<yarn\>") != "" ]] ; then
+      if [[ $(grep -sho "\<yarn\>" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
         debug_yarn="--verbose"
       fi
     fi
@@ -767,7 +767,7 @@ build_mod_desc_load_environment() {
     default_branch=${BUILD_MOD_DESCRIPTORS_BRANCH}
   fi
 
-  if [[ $(echo -n "${default_branch}" | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${default_branch}) != "" ]] ; then
     echo "${p_e}The default branch must not contain '/', '\', ''', or '\"' characters: ${default_branch} ."
 
     let result=1
@@ -775,14 +775,14 @@ build_mod_desc_load_environment() {
   fi
 
   if [[ ${BUILD_MOD_DESCRIPTORS_DEFAULT_REPOSITORY} != "" ]] ; then
-    default_repository=$(echo -n ${BUILD_MOD_DESCRIPTORS_DEFAULT_REPOSITORY} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    default_repository=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_MOD_DESCRIPTORS_DEFAULT_REPOSITORY})
   fi
 
-  if [[ $(echo ${BUILD_MOD_DESCRIPTORS_FILES} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${BUILD_MOD_DESCRIPTORS_FILES}) != "" ]] ; then
     files=
 
     for i in ${BUILD_MOD_DESCRIPTORS_FILES} ; do
-      file=$(echo ${BUILD_MOD_DESCRIPTORS_FILES} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(sed -e 's|//*|/|g' -e 's|/*$||' <<< ${BUILD_MOD_DESCRIPTORS_FILES})
 
       build_mod_desc_print_debug "Using File: ${file}"
 
@@ -791,7 +791,7 @@ build_mod_desc_load_environment() {
   fi
 
   if [[ ${BUILD_MOD_DESCRIPTORS_INPUT_PATH} != "" ]] ; then
-    input_path=$(echo -n ${BUILD_MOD_DESCRIPTORS_INPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    input_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_MOD_DESCRIPTORS_INPUT_PATH})
   fi
 
   if [[ $(grep -sho '^[/\]' <<< ${input_path}) == "" && $(grep -shoP '^\w+\:[/\\]+' <<< ${input_path}) != "" ]] ; then
@@ -810,7 +810,7 @@ build_mod_desc_load_environment() {
 
   if [[ ${restrict_to} != "" ]] ; then
     for i in ${restrict_to} ; do
-      simplified=$(echo ${i} | grep -shoP "[\w-]*")
+      simplified=$(grep -shoP "[\w-]*" <<< ${i})
 
       if [[ ${simplified} != "" ]] ; then
         if [[ ${restrict_to_regex} == "" ]] ; then
@@ -860,7 +860,7 @@ build_mod_desc_load_environment() {
     if [[ ${BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH} == "" ]] ; then
       checkout_path=
     else
-      checkout_path=$(echo -n ${BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+      checkout_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH})
     fi
   fi
 
