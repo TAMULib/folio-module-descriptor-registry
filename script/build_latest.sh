@@ -58,23 +58,23 @@ build_latest_load_environment() {
   if [[ ${BUILD_LATEST_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_LATEST_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_LATEST_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_LATEST_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(echo ${BUILD_LATEST_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+    elif [[ $(grep -sho "\<json\>" <<< ${BUILD_LATEST_DEBUG}) != "" ]] ; then
       debug_json="y"
     fi
   fi
 
-  if [[ $(echo ${BUILD_LATEST_FILES} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${BUILD_LATEST_FILES}) != "" ]] ; then
     files=
 
     for i in ${BUILD_LATEST_FILES} ; do
-      file=$(echo ${i} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(sed -e 's|//*|/|g' -e 's|/*$||' <<< ${i})
 
       if [[ -f ${file} ]] ; then
         build_latest_print_debug "Using File: ${file}"
@@ -97,7 +97,7 @@ build_latest_load_environment() {
   fi
 
   if [[ ${BUILD_LATEST_PATH} != "" ]] ; then
-    path=$(echo -n ${BUILD_LATEST_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_LATEST_PATH})
 
     if [[ ${path} != "" ]] ; then
       if [[ -e ${path} ]] ; then
@@ -134,11 +134,11 @@ build_latest_operate() {
     for i in ${releases} ; do
 
       # Skip any files without the dash in the name used to provide a version.
-      if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then
+      if [[ $(grep -sho '-' <<< ${i}) == "" ]] ; then
         continue
       fi
 
-      release=$(echo -n ${i} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+      release=$(sed -e 's|-SNAPSHOT*||' -e "s|-[^-]*$||" <<< ${i})
 
       if [[ ! -f ${path}${i} ]] ; then
         if [[ ${skip_not_found} -ne 0 ]] ; then

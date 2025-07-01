@@ -227,7 +227,7 @@ build_app_desc_get_name() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  name=$(echo -n ${value} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+  name=$(sed -e 's|-SNAPSHOT*||' -e 's|-[^-]*$||' <<< ${value})
 
   build_app_desc_handle_result "Failed to extract name from key '${key}' at index ${i} from JSON: ${file}"
 
@@ -243,7 +243,7 @@ build_app_desc_get_version() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  version=$(echo -n "${value}" | sed -e "s|^${name}-||g")
+  version=$(sed -e "s|^${name}-||g" <<< ${value})
 
   build_app_desc_handle_result "Failed to extract version from key '${key}' at index ${i} from JSON: ${file}"
 
@@ -272,23 +272,23 @@ build_app_desc_load_environment() {
   if [[ ${BUILD_APP_DESCRIPTOR_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_APP_DESCRIPTOR_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_APP_DESCRIPTOR_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_APP_DESCRIPTOR_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(echo ${BUILD_APP_DESCRIPTOR_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+    elif [[ $(grep -sho "\<json\>" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug_json="y"
     fi
   fi
 
-  if [[ $(echo ${BUILD_APP_DESCRIPTOR_FILES} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${BUILD_APP_DESCRIPTOR_FILES}) != "" ]] ; then
     files=
 
     for i in ${BUILD_APP_DESCRIPTOR_FILES} ; do
-      file=$(echo ${BUILD_APP_DESCRIPTOR_FILES} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(sed -e 's|//*|/|g' -e 's|/*$||' <<< ${BUILD_APP_DESCRIPTOR_FILES})
 
       build_app_desc_print_debug "Using File: ${file}"
 
@@ -300,7 +300,7 @@ build_app_desc_load_environment() {
     descriptor_name=${BUILD_APP_DESCRIPTOR_NAME}
   fi
 
-  if [[ $(echo -n ${descriptor_name} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${descriptor_name}) != "" ]] ; then
     echo "${p_e}The descriptor name must not contain '/', '\', ''', or '\"' characters: ${descriptor_name} ."
 
     let result=1
@@ -311,7 +311,7 @@ build_app_desc_load_environment() {
     descriptor_version=${BUILD_APP_DESCRIPTOR_VERSION}
   fi
 
-  if [[ $(echo -n ${descriptor_version} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${descriptor_version}) != "" ]] ; then
     echo "${p_e}The descriptor version must not contain '/', '\', ''', or '\"' characters: ${descriptor_version} ."
 
     let result=1
@@ -328,7 +328,7 @@ build_app_desc_load_environment() {
     output_path_name=${BUILD_APP_DESCRIPTOR_OUTPUT_NAME}
   fi
 
-  if [[ $(echo -n ${output_path_name} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${output_path_name}) != "" ]] ; then
     echo "${p_e}The output path name must not contain '/', '\', ''', or '\"' characters: ${output_path_name} ."
 
     let result=1
@@ -340,13 +340,13 @@ build_app_desc_load_environment() {
     if [[ ${BUILD_APP_DESCRIPTOR_OUTPUT_PATH} == "" ]] ; then
       output_path=
     else
-      output_path=$(echo -n ${BUILD_APP_DESCRIPTOR_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+      output_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_APP_DESCRIPTOR_OUTPUT_PATH})
     fi
   fi
 
   output_path_json="${output_path}${output_path_name}.json"
 
-  if [[ ${BUILD_APP_DESCRIPTOR_RESTRICT_TO} != "" ]] ; then
+  if [[ -v BUILD_APP_DESCRIPTOR_RESTRICT_TO ]] ; then
     restrict_to=${BUILD_APP_DESCRIPTOR_RESTRICT_TO}
   fi
 
@@ -354,7 +354,7 @@ build_app_desc_load_environment() {
     restrict_to_regex=
 
     for i in ${restrict_to} ; do
-      simplified=$(echo ${i} | grep -shoP "[\w-]*")
+      simplified=$(grep -shoP "[\w-]*" <<< ${i})
 
       if [[ ${simplified} != "" ]] ; then
         if [[ ${restrict_to_regex} == "" ]] ; then
@@ -382,13 +382,13 @@ build_app_desc_verify_files() {
   local file=
 
   for file in ${files} ; do
-    build_app_desc_verify_json "input file" ${file}
+    build_app_desc_verify_json "input file" "${file}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
   done
 
-  build_app_desc_verify_directory "output path" ${output_path} create
-  build_app_desc_verify_output "output file" ${output_path_json}
+  build_app_desc_verify_directory "output path" "${output_path}" create
+  build_app_desc_verify_output "output file" "${output_path_json}"
 }
 
 build_app_desc_verify_directory() {

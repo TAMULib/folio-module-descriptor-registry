@@ -46,7 +46,7 @@ main() {
 
   local -i result=0
 
-  build_launches_load_environment
+  build_launches_load_environment ${*}
   build_launches_load_instructions
 
   build_launches_build
@@ -154,8 +154,8 @@ build_launches_build_launch_field_exists() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   # The ${value} must be in JQ syntax and must have a "." before the last field being selected.
-  local last=$(echo "${value}" | sed -E 's|^.*\.([^.]+)$|\1|')
-  local first=$(echo "${value}" | sed -e "s|\.${last}||")
+  local last=$(sed -E 's|^.*\.([^.]+)$|\1|' <<< ${value})
+  local first=$(sed -e "s|\.${last}||" <<< ${value})
   local jq_field="${first} | has(\"${last}\")"
 
   # Prevent jq from printing JSON if ${null} exists when not debugging.
@@ -325,10 +325,10 @@ build_launches_build_launch_container_port_process_reduce() {
     if [[ ${data} == "" || ${data} == "null" ]] ; then
       ports_proto[${i}]=
       ports_proto_lower[${i}]=
-    elif [[ $(echo ${data} | grep -shoi "tcp") != "" ]] ; then
+    elif [[ $(grep -shoi "tcp" <<< ${data}) != "" ]] ; then
       ports_proto[${i}]="TCP"
       ports_proto_lower[${i}]="tcp"
-    elif [[ $(echo ${data} | grep -shoi "udp") != "" ]] ; then
+    elif [[ $(grep -shoi "udp" <<< ${data}) != "" ]] ; then
       ports_proto[${i}]="UDP"
       ports_proto_lower[${i}]="udp"
     else
@@ -347,7 +347,7 @@ build_launches_build_path() {
 
   if [[ ${result} -ne 0 || ${launch_json} == "{}" || ${launch_json} == "" ]] ; then return ; fi
 
-  local release=$(echo -n ${input_file} | sed -E 's|.*/+([^/]+)$|\1|' | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+  local release=$(sed -E 's|.*/+([^/]+)$|\1|' <<< ${input_file} | sed -e 's|-SNAPSHOT*||' -e 's|-[^-]*$||')
 
   build_launches_handle_result "Failed to build release path from path: ${input_file}"
 
@@ -375,22 +375,23 @@ build_launches_handle_result() {
 }
 
 build_launches_load_environment() {
+
   if [[ ${BUILD_LAUNCHES_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_LAUNCHES_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_LAUNCHES_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_LAUNCHES_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_LAUNCHES_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${BUILD_LAUNCHES_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${BUILD_LAUNCHES_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi
   fi
 
   if [[ ${BUILD_LAUNCHES_INPUT_PATH} != "" ]] ; then
-    input_path=$(echo -n ${BUILD_LAUNCHES_INPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    input_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_LAUNCHES_INPUT_PATH})
 
     if [[ -e ${input_path} ]] ; then
       if [[ ! -d ${input_path} ]] ; then
@@ -405,7 +406,7 @@ build_launches_load_environment() {
   input_path_instruct="${input_path}${input_file_instruct}"
 
   if [[ ${BUILD_LAUNCHES_OUTPUT_PATH} != "" ]] ; then
-    output_path=$(echo -n ${BUILD_LAUNCHES_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    output_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_LAUNCHES_OUTPUT_PATH})
   fi
 
   if [[ -e ${output_path} ]] ; then
@@ -420,7 +421,7 @@ build_launches_load_environment() {
   output_path_launch="${output_path}${output_dir_launch}"
 
   if [[ ${BUILD_LAUNCHES_RELEASE_PATH} != "" ]] ; then
-    release_path=$(echo -n ${BUILD_LAUNCHES_RELEASE_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    release_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_LAUNCHES_RELEASE_PATH})
 
     if [[ -e ${release_path} ]] ; then
       if [[ ! -d ${release_path} ]] ; then

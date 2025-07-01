@@ -66,9 +66,9 @@ main() {
   local -i limit=100
   local -i result=0
 
-  build_location_load_environment
+  build_location_load_environment ${*}
 
-  build_location_verify_json "repositories file" ${repositories_json}
+  build_location_verify_json "repositories file" "${repositories_json}"
   build_location_verify_files
 
   build_location_load_repositories
@@ -98,27 +98,27 @@ build_location_load_environment() {
     debug_curl=
     debug_json=
 
-    if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*curl\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug_curl="-v"
       debug_curl_silent=
-    elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*curl_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*curl_only\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
       debug_curl="-v"
       debug_curl_silent=
-    elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<curl\>") != "" ]] ; then
+      if [[ $(grep -sho "\<curl\>" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
         debug_curl="-v"
         debug_curl_silent=
       fi
 
-      if [[ $(echo ${BUILD_LOCATION_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho "\<json\>" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi
@@ -136,11 +136,11 @@ build_location_load_environment() {
     return
   fi
 
-  if [[ $(echo ${BUILD_LOCATION_FILES} | sed -e 's|\s||g') != "" ]] ; then
+  if [[ $(sed -e 's|\s||g' <<< ${BUILD_LOCATION_FILES}) != "" ]] ; then
     files=
 
     for i in ${BUILD_LOCATION_FILES} ; do
-      file=$(echo ${i} | sed -e 's|//*|/|g' -e 's|/*$||')
+      file=$(sed -e 's|//*|/|g' -e 's|/*$||' <<< ${i})
 
       if [[ -f ${file} ]] ; then
         build_location_print_debug "Using File: ${file}"
@@ -161,7 +161,7 @@ build_location_load_environment() {
   if [[ ${BUILD_LOCATION_REPOSITORIES_NAME} != "" ]] ; then
     repositories_file=${BUILD_LOCATION_REPOSITORIES_NAME}
 
-    if [[ $(echo -n ${repositories_file} | grep -sho "[/\\\"\']") != "" ]] ; then
+    if [[ $(grep -sho "[/\\\"\']" <<< ${repositories_file}) != "" ]] ; then
       echo "${p_e}The repositories name must not contain '/', '\', ''', or '\"' characters: ${repositories_file} ."
 
       let result=1
@@ -171,7 +171,7 @@ build_location_load_environment() {
   fi
 
   if [[ ${BUILD_LOCATION_REPOSITORIES_PATH} != "" ]] ; then
-    repositories_path=$(echo ${BUILD_LOCATION_REPOSITORIES_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|')
+    repositories_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|' <<< ${BUILD_LOCATION_REPOSITORIES_PATH})
   fi
 
   repositories_json=${repositories_path}${repositories_file}
@@ -189,15 +189,22 @@ build_location_load_environment() {
   fi
 
   if [[ ${BUILD_LOCATION_DESTINATION} != "" ]] ; then
-    destination=$(echo ${BUILD_LOCATION_DESTINATION} | sed -e 's|//*|/|g' -e 's|/*$|/|')
+    destination=$(sed -e 's|//*|/|g' -e 's|/*$|/|' <<< ${BUILD_LOCATION_DESTINATION})
   fi
 
   if [[ ${destination} != "" ]] ; then
-    destination=$(echo ${destination} | sed -e 's|/*$|/|')
+    destination=$(sed -e 's|/*$|/|' <<< ${destination})
   fi
 
   if [[ ${BUILD_LOCATION_FLOWER} != "" ]] ; then
-    flower=$(echo ${BUILD_LOCATION_FLOWER} | sed -e 's|/||g')
+    flower=$(sed -e 's|/||g' <<< ${BUILD_LOCATION_FLOWER})
+  fi
+
+  if [[ $(grep -sho "[/\\\"\']" <<< ${flower}) != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
   fi
 
   destination_flower="${destination}${flower}/"
@@ -211,7 +218,7 @@ build_location_load_environment() {
       return
     fi
   else
-    mkdir ${debug} -p ${destination_flower}
+    mkdir ${debug} -p "${destination_flower}"
 
     build_location_handle_result "Failed to create destination directory path: ${destination_flower}"
   fi
@@ -235,9 +242,9 @@ build_location_load_releases() {
     for i in ${manifest} ; do
 
       # Skip any files without the dash in the name used to provide a version.
-      if [[ $(echo ${i} | grep -sho '-') == "" ]] ; then continue ; fi
+      if [[ $(grep -sho '-' <<< ${i}) == "" ]] ; then continue ; fi
 
-      build_location_parse_release ${i} ${file}
+      build_location_parse_release "${i}" "${file}"
 
       build_location_load_releases_parse_tag
 
@@ -256,7 +263,7 @@ build_location_load_releases_parse_tag() {
     message=" from JSON: ${file}"
   fi
 
-  tags["${release}"]=$(echo -n "${i}" | sed -e "s|^${release}-||")
+  tags["${release}"]=$(sed -e "s|^${release}-||" <<< ${i})
 
   build_location_handle_result "Failed to parse release tag from '${i}'${message}"
 }
@@ -310,9 +317,9 @@ build_location_load_repositories() {
     build_location_load_repositories_extract_domain "auth.registry"
     repositories_auth_registry["${repo}"]="${value}"
 
-    build_location_load_repositories_verify_url "auth.url" ${repositories_auth_url["${repo}"]}
-    build_location_load_repositories_verify_url "request.url" ${repositories_request_url["${repo}"]}
-    build_location_load_repositories_verify_domain "auth.domain" ${repositories_auth_registry["${repo}"]}
+    build_location_load_repositories_verify_url "auth.url" "${repositories_auth_url[${repo}]}"
+    build_location_load_repositories_verify_url "request.url" "${repositories_request_url[${repo}]}"
+    build_location_load_repositories_verify_domain "auth.domain" "${repositories_auth_registry[${repo}]}"
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
@@ -458,7 +465,7 @@ build_location_load_repositories_verify_domain() {
   local key=${1}
   local value=${2}
 
-  if [[ $(echo ${value} | grep -sho '[/\:&?]') != "" ]] ; then
+  if [[ $(grep -sho '[/\:&?]' <<< ${value}) != "" ]] ; then
     echo "${p_e}The ${repo} ${key} domain value has unsupported characters ('/', '\', ':', '&', and '?'): ${value} ."
 
     let result=1
@@ -543,7 +550,7 @@ build_location_operate() {
         build_location_print_debug "Skipping all future '${repo}' repository requests due to reaching request rate limit of ${limit} for the request URL: ${request_url}"
 
         # Remove the repo from the active repositories list.
-        repositories_active=$(echo "${repositories_active}" | sed -e "s|\<${repo}\>||g")
+        repositories_active=$(sed -e "s|\<${repo}\>||g" <<< "${repositories_active}")
 
         continue
       fi
@@ -568,7 +575,7 @@ build_location_operate() {
     done
 
     # Terminate loop if there are no active repositories left.
-    if [[ $(echo "${repositories_active}" | sed -e 's|\s||g') == "" ]] ; then break ; fi
+    if [[ $(sed -e 's|\s||g' <<< ${repositories_active}) == "" ]] ; then break ; fi
   done
 
   for repo in ${requests_distinct} ; do
@@ -658,7 +665,7 @@ build_location_operate_request() {
   build_location_handle_result "Curl request failed for repository '${repo}', release '${release}', and tag '${tag}' for: ${full_url}"
 
   if [[ ${result} -eq 0 ]] ; then
-    http_status=$(echo ${request_manifest} | grep -shoi "^http/.*" | grep -shoi "200 ok")
+    http_status=$(grep -shoi "^http/.*" <<< ${request_manifest} | grep -shoi "200 ok")
 
     if [[ ${http_status} != "" ]] ; then
       let found=1
@@ -694,7 +701,7 @@ build_location_parse_release() {
     message=" from JSON: ${file}"
   fi
 
-  release=$(echo -n ${release_with_version} | sed -e "s|-SNAPSHOT*||" -e "s|-[^-]*$||")
+  release=$(sed -e 's|-SNAPSHOT*||' -e 's|-[^-]*$||' <<< ${release_with_version})
 
   build_location_handle_result "Failed to parse release name from '${release_with_version}'${message}"
 }

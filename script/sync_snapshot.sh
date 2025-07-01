@@ -32,7 +32,7 @@ main() {
 
   local -i result=0
 
-  sync_snap_load_environment
+  sync_snap_load_environment ${*}
 
   sync_snap_determine
 
@@ -53,7 +53,7 @@ main() {
   fi
 
   if [[ ${SYNC_SNAPSHOT_RESULT} != "" ]] ; then
-    echo -n ${updated} > ${SYNC_SNAPSHOT_RESULT}
+    echo -n "${updated}" > "${SYNC_SNAPSHOT_RESULT}"
   fi
 
   return ${result}
@@ -65,7 +65,7 @@ sync_snap_commit() {
 
   sync_snap_print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
 
-  git commit -m "${message}" ${signoff} ${debug}
+  git commit ${debug} -m "${message}" "${signoff}"
 
   sync_snap_handle_result_git "committing"
 }
@@ -111,14 +111,14 @@ sync_snap_load_environment() {
   if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "^\s*git\s*$") != "" ]] ; then
+    if [[ $(grep -sho "^\s*git\s*$" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug_git="y"
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "^\s*git_only\s*$") != "" ]] ; then
+    elif [[ $(grep -sho "^\s*git_only\s*$" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug=
       debug_git="y"
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho "_only" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(echo ${SYNC_SNAPSHOT_DEBUG} | grep -sho "\<git\>") != "" ]] ; then
+    elif [[ $(grep -sho "\<git\>" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug_git="y"
     fi
   fi
@@ -138,7 +138,7 @@ sync_snap_load_environment() {
   fi
 
   if [[ ${path} != "" ]] ; then
-    cd ${path}
+    cd "${path}"
 
     sync_snap_handle_result "Failed to change to path: ${path}"
   fi
