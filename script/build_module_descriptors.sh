@@ -2,10 +2,10 @@
 #
 # Build module and deployment descriptors, either synthetically or normally.
 #
-# This attempts to directly build the module descriptor using the ModuleDescriptor-template.json, without calling the normal build process.
+# This attempts to directly build the descriptor using the template JSON files, without calling the normal build process.
 # This is done to avoid the resource and time cost of calling something like "mvn clean package -DskipTests".
 #
-# This utilizes the install.json file to construct the Module Descriptor JSON files.
+# This utilizes the install.json file, by default, to construct the descriptor JSON files.
 #
 # This requires the following user-space programs:
 #   - bash
@@ -44,10 +44,8 @@ main() {
   local json=
   local module_descriptor="ModuleDescriptor-template.json"
   local null="/dev/null"
-  local output_path="descriptors/"
-  local output_path_deploy=
-  local output_path_flower=
-  local output_path_module=
+  local output_path_deploy="deploy/"
+  local output_path_module="release/"
   local replace_names=
   local restrict_to="edge- folio_ mod-"
   local restrict_to_regex=
@@ -648,7 +646,7 @@ build_mod_desc_build_operate_yarn_copy() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local destination="${original_path}${output_path_module}${id}.json"
+  local destination="${output_path_module}${id}.json"
   local source="module-descriptor.json"
 
   cp ${debug} "${source}" "${destination}"
@@ -824,38 +822,35 @@ build_mod_desc_load_environment() {
     done
   fi
 
-  if [[ ${BUILD_MOD_DESCRIPTORS_FLOWER} != "" ]] ; then
-    flower=$(echo ${BUILD_MOD_DESCRIPTORS_FLOWER} | sed -e 's|/||g')
+  if [[ ${BUILD_MOD_DESCRIPTORS_DEPLOY_PATH} != "" ]] ; then
+    output_path_deploy=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_MOD_DESCRIPTORS_DEPLOY_PATH})
+
+    if [[ $(grep -sho '^[/\]' <<< ${output_path_deploy}) == "" && $(grep -shoP '^\w+\:[/\\]+' <<< ${output_path_deploy}) != "" ]] ; then
+      output_path_deploy="${original_path}${output_path_deploy}"
+    fi
   fi
 
-  if [[ $(echo -n ${flower} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ ${BUILD_MOD_DESCRIPTORS_MODULE_PATH} != "" ]] ; then
+    output_path_module=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_MOD_DESCRIPTORS_MODULE_PATH})
+
+    if [[ $(grep -sho '^[/\]' <<< ${output_path_module}) == "" && $(grep -shoP '^\w+\:[/\\]+' <<< ${output_path_module}) != "" ]] ; then
+      output_path_module="${original_path}${output_path_module}"
+    fi
+  fi
+
+  if [[ ${BUILD_MOD_DESCRIPTORS_FLOWER} != "" ]] ; then
+    flower=$(sed -e 's|/||g' <<< ${BUILD_MOD_DESCRIPTORS_FLOWER})
+  fi
+
+  if [[ $(grep -sho "[/\\\"\']" <<< ${flower}) != "" ]] ; then
     echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
 
     let result=1
     return
   fi
 
-  # May be empty, so use "-v" test rather than != "".
-  if [[ -v BUILD_MOD_DESCRIPTORS_OUTPUT_PATH ]] ; then
-    if [[ ${BUILD_MOD_DESCRIPTORS_OUTPUT_PATH} == "" ]] ; then
-      output_path=
-    else
-      output_path=$(echo -n ${BUILD_MOD_DESCRIPTORS_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
-    fi
-  fi
-
-  if [[ $(grep -sho '^[/\]' <<< ${output_path}) == "" && $(grep -shoP '^\w+\:[/\\]+' <<< ${output_path}) != "" ]] ; then
-    output_path="${original_path}${output_path}"
-  fi
-
-  if [[ ${flower} != "" ]] ; then
-    output_path_flower="${output_path}${flower}/"
-  else
-    output_path_flower="${output_path}"
-  fi
-
-  output_path_deploy="${output_path_flower}deploy/"
-  output_path_module="${output_path_flower}module/"
+  output_path_deploy="${output_path_deploy}${flower}/"
+  output_path_module="${output_path_module}${flower}/"
 
   build_mod_desc_verify_directory "output deploy path" "${output_path_deploy}" create
   build_mod_desc_verify_directory "output module path" "${output_path_module}" create

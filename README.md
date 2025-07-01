@@ -322,8 +322,10 @@ bash BUILD_LOCATION_LIMIT=100 BUILD_LOCATION_DELAY="0.3s" script/build_location.
 ### Build Module Descriptors
 
 The **Build Module Descriptors** script provides a way to build multiple **Deployment Descriptors** and **Module Descriptors** files.
-The purpose of this script is to act as a temporary helper tool for constructing the descriptors using only an `install.json` file for use in a legacy [OKAPI](https://github.com/folio-org/okapi/) environment.
-This approach has limitations, but these limitations are of little concern given that [OKAPI](https://github.com/folio-org/okapi/) is now considered a legacy application.
+The purpose of this script is to act as a helper tool for constructing the descriptors using only an `install.json` file, such as for use in a legacy [OKAPI](https://github.com/folio-org/okapi/) environment.
+This approach is similar to the `populate_release.sh`, but instead of using pre-created descriptors from a running registry, it constructs the descriptors directly from the source code.
+The `populate_release.sh` script requires a running repository with the packages in them.
+This script can operate even if the descriptors are not available in a running repository.
 
 The descriptors are first searched for at the `descriptors/` sub-directory in the root of the module sources.
 Should the descriptors not be found in the standard `descriptors/` sub-directory, then the first match found during a file search is used.
@@ -417,17 +419,18 @@ This overridden name is not used for the purposes of the `exact` and `pcre` matc
 | `BUILD_MOD_DESCRIPTORS_DEBUG`              | Enable debug verbosity, any non-empty string enables this.
 | `BUILD_MOD_DESCRIPTORS_DEFAULT_BRANCH`     | Specify the default branch to checkout (usually either `main` or `master`).
 | `BUILD_MOD_DESCRIPTORS_DEFAULT_REPOSITORY` | The default repository URL prefix (usually a GitHub URL).
+| `BUILD_MOD_DESCRIPTORS_DEPLOY_PATH`        | The output directory to save all built deployment descriptors.
 | `BUILD_MOD_DESCRIPTORS_FILES`              | The input files to process (usually only `install.json`).
 | `BUILD_MOD_DESCRIPTORS_FLOWER`             | The Flower release name, such as `quesnelia` or `snapshot`.
 | `BUILD_MOD_DESCRIPTORS_INPUT_PATH`         | The directory containing the templates and settings.
-| `BUILD_MOD_DESCRIPTORS_OUTPUT_PATH`        | The output directory to save all build descriptors.
+| `BUILD_MOD_DESCRIPTORS_MODULE_PATH`        | The output directory to save all built module descriptors.
 | `BUILD_MOD_DESCRIPTORS_RESTRICT_TO`        | A list of module prefixes from the `install.json` files to limit the processing to.
 
 View the documentation within the `build_module_descriptors.sh` script for further details on how to operate this script.
 
 Example usage:
 ```shell
-BUILD_MOD_DESCRIPTORS_FLOWER="quesnelia" BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH="../checkout/" BUILD_MOD_DESCRIPTORS_INPUT_PATH="../input/" BUILD_MOD_DESCRIPTORS_OUTPUT_PATH="../output/" bash script/build_module_descriptors.sh
+BUILD_MOD_DESCRIPTORS_FLOWER="quesnelia" BUILD_MOD_DESCRIPTORS_CHECKOUT_PATH="../checkout/" BUILD_MOD_DESCRIPTORS_INPUT_PATH="../input/" BUILD_MOD_DESCRIPTORS_DEPLOY_PATH="../deploy/" BUILD_MOD_DESCRIPTORS_MODULE_PATH="../release/" bash script/build_module_descriptors.sh
 ```
 
 
