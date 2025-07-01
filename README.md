@@ -328,6 +328,7 @@ This approach has limitations, but these limitations are of little concern given
 The descriptors are first searched for at the `descriptors/` sub-directory in the root of the module sources.
 Should the descriptors not be found in the standard `descriptors/` sub-directory, then the first match found during a file search is used.
 These sources are checked out by this script and are automatically removed at the end of a successful operation.
+If the modules already exist in the check out directory, then they are neither cloned nor are they removed at the end of a successful operation.
 
 The non-UI modules are built using `sed` replacements to avoid the expensive process of building the descriptors through the normal mechanisms, such as `mvn package`
 The UI modules are built using `yarn run build-mod-descriptor`.
