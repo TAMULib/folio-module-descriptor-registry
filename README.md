@@ -337,7 +337,7 @@ The UI modules are built using `yarn run build-mod-descriptor`.
 
 There are two mapping structures used by several of the settings:
   1. `exact`
-  2. `pcre`.
+  2. `pcre`
 
 The `exact` key object is used for matching the exact module name and has precedence over the `pcre` key object.
 The `pcre` key object is used for matching the module name using Perl Compatible Regular Expressions (PCRE).
@@ -361,7 +361,8 @@ The `setting.json` `operate` key is used to map how to perform the building base
 This utilizes the `exact` and `pcre` mapping structure.
 The following keys within each `exact` and `pcre` mapping object are supported:
   1. `method`
-  2. `type`
+  2. `repository`
+  3. `type`
 
 The `operate` `method` provides two major ways to perform the building of the descriptor:
   1. `jq`
@@ -377,6 +378,24 @@ This does not perform the `yarn install` command to save on time and resources.
 
 The `operate` `type` provides the name of the find and replace map.
 The values are defined in the `replace.json` file or use one of the reserved names.
+
+The `operate` `repository` provides a way to customize the repository using the following:
+  1. `branch`
+  2. `type`
+  3. `url`
+
+The `operate` `repository` `branch` provides a way to specify a custom branch when cloning a module.
+
+The `operate` `repository` `type` provides a way to control how the repository URL is to be processed and supports the following values:
+  1. `full`
+  2. `partial`
+
+When `operate` `repository` `type` is set to `full`, then the `operate` `repository` `url` represents the full URL, including the module.
+When `operate` `repository` `type` is set to `partial`, then the `operate` `repository` `url` represents the URL without the module.
+The default behavior, when no `type` is used is to use the default repository URL.
+In all cases, except for `full`, the module being processed is appended to the URL when cloning.
+
+The `operate` `repository` `url` provides a way to specify a custom base repository URL to use.
 
 The `setting.json` `override` key is used to override the standard behavior to handle special situations and supports the following keys:
   1. `descriptor`
