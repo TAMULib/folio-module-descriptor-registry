@@ -55,6 +55,14 @@ main() {
   local p_d="DEBUG: "
   local p_e="ERROR: "
 
+  local -A operate_exact=
+  local -A operate_pcre=
+  local -A override_descriptor_exact=
+  local -A override_descriptor_pcre=
+  local -A override_omit_exact=
+  local -A override_omit_pcre=
+  local -A override_rename_exact=
+  local -A override_rename_pcre=
   local -A replace_data=
   local -A replace_keys=
   local -A replace_size=
@@ -147,12 +155,11 @@ build_mod_desc_build() {
     build_mod_desc_build_get_omit
     build_mod_desc_build_get_operate
 
-    build_mod_desc_build_skip_descriptor
     build_mod_desc_build_skip_unknown
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
-    if [[ ${skip} -eq 1 ]] ; then
+    if [[ ${skip} -ne 0 ]] ; then
       build_mod_desc_print_debug "Skipping id=${id}, module=${module}, module_raw=${module_raw}, version=${version} at index ${i} of ${total}, reason: ${skip_reason}"
 
       let i++;
@@ -225,18 +232,35 @@ build_mod_desc_build_cleanup() {
 
 build_mod_desc_build_get_descriptor() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
 
-  build_mod_desc_build_get_override_for "descriptor" ".discovery_name"
+  local deploy_value=
+  local module_value=
+
+  build_mod_desc_build_get_override_for "descriptor" "discovery_name"
 
   if [[ ${value} != "" ]] ; then
     specific_deploy_descriptor=${value}
   fi
 
-  build_mod_desc_build_get_override_for "descriptor" ".module_name"
+  build_mod_desc_build_get_override_for "descriptor" "module_name"
 
   if [[ ${value} != "" ]] ; then
     specific_module_descriptor=${value}
+  fi
+
+  build_mod_desc_build_get_override_for "descriptor" "use_discovery"
+  deploy_value=${value}
+
+  build_mod_desc_build_get_override_for "descriptor" "use_module"
+  module_value=${value}
+
+  if [[ -f ${destination_deploy} || ${deploy_value} == "skip" ]] ; then
+    if [[ -f ${destination_module} || ${module_value} == "skip" ]] ; then
+      skip_reason="descriptors found or skipped"
+
+      let skip=1
+    fi
   fi
 }
 
@@ -262,29 +286,28 @@ build_mod_desc_build_get_operate_for() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local json=${2}
-  local match=${1}
+  local json=${1}
   local repo_type=
 
-  build_mod_desc_load_json_for "${match}.repository.branch" "${input_path_setting}" "${json}" "-r" yes
+  build_mod_desc_load_json_for ".repository.branch" "${input_path_setting}" "${json}" "-r" yes
 
   if [[ ${value} != "null" ]] ; then
     branch=${value}
   fi
 
-  build_mod_desc_load_json_for "${match}.method" "${input_path_setting}" "${json}" "-r"
+  build_mod_desc_load_json_for ".method" "${input_path_setting}" "${json}" "-r"
 
   if [[ ${value} != "" ]] ; then
     method=${value}
   fi
 
-  build_mod_desc_load_json_for "${match}.repository.type" "${input_path_setting}" "${json}" "-r"
+  build_mod_desc_load_json_for ".repository.type" "${input_path_setting}" "${json}" "-r"
 
   if [[ ${value} != "" ]] ; then
     repo_type=${value}
   fi
 
-  build_mod_desc_load_json_for "${match}.repository.url" "${input_path_setting}" "${json}" "-r"
+  build_mod_desc_load_json_for ".repository.url" "${input_path_setting}" "${json}" "-r"
 
   if [[ ${value} == "" ]] ; then
     repository=${default_repository}${module}
@@ -296,7 +319,7 @@ build_mod_desc_build_get_operate_for() {
     fi
   fi
 
-  build_mod_desc_load_json_for "${match}.type" "${input_path_setting}" "${json}" "-r"
+  build_mod_desc_load_json_for ".type" "${input_path_setting}" "${json}" "-r"
 
   if [[ ${value} != "" ]] ; then
     type=${value}
@@ -341,9 +364,9 @@ build_mod_desc_build_get_module() {
 
 build_mod_desc_build_get_omit() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
 
-  build_mod_desc_build_get_override_for "omit" ".type"
+  build_mod_desc_build_get_override_for "omit" "type"
 
   if [[ ${value} == "always" ]] ; then
     skip_reason="omitted by override"
@@ -354,16 +377,22 @@ build_mod_desc_build_get_omit() {
 
 build_mod_desc_build_get_operate() {
 
-  local operate_key=".operate"
-  local pcre_key="${operate_key}.pcre"
+  if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
 
-  local -i pcre_matched=0
+  local pcre_key=
 
-  build_mod_desc_build_get_operate_for "${operate_key}.exact.\"${module_raw}\"" "${setting_json}"
+  if [[ ${operate_exact[${module_raw}]} != "" ]] ; then
+    build_mod_desc_build_get_operate_for "${operate_exact[${module_raw}]}"
+  fi
 
   if [[ ${method} == "" ]] ; then
-    build_mod_desc_build_get_setting_pcre "${pcre_key}" "${setting_json}"
-    build_mod_desc_build_get_setting_pcre_match_module "${pcre_key}" "${setting_json}"
+    for pcre_key in ${!operate_pcre[@]} ; do
+      if [[ ${operate_pcre[${pcre_key}]} != "" && $(grep -shoP "${pcre_key}" <<< "${module_raw}") != "" ]] ; then
+        build_mod_desc_build_get_operate_for "${operate_pcre[${pcre_key}]}"
+
+        if [[ ${result} -ne 0 ]] ; then return ; fi
+      fi
+    done
   fi
 }
 
@@ -371,21 +400,56 @@ build_mod_desc_build_get_override_for() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  local override_key=".override.${1}"
+  local key=${1}
+  local override_key=".override.${key}"
   local override_value=
-  local pcre_key="${override_key}.pcre"
+  local override_json=
+  local pcre_key=
   local subkey=${2}
 
   local -i pcre_matched=0
 
-  build_mod_desc_load_json_for "${override_key}.exact.\"${module_raw}\"${subkey}" "${input_path_setting}" "${setting_json}" "-r"
-  override_value=${value}
+  if [[ ${key} == "descriptor" ]] ; then
+    override_json=${override_descriptor_exact[${module_raw}]}
+  elif [[ ${key} == "omit" ]] ; then
+    override_json=${override_omit_exact[${module_raw}]}
+  elif [[ ${key} == "rename" ]] ; then
+    override_json=${override_rename_exact[${module_raw}]}
+  fi
+
+  if [[ ${override_json} != "" ]] ; then
+    build_mod_desc_load_json_for ".\"${subkey}\"" "${input_path_setting}" "${override_json}" "-r"
+    override_value=${value}
+  fi
 
   if [[ ${override_value} == "" ]] ; then
-    build_mod_desc_build_get_setting_pcre "${pcre_key}" "${setting_json}"
-    build_mod_desc_build_get_setting_pcre_match_value "${pcre_key}" "${subkey}" "${setting_json}"
+    override_json=
 
-    if [[ ${pcre_matched} -eq 1 ]] ; then
+    if [[ ${key} == "descriptor" ]] ; then
+      for pcre_key in ${!override_descriptor_pcre[@]} ; do
+        if [[ ${override_descriptor_pcre[${pcre_key}]} != "" && $(grep -shoP "${pcre_key}" <<< "${module_raw}") != "" ]] ; then
+          override_json=${override_descriptor_pcre[${pcre_key}]}
+          break
+        fi
+      done
+    elif [[ ${key} == "omit" ]] ; then
+      for pcre_key in ${!override_omit_pcre[@]} ; do
+        if [[ ${override_omit_pcre[${pcre_key}]} != "" && $(grep -shoP "${pcre_key}" <<< "${module_raw}") != "" ]] ; then
+          override_json=${override_omit_pcre[${pcre_key}]}
+          break
+        fi
+      done
+    elif [[ ${key} == "rename" ]] ; then
+      for pcre_key in ${!override_rename_pcre[@]} ; do
+        if [[ ${override_rename_pcre[${pcre_key}]} != "" && $(grep -shoP "${pcre_key}" <<< "${module_raw}") != "" ]] ; then
+          override_json=${override_rename_pcre[${pcre_key}]}
+          break
+        fi
+      done
+    fi
+
+    if [[ ${override_json} != "" ]] ; then
+      build_mod_desc_load_json_for ".\"${subkey}\"" "${input_path_setting}" "${override_json}" "-r"
       override_value=${value}
     fi
   fi
@@ -395,68 +459,13 @@ build_mod_desc_build_get_override_for() {
 
 build_mod_desc_build_get_rename() {
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
 
-  build_mod_desc_build_get_override_for "rename" ".to"
+  build_mod_desc_build_get_override_for "rename" "to"
 
   if [[ ${value} != "" ]] ; then
     module=${value}
   fi
-}
-
-build_mod_desc_build_get_setting_pcre() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  local json=${3}
-  local key=${1}
-  local pcre_json=
-
-  local -i i=0
-  local -i total=0
-
-  pcre_value=
-
-  let pcre_matched=0
-
-  build_mod_desc_load_json_for "${key} | keys" "${input_path_setting}" "${setting_json}"
-  pcre_json=${value}
-
-  build_mod_desc_load_json_total "length" "${input_path_setting}" "${pcre_json}"
-
-  while [[ ${i} -lt ${total} ]] ; do
-    build_mod_desc_load_json_for ".[${i}]" "${input_path_setting}" "${pcre_json}" "-r"
-    pcre_value=${value}
-
-    if [[ ${pcre_value} != "" && $(echo -n "${module_raw}" | grep -shoP "${pcre_value}") != "" ]] ; then
-      let pcre_matched=1
-    fi
-
-    if [[ ${result} -ne 0 || ${pcre_matched} -eq 1 ]] ; then return ; fi
-
-    let i++
-  done
-}
-
-build_mod_desc_build_get_setting_pcre_match_module() {
-
-  if [[ ${result} -ne 0 || ${pcre_matched} -ne 1 ]] ; then return ; fi
-
-  local json=${2}
-  local key=${1}
-
-  build_mod_desc_build_get_operate_for "${key}.\"${pcre_value}\"" "${json}"
-}
-
-build_mod_desc_build_get_setting_pcre_match_value() {
-
-  if [[ ${result} -ne 0 || ${pcre_matched} -ne 1 ]] ; then return ; fi
-
-  local json=${3}
-  local key=${1}
-  local subkey=${2}
-
-  build_mod_desc_load_json_for "${key}.\"${pcre_value}\"${subkey}" "${input_path_setting}" "${json}" "-r"
 }
 
 build_mod_desc_build_get_version() {
@@ -681,28 +690,6 @@ build_mod_desc_build_reduce() {
   fi
 
   build_mod_desc_handle_result "Failed to reduce using '${restrict_to}' for JSON: ${file}"
-}
-
-build_mod_desc_build_skip_descriptor() {
-
-  if [[ ${result} -ne 0 || ${skip} -ne 0 ]] ; then return ; fi
-
-  local deploy_value=
-  local module_value=
-
-  build_mod_desc_build_get_override_for "descriptor" ".use_discovery"
-  deploy_value=${value}
-
-  build_mod_desc_build_get_override_for "descriptor" ".use_module"
-  module_value=${value}
-
-  if [[ -f ${destination_deploy} || ${deploy_value} == "skip" ]] ; then
-    if [[ -f ${destination_module} || ${module_value} == "skip" ]] ; then
-      skip_reason="descriptors found or skipped"
-
-      let skip=1
-    fi
-  fi
 }
 
 build_mod_desc_build_skip_unknown() {
@@ -955,10 +942,17 @@ build_mod_desc_load_templates() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local jq_descriptor='.override.descriptor'
   local jq_merge='reduce .[] as $f ({}; . * $f)'
+  local jq_omit='.override.omit'
+  local jq_operate='.operate'
+  local jq_rename='.override.rename'
+  local key=
   local names=
   local type=
   local value=
+
+  local -A associative=
 
   local -i i=0
   local -i total=0
@@ -1030,6 +1024,76 @@ build_mod_desc_load_templates() {
 
   build_mod_desc_load_json "setting file" "${input_path_setting}"
   setting_json=${json}
+
+  # Load exact match associative arrays.
+  build_mod_desc_load_templates_associative "${jq_operate}" "exact"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then operate_exact[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_descriptor}" "exact"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_descriptor_exact[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_omit}" "exact"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_omit_exact[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_rename}" "exact"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_rename_exact[${key}]=${associative[${key}]} ; fi ; done
+
+  # Load PCRE match associative arrays.
+  build_mod_desc_load_templates_associative "${jq_operate}" "pcre"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then operate_pcre[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_descriptor}" "pcre"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_descriptor_pcre[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_omit}" "pcre"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_omit_pcre[${key}]=${associative[${key}]} ; fi ; done
+
+  build_mod_desc_load_templates_associative "${jq_rename}" "pcre"
+  for key in ${!associative[@]} ; do if [[ ${associative[${key}]} != "" ]] ; then override_rename_pcre[${key}]=${associative[${key}]} ; fi ; done
+}
+
+build_mod_desc_load_templates_associative() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_value="${1}.${2}"
+  local keys_json=
+
+  build_mod_desc_load_json_for "${jq_value} | keys" "${input_path_setting}" "${setting_json}"
+  keys_json=${value}
+
+  build_mod_desc_load_json_for "${jq_value}" "${input_path_setting}" "${setting_json}"
+  build_mod_desc_load_json_total "${jq_value} | length" "${input_path_setting}" "${setting_json}"
+
+  build_mod_desc_load_templates_associative_for "${keys_json}" "${total}" "${value}"
+}
+
+build_mod_desc_load_templates_associative_for() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local array_json=${1}
+  local data_json=${3}
+  local key=
+  local value=
+
+  local -i array_length=${2}
+  local -i i=0
+
+  # Reset the associative array (using unset requires quotes around the key name).
+  for key in "${!associative[@]}"; do unset associative["${key}"] ; done
+
+  while [[ ${i} -lt ${array_length} ]] ; do
+    build_mod_desc_load_json_for ".[${i}]" "${input_path_setting}" "${array_json}" "-r"
+    key=${value}
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    build_mod_desc_load_json_for ".\"${key}\"" "${input_path_setting}" "${data_json}"
+    associative[${key}]=${value}
+
+    let i++
+  done
 }
 
 build_mod_desc_print_debug() {
