@@ -345,11 +345,11 @@ build_mod_desc_build_get_module() {
   build_mod_desc_handle_result "Failed to extract module name from key '${key}' at index ${i} from JSON: ${file}"
 
   if [[ ${result} -eq 0 ]] ; then
-    if [[ $(grep -sho "^folio_" <<< ${module_raw}) == "" ]] ; then
+    if [[ $(grep -sho '^folio_' <<< ${module_raw}) == "" ]] ; then
       module=${module_raw}
       module_type="normal"
     else
-      module=$(sed -e "s|^folio_|ui-|" <<< ${module_raw})
+      module=$(sed -e 's|^folio_|ui-|' <<< ${module_raw})
       module_type="ui"
     fi
 
@@ -726,24 +726,24 @@ build_mod_desc_load_environment() {
     debug_json=
     debug_yarn="-s"
 
-    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json\s*$' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*yarn\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*yarn\s*$' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug_yarn="--verbose"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "^\s*yarn_only\s*$" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*yarn_only\s*$' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
       debug_yarn="--verbose"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(grep -sho "\<json\>" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(grep -sho "\<yarn\>" <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<yarn\>' <<< ${BUILD_MOD_DESCRIPTORS_DEBUG}) != "" ]] ; then
         debug_yarn="--verbose"
       fi
     fi
@@ -797,7 +797,7 @@ build_mod_desc_load_environment() {
 
   if [[ ${restrict_to} != "" ]] ; then
     for i in ${restrict_to} ; do
-      simplified=$(grep -shoP "[\w-]*" <<< ${i})
+      simplified=$(grep -shoP '[\w-]*' <<< ${i})
 
       if [[ ${simplified} != "" ]] ; then
         if [[ ${restrict_to_regex} == "" ]] ; then
