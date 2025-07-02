@@ -89,24 +89,24 @@ pop_node_load_environment() {
     debug_json=
     debug_yarn="-s"
 
-    if [[ $(grep -sho "^\s*json\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json\s*$' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*yarn\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*yarn\s*$' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug_yarn="--verbose"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "^\s*yarn_only\s*$" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*yarn_only\s*$' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
       debug_yarn="--verbose"
-    elif [[ $(grep -sho "_only" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(grep -sho "\<json\>" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(grep -sho "\<yarn\>" <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<yarn\>' <<< ${POPULATE_NODE_DEBUG}) != "" ]] ; then
         debug_yarn="--verbose"
       fi
     fi

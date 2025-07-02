@@ -780,12 +780,12 @@ build_depls_load_environment() {
   if [[ ${BUILD_DEPLOY_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(grep -sho "\<json\>" <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi

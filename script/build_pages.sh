@@ -81,21 +81,21 @@ build_page_load_environment() {
   if [[ ${BUILD_PAGES_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json\s*$' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*verify\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*verify\s*$' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug_verify="y"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(grep -sho "\<json\>" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
 
-      if [[ $(grep -sho "\<verify\>" <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<verify\>' <<< ${BUILD_PAGES_DEBUG}) != "" ]] ; then
         debug_verify="y"
       fi
     fi
@@ -332,7 +332,7 @@ build_page_operate_sources_process_files() {
   find "${j}" -mindepth 1 -maxdepth 1 -printf "%p\n" | sort -u | while read -d $'\n' k ; do
     file=$(basename ${k})
 
-    if [[ $(grep -sho "^\." <<< ${file}) != "" ]] ; then
+    if [[ $(grep -sho '^\.' <<< ${file}) != "" ]] ; then
       build_page_print_debug_verify "Skipping work source sub-directory ${source} hidden file: ${file}"
 
       continue

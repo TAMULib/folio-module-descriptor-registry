@@ -272,14 +272,14 @@ build_app_desc_load_environment() {
   if [[ ${BUILD_APP_DESCRIPTOR_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json\s*$' <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(grep -sho "\<json\>" <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '\<json\>' <<< ${BUILD_APP_DESCRIPTOR_DEBUG}) != "" ]] ; then
       debug_json="y"
     fi
   fi
@@ -354,7 +354,7 @@ build_app_desc_load_environment() {
     restrict_to_regex=
 
     for i in ${restrict_to} ; do
-      simplified=$(grep -shoP "[\w-]*" <<< ${i})
+      simplified=$(grep -shoP '[\w-]*' <<< ${i})
 
       if [[ ${simplified} != "" ]] ; then
         if [[ ${restrict_to_regex} == "" ]] ; then

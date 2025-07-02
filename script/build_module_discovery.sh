@@ -194,14 +194,14 @@ build_mod_disc_load_environment() {
   if [[ ${BUILD_MOD_DISCOVERY_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*json\s*$' <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(grep -sho "\<json\>" <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '\<json\>' <<< ${BUILD_MOD_DISCOVERY_DEBUG}) != "" ]] ; then
       debug_json="y"
     fi
   fi

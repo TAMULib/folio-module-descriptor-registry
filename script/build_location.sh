@@ -98,27 +98,27 @@ build_location_load_environment() {
     debug_curl=
     debug_json=
 
-    if [[ $(grep -sho "^\s*curl\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*curl\s*$' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug_curl="-v"
       debug_curl_silent=
-    elif [[ $(grep -sho "^\s*curl_only\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*curl_only\s*$' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
       debug_curl="-v"
       debug_curl_silent=
-    elif [[ $(grep -sho "^\s*json\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json\s*$' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(grep -sho "^\s*json_only\s*$" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
       debug_json="y"
-    elif [[ $(grep -sho "_only" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(grep -sho "\<curl\>" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<curl\>' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
         debug_curl="-v"
         debug_curl_silent=
       fi
 
-      if [[ $(grep -sho "\<json\>" <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${BUILD_LOCATION_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi

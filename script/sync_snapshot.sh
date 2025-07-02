@@ -111,14 +111,14 @@ sync_snap_load_environment() {
   if [[ ${SYNC_SNAPSHOT_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(grep -sho "^\s*git\s*$" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
+    if [[ $(grep -sho '^\s*git\s*$' <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug_git="y"
-    elif [[ $(grep -sho "^\s*git_only\s*$" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '^\s*git_only\s*$' <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug=
       debug_git="y"
-    elif [[ $(grep -sho "_only" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug=
-    elif [[ $(grep -sho "\<git\>" <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
+    elif [[ $(grep -sho '\<git\>' <<< ${SYNC_SNAPSHOT_DEBUG}) != "" ]] ; then
       debug_git="y"
     fi
   fi
