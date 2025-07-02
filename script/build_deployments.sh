@@ -52,7 +52,7 @@ main() {
   local input_path_specific="${input_path}specific/"
   local input_path_vars="${input_path}vars/"
   local input_service_name="service"
-  local jq_instruct
+  local jq_instruct=
   local jq_merge_join=
   local jq_merge_replace=
   local jq_names=
@@ -91,7 +91,7 @@ main() {
   local -i result=0
   local -i passes=4
 
-  build_depls_load_environment
+  build_depls_load_environment ${*}
   build_depls_load_instructions
   build_depls_load_json_sources
   build_depls_load_json_discovery
@@ -123,7 +123,7 @@ build_depls_combine() {
 
   for name in ${names} ; do
 
-    if [[ ${only_these} != "" && $(echo ${only_these} | grep -sho "\<${name}\>") == "" ]] ; then
+    if [[ ${only_these} != "" && $(grep -sho "\<${name}\>" <<< ${only_these}) == "" ]] ; then
       build_depls_print_debug "Skipping combining of ${name} for not being in name restricton list: ${only_these}"
 
       continue
@@ -266,7 +266,7 @@ build_depls_expand() {
 
   for name in ${names} ; do
 
-    if [[ ${only_these} != "" && $(echo ${only_these} | grep -sho "\<${name}\>") == "" ]] ; then
+    if [[ ${only_these} != "" && $(grep -sho "\<${name}\>" <<< ${only_these}) == "" ]] ; then
       build_depls_print_debug "Skipping expansion of ${name} for not being in name restricton list: ${only_these}"
 
       continue
@@ -443,10 +443,10 @@ build_depls_expand_file_load_template_maps_pcre() {
   local pcre_query=
   local pcre_value_deploy=
   local pcre_value_service=
-  local pcre_total=
 
   local -i i=0
   local -i matched=0
+  local -i pcre_total=0
 
   build_depls_expand_file_load_template_maps_pcre_load_map
   build_depls_expand_file_load_template_maps_pcre_load_total
@@ -530,7 +530,7 @@ build_depls_expand_file_load_template_maps_pcre_match_query() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  if [[ $(echo -n "${name}" | grep -shoP "${pcre_query}") != "" ]] ; then
+  if [[ $(grep -shoP "${pcre_query}" <<< ${name}) != "" ]] ; then
     let matched=1
 
     alt_deploy_name="${pcre_value_deploy}"
@@ -674,7 +674,7 @@ build_depls_expand_replace_individual_match() {
 
   local match=${1}
 
-  matches=$(echo "${data}" | grep -shoP "{${match}:[\w-]+}" | sed -e "s|{${match}:| |g" -e "s|}| |g")
+  matches=$(grep -shoP "{${match}:[\w-]+}" <<< ${data} | sed -e "s|{${match}:| |g" -e 's|}| |g')
 
   build_depls_handle_result "Failed extract named replacement matches for field=${field} for ${output}"
 }
@@ -703,7 +703,7 @@ build_depls_expand_replace_individual_replace() {
       return
     fi
 
-    data=$(echo "${data}" | sed -e "s|{${id}:${match}}|${with}|g")
+    data=$(sed -e "s|{${id}:${match}}|${with}|g" <<< ${data})
 
     build_depls_handle_result "Failed regex replace '{${id}:${match}}' using sed for field='${field}' for ${output}"
 
@@ -776,22 +776,23 @@ build_depls_handle_result() {
 }
 
 build_depls_load_environment() {
+
   if [[ ${BUILD_DEPLOY_DEBUG} != "" ]] ; then
     debug="-v"
 
-    if [[ $(echo ${BUILD_DEPLOY_DEBUG} | grep -sho "^\s*json_only\s*$") != "" ]] ; then
+    if [[ $(grep -sho '^\s*json_only\s*$' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
       debug_json="y"
-    elif [[ $(echo ${BUILD_DEPLOY_DEBUG} | grep -sho "_only") != "" ]] ; then
+    elif [[ $(grep -sho '_only' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
       debug=
     else
-      if [[ $(echo ${BUILD_DEPLOY_DEBUG} | grep -sho "\<json\>") != "" ]] ; then
+      if [[ $(grep -sho '\<json\>' <<< ${BUILD_DEPLOY_DEBUG}) != "" ]] ; then
         debug_json="y"
       fi
     fi
   fi
 
   if [[ ${BUILD_DEPLOY_INPUT_PATH} != "" ]] ; then
-    input_path=$(echo -n ${BUILD_DEPLOY_INPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    input_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_DEPLOY_INPUT_PATH})
     input_path_launches="${input_path}launches/"
     input_path_main="${input_path}main/"
     input_path_specific="${input_path}specific/"
@@ -799,7 +800,7 @@ build_depls_load_environment() {
   fi
 
   if [[ ${BUILD_DEPLOY_OUTPUT_PATH} != "" ]] ; then
-    output_path=$(echo -n ${BUILD_DEPLOY_OUTPUT_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|g')
+    output_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|g' <<< ${BUILD_DEPLOY_OUTPUT_PATH})
     output_path_yaml="${output_path}yaml/"
     output_path_json="${output_path}json/"
     output_path_json_deploy="${output_path}deploy/"
@@ -820,7 +821,7 @@ build_depls_load_environment() {
     namespace=${BUILD_DEPLOY_NAMESPACE}
   fi
 
-  if [[ $(echo -n ${namespace} | sed -e 's|\-||g' | grep -shPo '\W') != "" ]] ; then
+  if [[ $(sed -e 's|\-||g' <<< ${namespace} | grep -shPo '\W') != "" ]] ; then
     echo "${p_e}The namespace may only contain word characters or the dash '-' character."
 
     let result=1
@@ -838,25 +839,25 @@ build_depls_load_environment() {
     return
   fi
 
-  build_depls_verify_directory "input path" ${input_path} create
-  build_depls_verify_directory "'main' input path" ${input_path_main} create
-  build_depls_verify_directory "'specific' input path" ${input_path_specific} create
-  build_depls_verify_directory "output path" ${output_path} create
-  build_depls_verify_directory "'YAML' output path" ${output_path_yaml} create
-  build_depls_verify_directory "'JSON' output path" ${output_path_json} create
-  build_depls_verify_directory "'deploy JSON' output path" ${output_path_json_deploy} create
-  build_depls_verify_directory "'service JSON' output path" ${output_path_json_service} create
+  build_depls_verify_directory "input path" "${input_path}" create
+  build_depls_verify_directory "'main' input path" "${input_path_main}" create
+  build_depls_verify_directory "'specific' input path" "${input_path_specific}" create
+  build_depls_verify_directory "output path" "${output_path}" create
+  build_depls_verify_directory "'YAML' output path" "${output_path_yaml}" create
+  build_depls_verify_directory "'JSON' output path" "${output_path_json}" create
+  build_depls_verify_directory "'deploy JSON' output path" "${output_path_json_deploy}" create
+  build_depls_verify_directory "'service JSON' output path" "${output_path_json_service}" create
 
-  build_depls_verify_file "'deployment' input file" ${input_path_main}${input_deploy_name}.json
-  build_depls_verify_file "'service' input file" ${input_path_main}${input_service_name}.json
-  build_depls_verify_file "'names' input file" ${input_path_main}${names_base}.json create array
-  build_depls_verify_file "'vars' input file" ${input_path_main}${vars_name}.json create object
-  build_depls_verify_file "'app' output file" ${output_path_yaml}${app}.yaml not ${output_force}
+  build_depls_verify_file "'deployment' input file" "${input_path_main}${input_deploy_name}.json"
+  build_depls_verify_file "'service' input file" "${input_path_main}${input_service_name}.json"
+  build_depls_verify_file "'names' input file" "${input_path_main}${names_base}.json" create array
+  build_depls_verify_file "'vars' input file" "${input_path_main}${vars_name}.json" create object
+  build_depls_verify_file "'app' output file" "${output_path_yaml}${app}.yaml" not "${output_force}"
 
-  build_depls_verify_json "'deployment' input file" ${input_path_main}${input_deploy_name}.json
-  build_depls_verify_json "'service' input file" ${input_path_main}${input_service_name}.json
-  build_depls_verify_json "'names' input file" ${input_path_main}${names_base}.json
-  build_depls_verify_json "'vars' input file" ${input_path_main}${vars_name}.json
+  build_depls_verify_json "'deployment' input file" "${input_path_main}${input_deploy_name}.json"
+  build_depls_verify_json "'service' input file" "${input_path_main}${input_service_name}.json"
+  build_depls_verify_json "'names' input file" "${input_path_main}${names_base}.json"
+  build_depls_verify_json "'vars' input file" "${input_path_main}${vars_name}.json"
 
   if [[ ${BUILD_DEPLOY_DISCOVERY} != "" ]] ; then
     discovery_file=${BUILD_DEPLOY_DISCOVERY}
@@ -870,11 +871,11 @@ build_depls_load_environment() {
     let do_combine=0
     let do_expand=0
 
-    if [[ $(echo ${BUILD_DEPLOY_ACTIONS} | grep -sho '\<combine\>') != "" ]] ; then
+    if [[ $(grep -sho '\<combine\>' <<< ${BUILD_DEPLOY_ACTIONS}) != "" ]] ; then
       let do_combine=1
     fi
 
-    if [[ $(echo ${BUILD_DEPLOY_ACTIONS} | grep -sho '\<expand\>') != "" ]] ; then
+    if [[ $(grep -sho '\<expand\>' <<< ${BUILD_DEPLOY_ACTIONS}) != "" ]] ; then
       let do_expand=1
     fi
 
@@ -887,15 +888,22 @@ build_depls_load_environment() {
   fi
 
   if [[ ${BUILD_DEPLOY_LOCATION_PATH} != "" ]] ; then
-    location_path=$(echo ${BUILD_DEPLOY_LOCATION_PATH} | sed -e 's|//*|/|g' -e 's|/*$|/|')
+    location_path=$(sed -e 's|//*|/|g' -e 's|/*$|/|' <<< ${BUILD_DEPLOY_LOCATION_PATH})
   fi
 
   if [[ ${destination} != "" ]] ; then
-    location_path=$(echo ${location_path} | sed -e 's|/*$|/|')
+    location_path=$(sed -e 's|/*$|/|' <<< ${location_path})
   fi
 
   if [[ ${BUILD_DEPLOY_FLOWER} != "" ]] ; then
-    flower=$(echo ${BUILD_DEPLOY_FLOWER} | sed -e 's|/||g')
+    flower=$(sed -e 's|/||g' <<< ${BUILD_DEPLOY_FLOWER})
+  fi
+
+  if [[ $(grep -sho "[/\\\"\']" <<< ${flower}) != "" ]] ; then
+    echo "${p_e}The flower must not contain '/', '\', ''', or '\"' characters: ${flower} ."
+
+    let result=1
+    return
   fi
 
   location_flower="${location_path}${flower}/"
@@ -914,7 +922,7 @@ build_depls_load_environment() {
     default_repository=${BUILD_DEPLOY_DEFAULT_REPOSITORY}
   fi
 
-  if [[ $(echo ${default_repository} | grep -sho '[/\:&?]') != "" ]] ; then
+  if [[ $(grep -sho '[/\:&?]' <<< ${default_repository}) != "" ]] ; then
     echo "${p_e}The default repository has unsupported characters ('/', '\', ':', '&', and '?'): ${default_repository} ."
 
     let result=1
@@ -1010,20 +1018,20 @@ build_depls_load_json_sources_files() {
 
   for name in ${sources} ; do
 
-    if [[ ${only_these} != "" && $(echo ${only_these} | grep -sho "\<${name}\>") == "" ]] ; then
+    if [[ ${only_these} != "" && $(grep -sho "\<${name}\>" <<< ${only_these}) == "" ]] ; then
       build_depls_print_debug "Skipping loading of ${name} for not being in name restricton list: ${only_these}"
 
       continue
     fi
 
-    build_depls_verify_name ${name} "input file name"
+    build_depls_verify_name "${name}" "input file name"
 
     if [[ ${do_expand} -eq 1 ]] ; then
-      build_depls_verify_file ${name} ${output_path_json_deploy}${name}.json not ${output_force}
-      build_depls_verify_json ${name} ${output_path_json_deploy}${name}.json
+      build_depls_verify_file "${name}" "${output_path_json_deploy}${name}.json" not "${output_force}"
+      build_depls_verify_json "${name}" "${output_path_json_deploy}${name}.json"
 
-      build_depls_verify_file ${name} ${output_path_json_service}${name}.json not ${output_force}
-      build_depls_verify_json ${name} ${output_path_json_service}${name}.json
+      build_depls_verify_file "${name}" "${output_path_json_service}${name}.json" not "${output_force}"
+      build_depls_verify_json "${name}" "${output_path_json_service}${name}.json"
     fi
 
     if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -1275,7 +1283,7 @@ build_depls_verify_name() {
   local name=${1}
   local describe=${2}
 
-  if [[ $(echo -n ${name} | grep -sho "[/\\\"\']") != "" ]] ; then
+  if [[ $(grep -sho "[/\\\"\']" <<< ${name}) != "" ]] ; then
     echo "${p_e}The ${describe} must not contain '/', '\', ''', or '\"' characters: ${name} ."
 
     let result=1
