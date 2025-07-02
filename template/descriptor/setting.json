@@ -27,13 +27,11 @@
         "okapi": { "type": "always" }
       },
       "pcre": {
+        "^folio_stripes-.+-components": { "type": "always" }
       }
     },
     "rename": {
       "exact": {
-        "folio_stripes-authority-components": { "to": "stripes-authority-components" },
-        "folio_stripes-core": { "to": "stripes-core" },
-        "folio_stripes-smart-components": { "to": "stripes-smart-components" }
       },
       "pcre": {
       }
