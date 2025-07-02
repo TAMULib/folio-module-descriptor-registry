@@ -65,7 +65,11 @@ sync_snap_commit() {
 
   sync_snap_print_git_debug "Committing" "git commit -m \"${message}\" ${signoff} ${debug}"
 
-  git commit ${debug} -m "${message}" "${signoff}"
+  if [[ ${signoff} == "" ]] ; then
+    git commit -m "${message}" ${debug}
+  else
+    git commit -m "${message}" "${signoff}" ${debug}
+  fi
 
   sync_snap_handle_result_git "committing"
 }
