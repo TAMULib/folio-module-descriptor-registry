@@ -23,6 +23,7 @@
     },
     "omit": {
       "exact": {
+        "folio_stripes-core": { "type": "always" },
         "mod-z3950": { "type": "always" },
         "okapi": { "type": "always" }
       },
