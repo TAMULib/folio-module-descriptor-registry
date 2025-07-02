@@ -310,12 +310,12 @@ build_mod_desc_build_get_operate_for() {
   build_mod_desc_load_json_for ".repository.url" "${input_path_setting}" "${json}" "-r"
 
   if [[ ${value} == "" ]] ; then
-    repository=${default_repository}${module}
+    repository=$(sed -e 's|/*$|/|g' <<< ${default_repository}${module})
   else
     if [[ ${repo_type} == "partial" ]] ; then
-      repository=${value}${module}
+      repository=$(sed -e 's|/*$|/|g' <<< ${value}${module})
     elif [[ ${repo_type} == "full" || ${repo_type} == "" ]] ; then
-      repository=${value}
+      repository=$(sed -e 's|/*$|/|g' <<< ${value})
     fi
   fi
 
