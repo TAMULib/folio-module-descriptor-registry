@@ -1,0 +1,41 @@
+{
+  "operate": {
+    "exact": {
+      "mod-camunda": { "method": "jq", "type": "spring" },
+      "mod-graphql": { "method": "jq", "type": "none" },
+      "mod-workflow": { "method": "jq", "type": "spring" }
+    },
+    "pcre": {
+      "edge-*": { "method": "jq", "type": "all" },
+      "folio_*": { "method": "yarn" },
+      "mod-*": { "method": "jq", "type": "all" }
+    }
+  },
+  "override": {
+    "descriptor": {
+      "exact": {
+        "edge-connexion": { "use_discovery": "skip" },
+        "mod-graphql": { "discovery_name": "ExternalDeploymentDescriptor.json", "module_name": "ModuleDescriptor.json" }
+      },
+      "pcre": {
+        "^folio_": { "use_discovery": "skip" }
+      }
+    },
+    "omit": {
+      "exact": {
+        "folio_stripes-core": { "type": "always" },
+        "mod-z3950": { "type": "always" },
+        "okapi": { "type": "always" }
+      },
+      "pcre": {
+        "^folio_stripes-.+-components": { "type": "always" }
+      }
+    },
+    "rename": {
+      "exact": {
+      },
+      "pcre": {
+      }
+    }
+  }
+}
