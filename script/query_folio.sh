@@ -222,8 +222,8 @@ query_folio_operate_login_eureka() {
   fi
 
   query_folio_curl_login \
-    --header "Content-Type: application/x-www-form-urlencoded"
-    --header "${header_tenant}"
+    --header "Content-Type: application/x-www-form-urlencoded" \
+    --header "${header_tenant}" \
     --data-urlencode "client_id=${user}" \
     --data-urlencode "grant_type=client_credentials" \
     --data-urlencode "client_secret=${pass}" \
