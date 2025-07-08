@@ -7,7 +7,6 @@
 #   - curl
 #   - grep
 #   - jq
-#   - mkdir
 #   - sed
 #
 # See the repository `README.md` for the listing of the environment variables and parameters.
@@ -28,6 +27,8 @@
 main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local action=
+  local auth_header=
+  local auth_header_sidecar=
   local base=
   local beep_char=$(echo -ne "\007") # Use beep character to represent newlines give bash's lack of support in variables.
   local client_id_master="folio-backend-admin-client"
@@ -45,10 +46,11 @@ main() {
   local pass=
   local path=
   local tenant="diku"
-  local token=
+  local token= # For both master token and OKAPI token.
   local token_sidecar=
   local user=
   local warn="y"
+  local what=
 
   # Custom prefixes for debug and error.
   local p_d="DEBUG: "
@@ -58,13 +60,19 @@ main() {
   local -a files=()
   local -a ids=()
 
-  local -i login_eureka=0
+  local -i do_export=0
+  local -i is_eureka=0
   local -i login_print=0
   local -i result=0
 
   query_folio_load_environment ${*}
 
-  if [[ ${do_eureka} -eq 0 ]] ; then
+  # Enable exporting on login to allow for sourcing the script to expose the tokens to the caller.
+  if [[ ${action} == "login" ]] ; then
+    let do_export=1
+  fi
+
+  if [[ ${is_eureka} -eq 0 ]] ; then
     case "${action}" in
       "deploy") query_folio_operate_deploy_okapi ;;
       "enable") query_folio_operate_enable_okapi ;;
@@ -76,12 +84,8 @@ main() {
     esac
   else
     case "${action}" in
-      "deploy") query_folio_operate_deploy_eureka ;;
-      "enable") query_folio_operate_enable_eureka ;;
-      "disable") query_folio_operate_disable_eureka ;;
       "login") query_folio_operate_login_eureka ;;
       "register") query_folio_operate_register_eureka ;;
-      "undeploy") query_folio_operate_undeploy_eureka ;;
       "unregister") query_folio_operate_unregister_eureka ;;
     esac
   fi
@@ -124,14 +128,14 @@ query_folio_curl_json() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  query_folio_curl_execute -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Okapi-Token: ${token}' ${*}
+  query_folio_curl_execute -H 'Accept: application/json' -H 'Content-Type: application/json' -H "${auth_header}" ${*}
 }
 
 query_folio_curl_url_enc() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  query_folio_curl_execute -H 'Accept: application/json' -H "Content-Type: application/x-www-form-urlencoded" -H 'X-Okapi-Token: ${token}' ${*}
+  query_folio_curl_execute -H 'Accept: application/json' -H "Content-Type: application/x-www-form-urlencoded" -H "${auth_header}" ${*}
 }
 
 query_folio_handle_result() {
@@ -215,6 +219,10 @@ query_folio_load_environment() {
     fi
   fi
 
+  if [[ ${QUERY_FOLIO_IS_EUREKA} != "" ]] ; then
+    let is_eureka=1
+  fi
+
   if [[ ${QUERY_FOLIO_NO_WARN} != "" ]] ; then
     warn=
   fi
@@ -267,7 +275,7 @@ query_folio_load_environment() {
   fi
 
   case "${1}" in
-    "discover" | "enable" | "disable" | "login" | "register" | "undeploy" | "unregister")
+    "deploy" | "enable" | "disable" | "login" | "register" | "undeploy" | "unregister")
       action=${1}
       ;;
     *)
@@ -279,86 +287,84 @@ query_folio_load_environment() {
   esac
 
   if [[ ${action} == "login" ]] ; then
-    if [[ ${2} == "eureka" || ${3} == "eureka" ]] ; then
-      let login_eureka=1
-    fi
-
-    if [[ ${2} == "print" || ${3} == "print" ]] ; then
+    if [[ ${2} == "print" ]] ; then
       let login_print=1
     fi
-  elif [[ ${action} == "deploy" || ${action} == "register" ]] ; then
-    let i=2
-    while ${i} -lt ${#} ; do
-      query_folio_verify_json "Input JSON" "${!i}"
-      if [[ ${result} -ne 0 ]] ; then return ; fi
-
-      files+=(${!i})
-      let i++
-    done
-  elif [[ ${action} == "disable" || ${action} == "enable" || ${action} == "undeploy" || ${action} == "unregister" ]] ; then
-    let i=2
-    while ${i} -lt ${#} ; do
-      if [[ $(grep -sho '"' <<< ${!i}) != "" ]] ; then
-        echo "${p_e}The argument ${i} '${!i}' has a double quote, which is not allowed."
+  else
+    if [[ ${is_eureka} -ne 0 ]] ; then
+      if [[ ${action} != "register" && ${action} != "unregister" ]] ; then
+        echo "${p_e}The action '${action}' is not supported by Eureka."
 
         let result=1
+
         return
       fi
-
-      ids+=(${!i})
-      let i++
-    done
-
-    if [[ ${2} == "" ]] ; then
-      echo "An ID is required for the ${action} action."
-
-      let result=1
-      return
     fi
 
-    id=${2}
+    what=${2}
+    query_folio_load_environment_verify_action_what
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    let i=3
+
+    if [[ ${action} == "deploy" || ${action} == "register" ]] ; then
+      while ${i} -lt ${#} ; do
+        query_folio_verify_json "Input JSON" "${!i}"
+        if [[ ${result} -ne 0 ]] ; then return ; fi
+
+        files+=(${!i})
+        let i++
+      done
+    else
+      while ${i} -lt ${#} ; do
+        if [[ $(grep -sho '"' <<< ${!i}) != "" ]] ; then
+          echo "${p_e}The argument ${i} '${!i}' has a double quote, which is not allowed."
+
+          let result=1
+          return
+        fi
+
+        ids+=(${!i})
+        let i++
+      done
+    fi
   fi
 }
 
-query_folio_operate_deploy_eureka() {
+query_folio_load_environment_verify_action_what() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  # TODO
+  if [[ ${what} == "application" || ${what} == "discovery" ]] ; then
+    if [[ ${is_eureka} -eq 0 ]] ; then
+      echo "${p_e}The argument '${what}' is not supported for OKAPI action: ${action} ."
+
+      let result=1
+    fi
+  elif [[ ${what} == "module" ]] ; then
+    if [[ ${is_eureka} -ne 0 ]] ; then
+      if [[ ${action} == "register" || ${action} == "unregister" ]] ; then
+        echo "${p_e}The argument '${what}' is not supported for Eureka action: ${action} ."
+
+        let result=1
+      fi
+    fi
+  else
+    echo "${p_e}The argument '${what}' is not supported for action: ${action} ."
+
+    let result=1
+  fi
 }
 
 query_folio_operate_deploy_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  query_folio_operate_login_if_needed
-
-  local file=
-
-  local -i i=0
-  local -i total=${#files[*]}
-
-  path="_/discovery/modules"
-
-  while [[ ${i} -lt ${total} ]] ; do
-    file=${files[${i}]}
-
-    query_folio_curl_json -X POST -d "@${file}"
-    query_folio_handle_result_curl "OKAPI Deploy"
-
-    if [[ ${result} -ne 0 ]] ; then return ; fi
-
-    let i++
-  done
-}
-
-query_folio_operate_disable_eureka() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
+  local base_path="_/discovery/modules"
 
   query_folio_operate_login_if_needed
 
-  # TODO
+  query_folio_process_files POST "OKAPI Deploy"
 }
 
 query_folio_operate_disable_okapi() {
@@ -373,15 +379,6 @@ query_folio_operate_disable_okapi() {
 
   query_folio_curl_json -X POST -d "${json}"
   query_folio_handle_result_curl "OKAPI Disable"
-}
-
-query_folio_operate_enable_eureka() {
-
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  query_folio_operate_login_if_needed
-
-  # TODO
 }
 
 query_folio_operate_enable_okapi() {
@@ -403,10 +400,19 @@ query_folio_operate_login_if_needed() {
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
   if [[ ${token} == "" ]] ; then
-    if [[ ${do_eureka} -eq 0 ]] ; then
+    if [[ ${is_eureka} -eq 0 ]] ; then
       query_folio_operate_login_okapi
     else
       query_folio_operate_login_eureka
+    fi
+  fi
+
+  if [[ ${auth_header} == "" ]] ; then
+    if [[ ${is_eureka} -eq 0 ]] ; then
+      auth_header="X-Okapi-Token: ${token}"
+    else
+      auth_header="Authorization: Bearer ${token}"
+      auth_header_sidecar="Authorization: Bearer ${token_sidecar}"
     fi
   fi
 }
@@ -448,7 +454,7 @@ query_folio_operate_login_eureka_for() {
   local client_secret=${3}
   local target=${1}
 
-  path="realms/${1}/protocol/openid-connect/token"
+  path="realms/${target}/protocol/openid-connect/token"
 
   query_folio_curl_execute \
     -X POST \
@@ -498,6 +504,13 @@ query_folio_operate_login_okapi_curl() {
 
   query_folio_operate_login_okapi_extract_token
   query_folio_operate_login_print_token
+
+  # Cannot export token as ${token} due to the "local" definition.
+  # Furthermore, the upper case should be used as per recommended ENV practices.
+  if [[ ${do_export} -ne 0 ]] ; then
+    export FOLIO_TOKEN=${token}
+    export FOLIO_TOKEN_SIDECAR=${token_sidecar}
+  fi
 }
 
 query_folio_operate_login_okapi_escape_object() {
@@ -531,7 +544,7 @@ query_folio_operate_login_print_token() {
 
   local jq_object=
 
-  if [[ ${do_eureka} -eq 0 ]] ; then
+  if [[ ${is_eureka} -eq 0 ]] ; then
     jq_object='{ "token": $token }'
   else
     jq_object='{ "master": $token, "sidecar": $token_sidecar }'
@@ -551,82 +564,67 @@ query_folio_operate_register_eureka() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local base_path=
+
+  if [[ ${what} == "application" ]] ; then
+    base_path="applications"
+  elif [[ ${what} == "discovery" ]] ; then
+    base_path="modules/discovery"
+  fi
+
   query_folio_operate_login_if_needed
 
-  # TODO
+  query_folio_process_files POST "Eureka Register"
 }
 
 query_folio_operate_register_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local base_path="_/proxy/modules"
+
   query_folio_operate_login_if_needed
 
-  local file=
-
-  local -i i=0
-  local -i total=${#files[*]}
-
-  path="_/proxy/modules"
-
-  while [[ ${i} -lt ${total} ]] ; do
-    file=${files[${i}]}
-
-    query_folio_curl_json -X POST -d "@${file}"
-    query_folio_handle_result_curl "OKAPI Register"
-
-    if [[ ${result} -ne 0 ]] ; then return ; fi
-
-    let i++
-  done
+  query_folio_process_files POST "OKAPI Register"
 }
 
 query_folio_operate_undeploy_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local base_path="_/discovery/modules/${id}"
+
   query_folio_operate_login_if_needed
 
-  local id=
+  query_folio_process_ids DELETE "OKAPI Undeploy"
+}
 
-  local -i i=0
-  local -i total=${#ids[*]}
+query_folio_operate_unregister_eureka() {
 
-  while [[ ${i} -lt ${total} ]] ; do
-    id=${ids[${i}]}
-    path="_/discovery/modules/${id}"
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
-    query_folio_curl_json -X DELETE
-    query_folio_handle_result_curl "OKAPI Undeploy"
+  local base_path=
 
-    if [[ ${result} -ne 0 ]] ; then return ; fi
+  if [[ ${what} == "application" ]] ; then
+    base_path="applications/${id}"
+  elif [[ ${what} == "discovery" ]] ; then
+    base_path="modules/${id}/discovery"
+  fi
 
-    let i++
-  done
+  query_folio_operate_login_if_needed
+
+  query_folio_process_ids DELETE "Eureka Unregister"
 }
 
 query_folio_operate_unregister_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local base_path="_/proxy/modules/${id}"
+
   query_folio_operate_login_if_needed
 
-  local id=
-
-  local -i i=0
-  local -i total=${#ids[*]}
-
-  while [[ ${i} -lt ${total} ]] ; do
-    id=${ids[${i}]}
-    path="_/proxy/modules/${id}"
-
-    query_folio_curl_json -X DELETE
-    query_folio_handle_result_curl "OKAPI Unregister"
-
-    if [[ ${result} -ne 0 ]] ; then return ; fi
-
-    let i++
-  done
+  query_folio_process_ids DELETE "OKAPI Unregister"
 }
 
 query_folio_print_debug() {
@@ -643,6 +641,55 @@ query_folio_print_warn() {
 
   echo "${p_w}${1} ." >&2
   echo >&2
+}
+
+query_folio_process_files() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local file=
+  local message=${2}
+  local path=${base_path}
+  local rest=${1}
+
+  local -i i=0
+  local -i total=${#files[*]}
+
+  while [[ ${i} -lt ${total} ]] ; do
+    file=${files[${i}]}
+
+    query_folio_curl_json -X "${rest}" -d "@${file}"
+    query_folio_handle_result_curl "${message}"
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    let i++
+  done
+}
+
+query_folio_process_ids() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local id=
+  local message=${2}
+  local path=
+  local rest=${1}
+
+  local -i i=0
+  local -i total=${#ids[*]}
+
+  while [[ ${i} -lt ${total} ]] ; do
+    id=${ids[${i}]}
+    path="${base_path}/${id}"
+
+    query_folio_curl_json -X "${rest}"
+    query_folio_handle_result_curl "${message}"
+
+    if [[ ${result} -ne 0 ]] ; then return ; fi
+
+    let i++
+  done
 }
 
 query_folio_verify_json() {
