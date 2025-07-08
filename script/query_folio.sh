@@ -29,6 +29,13 @@ main() {
   local IFS=$' \t\n' # Protect IFS from security issue before anything is done.
   local action=
   local base=
+  local beep_char=$(echo -ne "\007") # Use beep character to represent newlines give bash's lack of support in variables.
+  local client_id_master="folio-backend-admin-client"
+  local client_id_sidecar="sidecar-module-access-client"
+  local client_secret_master=
+  local client_secret_sidecar=
+  local curl_error=
+  local curl_header=
   local curl_output=
   local debug=
   local debug_json=
@@ -39,6 +46,7 @@ main() {
   local path=
   local tenant="diku"
   local token=
+  local token_sidecar=
   local user=
   local warn="y"
 
@@ -50,7 +58,6 @@ main() {
   local -a files=()
   local -a ids=()
 
-  local -i curl_error=0
   local -i login_eureka=0
   local -i login_print=0
   local -i result=0
@@ -86,24 +93,30 @@ query_folio_curl_execute() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  curl --header "X-Okapi-Tenant: ${tenant}" --header 'X-Okapi-Token: ${token}' ${*} ${base}${path}
+  # For splitting curl header from payload.
+  local sed_separate="${beep_char}-----separate-----${beep_char}"
+  local silent=
+
+  if [[ ${debug} != "" ]] ; then
+    silent="-s"
+  fi
+
+  curl_output=$(
+    curl ${silent} -H "X-Okapi-Tenant: ${tenant}" -D - "${@}" ${base}${path} |
+      sed -e "s|^\r$|${sed_separate}|" -e "s|\r||g" -e "s|\$|${beep_char}|g"
+  )
 
   # Let the caller handle the result via query_folio_handle_result_curl().
   let result=${?}
-}
 
-query_folio_curl_login() {
+  # Headers will maintain beep for EOL but the output will not utilize beep.
+  curl_header=$(sed -e 's|\n||g' -e "s|${sed_separate}.*\$||" <<< ${curl_output})
+  curl_output=$(sed -e 's|\n||g' -e "s|^.*${sed_separate}||" -e "s|${beep_char}|\n|g" <<< ${curl_output})
 
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  curl_output=$(curl --silent -X POST --header 'Accept: application/json' ${*} ${base}${path})
-
-  # Let the caller handle the result via query_folio_handle_result_curl().
-  let result=${?}
-  if [[ ${result} -ne 0 ]] ; then return ; fi
-
-  if [[ ${login_print} -ne 0 ]] ; then
-    echo "${curl_output}"
+  if [[ $(grep -shoP "^HTTP[^${beep_char}]*\s+2\d+${beep_char}" <<< ${curl_header}) == "" ]] ; then
+    curl_error=$(grep -shoP "^HTTP[^${beep_char}]*${beep_char}" <<< ${curl_output} | sed -e "s|${beep_char}||g")
+  else
+    curl_error=
   fi
 }
 
@@ -111,14 +124,14 @@ query_folio_curl_json() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  query_folio_curl_execute --header 'Accept: application/json' --header 'Content-Type: application/json' ${*}
+  query_folio_curl_execute -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Okapi-Token: ${token}' ${*}
 }
 
 query_folio_curl_url_enc() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  query_folio_curl_execute --header 'Accept: application/json' --header "Content-Type: application/x-www-form-urlencoded" ${*}
+  query_folio_curl_execute -H 'Accept: application/json' -H "Content-Type: application/x-www-form-urlencoded" -H 'X-Okapi-Token: ${token}' ${*}
 }
 
 query_folio_handle_result() {
@@ -132,15 +145,18 @@ query_folio_handle_result() {
 
 query_folio_handle_result_curl() {
 
-  local message="Curl to ${base}${path} for ${1} failed"
+  if [[ ${result} -eq 0 ]] ; then return ; fi
 
-  if [[ ${result} -ne 0 ]] ; then
-    echo "${p_e}${message} (system code ${result})."
-    echo
-  elif [[ ${curl_error} != "" ]] ; then
-    echo "${p_e}${message} failed (curl error: ${curl_error})."
-    echo
+  echo -n "${p_e}Curl to ${base}${path} for ${1} failed "
+
+  if [[ ${result} -eq 0 && ${curl_error} != "" ]] ; then
+    echo -n "with curl error: ${curl_error} and "
+
+    let result=1
   fi
+
+  echo "with payload: ${curl_output} ."
+  echo
 }
 
 query_folio_json_append_to_array() {
@@ -163,6 +179,7 @@ query_folio_json_array_of_ids() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  local action=${1}
   local append=
   local id=
 
@@ -172,7 +189,7 @@ query_folio_json_array_of_ids() {
   json="[]"
   while [[ ${i} -lt ${total} ]] ; do
     id=${ids[${i}]}
-    append=$(sed -e "s|_REPLACE_ID_|${id}|g" <<< ${object})
+    append='{ "action": "${action}", "id": "${id}" }'
 
     query_folio_json_append_to_array
     if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -213,12 +230,28 @@ query_folio_load_environment() {
     return
   fi
 
-  if [[ ${QUERY_FOLIO_LOGIN_PASS} != "" ]] ; then
-    pass=${QUERY_FOLIO_LOGIN_PASS}
-  fi
-
   if [[ ${QUERY_FOLIO_BASE_PATH} != "" ]] ; then
     base="${base}$(sed -e 's|/*$|/|g' <<< ${QUERY_FOLIO_BASE_PATH})"
+  fi
+
+  if [[ ${QUERY_FOLIO_CLIENT_ID_MASTER} != "" ]] ; then
+    client_id_master=${QUERY_FOLIO_CLIENT_ID_MASTER}
+  fi
+
+  if [[ ${QUERY_FOLIO_CLIENT_ID_SIDECAR} != "" ]] ; then
+    client_id_sidecar=${QUERY_FOLIO_CLIENT_ID_SIDECAR}
+  fi
+
+  if [[ ${QUERY_FOLIO_CLIENT_SECRET_MASTER} != "" ]] ; then
+    client_secret_master=${QUERY_FOLIO_CLIENT_SECRET_MASTER}
+  fi
+
+  if [[ ${QUERY_FOLIO_CLIENT_SECRET_SIDECAR} != "" ]] ; then
+    client_secret_sidecar=${QUERY_FOLIO_CLIENT_SECRET_SIDECAR}
+  fi
+
+  if [[ ${QUERY_FOLIO_LOGIN_PASS} != "" ]] ; then
+    pass=${QUERY_FOLIO_LOGIN_PASS}
   fi
 
   if [[ ${QUERY_FOLIO_TENANT} != "" ]] ; then
@@ -298,6 +331,8 @@ query_folio_operate_deploy_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  query_folio_operate_login_if_needed
+
   local file=
 
   local -i i=0
@@ -308,9 +343,9 @@ query_folio_operate_deploy_okapi() {
   while [[ ${i} -lt ${total} ]] ; do
     file=${files[${i}]}
 
-    query_folio_curl_json -X POST --data "@${file}"
-
+    query_folio_curl_json -X POST -d "@${file}"
     query_folio_handle_result_curl "OKAPI Deploy"
+
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
     let i++
@@ -321,6 +356,8 @@ query_folio_operate_disable_eureka() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
+  query_folio_operate_login_if_needed
+
   # TODO
 }
 
@@ -328,20 +365,21 @@ query_folio_operate_disable_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  object='{ "action": "disable", "id": "_REPLACE_ID_" }'
+  query_folio_operate_login_if_needed
 
-  query_folio_json_array_of_ids
+  query_folio_json_array_of_ids "disable"
 
   path="_/proxy/tenants/${tenant}/install"
 
   query_folio_curl_json -X POST -d "${json}"
-
   query_folio_handle_result_curl "OKAPI Disable"
 }
 
 query_folio_operate_enable_eureka() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  query_folio_operate_login_if_needed
 
   # TODO
 }
@@ -350,20 +388,32 @@ query_folio_operate_enable_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
 
-  object='{ "action": "enable", "id": "_REPLACE_ID_" }'
+  query_folio_operate_login_if_needed
 
-  query_folio_json_array_of_ids
+  query_folio_json_array_of_ids "enable"
 
   path="_/proxy/tenants/${tenant}/install"
 
   query_folio_curl_json -X POST -d "${json}"
-
   query_folio_handle_result_curl "OKAPI Enable"
+}
+
+query_folio_operate_login_if_needed() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  if [[ ${token} == "" ]] ; then
+    if [[ ${do_eureka} -eq 0 ]] ; then
+      query_folio_operate_login_okapi
+    else
+      query_folio_operate_login_eureka
+    fi
+  fi
 }
 
 query_folio_operate_login_eureka() {
 
-  if [[ ${result} -ne 0 || ${do_eureka} -ne 0 ]] ; then return ; fi
+  if [[ ${result} -ne 0 ]] ; then return ; fi
 
   local header_tenant=
 
@@ -381,20 +431,54 @@ query_folio_operate_login_eureka() {
     query_folio_print_warn "The user is an empty string"
   fi
 
-  path="realms/master/protocol/openid-connect/token"
+  query_folio_operate_login_eureka_for "master" "${client_id_master}"
+  query_folio_operate_login_eureka_extract_token "master"
 
-  query_folio_curl_login  \
-    --header "Content-Type: application/x-www-form-urlencoded" \
-    --header "${header_tenant}" \
-    --data-urlencode "client_id=${user}" \
+  query_folio_operate_login_eureka_for "sidecar" "${client_id_sidecar}"
+  query_folio_operate_login_eureka_extract_token "sidecar"
+
+  query_folio_operate_login_print_token
+}
+
+query_folio_operate_login_eureka_for() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local client_id=${2}
+  local client_secret=${3}
+  local target=${1}
+
+  path="realms/${1}/protocol/openid-connect/token"
+
+  query_folio_curl_execute \
+    -X POST \
+    -H 'Accept: application/json'  \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -H "${header_tenant}" \
+    --data-urlencode "client_id=${client_id}" \
     --data-urlencode "grant_type=client_credentials" \
-    --data-urlencode "client_secret=${pass}"
-  # TODO: need to fetch the token from the response.
+    --data-urlencode "client_secret=${client_secret}"
 
   query_folio_handle_result_curl "Eureka Login"
 }
 
-# TODO: should I make login automatic for each action rather than a separate action, then TOKEN doesn't need to be exported?
+query_folio_operate_login_eureka_extract_token() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  local jq_token='.access_token'
+  local target=${1}
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    object=$(jq -M "${jq_token}" <<< ${curl_output})
+  else
+    object=$(jq -M "${jq_token}" <<< ${curl_output} 2> ${null})
+  fi
+
+  query_folio_handle_result "Failed construct escaped username and password JSON"
+}
+
 query_folio_operate_login_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
@@ -409,10 +493,11 @@ query_folio_operate_login_okapi_curl() {
 
   path="authn/login-with-expiry"
 
-  query_folio_curl_login --header "Content-Type: application/json" --data "${object}"
-  # TODO: need to fetch the token from the response.
-
+  query_folio_curl_execute -X POST -H 'Accept: application/json' -H "Content-Type: application/json" -d "${object}"
   query_folio_handle_result_curl "OKAPI Login"
+
+  query_folio_operate_login_okapi_extract_token
+  query_folio_operate_login_print_token
 }
 
 query_folio_operate_login_okapi_escape_object() {
@@ -431,9 +516,42 @@ query_folio_operate_login_okapi_escape_object() {
   query_folio_handle_result "Failed construct escaped username and password JSON"
 }
 
+query_folio_operate_login_okapi_extract_token() {
+
+  if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  token=$(grep -shoP "set-cookie:\s*folioAccessToken=[^;]+" <<< ${curl_header} | sed -e 's|set-cookie:\s*folioAccessToken=||')
+
+  query_folio_handle_result "Failed extract the token from the JSON response"
+}
+
+query_folio_operate_login_print_token() {
+
+  if [[ ${result} -ne 0 || ${login_print} -eq 0 ]] ; then return ; fi
+
+  local jq_object=
+
+  if [[ ${do_eureka} -eq 0 ]] ; then
+    jq_object='{ "token": $token }'
+  else
+    jq_object='{ "master": $token, "sidecar": $token_sidecar }'
+  fi
+
+  # Prevent jq from printing JSON if ${null} exists when not debugging.
+  if [[ ${debug_json} != "" || ! -e ${null} ]] ; then
+    jq -n -M --arg token "${token}" --arg token_sidecar "${token_sidecar}" "${jq_object}"
+  else
+    jq -n -M --arg token "${token}" --arg token_sidecar "${token_sidecar}" "${jq_object}" 2> ${null}
+  fi
+
+  query_folio_handle_result "Failed construct token using JQ for printing"
+}
+
 query_folio_operate_register_eureka() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  query_folio_operate_login_if_needed
 
   # TODO
 }
@@ -441,6 +559,8 @@ query_folio_operate_register_eureka() {
 query_folio_operate_register_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  query_folio_operate_login_if_needed
 
   local file=
 
@@ -452,9 +572,9 @@ query_folio_operate_register_okapi() {
   while [[ ${i} -lt ${total} ]] ; do
     file=${files[${i}]}
 
-    query_folio_curl_json -X POST --data "@${file}"
-
+    query_folio_curl_json -X POST -d "@${file}"
     query_folio_handle_result_curl "OKAPI Register"
+
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
     let i++
@@ -464,6 +584,8 @@ query_folio_operate_register_okapi() {
 query_folio_operate_undeploy_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  query_folio_operate_login_if_needed
 
   local id=
 
@@ -475,8 +597,8 @@ query_folio_operate_undeploy_okapi() {
     path="_/discovery/modules/${id}"
 
     query_folio_curl_json -X DELETE
-
     query_folio_handle_result_curl "OKAPI Undeploy"
+
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
     let i++
@@ -486,6 +608,8 @@ query_folio_operate_undeploy_okapi() {
 query_folio_operate_unregister_okapi() {
 
   if [[ ${result} -ne 0 ]] ; then return ; fi
+
+  query_folio_operate_login_if_needed
 
   local id=
 
@@ -497,8 +621,8 @@ query_folio_operate_unregister_okapi() {
     path="_/proxy/modules/${id}"
 
     query_folio_curl_json -X DELETE
-
     query_folio_handle_result_curl "OKAPI Unregister"
+
     if [[ ${result} -ne 0 ]] ; then return ; fi
 
     let i++
