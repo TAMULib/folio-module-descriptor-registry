@@ -1,0 +1,289 @@
+{
+  "id" : "mod-data-export-worker-3.5.0-SNAPSHOT.629",
+  "name" : "Data Export Worker Module",
+  "requires" : [ {
+    "id" : "users",
+    "version" : "15.4 16.0"
+  }, {
+    "id" : "inventory",
+    "version" : "13.0 14.0"
+  }, {
+    "id" : "configuration",
+    "version" : "2.0"
+  }, {
+    "id" : "feesfines",
+    "version" : "18.0 19.1"
+  }, {
+    "id" : "holdings-storage",
+    "version" : "7.0 8.0"
+  }, {
+    "id" : "instance-storage",
+    "version" : "10.0 11.0"
+  }, {
+    "id" : "call-number-types",
+    "version" : "1.0"
+  }, {
+    "id" : "audit",
+    "version" : "1.1"
+  }, {
+    "id" : "item-damaged-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "electronic-access-relationships",
+    "version" : "1.1"
+  }, {
+    "id" : "instance-authority-links-statistics",
+    "version" : "2.0"
+  }, {
+    "id" : "holdings-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-sources",
+    "version" : "1.0"
+  }, {
+    "id" : "holdings-types",
+    "version" : "1.0"
+  }, {
+    "id" : "identifier-types",
+    "version" : "1.2"
+  }, {
+    "id" : "ill-policies",
+    "version" : "1.0"
+  }, {
+    "id" : "item-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "loan-types",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.1"
+  }, {
+    "id" : "material-types",
+    "version" : "2.2"
+  }, {
+    "id" : "notes",
+    "version" : "4.0"
+  }, {
+    "id" : "service-points",
+    "version" : "3.3"
+  }, {
+    "id" : "statistical-codes",
+    "version" : "1.0"
+  }, {
+    "id" : "statistical-code-types",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-note-types",
+    "version" : "1.0"
+  }, {
+    "id" : "permissions",
+    "version" : "5.7"
+  }, {
+    "id" : "user-tenants",
+    "version" : "1.0"
+  }, {
+    "id" : "instance-formats",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "modes-of-issuance",
+    "version" : "1.1"
+  }, {
+    "id" : "nature-of-content-terms",
+    "version" : "1.0"
+  }, {
+    "id" : "consortium-search",
+    "version" : "2.1"
+  }, {
+    "id" : "source-storage-source-records",
+    "version" : "3.2"
+  }, {
+    "id" : "circulation-logs",
+    "version" : "1.2"
+  }, {
+    "id" : "instance-statuses",
+    "version" : "1.0"
+  }, {
+    "id" : "subject-types",
+    "version" : "1.0"
+  }, {
+    "id" : "subject-sources",
+    "version" : "1.0"
+  }, {
+    "id" : "classification-types",
+    "version" : "1.2"
+  } ],
+  "provides" : [ {
+    "id" : "bulk-edit",
+    "version" : "4.3",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/refresh-presigned-url",
+      "permissionsRequired" : [ "refresh-presigned-url.get" ],
+      "modulePermissions" : [ ]
+    } ]
+  }, {
+    "id" : "_tenant",
+    "version" : "2.0",
+    "interfaceType" : "system",
+    "handlers" : [ {
+      "methods" : [ "POST" ],
+      "pathPattern" : "/_/tenant",
+      "modulePermissions" : [ "circulation-logs.collection.get", "feesfines.accounts.transfer.post", "feesfines.accounts-bulk.transfer.post", "accounts.collection.get", "feefineactions.collection.get", "users.collection.get", "transfers.collection.get", "inventory-storage.service-points.collection.get", "instance-authority-links.authority-statistics.collection.get", "configuration.entries.collection.get", "configuration.entries.item.post", "configuration.entries.item.delete" ]
+    }, {
+      "methods" : [ "GET", "DELETE" ],
+      "pathPattern" : "/_/tenant/{id}"
+    } ]
+  }, {
+    "id" : "_jsonSchemas",
+    "version" : "1.0",
+    "interfaceType" : "multiple",
+    "handlers" : [ {
+      "methods" : [ "GET" ],
+      "pathPattern" : "/_/jsonSchemas"
+    } ]
+  } ],
+  "optional" : [ {
+    "id" : "data-export-spring",
+    "version" : "2.0"
+  }, {
+    "id" : "users-keycloak",
+    "version" : "1.0"
+  }, {
+    "id" : "permissions-users",
+    "version" : "1.0"
+  }, {
+    "id" : "consortia",
+    "version" : "1.1"
+  }, {
+    "id" : "custom-fields",
+    "version" : "3.0"
+  }, {
+    "id" : "erm",
+    "version" : "7.0"
+  }, {
+    "id" : "okapi",
+    "version" : "1.9"
+  }, {
+    "id" : "orders-storage.purchase-orders",
+    "version" : "8.0"
+  }, {
+    "id" : "order-lines",
+    "version" : "4.0"
+  }, {
+    "id" : "orders-storage.po-lines",
+    "version" : "13.0"
+  }, {
+    "id" : "orders-storage.pieces",
+    "version" : "5.0"
+  }, {
+    "id" : "organizations-storage.organizations",
+    "version" : "3.3"
+  }, {
+    "id" : "organizations.organizations",
+    "version" : "1.2"
+  }, {
+    "id" : "finance-storage.expense-classes",
+    "version" : "3.0"
+  }, {
+    "id" : "eholdings",
+    "version" : "4.0"
+  } ],
+  "permissionSets" : [ {
+    "permissionName" : "refresh-presigned-url.get",
+    "displayName" : "Get refreshed presigned url for export file",
+    "description" : "Get refreshed presigned url for export file"
+  }, {
+    "permissionName" : "refresh-presigned-url.all",
+    "displayName" : "refresh-presigned-url all",
+    "description" : "All permissions for refresh presigned url",
+    "subPermissions" : [ "refresh-presigned-url.get" ]
+  } ],
+  "launchDescriptor" : {
+    "dockerImage" : "folioci/mod-data-export-worker:3.5.0-SNAPSHOT.629",
+    "dockerPull" : true,
+    "env" : [ {
+      "name" : "JAVA_OPTIONS",
+      "value" : "-XX:MaxRAMPercentage=66.0 -XX:MetaspaceSize=384m -XX:MaxMetaspaceSize=512m -Xmx2048m"
+    }, {
+      "name" : "DB_HOST",
+      "value" : "postgres"
+    }, {
+      "name" : "DB_PORT",
+      "value" : "5432"
+    }, {
+      "name" : "DB_USERNAME",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_PASSWORD",
+      "value" : "folio_admin"
+    }, {
+      "name" : "DB_DATABASE",
+      "value" : "okapi_modules"
+    }, {
+      "name" : "DB_QUERYTIMEOUT",
+      "value" : "60000"
+    }, {
+      "name" : "DB_CHARSET",
+      "value" : "UTF-8"
+    }, {
+      "name" : "DB_MAXPOOLSIZE",
+      "value" : "5"
+    }, {
+      "name" : "KAFKA_HOST",
+      "value" : "10.0.2.15"
+    }, {
+      "name" : "KAFKA_PORT",
+      "value" : "9092"
+    }, {
+      "name" : "AWS_URL",
+      "value" : "http://127.0.0.1:9000/"
+    }, {
+      "name" : "AWS_REGION",
+      "value" : ""
+    }, {
+      "name" : "AWS_BUCKET",
+      "value" : "test-bucket2"
+    }, {
+      "name" : "AWS_ACCESS_KEY_ID",
+      "value" : "AKIAIOSFODNN7EXAMPLE"
+    }, {
+      "name" : "AWS_SECRET_ACCESS_KEY",
+      "value" : "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    }, {
+      "name" : "LOCAL_FS_URL",
+      "value" : "http://127.0.0.1:9000/"
+    }, {
+      "name" : "LOCAL_FS_REGION",
+      "value" : ""
+    }, {
+      "name" : "LOCAL_FS_BUCKET",
+      "value" : "local-test-bucket2"
+    }, {
+      "name" : "LOCAL_FS_ACCESS_KEY_ID",
+      "value" : "AKIAIOSFODNN7EXAMPLE"
+    }, {
+      "name" : "LOCAL_FS_SECRET_ACCESS_KEY",
+      "value" : "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    }, {
+      "name" : "LOCAL_FS_COMPOSE_WITH_AWS_SDK",
+      "value" : "false"
+    }, {
+      "name" : "ENV",
+      "value" : "folio"
+    } ],
+    "dockerArgs" : {
+      "HostConfig" : {
+        "Memory" : 3072000000,
+        "PortBindings" : {
+          "8081/tcp" : [ {
+            "HostPort" : "%p"
+          } ]
+        }
+      }
+    }
+  }
+}
