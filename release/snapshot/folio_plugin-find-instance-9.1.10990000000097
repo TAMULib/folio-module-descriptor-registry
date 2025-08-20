@@ -1,0 +1,22 @@
+{
+  "id" : "folio_plugin-find-instance-9.1.10990000000097",
+  "name" : "Instance-finder for Stripes",
+  "requires" : [ {
+    "id" : "contributor-types",
+    "version" : "2.0"
+  }, {
+    "id" : "instance-types",
+    "version" : "2.0"
+  }, {
+    "id" : "locations",
+    "version" : "3.0"
+  }, {
+    "id" : "search-inventory",
+    "version" : "1.0"
+  }, {
+    "id" : "search-facets",
+    "version" : "1.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
