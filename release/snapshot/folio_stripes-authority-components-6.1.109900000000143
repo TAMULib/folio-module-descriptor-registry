@@ -1,0 +1,22 @@
+{
+  "id" : "folio_stripes-authority-components-6.1.109900000000143",
+  "name" : "Component library for Stripes Authority modules",
+  "requires" : [ {
+    "id" : "search-authorities",
+    "version" : "1.0"
+  }, {
+    "id" : "search-facets",
+    "version" : "1.0"
+  }, {
+    "id" : "browse-authorities",
+    "version" : "1.0"
+  }, {
+    "id" : "authority-source-files",
+    "version" : "2.0"
+  }, {
+    "id" : "source-storage-records",
+    "version" : "3.0"
+  } ],
+  "optional" : [ ],
+  "permissionSets" : [ ]
+}
